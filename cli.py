@@ -1,8 +1,11 @@
+#!/usr/bin/python3
+
 """
 Usage:
-  mirror init                   <dir>
-  mirror tag --metadata=<fpath> <dir>
-  mirror list-tags              <dir>
+  mirror init                      <dir>
+  mirror tag --metadata=<fpath>    <dir>
+  mirror list-tags                 <dir>
+  mirror list-photos [--tag=<tag>] <dir>
   mirror (-h | --help)
 
 Description:
@@ -19,9 +22,12 @@ Commands:
 
   list-tags    List all tags in a directory.
 
+  list-photos  List photos and tag information. Optionally filter for a specific tag.
+
 Options:
-  -h --help           Show this screen.
   --metadata=<fpath>  The path to a YAML file containing metadata.
+  --tag=<tag>         The tag to list photos for.
+  -h, --help           Show this screen.
 """
 from docopt import docopt
 import src.mirror as Mirror
@@ -35,6 +41,8 @@ if __name__ == '__main__':
     Mirror.tag(args['<dir>'], args['--metadata'])
   elif args['list-tags']:
     Mirror.list_tags(args['<dir>'])
+  elif args['list-photos']:
+    Mirror.list_photos(args['<dir>'], args['--tag'])
   else:
     print(__doc__)
     exit(1)

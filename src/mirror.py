@@ -38,3 +38,18 @@ def list_tags(dir: str):
       'tag': tag,
       'count': count
     }))
+
+def list_photos(dir: str, tag: str):
+  for image in PhotoDirectory(dir).list():
+    attrs = image.get_metadata()
+
+    if tag and tag not in attrs.get(ATTR_TAG, []):
+      continue
+
+    if ATTR_TAG in attrs:
+      attrs[ATTR_TAG] = list(attrs[ATTR_TAG])
+
+    print(json.dumps({
+      'fpath': image.path,
+      'attrs': attrs
+    }))

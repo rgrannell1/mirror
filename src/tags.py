@@ -31,7 +31,7 @@ class TagMetadata:
   def add_tags(self, tag: str):
     tags = set([tag])
 
-    return tags
+    return [tag]
 
 class Tagfile:
   def __init__(self, dirname: str, images) -> None:
