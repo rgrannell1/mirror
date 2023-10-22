@@ -1,3 +1,5 @@
+"""The core logic of mirror. This is the entrypoint for the CLI, and
+   contains the logic for each command."""
 
 import json
 
@@ -6,10 +8,14 @@ from src.tags import Tagfile, TagMetadata
 from .constants import ATTR_TAG
 
 def init(dir: str):
+  """Create tags.md files in each photo-directory, with information
+     extracted from extended-attributes"""
   for dirname, images in PhotoDirectory(dir).list_by_folder().items():
     Tagfile(dirname, images).write()
 
 def tag(dir: str, metadata_path: str):
+  """Read tags.md files in each photo-directory, and write extended
+     attributes to each image"""
   for entry in PhotoDirectory(dir).list_tagfiles():
     fpath = entry['fpath']
     attrs = entry['attrs']
@@ -19,6 +25,8 @@ def tag(dir: str, metadata_path: str):
     Photo(fpath).set_metadata(attrs, tag_metadata)
 
 def list_tags(dir: str):
+  """List all tags in all images in the directory, as a series
+     of JSON objects"""
   tag_set = {}
 
   for image in PhotoDirectory(dir).list():
@@ -40,6 +48,9 @@ def list_tags(dir: str):
     }))
 
 def list_photos(dir: str, tag: str):
+  """List all photos in the directory, as a series of JSON objects. If
+     a tag is specified, only list photos with that tag"""
+
   for image in PhotoDirectory(dir).list():
     attrs = image.get_metadata()
 
@@ -53,3 +64,15 @@ def list_photos(dir: str, tag: str):
       'fpath': image.path,
       'attrs': attrs
     }))
+
+def publish():
+  """List all images tagged with 'Published'. Find what images are already published,
+  and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
+  the images to DigitalOcean Spaces.
+  """
+
+  for image in PhotoDirectory(dir).list():
+    attrs = image.get_metadata()
+
+    if 'Published' not in attrs.get(ATTR_TAG, []):
+      continue

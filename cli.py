@@ -6,10 +6,11 @@ Usage:
   mirror tag --metadata=<fpath>    <dir>
   mirror list-tags                 <dir>
   mirror list-photos [--tag=<tag>] <dir>
+  mirror publish                   <dir>
   mirror (-h | --help)
 
 Description:
-
+  Mirror i
 
 Tags:
   * user.xyz.rgrannell.photos.tags    a CSV of tag-data.
@@ -43,6 +44,8 @@ if __name__ == '__main__':
     Mirror.list_tags(args['<dir>'])
   elif args['list-photos']:
     Mirror.list_photos(args['<dir>'], args['--tag'])
+  elif args['publish']:
+    Mirror.publish(args['<dir>'])
   else:
     print(__doc__)
     exit(1)
