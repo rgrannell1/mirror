@@ -4,16 +4,15 @@
 Bulk-tag a photo-library
 
 ```sh
-mirror init      <dir>
-mirror tag       <dir>
-mirror list-tags <dir>
+mirror init                      <dir>
+mirror tag                       <dir>
+mirror list-tags                 <dir>
+mirror list-photos [--tag=<tag>] <dir>
 ```
 
 ## Overview
 
-Mirror generates a `tags.md` file
-
-by setting [extended-attributes](https://en.wikipedia.org/wiki/Extended_file_attributes)
+Mirror generates a `tags.md` file for every folder in a photo-library. It applies tags to each photo by setting [extended-attributes](https://en.wikipedia.org/wiki/Extended_file_attributes)
 
 ## License
 
