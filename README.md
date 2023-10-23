@@ -8,6 +8,7 @@ mirror init                      <dir>
 mirror tag                       <dir>
 mirror list-tags                 <dir>
 mirror list-photos [--tag=<tag>] <dir>
+mirror publish                   <dir>
 ```
 
 ## Overview
