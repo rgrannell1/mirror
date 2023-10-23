@@ -6,6 +6,7 @@ import json
 from src.photo import PhotoDirectory, Photo
 from src.tags import Tagfile, TagMetadata
 from .constants import ATTR_TAG
+from .spaces import Spaces
 
 def init(dir: str):
   """Create tags.md files in each photo-directory, with information
@@ -65,11 +66,20 @@ def list_photos(dir: str, tag: str):
       'attrs': attrs
     }))
 
-def publish():
+def publish(dir: str):
   """List all images tagged with 'Published'. Find what images are already published,
   and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
   the images to DigitalOcean Spaces.
   """
+
+  client = Spaces()
+
+  client.upload_image("./test.jpeg")
+
+  for image in client.list_images():
+    print(image)
+
+  exit(0)
 
   for image in PhotoDirectory(dir).list():
     attrs = image.get_metadata()
