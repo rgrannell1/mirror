@@ -3,6 +3,7 @@
 """
 Usage:
   mirror init                      <dir>
+  mirror create-manifest           <dir>
   mirror tag --metadata=<fpath>    <dir>
   mirror list-tags                 <dir>
   mirror list-photos [--tag=<tag>] <dir>
@@ -46,6 +47,8 @@ if __name__ == '__main__':
     Mirror.list_photos(args['<dir>'], args['--tag'])
   elif args['publish']:
     Mirror.publish(args['<dir>'])
+  elif args['create-manifest']:
+    Mirror.create_manifest(args['<dir>'])
   else:
     print(__doc__)
     exit(1)

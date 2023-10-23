@@ -1,8 +1,17 @@
 
+import io
 import os
 import xattr
+import hashlib
 
-from .constants import ATTR_TAG
+from PIL import Image, ImageOps
+import PIL
+
+from .constants import (
+  ATTR_TAG,
+  THUMBNAIL_WIDTH,
+  THUMBNAIL_HEIGHT
+)
 from .tags import Tagfile
 
 class PhotoDirectory:
@@ -103,15 +112,26 @@ class Photo:
 
       xattr.setxattr(self.path, attr, ', '.join(tag_set))
 
-  @classmethod
   def encode_thumbnail(self):
     """Encode a image as a thumbnail Webp, and remove EXIF data"""
-    return {
-      'hash': '',
-      'content': ''
-    }
 
-  @classmethod
+    img = Image.open(self.path)
+    img = img.convert('RGB')
+    thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+
+    with io.BytesIO() as output:
+      thumb.save(output, format="WEBP", lossless=True)
+      contents = output.getvalue()
+
+      hasher = hashlib.new('sha256')
+      hasher.update(contents)
+
+      return {
+        'hash': hasher.hexdigest(),
+        'content': contents
+      }
+
+
   def encode_image(self):
     """Encode an image as Webp, and remove EXIF data"""
     return {
