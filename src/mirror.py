@@ -11,9 +11,15 @@ from .manifest import Manifest
 
 def init(dir: str):
   """Create tags.md files in each photo-directory, with information
-     extracted from extended-attributes"""
+     extracted from extended-attributes. Create a manifest"""
   for dirname, images in PhotoDirectory(dir).list_by_folder().items():
     Tagfile(dirname, images).write()
+
+  db = Manifest()
+  db.create()
+
+  for image in PhotoDirectory(dir).list():
+    db.add(image)
 
 def tag(dir: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
@@ -67,16 +73,6 @@ def list_photos(dir: str, tag: str):
       'attrs': attrs
     }))
 
-
-def create_manifest(dir: str):
-  """Create a manifest of all images in the directory, and their tags."""
-  db = Manifest()
-  db.create()
-
-  for image in PhotoDirectory(dir).list():
-    db.update(image)
-
-
 def publish(dir: str):
   """List all images tagged with 'Published'. Find what images are already published,
   and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
@@ -86,15 +82,26 @@ def publish(dir: str):
   db = Manifest()
   db.create()
 
+  spaces = Spaces()
+  spaces.set_acl()
+
   for image in db.list_publishable():
-    db.update(image)
+    print(f'Checking thumbnail for {image.path}')
 
-  db.close()
+    # create and upload a thumbnail
+    if not db.has_thumbnail(image):
+      encoded = image.encode_thumbnail()
 
-  exit(0)
-  client = Spaces()
+      url = spaces.upload_thumbnail(encoded)
+      db.register_thumbnail_url(image, url)
+      print(f'Uploaded thumbnail for {image.path}')
 
-  client.upload_image("./test.jpeg")
+    print(f'Checking image for {image.path}')
 
-  for image in client.list_images():
-    print(image)
+    # create an upload the image itself
+    if not db.has_image(image):
+      encoded = image.encode_image()
+
+      url = spaces.upload_image(encoded)
+      db.register_image_url(image, url)
+      print(f'Uploaded image for {image.path}')

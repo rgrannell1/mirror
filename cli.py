@@ -47,8 +47,6 @@ if __name__ == '__main__':
     Mirror.list_photos(args['<dir>'], args['--tag'])
   elif args['publish']:
     Mirror.publish(args['<dir>'])
-  elif args['create-manifest']:
-    Mirror.create_manifest(args['<dir>'])
   else:
     print(__doc__)
     exit(1)

@@ -26,12 +26,13 @@ class Spaces:
       aws_access_key_id=SPACES_ACCESS_KEY_ID,
       aws_secret_access_key=SPACES_SECRET_KEY)
 
-  def upload_image(self, fpath: str) -> bool:
+  def set_acl(self):
+    self.client.put_bucket_acl(Bucket=SPACES_BUCKET, ACL='public-read')
+
+  def upload(self, key: str, content: str) -> bool:
     """Check if a file exists in the Spaces bucket"""
 
-    self.client.upload_file(fpath, SPACES_BUCKET, fpath, ExtraArgs={
-      'ACL': 'public-read'
-    })
+    return self.client.put_object(Body=content, Bucket=SPACES_BUCKET, Key=key, ACL='public-read')
 
   def list_images(self):
     """List all images in the Spaces bucket"""
@@ -40,3 +41,15 @@ class Spaces:
 
     for image in small_selection['Contents']:
       yield image
+
+  def upload_image(self, encoded_data):
+    name = f"{encoded_data['hash']}.webp"
+    self.upload(name, encoded_data['content'])
+
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+
+  def upload_thumbnail(self, encoded_data):
+    name = f"{encoded_data['hash']}_thumbnail.webp"
+    self.upload(name, encoded_data['content'])
+
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"

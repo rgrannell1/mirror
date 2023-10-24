@@ -45,29 +45,57 @@ class Manifest:
 
     return row[0], row[1]
 
-  def update(self, image):
+  def add(self, image):
     path = image.path
-    md = image.get_metadata()
 
-    tags = md.get(ATTR_TAG, set())
-    published = 'True' if 'Published' in tags else 'False'
-    tag_string =", ".join(tags)
+    published = image.published()
+    tag_string = image.tag_string()
 
     thumbnail_url, image_url = self.image_urls(path)
-
-    if not thumbnail_url:
-      encoded = image.encode_thumbnail()
-
-    if not image_url:
-      encoded = image.encode()
-
-    exit(0)
 
     cursor = self.conn.cursor()
     cursor.execute(
       "insert or replace into images (fpath, tags, published) values (?, ?, ?)",
       (path, tag_string, published)
     )
+    self.conn.commit()
+
+  def has_thumbnail(self, image):
+    cursor = self.conn.cursor()
+    cursor.execute("select thumbnail_url from images where fpath = ?", (image.path, ))
+
+    row = cursor.fetchone()
+
+    if not row:
+      False
+
+    if row[0]:
+      return True
+    else:
+      return False
+
+  def has_image(self, image):
+    cursor = self.conn.cursor()
+    cursor.execute("select image_url from images where fpath = ?", (image.path, ))
+
+    row = cursor.fetchone()
+
+    if not row:
+      False
+
+    if row[0]:
+      return True
+    else:
+      return False
+
+  def register_thumbnail_url(self, image, url):
+    cursor = self.conn.cursor()
+    cursor.execute("update images set thumbnail_url = ? where fpath = ?", (url, image.path))
+    self.conn.commit()
+
+  def register_image_url(self, image, url):
+    cursor = self.conn.cursor()
+    cursor.execute("update images set image_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
   def close(self):

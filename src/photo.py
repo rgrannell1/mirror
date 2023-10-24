@@ -6,6 +6,7 @@ import hashlib
 
 from PIL import Image, ImageOps
 import PIL
+import PIL.ExifTags
 
 from .constants import (
   ATTR_TAG,
@@ -94,6 +95,18 @@ class Photo:
       ATTR_TAG: tags
     }
 
+  def published(self):
+    md = self.get_metadata()
+
+    tags = md.get(ATTR_TAG, set())
+    return 'Published' in tags
+
+  def tag_string(self):
+    md = self.get_metadata()
+
+    tags = md.get(ATTR_TAG, set())
+    return ', '.join(tags)
+
   def set_metadata(self, attrs, tag_metadata):
     """Set metadata on an image as extended-attributes"""
     for attr, value in attrs.items():
@@ -119,8 +132,12 @@ class Photo:
     img = img.convert('RGB')
     thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
 
+    data = list(thumb.getdata())
+    no_exif = Image.new(thumb.mode, thumb.size)
+    no_exif.putdata(data)
+
     with io.BytesIO() as output:
-      thumb.save(output, format="WEBP", lossless=True)
+      no_exif.save(output, format="WEBP", lossless=True)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')
@@ -134,7 +151,22 @@ class Photo:
 
   def encode_image(self):
     """Encode an image as Webp, and remove EXIF data"""
-    return {
-      'hash': '',
-      'content': ''
-    }
+
+    img = Image.open(self.path)
+    img = img.convert('RGB')
+
+    data = list(img.getdata())
+    no_exif = Image.new(img.mode, img.size)
+    no_exif.putdata(data)
+
+    with io.BytesIO() as output:
+      no_exif.save(output, format="WEBP", lossless=True)
+      contents = output.getvalue()
+
+      hasher = hashlib.new('sha256')
+      hasher.update(contents)
+
+      return {
+        'hash': hasher.hexdigest(),
+        'content': contents
+      }
