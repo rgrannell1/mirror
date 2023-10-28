@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "user.xyz.rgrannell.photos.album_title": {
+      "type": "string"
+    },
+    "user.xyz.rgrannell.photos.album_cover": {
+      "type": "string"
+    },
+    "images": {
+      "type": "object",
+      "additionalProperties": {
+        "user.xyz.rgrannell.photos.tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "user.xyz.rgrannell.photos.album_title",
+    "user.xyz.rgrannell.photos.album_cover",
+    "images"
+  ]
+}

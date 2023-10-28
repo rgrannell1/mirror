@@ -1,4 +1,5 @@
 
+import re
 import io
 import os
 import xattr
@@ -11,7 +12,8 @@ import PIL.ExifTags
 from .constants import (
   ATTR_TAG,
   THUMBNAIL_WIDTH,
-  THUMBNAIL_HEIGHT
+  THUMBNAIL_HEIGHT,
+  TITLE_PATTERN
 )
 from .tags import Tagfile
 
@@ -37,13 +39,23 @@ class PhotoDirectory:
   def list_tagfiles(self):
     """List tagfiles across all photo-directories
     """
+
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         if filename == 'tags.md':
           fpath = os.path.join(dirpath, filename)
 
-          for entry in Tagfile.read(fpath):
-            yield entry
+          tag_file = Tagfile.read(fpath)
+          for key, entry in tag_file['images'].items():
+
+            match = TITLE_PATTERN.search(key)
+            if match:
+                image_name = match.group(1)
+
+            yield {
+              "fpath": os.path.join(dirpath, image_name),
+              "attrs": entry
+            }
 
   def list_by_folder(self):
     """List all images by folder.
@@ -109,15 +121,15 @@ class Photo:
 
   def set_metadata(self, attrs, tag_metadata):
     """Set metadata on an image as extended-attributes"""
+
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
         xattr.setxattr(self.path, attr, value)
         continue
 
       tag_set = set()
-      original_tags = value.split(',')
 
-      for tag in original_tags:
+      for tag in value:
         tag_set.add(tag)
 
         for new_tag in tag_metadata.add_tags(tag):

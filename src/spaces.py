@@ -53,3 +53,27 @@ class Spaces:
     self.upload(name, encoded_data['content'])
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+
+  def get_thumbnail(self, encoded_data):
+    name = f"{encoded_data['hash']}_thumbnail.webp"
+
+    try:
+      self.client.head_object(Bucket=SPACES_BUCKET, Key=name)
+      return True, f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+    except Exception as err:
+      if "404" in str(err):
+        return False, f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+      else:
+        raise
+
+  def get_image(self, encoded_data):
+    name = f"{encoded_data['hash']}.webp"
+
+    try:
+      self.client.head_object(Bucket=SPACES_BUCKET, Key=name)
+      return True, f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+    except Exception as err:
+      if "404" in str(err):
+        return False, f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+      else:
+        raise

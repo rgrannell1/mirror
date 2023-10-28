@@ -13,6 +13,7 @@ def init(dir: str):
   """Create tags.md files in each photo-directory, with information
      extracted from extended-attributes. Create a manifest"""
   for dirname, images in PhotoDirectory(dir).list_by_folder().items():
+    continue
     Tagfile(dirname, images).write()
 
   db = Manifest()
@@ -24,11 +25,13 @@ def init(dir: str):
 def tag(dir: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
      attributes to each image"""
-  for entry in PhotoDirectory(dir).list_tagfiles():
+
+  photo_dir = PhotoDirectory(dir)
+  tag_metadata = TagMetadata(metadata_path)
+
+  for entry in photo_dir.list_tagfiles():
     fpath = entry['fpath']
     attrs = entry['attrs']
-
-    tag_metadata = TagMetadata(metadata_path)
 
     Photo(fpath).set_metadata(attrs, tag_metadata)
 
@@ -85,16 +88,23 @@ def publish(dir: str):
   spaces = Spaces()
   spaces.set_acl()
 
+  published = False
+
   for image in db.list_publishable():
+    published = True
     print(f'Checking thumbnail for {image.path}')
 
     # create and upload a thumbnail
     if not db.has_thumbnail(image):
       encoded = image.encode_thumbnail()
 
-      url = spaces.upload_thumbnail(encoded)
-      db.register_thumbnail_url(image, url)
-      print(f'Uploaded thumbnail for {image.path}')
+      thumbnail_in_spaces, thumbnail_url = spaces.get_thumbnail(encoded)
+
+      if not thumbnail_in_spaces:
+        spaces.upload_thumbnail(encoded)
+        print(f'Uploaded thumbnail for {image.path}')
+
+      db.register_thumbnail_url(image, thumbnail_url)
 
     print(f'Checking image for {image.path}')
 
@@ -102,6 +112,15 @@ def publish(dir: str):
     if not db.has_image(image):
       encoded = image.encode_image()
 
-      url = spaces.upload_image(encoded)
-      db.register_image_url(image, url)
-      print(f'Uploaded image for {image.path}')
+      image_in_spaces, image_url = spaces.get_image(encoded)
+
+      if not image_in_spaces:
+        spaces.upload_image(encoded)
+        print(f'Uploaded image for {image.path}')
+
+      db.register_image_url(image, image_url)
+
+  if not published:
+    print('No images published')
+
+  db.create_metadata_file('/home/rg/Code/photos.rgrannell.xyz/manifest.json')

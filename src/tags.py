@@ -1,11 +1,19 @@
 """Classes for dealing with tag-files, and tag metadata-files"""
 
 import os
+import json
 import yaml
 import shutil
 import datetime
+import jsonschema
 
-from src.constants import ATTR_TAG
+from src.constants import (
+  ATTR_TAG,
+  ATTR_ALBUM_COVER
+)
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+schema_path = os.path.join(current_dir, "schema.json")
 
 def tag_tree(tree):
   """Expand a tag-tree so that subsumptions can be easily accessed"""
@@ -72,6 +80,9 @@ class Tagfile:
 
   def write(self) -> None:
     """Write a tagfile to the current directory."""
+
+    raise NotImplementedError("cannot currently write a tag-file")
+
     content = self.content()
     tag_path = f"{self.dirname}/tags.md"
 
@@ -89,30 +100,20 @@ class Tagfile:
   @classmethod
   def read(kls, fpath):
     """Read a tagfile, and yield each image and its associated tags."""
-    current_image = None
-    current_tags = []
+
+    with open(schema_path) as conn:
+      tag_schema = json.load(conn)
 
     with open(fpath, 'r') as conn:
-      for line in conn.readlines():
-        if line.startswith('## '):
-          # a heading indicates a new image is being processed
-          current_image = line[3:].strip()
+      yaml_data = yaml.safe_load(conn)
 
-          # if current tags is defined, yield image information and attributes
-          if current_tags:
-            yield {
-              'dpath': os.path.dirname(fpath),
-              'fpath': os.path.join(os.path.dirname(fpath), current_image),
-              'fname': current_image,
-              'attrs': {
-                ATTR_TAG: ', '.join(current_tags)
-              }
-            }
+    jsonschema.validate(instance=yaml_data[0], schema=tag_schema)
+    tag_file = yaml_data[0]
 
-          current_tags = []
+    cover = tag_file[ATTR_ALBUM_COVER]
+    dirpath = os.path.dirname(fpath)
 
-        # if a line starts with a dash, it's a tag
-        # append them to the current tags
-        if line.startswith('-'):
-          tag = line[1:].strip()
-          current_tags.append(tag)
+    if f'![{cover}]({cover})' not in tag_file['images']:
+      raise Exception(f"{cover} is not present in the album {dirpath}")
+
+    return tag_file
