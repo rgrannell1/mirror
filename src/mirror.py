@@ -1,6 +1,7 @@
 """The core logic of mirror. This is the entrypoint for the CLI, and
    contains the logic for each command."""
 
+import sys
 import json
 
 from src.photo import PhotoDirectory, Photo
@@ -41,7 +42,7 @@ def list_tags(dir: str):
   tag_set = {}
 
   for image in PhotoDirectory(dir).list():
-    tags = image.get_metadata()
+    tags = image.has_metadata()
 
     if ATTR_TAG not in tags:
       continue
@@ -63,7 +64,7 @@ def list_photos(dir: str, tag: str):
      a tag is specified, only list photos with that tag"""
 
   for image in PhotoDirectory(dir).list():
-    attrs = image.get_metadata()
+    attrs = image.has_metadata()
 
     if tag and tag not in attrs.get(ATTR_TAG, []):
       continue
@@ -92,7 +93,7 @@ def publish(dir: str):
 
   for image in db.list_publishable():
     published = True
-    print(f'Checking thumbnail for {image.path}')
+    print(f'Checking thumbnail for {image.path}', file=sys.stderr)
 
     # create and upload a thumbnail
     if not db.has_thumbnail(image):
@@ -102,11 +103,11 @@ def publish(dir: str):
 
       if not thumbnail_in_spaces:
         spaces.upload_thumbnail(encoded)
-        print(f'Uploaded thumbnail for {image.path}')
+        print(f'Uploaded thumbnail for {image.path}', file=sys.stderr)
 
       db.register_thumbnail_url(image, thumbnail_url)
 
-    print(f'Checking image for {image.path}')
+    print(f'Checking image for {image.path}', file=sys.stderr)
 
     # create an upload the image itself
     if not db.has_image(image):
@@ -116,11 +117,11 @@ def publish(dir: str):
 
       if not image_in_spaces:
         spaces.upload_image(encoded)
-        print(f'Uploaded image for {image.path}')
+        print(f'Uploaded image for {image.path}', file=sys.stderr)
 
       db.register_image_url(image, image_url)
 
   if not published:
-    print('No images published')
+    print('No images published', file=sys.stderr)
 
   db.create_metadata_file('/home/rg/Code/photos.rgrannell.xyz/manifest.json')

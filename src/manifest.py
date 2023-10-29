@@ -31,12 +31,16 @@ class Manifest:
     self.conn = sqlite3.connect(fpath)
 
   def create(self):
+    """Create the local database"""
+
     cursor = self.conn.cursor()
 
     for table in {IMAGES_TABLE, ALBUM_TABLE}:
       cursor.execute(table)
 
   def list_publishable(self):
+    """List all images that are ready to be published"""
+
     cursor = self.conn.cursor()
     cursor.execute("select fpath from images where published = '1'")
 
@@ -44,19 +48,24 @@ class Manifest:
       yield Photo(row[0])
 
   def add(self, image):
+    """Add an image to the local database"""
+
     path = image.path
+    album = os.path.dirname(path)
 
     published = image.published()
     tag_string = image.tag_string()
 
     cursor = self.conn.cursor()
     cursor.execute(
-      "insert or replace into images (fpath, tags, published) values (?, ?, ?)",
-      (path, tag_string, published)
+      "insert or replace into images (fpath, tags, published, album) values (?, ?, ?, ?)",
+      (path, tag_string, published, album)
     )
     self.conn.commit()
 
   def has_thumbnail(self, image):
+    """Check if a thumbnail exists, according to the local database"""
+
     cursor = self.conn.cursor()
     cursor.execute("select thumbnail_url from images where fpath = ?", (image.path, ))
 
@@ -71,6 +80,7 @@ class Manifest:
       return False
 
   def has_image(self, image):
+    """Check if an image exists, according to the local database"""
     cursor = self.conn.cursor()
     cursor.execute("select image_url from images where fpath = ?", (image.path, ))
 
@@ -85,6 +95,8 @@ class Manifest:
       return False
 
   def register_thumbnail_url(self, image, url):
+    """Register a thumbnail URL for an image in the local database"""
+
     cursor = self.conn.cursor()
     cursor.execute("update images set thumbnail_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
@@ -98,12 +110,12 @@ class Manifest:
     """Create a metadata file from the stored manifest file."""
 
     cursor = self.conn.cursor()
-    cursor.execute("select fpath,tags,image_url,thumbnail_url from images where published = 'True'")
+    cursor.execute("select fpath,tags,image_url,thumbnail_url,album from images where published = '1'")
 
     folders = {}
 
     for row in cursor.fetchall():
-      fpath, tags, image_url, thumbnail_url = row
+      fpath, tags, image_url, thumbnail_url, album = row
 
       dirname = os.path.dirname(fpath)
       if not dirname in folders:
@@ -124,4 +136,6 @@ class Manifest:
       conn.write(json.dumps(folders))
 
   def close(self):
+    """Close the local database connection"""
+
     self.conn.close()

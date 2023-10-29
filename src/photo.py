@@ -6,11 +6,11 @@ import xattr
 import hashlib
 
 from PIL import Image, ImageOps
-import PIL
-import PIL.ExifTags
 
 from .constants import (
   ATTR_TAG,
+  ATTR_ALBUM_TITLE,
+  ATTR_ALBUM_COVER,
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
   TITLE_PATTERN
@@ -54,6 +54,10 @@ class PhotoDirectory:
 
             yield {
               "fpath": os.path.join(dirpath, image_name),
+              "album": {
+                "title": tag_file[ATTR_ALBUM_TITLE],
+                "cover": tag_file[ATTR_ALBUM_COVER]
+              },
               "attrs": entry
             }
 
@@ -119,7 +123,7 @@ class Photo:
     tags = md.get(ATTR_TAG, set())
     return ', '.join(tags)
 
-  def set_metadata(self, attrs, tag_metadata):
+  def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
 
     for attr, value in attrs.items():
