@@ -32,7 +32,7 @@ Options:
   -h, --help           Show this screen.
 """
 from docopt import docopt
-import src.mirror as Mirror
+from src.mirror import Mirror
 
 if __name__ == '__main__':
   args = docopt(__doc__)

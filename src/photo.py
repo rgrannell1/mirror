@@ -18,7 +18,7 @@ from .constants import (
 )
 from .tags import Tagfile
 
-class PhotoDirectory:
+class PhotoVault:
   """A directory of photos"""
   def __init__(self, path):
     self.path = path
@@ -88,7 +88,10 @@ class PhotoDirectory:
 
     return dirs
 
+
 class Album:
+  """A photo-album"""
+
   def __init__(self, path):
     self.path = path
 
@@ -105,6 +108,13 @@ class Album:
       'title': xattr.getxattr(self.path, ATTR_ALBUM_TITLE).decode('utf-8'),
       'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8')
     }
+
+  def set_metadata(self, album):
+    """Set metadata on the album as extended-attributes"""
+
+    xattr.setxattr(album['fpath'], ATTR_ALBUM_TITLE, album['title'])
+    xattr.setxattr(album['fpath'], ATTR_ALBUM_COVER, album['cover'])
+
 
 class Photo:
   """A photo, methods for retrieving & setting metadata, and
@@ -129,7 +139,9 @@ class Photo:
     """
     return os.path.dirname(self.path)
 
-  def exif(self):
+  def get_exif(self):
+    """Get EXIF data from a photo."""
+
     try:
       img = Image.open(self.path)
       exif_data = img._getexif()
@@ -150,7 +162,9 @@ class Photo:
     return output
 
   def get_created_date(self):
-    exif = self.exif()
+    """Get the date an image was created on"""
+
+    exif = self.get_exif()
 
     date = exif.get('DateTimeOriginal')
     if not date:
@@ -165,6 +179,7 @@ class Photo:
 
   def get_metadata(self):
     """Get metadata from an image as extended-attributes"""
+
     attrs = {attr.decode('utf-8') for attr in xattr.listxattr(self.path)}
 
     if not ATTR_TAG in attrs:
@@ -177,12 +192,16 @@ class Photo:
     }
 
   def published(self):
+    """Is this image publishable?"""
+
     md = self.get_metadata()
 
     tags = md.get(ATTR_TAG, set())
     return 'Published' in tags
 
   def tag_string(self):
+    """Get the tag csv for an image"""
+
     md = self.get_metadata()
 
     tags = md.get(ATTR_TAG, set())
@@ -191,8 +210,8 @@ class Photo:
   def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
 
-    xattr.setxattr(album['fpath'], ATTR_ALBUM_TITLE, album['title'])
-    xattr.setxattr(album['fpath'], ATTR_ALBUM_COVER, album['cover'])
+    album = Album(album['fpath'])
+    album.set_metadata(album)
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
@@ -214,13 +233,18 @@ class Photo:
 
     img = Image.open(self.path)
     img = img.convert('RGB')
+
+    # reduce the dimensions of the image
     thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
 
+    # remove EXIF data from the image by cloning
     data = list(thumb.getdata())
     no_exif = Image.new(thumb.mode, thumb.size)
     no_exif.putdata(data)
 
     with io.BytesIO() as output:
+      # return the image hash and contents
+
       no_exif.save(output, format="WEBP", lossless=True)
       contents = output.getvalue()
 
@@ -239,11 +263,14 @@ class Photo:
     img = Image.open(self.path)
     img = img.convert('RGB')
 
+    # remove EXIF data from the image by cloning
     data = list(img.getdata())
     no_exif = Image.new(img.mode, img.size)
     no_exif.putdata(data)
 
     with io.BytesIO() as output:
+      # return the image hash and contents
+
       no_exif.save(output, format="WEBP", lossless=True)
       contents = output.getvalue()
 

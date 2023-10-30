@@ -4,7 +4,6 @@ import os
 import json
 import sqlite3
 
-from .constants import TITLE_PATTERN
 from .photo import Photo
 
 IMAGES_TABLE = """
