@@ -80,7 +80,7 @@ class Manifest:
     cover_image = album['cover']
 
     cursor = self.conn.cursor()
-    cursor.execute("insert into albums (fpath, album_name, cover_image) values (?, ?, ?)", (
+    cursor.execute("insert or replace into albums (fpath, album_name, cover_image) values (?, ?, ?)", (
       fpath, album_name, cover_image
     ))
     self.conn.commit()
@@ -132,18 +132,23 @@ class Manifest:
     """Create a metadata file from the stored manifest file."""
 
     cursor = self.conn.cursor()
-    cursor.execute("select fpath,tags,image_url,thumbnail_url,album from images where published = '1'")
+    cursor.execute("""
+      select images.fpath, images.tags, images.image_url, images.thumbnail_url, albums.album_name, albums.cover_image
+        from images
+        inner join albums on images.album = albums.fpath
+        where published = '1'
+      """)
 
     folders = {}
 
     for row in cursor.fetchall():
-      fpath, tags, image_url, thumbnail_url, album = row
+      fpath, tags, image_url, thumbnail_url, album_name, cover_image = row
 
       dirname = os.path.dirname(fpath)
       if not dirname in folders:
         folders[dirname] = {
-          'name': 'not yet defined',
-          'cover_image': 'not yet defined',
+          'name': album_name,
+          'cover_image': os.path.join(dirname, cover_image),
           'images': []
         }
 
