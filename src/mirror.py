@@ -20,8 +20,17 @@ def init(dir: str):
   db = Manifest()
   db.create()
 
-  for image in PhotoDirectory(dir).list():
-    db.add(image)
+  for image in PhotoDirectory(dir).list_images():
+    db.add_image(image)
+
+  for album in PhotoDirectory(dir).list_albums():
+    md = album.get_metadata()
+
+    if not md:
+      continue
+
+    db.add_album(md)
+
 
 def tag(dir: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
@@ -42,7 +51,7 @@ def list_tags(dir: str):
      of JSON objects"""
   tag_set = {}
 
-  for image in PhotoDirectory(dir).list():
+  for image in PhotoDirectory(dir).list_images():
     tags = image.has_metadata()
 
     if ATTR_TAG not in tags:
@@ -64,7 +73,7 @@ def list_photos(dir: str, tag: str):
   """List all photos in the directory, as a series of JSON objects. If
      a tag is specified, only list photos with that tag"""
 
-  for image in PhotoDirectory(dir).list():
+  for image in PhotoDirectory(dir).list_images():
     attrs = image.has_metadata()
 
     if tag and tag not in attrs.get(ATTR_TAG, []):

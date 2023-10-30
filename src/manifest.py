@@ -20,7 +20,8 @@ create table if not exists images (
 
 ALBUM_TABLE = """
 create table if not exists albums (
-  name             text primary key,
+  fpath            text primary key,
+  album_name       text,
   cover_image      text
 )
 """
@@ -47,7 +48,7 @@ class Manifest:
     for row in cursor.fetchall():
       yield Photo(row[0])
 
-  def add(self, image):
+  def add_image(self, image):
     """Add an image to the local database"""
 
     path = image.path
@@ -69,6 +70,19 @@ class Manifest:
       """,
       (path, tag_string, published, album, tag_string, published, album)
     )
+    self.conn.commit()
+
+  def add_album(self, album):
+    """Add an album to the local database"""
+
+    fpath = album['fpath']
+    album_name = album['title']
+    cover_image = album['cover']
+
+    cursor = self.conn.cursor()
+    cursor.execute("insert into albums (fpath, album_name, cover_image) values (?, ?, ?)", (
+      fpath, album_name, cover_image
+    ))
     self.conn.commit()
 
   def has_thumbnail(self, image):

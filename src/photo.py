@@ -22,7 +22,7 @@ class PhotoDirectory:
   def __init__(self, path):
     self.path = path
 
-  def list(self):
+  def list_images(self):
     """Recursively list all files under a given path.
     """
     images = []
@@ -35,6 +35,17 @@ class PhotoDirectory:
           images.append(Photo(image_path))
 
     return images
+
+  def list_albums(self):
+    """Recursively list all directories under a given path.
+    """
+    albums = []
+
+    for dirpath, _, _ in os.walk(self.path):
+      album = Album(dirpath)
+      albums.append(album)
+
+    return albums
 
   def list_tagfiles(self):
     """List tagfiles across all photo-directories
@@ -67,7 +78,7 @@ class PhotoDirectory:
     """
     dirs = {}
 
-    for image in self.list():
+    for image in self.list_images():
       dirname = image.dirname()
       if dirname not in dirs:
         dirs[dirname] = []
@@ -75,6 +86,24 @@ class PhotoDirectory:
       dirs[dirname].append(image)
 
     return dirs
+
+class Album:
+  def __init__(self, path):
+    self.path = path
+
+  def get_metadata(self):
+    """Get metadata from an image as extended-attributes"""
+
+    attrs = {attr.decode('utf-8') for attr in xattr.listxattr(self.path)}
+
+    if ATTR_ALBUM_TITLE not in attrs:
+      return None
+
+    return {
+      'fpath': self.path,
+      'title': xattr.getxattr(self.path, ATTR_ALBUM_TITLE).decode('utf-8'),
+      'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8')
+    }
 
 class Photo:
   """A photo, methods for retrieving & setting metadata, and
