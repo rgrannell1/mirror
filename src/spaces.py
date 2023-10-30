@@ -49,6 +49,7 @@ class Spaces:
       Bucket=SPACES_BUCKET,
       Key=key,
       ContentDisposition='inline',
+      CacheControl='public, max-age=31536000, immutable',
       ACL='public-read')
 
   def upload_image(self, encoded_data):
