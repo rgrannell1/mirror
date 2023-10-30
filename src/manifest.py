@@ -148,6 +148,7 @@ class Manifest:
       if not dirname in folders:
         folders[dirname] = {
           'name': album_name,
+          'id': dirname,
           'cover_image': os.path.join(dirname, cover_image),
           'images': []
         }

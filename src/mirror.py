@@ -109,7 +109,7 @@ def publish(dir: str):
     if not db.has_thumbnail(image):
       encoded = image.encode_thumbnail()
 
-      thumbnail_in_spaces, thumbnail_url = spaces.get_thumbnail(encoded)
+      thumbnail_in_spaces, thumbnail_url = spaces.has_thumbnail(encoded)
 
       if not thumbnail_in_spaces:
         spaces.upload_thumbnail(encoded)
@@ -123,7 +123,7 @@ def publish(dir: str):
     if not db.has_image(image):
       encoded = image.encode_image()
 
-      image_in_spaces, image_url = spaces.get_image(encoded)
+      image_in_spaces, image_url = spaces.has_image(encoded)
 
       if not image_in_spaces:
         spaces.upload_image(encoded)
