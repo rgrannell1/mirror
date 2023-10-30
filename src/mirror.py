@@ -1,3 +1,4 @@
+"""The core-logic of Mirror."""
 
 from src.commands.init import init
 from src.commands.tag import tag
@@ -23,5 +24,5 @@ class Mirror:
     list_photos(dir, tag)
 
   @staticmethod
-  def publish(dir: str) -> None:
-    publish(dir)
+  def publish(dir: str, manifest_path: str) -> None:
+    publish(dir, manifest_path)

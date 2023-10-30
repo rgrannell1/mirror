@@ -5,7 +5,7 @@ from src.photo import PhotoVault, Album
 from src.spaces import Spaces
 from src.manifest import Manifest
 
-def publish(dir: str):
+def publish(dir: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
   and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
   the images to DigitalOcean Spaces.
@@ -27,7 +27,7 @@ def publish(dir: str):
     if not db.has_thumbnail(image):
       encoded = image.encode_thumbnail()
 
-      thumbnail_in_spaces, thumbnail_url = spaces.has_thumbnail(encoded)
+      thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(encoded)
 
       if not thumbnail_in_spaces:
         spaces.upload_thumbnail(encoded)
@@ -41,7 +41,7 @@ def publish(dir: str):
     if not db.has_image(image):
       encoded = image.encode_image()
 
-      image_in_spaces, image_url = spaces.has_image(encoded)
+      image_in_spaces, image_url = spaces.image_status(encoded)
 
       if not image_in_spaces:
         spaces.upload_image(encoded)
@@ -69,4 +69,4 @@ def publish(dir: str):
 
     db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
-  db.create_metadata_file('/home/rg/Code/photos.rgrannell.xyz/manifest.json')
+  db.create_metadata_file(manifest_path)

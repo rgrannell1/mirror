@@ -1,5 +1,4 @@
 
-import re
 import io
 import os
 import xattr
@@ -68,8 +67,10 @@ class PhotoVault:
               "fpath": os.path.join(dirpath, image_name),
               "album": {
                 "fpath": dirpath,
-                "title": tag_file[ATTR_ALBUM_TITLE],
-                "cover": tag_file[ATTR_ALBUM_COVER]
+                "attrs": {
+                  ATTR_ALBUM_TITLE: tag_file[ATTR_ALBUM_TITLE],
+                  ATTR_ALBUM_COVER: tag_file[ATTR_ALBUM_COVER]
+                }
               },
               "attrs": entry
             }
@@ -109,11 +110,11 @@ class Album:
       'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8')
     }
 
-  def set_metadata(self, album):
+  def set_metadata(self, attrs):
     """Set metadata on the album as extended-attributes"""
 
-    xattr.setxattr(album['fpath'], ATTR_ALBUM_TITLE, album['title'])
-    xattr.setxattr(album['fpath'], ATTR_ALBUM_COVER, album['cover'])
+    for attr, value in attrs.items():
+      xattr.setxattr(self.path, attr, value)
 
 
 class Photo:
@@ -191,27 +192,11 @@ class Photo:
       ATTR_TAG: tags
     }
 
-  def published(self):
-    """Is this image publishable?"""
-
-    md = self.get_metadata()
-
-    tags = md.get(ATTR_TAG, set())
-    return 'Published' in tags
-
-  def tag_string(self):
-    """Get the tag csv for an image"""
-
-    md = self.get_metadata()
-
-    tags = md.get(ATTR_TAG, set())
-    return ', '.join(tags)
-
   def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
 
     album = Album(album['fpath'])
-    album.set_metadata(album)
+    album.set_metadata(album['attrs'])
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
@@ -227,6 +212,22 @@ class Photo:
           tag_set.add(new_tag)
 
       xattr.setxattr(self.path, attr, ', '.join(tag_set))
+
+  def published(self):
+    """Is this image publishable?"""
+
+    md = self.get_metadata()
+
+    tags = md.get(ATTR_TAG, set())
+    return 'Published' in tags
+
+  def tag_string(self):
+    """Get the tag csv for an image"""
+
+    md = self.get_metadata()
+
+    tags = md.get(ATTR_TAG, set())
+    return ', '.join(tags)
 
   def encode_thumbnail(self):
     """Encode a image as a thumbnail Webp, and remove EXIF data"""
@@ -255,7 +256,6 @@ class Photo:
         'hash': hasher.hexdigest(),
         'content': contents
       }
-
 
   def encode_image(self):
     """Encode an image as Webp, and remove EXIF data"""
