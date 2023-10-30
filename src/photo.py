@@ -195,8 +195,7 @@ class Photo:
   def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
 
-    album = Album(album['fpath'])
-    album.set_metadata(album['attrs'])
+    Album(album['fpath']).set_metadata(album['attrs'])
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
