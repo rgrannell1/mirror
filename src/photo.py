@@ -4,8 +4,9 @@ import io
 import os
 import xattr
 import hashlib
+from datetime import datetime
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ExifTags
 
 from .constants import (
   ATTR_TAG,
@@ -127,6 +128,40 @@ class Photo:
     """Get the directory name of the photo.
     """
     return os.path.dirname(self.path)
+
+  def exif(self):
+    try:
+      img = Image.open(self.path)
+      exif_data = img._getexif()
+    except:
+      return {}
+
+    if not exif_data:
+      return {}
+
+    output = {}
+
+    for key, val in exif_data.items():
+      if key in ExifTags.TAGS:
+        output[ExifTags.TAGS[key]] = val
+      else:
+        output[key] = val
+
+    return output
+
+  def get_created_date(self):
+    exif = self.exif()
+
+    date = exif.get('DateTimeOriginal')
+    if not date:
+      return None
+
+    date_format = "%Y:%m:%d %H:%M:%S"
+
+    try:
+      return datetime.strptime(date, date_format)
+    except:
+      return None
 
   def get_metadata(self):
     """Get metadata from an image as extended-attributes"""

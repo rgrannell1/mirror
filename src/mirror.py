@@ -4,7 +4,7 @@
 import sys
 import json
 
-from src.photo import PhotoDirectory, Photo
+from src.photo import PhotoDirectory, Photo, Album
 from src.tags import Tagfile, TagMetadata
 from .constants import ATTR_TAG
 from .spaces import Spaces
@@ -133,5 +133,22 @@ def publish(dir: str):
 
   if not published:
     print('No images published', file=sys.stderr)
+
+  for dir, images in PhotoDirectory(dir).list_by_folder().items():
+    album = Album(dir)
+
+    try:
+      min_date = min(img.get_created_date() for img in images if img.get_created_date())
+      max_date = max(img.get_created_date() for img in images if img.get_created_date())
+    except ValueError:
+      pass
+
+    if not min_date or not max_date:
+      continue
+
+    min_timestamp_ms = min_date.timestamp() * 1_000
+    max_timestamp_ms = max_date.timestamp() * 1_000
+
+    db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
   db.create_metadata_file('/home/rg/Code/photos.rgrannell.xyz/manifest.json')

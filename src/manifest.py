@@ -22,7 +22,9 @@ ALBUM_TABLE = """
 create table if not exists albums (
   fpath            text primary key,
   album_name       text,
-  cover_image      text
+  cover_image      text,
+  min_date         text,
+  max_date         text
 )
 """
 
@@ -128,12 +130,22 @@ class Manifest:
     cursor.execute("update images set image_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
+  def register_dates(self, fpath, min_date, max_date):
+    cursor = self.conn.cursor()
+    cursor.execute("""
+    update albums
+      set min_date = ?, max_date = ?
+    where fpath = ?
+    """, (min_date, max_date, fpath))
+
+    self.conn.commit()
+
   def create_metadata_file(self, manifest_file: str) -> None:
     """Create a metadata file from the stored manifest file."""
 
     cursor = self.conn.cursor()
     cursor.execute("""
-      select images.fpath, images.tags, images.image_url, images.thumbnail_url, albums.album_name, albums.cover_image
+      select images.fpath, images.tags, images.image_url, images.thumbnail_url, albums.album_name, albums.cover_image, albums.min_date, albums.max_date
         from images
         inner join albums on images.album = albums.fpath
         where published = '1'
@@ -142,13 +154,15 @@ class Manifest:
     folders = {}
 
     for row in cursor.fetchall():
-      fpath, tags, image_url, thumbnail_url, album_name, cover_image = row
+      fpath, tags, image_url, thumbnail_url, album_name, cover_image, min_date, max_date = row
 
       dirname = os.path.dirname(fpath)
       if not dirname in folders:
         folders[dirname] = {
           'name': album_name,
           'id': dirname,
+          'min_date': min_date,
+          'max_date': max_date,
           'cover_image': os.path.join(dirname, cover_image),
           'images': []
         }
