@@ -44,7 +44,12 @@ class Spaces:
   def upload_public(self, key: str, content: str) -> bool:
     """Check if a file exists in the Spaces bucket"""
 
-    return self.client.put_object(Body=content, Bucket=SPACES_BUCKET, Key=key, ACL='public-read')
+    return self.client.put_object(
+      Body=content,
+      Bucket=SPACES_BUCKET,
+      Key=key,
+      ContentDisposition='inline',
+      ACL='public-read')
 
   def upload_image(self, encoded_data):
     """Upload an image to the Spaces bucket"""
