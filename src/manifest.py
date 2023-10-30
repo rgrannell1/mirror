@@ -58,8 +58,16 @@ class Manifest:
 
     cursor = self.conn.cursor()
     cursor.execute(
-      "insert or replace into images (fpath, tags, published, album) values (?, ?, ?, ?)",
-      (path, tag_string, published, album)
+      """
+      insert into images (fpath, tags, published, album)
+          values (?, ?, ?, ?)
+          on conflict(fpath)
+          do update set
+              tags = ?,
+              published = ?,
+              album = ?;
+      """,
+      (path, tag_string, published, album, tag_string, published, album)
     )
     self.conn.commit()
 

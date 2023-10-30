@@ -55,6 +55,7 @@ class PhotoDirectory:
             yield {
               "fpath": os.path.join(dirpath, image_name),
               "album": {
+                "fpath": dirpath,
                 "title": tag_file[ATTR_ALBUM_TITLE],
                 "cover": tag_file[ATTR_ALBUM_COVER]
               },
@@ -125,6 +126,9 @@ class Photo:
 
   def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
+
+    xattr.setxattr(album['fpath'], ATTR_ALBUM_TITLE, album['title'])
+    xattr.setxattr(album['fpath'], ATTR_ALBUM_COVER, album['cover'])
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:

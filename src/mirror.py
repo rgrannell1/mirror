@@ -33,8 +33,9 @@ def tag(dir: str, metadata_path: str):
   for entry in photo_dir.list_tagfiles():
     fpath = entry['fpath']
     attrs = entry['attrs']
+    album = entry['album']
 
-    Photo(fpath).set_metadata(attrs, tag_metadata)
+    Photo(fpath).set_metadata(attrs, album, tag_metadata)
 
 def list_tags(dir: str):
   """List all tags in all images in the directory, as a series
