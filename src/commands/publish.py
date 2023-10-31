@@ -16,6 +16,7 @@ def publish(dir: str, manifest_path: str):
 
   spaces = Spaces()
   spaces.set_bucket_acl()
+  spaces.set_bucket_cors_policy()
 
   published = False
 
@@ -69,4 +70,5 @@ def publish(dir: str, manifest_path: str):
 
     db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
+  #spaces.patch_content_metadata()
   db.create_metadata_file(manifest_path)

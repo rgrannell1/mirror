@@ -41,6 +41,20 @@ class Spaces:
 
     self.client.put_bucket_acl(Bucket=SPACES_BUCKET, ACL='public-read')
 
+  def set_bucket_cors_policy(self):
+    self.client.put_bucket_cors(
+      Bucket=SPACES_BUCKET,
+      CORSConfiguration={
+        'CORSRules': [
+          {
+            'AllowedHeaders': ['*'],
+            'AllowedMethods': ['GET'],
+            'AllowedOrigins': ['https://photos.rgrannell.xyz'],
+            'ExposeHeaders': ['ETag']
+          }
+        ]
+      })
+
   def upload_public(self, key: str, content: str) -> bool:
     """Check if a file exists in the Spaces bucket"""
 
@@ -50,6 +64,7 @@ class Spaces:
       Key=key,
       ContentDisposition='inline',
       CacheControl='public, max-age=31536000, immutable',
+      ContentType='image/webp',
       ACL='public-read')
 
   def upload_image(self, encoded_data):
@@ -98,3 +113,25 @@ class Spaces:
     name = f"{encoded_image['hash']}.webp"
 
     return self.has_object(name), self.url(name)
+
+  def patch_content_metadata(self):
+    """Update the metadata for all objects in the Spaces bucket"""
+
+    objs = self.client.list_objects_v2(Bucket=SPACES_BUCKET)
+
+    for item in objs['Contents']:
+      key = item['Key']
+
+      metadata = self.client.head_object(Bucket=SPACES_BUCKET, Key=key)['Metadata']
+
+      self.client.copy_object(
+        Bucket=SPACES_BUCKET,
+        Key=key,
+        CopySource={'Bucket': SPACES_BUCKET, 'Key': key},
+        Metadata=metadata,
+        MetadataDirective='REPLACE',
+        CacheControl='public, max-age=31536000, immutable',
+        ContentDisposition='inline',
+        ContentType='image/webp',
+        ACL='public-read'
+      )
