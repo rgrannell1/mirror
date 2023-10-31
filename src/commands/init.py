@@ -10,7 +10,6 @@ def init(dir: str):
      extracted from extended-attributes. Create a manifest"""
 
   for dirname, images in PhotoVault(dir).list_by_folder().items():
-    continue
     Tagfile(dirname, images).write()
 
   db = Manifest()

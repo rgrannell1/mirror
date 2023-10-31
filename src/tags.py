@@ -6,10 +6,12 @@ import yaml
 import shutil
 import datetime
 import jsonschema
+from src.album import Album
 
 from src.constants import (
-  ATTR_TAG,
-  ATTR_ALBUM_COVER
+  ATTR_ALBUM_TITLE,
+  ATTR_ALBUM_COVER,
+  ATTR_TAG
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,8 +45,6 @@ class TagMetadata:
 
   # TODO this needs work
   def add_tags(self, tag: str):
-    tags = set([tag])
-
     return [tag]
 
 class Tagfile:
@@ -57,33 +57,39 @@ class Tagfile:
   def content(self) -> str:
     """Given a series of images, and a directory, return the content of a tagfile."""
 
-    notes = ""
-    notes += f"# {self.dirname}\n"
-    notes += "\n"
+    images = {}
+
+    album = Album(self.dirname)
+    album_md = album.get_metadata()
+
+    if not album_md:
+      album_md = {}
 
     for image in self.images:
       name = image.name()
+      transclusion = f"![{name}]({name})"
 
-      notes += f"## {name}\n\n"
-      notes += f"![{name}]({name})\n\n"
-      notes += f"{ATTR_TAG}\n"
+      image_md = image.get_metadata()
+      if not image_md:
+        image_md = {}
 
-      attrs = image.get_metadata()
+      images[transclusion] = {
+        ATTR_TAG: list(image_md.get(ATTR_TAG, set()))
+      }
 
-      if ATTR_TAG in attrs:
-        for tag in attrs[ATTR_TAG]:
-          notes += f"- {tag}\n"
+    tag_file = [{
+      ATTR_ALBUM_TITLE: album_md.get('title', self.dirname),
+      ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
+      'images': images
+    }]
 
-      notes += "\n"
-
-    return notes
+    return yaml.dump(tag_file)
 
   def write(self) -> None:
     """Write a tagfile to the current directory."""
 
-    raise NotImplementedError("cannot currently write a tag-file")
-
     content = self.content()
+
     tag_path = f"{self.dirname}/tags.md"
 
     # backup any existing tagfile
@@ -113,7 +119,7 @@ class Tagfile:
     cover = tag_file[ATTR_ALBUM_COVER]
     dirpath = os.path.dirname(fpath)
 
-    if f'![{cover}]({cover})' not in tag_file['images']:
+    if f'![{cover}]({cover})' not in tag_file['images'] and cover != 'Cover':
       raise Exception(f"{cover} is not present in the album {dirpath}")
 
     return tag_file
