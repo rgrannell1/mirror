@@ -73,8 +73,10 @@ class Tagfile:
       if not image_md:
         image_md = {}
 
+      tags = list({tag for tag in image_md.get(ATTR_TAG, set()) if tag})
+
       images[transclusion] = {
-        ATTR_TAG: list(image_md.get(ATTR_TAG, set()))
+        ATTR_TAG: tags
       }
 
     tag_file = [{
