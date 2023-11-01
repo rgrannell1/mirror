@@ -73,7 +73,7 @@ class Spaces:
     name = f"{encoded_data['hash']}.webp"
     self.upload_public(name, encoded_data['content'])
 
-    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
   def upload_thumbnail(self, encoded_data):
     """Upload a thumbnail to the Spaces bucket"""
@@ -81,7 +81,7 @@ class Spaces:
     name = f"{encoded_data['hash']}_thumbnail.webp"
     self.upload_public(name, encoded_data['content'])
 
-    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
   def has_object(self, name):
     """Check if a file exists in the Spaces bucket"""
@@ -98,7 +98,7 @@ class Spaces:
   def url(self, name) -> str:
     """Return the URL of a file in the Spaces bucket"""
 
-    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.digitaloceanspaces.com/{name}"
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
   def thumbnail_status(self, encoded_image) -> (bool, str):
     """Check if a thumbnail for an image exists in the Spaces bucket"""
