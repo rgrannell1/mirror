@@ -156,18 +156,21 @@ class Manifest:
       fpath, tags, image_url, thumbnail_url, album_name, cover_image, min_date, max_date = row
 
       dirname = os.path.dirname(fpath)
-      if not dirname in folders:
-        folders[dirname] = {
+      album_id = str(hash(dirname))
+
+      if not album_id in folders:
+        folders[album_id] = {
           'name': album_name,
-          'id': dirname,
+          'id': album_id,
           'min_date': min_date,
           'max_date': max_date,
           'cover_image': os.path.join(dirname, cover_image),
           'images': []
         }
 
-      folders[dirname]['images'].append({
+      folders[album_id]['images'].append({
         'fpath': fpath,
+        'id': str(hash(fpath)),
         'tags': tags.split(', '),
         'image_url': image_url,
         'thumbnail_url': thumbnail_url

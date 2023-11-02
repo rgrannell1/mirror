@@ -11,6 +11,7 @@ from src.album import Album
 from src.constants import (
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_COVER,
+  ATTR_ALBUM_ID,
   ATTR_TAG
 )
 
@@ -54,6 +55,9 @@ class Tagfile:
     self.dirname = dirname
     self.images = images
 
+  def id(self):
+    return str(hash(self.dirname))
+
   def content(self) -> str:
     """Given a series of images, and a directory, return the content of a tagfile."""
 
@@ -82,6 +86,7 @@ class Tagfile:
     tag_file = [{
       ATTR_ALBUM_TITLE: album_md.get('title', self.dirname),
       ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
+      ATTR_ALBUM_ID: self.id(),
       'images': images
     }]
 

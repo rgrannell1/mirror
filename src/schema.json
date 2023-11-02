@@ -5,6 +5,9 @@
     "user.xyz.rgrannell.photos.album_title": {
       "type": "string"
     },
+    "user.xyz.rgrannell.photos.album_id": {
+      "type": "string"
+    },
     "user.xyz.rgrannell.photos.album_cover": {
       "type": "string"
     },
@@ -21,6 +24,7 @@
     }
   },
   "required": [
+    "user.xyz.rgrannell.photos.album_id",
     "user.xyz.rgrannell.photos.album_title",
     "user.xyz.rgrannell.photos.album_cover",
     "images"
