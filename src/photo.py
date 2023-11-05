@@ -154,7 +154,7 @@ class Photo:
   def get_metadata(self):
     """Get metadata from an image as extended-attributes"""
 
-    attrs = {attr.decode('utf-8') for attr in xattr.listxattr(self.path)}
+    attrs = {attr for attr in xattr.listxattr(self.path)}
 
     if not ATTR_TAG in attrs:
       return {}
@@ -172,7 +172,7 @@ class Photo:
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
-        xattr.setxattr(self.path, attr, value)
+        xattr.setxattr(self.path, attr.encode(), value.encode())
         continue
 
       tag_set = set()
@@ -183,7 +183,7 @@ class Photo:
         for new_tag in tag_metadata.add_tags(tag):
           tag_set.add(new_tag)
 
-      xattr.setxattr(self.path, attr, ', '.join(tag_set))
+      xattr.setxattr(self.path, attr.encode(), ', '.join(tag_set).encode())
 
   def published(self):
     """Is this image publishable?"""

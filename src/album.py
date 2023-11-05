@@ -15,7 +15,7 @@ class Album:
   def get_metadata(self):
     """Get metadata from an image as extended-attributes"""
 
-    attrs = {attr.decode('utf-8') for attr in xattr.listxattr(self.path)}
+    attrs = {attr for attr in xattr.listxattr(self.path)}
 
     if ATTR_ALBUM_TITLE not in attrs:
       return None
@@ -30,4 +30,4 @@ class Album:
     """Set metadata on the album as extended-attributes"""
 
     for attr, value in attrs.items():
-      xattr.setxattr(self.path, attr, value)
+      xattr.setxattr(self.path, attr.encode(), value.encode())
