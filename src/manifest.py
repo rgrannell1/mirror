@@ -5,6 +5,15 @@ import json
 import sqlite3
 
 from .photo import Photo
+from .constants import (
+  ATTR_DATE_TIME,
+  ATTR_FSTOP,
+  ATTR_FOCAL_EQUIVALENT,
+  ATTR_MODEL,
+  ATTR_ISO,
+  ATTR_WIDTH,
+  ATTR_HEIGHT
+)
 
 IMAGES_TABLE = """
 create table if not exists images (
@@ -13,7 +22,15 @@ create table if not exists images (
   published        boolean,
   image_url        text,
   thumbnail_url    text,
-  album            text
+  album            text,
+  dateTime         text,
+  fNumber          text,
+  focalLength      text,
+  model            text,
+  iso              text,
+  width            text,
+  height           text,
+  foreign key(album) references albums(fpath)
 )
 """
 
@@ -59,18 +76,52 @@ class Manifest:
     tag_string = image.tag_string()
 
     cursor = self.conn.cursor()
+
+    exif_md = image.get_exif_metadata()
+
+    dateTime = exif_md[ATTR_DATE_TIME]
+    fNumber = exif_md[ATTR_FSTOP]
+    focalLength = exif_md[ATTR_FOCAL_EQUIVALENT]
+    model = exif_md[ATTR_MODEL]
+    iso = exif_md[ATTR_ISO]
+    width = exif_md[ATTR_WIDTH]
+    height = exif_md[ATTR_HEIGHT]
+
+
+    params = {
+        "fpath": path,
+        "tags": tag_string,
+        "published": published,
+        "album": album,
+        "dateTime": dateTime,
+        "fNumber": fNumber,
+        "focalLength": focalLength,
+        "model": model,
+        "iso": iso,
+        "width": width,
+        "height": height
+    }
+
     cursor.execute(
-      """
-      insert into images (fpath, tags, published, album)
-          values (?, ?, ?, ?)
-          on conflict(fpath)
-          do update set
-              tags = ?,
-              published = ?,
-              album = ?;
-      """,
-      (path, tag_string, published, album, tag_string, published, album)
+        """
+        insert into images (fpath, tags, published, album, dateTime, fNumber, focalLength, model, iso, width, height)
+        values (:fpath, :tags, :published, :album, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height)
+        on conflict(fpath)
+        do update set
+            tags = :tags,
+            published = :published,
+            album = :album,
+            dateTime = :dateTime,
+            fNumber = :fNumber,
+            focalLength = :focalLength,
+            model = :model,
+            iso = :iso,
+            width = :width,
+            height = :height;
+        """,
+        params
     )
+
     self.conn.commit()
 
   def add_album(self, album):
@@ -144,7 +195,7 @@ class Manifest:
 
     cursor = self.conn.cursor()
     cursor.execute("""
-      select images.fpath, images.tags, images.image_url, images.thumbnail_url, albums.album_name, albums.cover_image, albums.min_date, albums.max_date
+      select images.fpath, images.tags, images.image_url, images.thumbnail_url, images.dateTime, images.fNumber, images.focalLength, images.model, images.iso, images.width, images.height, albums.album_name, albums.cover_image, albums.min_date, albums.max_date
         from images
         inner join albums on images.album = albums.fpath
         where published = '1'
@@ -153,7 +204,7 @@ class Manifest:
     folders = {}
 
     for row in cursor.fetchall():
-      fpath, tags, image_url, thumbnail_url, album_name, cover_image, min_date, max_date = row
+      fpath, tags, image_url, thumbnail_url, dateTime, fNumber, focalLength, model, iso, width, height, album_name, cover_image, min_date, max_date = row
 
       dirname = os.path.dirname(fpath)
       album_id = str(hash(dirname))
@@ -172,6 +223,15 @@ class Manifest:
         'fpath': fpath,
         'id': str(hash(fpath)),
         'tags': tags.split(', '),
+        'exif': {
+          'dateTime': dateTime,
+          'fNumber': fNumber,
+          'focalLength': focalLength,
+          'model': model,
+          'iso': iso,
+          'width': width,
+          'height': height,
+        },
         'image_url': image_url,
         'thumbnail_url': thumbnail_url
       })

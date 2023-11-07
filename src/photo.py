@@ -5,10 +5,17 @@ import xattr
 import hashlib
 from datetime import datetime
 
-from PIL import Image, ImageOps, ExifTags
+from PIL import Image, ImageOps, ExifTags, TiffImagePlugin
 
 from .constants import (
   ATTR_TAG,
+  ATTR_DATE_TIME,
+  ATTR_FSTOP,
+  ATTR_FOCAL_EQUIVALENT,
+  ATTR_MODEL,
+  ATTR_ISO,
+  ATTR_WIDTH,
+  ATTR_HEIGHT,
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_COVER,
   THUMBNAIL_WIDTH,
@@ -161,14 +168,37 @@ class Photo:
 
     tags = {tag.strip() for tag in xattr.getxattr(self.path, ATTR_TAG).decode('utf-8').split(',')}
 
+    exif_attrs = self.get_exif_metadata()
+
     return {
-      ATTR_TAG: tags
+      ATTR_TAG: tags,
+      **exif_attrs
     }
+
+  def get_exif_metadata(self):
+    data = {}
+
+    exif = self.get_exif()
+
+    data[ATTR_DATE_TIME] = str(exif.get('DateTimeOriginal', 'Unknown'))
+    data[ATTR_FSTOP] = str(exif.get('FNumber', 'Unknown'))
+    data[ATTR_FOCAL_EQUIVALENT] = str(exif.get('FocalLengthIn35mmFilm', 'Unknown'))
+    data[ATTR_MODEL] = str(exif.get('Model', 'Unknown'))
+    data[ATTR_ISO] = str(exif.get('PhotographicSensitivity', 'Unknown'))
+    data[ATTR_WIDTH] = str(exif.get('PixelXDimension', 'Unknown'))
+    data[ATTR_HEIGHT] = str(exif.get('PixelYDimension', 'Unknown'))
+
+    return data
 
   def set_metadata(self, attrs, album, tag_metadata):
     """Set metadata on an image as extended-attributes"""
 
     Album(album['fpath']).set_metadata(album['attrs'])
+
+    exif_attrs = self.get_exif_metadata()
+
+    for attr, value in exif_attrs.items():
+      xattr.setxattr(self.path, attr.encode(), value.encode())
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
