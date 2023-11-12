@@ -14,6 +14,10 @@ ATTR_ISO = 'user.xyz.rgrannell.photos.iso'
 ATTR_WIDTH = 'user.xyz.rgrannell.photos.width'
 ATTR_HEIGHT = 'user.xyz.rgrannell.photos.height'
 
+ATTR_LOCATION_ADDRESS = 'user.xyz.rgrannell.photos.location_address'
+ATTR_LOCATION_LATITUDE = 'user.xyz.rgrannell.photos.location_latitude'
+ATTR_LOCATION_LONGITUDE = 'user.xyz.rgrannell.photos.location_longitude'
+
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 

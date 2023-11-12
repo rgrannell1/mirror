@@ -3,6 +3,7 @@ import io
 import os
 import xattr
 import hashlib
+import requests
 from datetime import datetime
 
 from PIL import Image, ImageOps, ExifTags, TiffImagePlugin
@@ -20,8 +21,12 @@ from .constants import (
   ATTR_ALBUM_COVER,
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
-  TITLE_PATTERN
+  TITLE_PATTERN,
+  ATTR_LOCATION_ADDRESS,
+  ATTR_LOCATION_LATITUDE,
+  ATTR_LOCATION_LONGITUDE
 )
+
 from .tags import Tagfile
 from .album import Album
 
@@ -158,6 +163,29 @@ class Photo:
     except:
       return None
 
+  def estimate_location(self):
+    date = self.get_created_date()
+    if not date:
+      return None
+
+    res = requests.get('http://localhost:8080/location/at-date', params={
+      'date': self.get_created_date().isoformat()
+    })
+
+    data = res.json()
+
+    if data['time']['withinRange']:
+      address = data['location'].get('address')
+
+      if not address:
+        return None
+
+      return {
+        ATTR_LOCATION_ADDRESS: data['location']['address'][0],
+        ATTR_LOCATION_LATITUDE: str(data['location']['latitude']),
+        ATTR_LOCATION_LONGITUDE: str(data['location']['longitude'])
+      }
+
   def get_metadata(self):
     """Get metadata from an image as extended-attributes"""
 
@@ -185,8 +213,8 @@ class Photo:
     data[ATTR_FOCAL_EQUIVALENT] = str(exif.get('FocalLengthIn35mmFilm', 'Unknown'))
     data[ATTR_MODEL] = str(exif.get('Model', 'Unknown'))
     data[ATTR_ISO] = str(exif.get('PhotographicSensitivity', 'Unknown'))
-    data[ATTR_WIDTH] = str(exif.get('PixelXDimension', 'Unknown'))
-    data[ATTR_HEIGHT] = str(exif.get('PixelYDimension', 'Unknown'))
+    data[ATTR_WIDTH] = str(exif.get('ExifImageWidth', 'Unknown'))
+    data[ATTR_HEIGHT] = str(exif.get('ExifImageHeight', 'Unknown'))
 
     return data
 
@@ -196,6 +224,12 @@ class Photo:
     Album(album['fpath']).set_metadata(album['attrs'])
 
     exif_attrs = self.get_exif_metadata()
+    location = self.estimate_location()
+
+    if location:
+      for attr, value in location.items():
+        xattr.setxattr(self.path, attr.encode(), value.encode())
+
 
     for attr, value in exif_attrs.items():
       xattr.setxattr(self.path, attr.encode(), value.encode())
