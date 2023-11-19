@@ -12,7 +12,10 @@ from .constants import (
   ATTR_MODEL,
   ATTR_ISO,
   ATTR_WIDTH,
-  ATTR_HEIGHT
+  ATTR_HEIGHT,
+  ATTR_LOCATION_ADDRESS,
+  ATTR_LOCATION_LONGITUDE,
+  ATTR_LOCATION_LATITUDE
 )
 
 IMAGES_TABLE = """
@@ -30,6 +33,9 @@ create table if not exists images (
   iso              text,
   width            text,
   height           text,
+  address          text,
+  longitude        text,
+  latitude         text,
   foreign key(album) references albums(fpath)
 )
 """
@@ -87,6 +93,14 @@ class Manifest:
     width = exif_md[ATTR_WIDTH]
     height = exif_md[ATTR_HEIGHT]
 
+    data = image.estimate_location()
+
+    if not data:
+      data = {}
+
+    address = data.get(ATTR_LOCATION_ADDRESS)
+    longitude = data.get(ATTR_LOCATION_LONGITUDE)
+    latitude = data.get(ATTR_LOCATION_LATITUDE)
 
     params = {
         "fpath": path,
@@ -99,13 +113,16 @@ class Manifest:
         "model": model,
         "iso": iso,
         "width": width,
-        "height": height
+        "height": height,
+        "address": address,
+        "longitude": longitude,
+        "latitude": latitude
     }
 
     cursor.execute(
         """
-        insert into images (fpath, tags, published, album, dateTime, fNumber, focalLength, model, iso, width, height)
-        values (:fpath, :tags, :published, :album, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height)
+        insert into images (fpath, tags, published, album, dateTime, fNumber, focalLength, model, iso, width, height, address, longitude, latitude)
+        values (:fpath, :tags, :published, :album, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height, :address, :longitude, :latitude)
         on conflict(fpath)
         do update set
             tags = :tags,
@@ -117,7 +134,10 @@ class Manifest:
             model = :model,
             iso = :iso,
             width = :width,
-            height = :height;
+            height = :height,
+            address = :address,
+            longitude = :longitude,
+            latitude = :latitude;
         """,
         params
     )
@@ -195,7 +215,12 @@ class Manifest:
 
     cursor = self.conn.cursor()
     cursor.execute("""
-      select images.fpath, images.tags, images.image_url, images.thumbnail_url, images.dateTime, images.fNumber, images.focalLength, images.model, images.iso, images.width, images.height, albums.album_name, albums.cover_image, albums.min_date, albums.max_date
+      select
+          images.fpath, images.tags, images.image_url, images.thumbnail_url,
+          images.dateTime, images.fNumber, images.focalLength, images.model,
+          images.iso, images.width, images.height,
+          images.address, images.longitude, images.latitude,
+          albums.album_name, albums.cover_image, albums.min_date, albums.max_date
         from images
         inner join albums on images.album = albums.fpath
         where published = '1'
@@ -204,7 +229,10 @@ class Manifest:
     folders = {}
 
     for row in cursor.fetchall():
-      fpath, tags, image_url, thumbnail_url, dateTime, fNumber, focalLength, model, iso, width, height, album_name, cover_image, min_date, max_date = row
+      (
+        fpath, tags, image_url, thumbnail_url, dateTime,
+        fNumber, focalLength, model, iso, width, height,
+        address, longitude, latitude, album_name, cover_image, min_date, max_date) = row
 
       dirname = os.path.dirname(fpath)
       album_id = str(hash(dirname))
@@ -231,6 +259,11 @@ class Manifest:
           'iso': iso,
           'width': width,
           'height': height,
+        },
+        'location': {
+          'address': address,
+          'longitude': longitude,
+          'latitude': latitude
         },
         'image_url': image_url,
         'thumbnail_url': thumbnail_url

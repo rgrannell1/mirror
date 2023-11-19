@@ -180,8 +180,10 @@ class Photo:
       if not address:
         return None
 
+      first_address = address[0] if isinstance(address, list) else address
+
       return {
-        ATTR_LOCATION_ADDRESS: data['location']['address'][0],
+        ATTR_LOCATION_ADDRESS: first_address,
         ATTR_LOCATION_LATITUDE: str(data['location']['latitude']),
         ATTR_LOCATION_LONGITUDE: str(data['location']['longitude'])
       }
