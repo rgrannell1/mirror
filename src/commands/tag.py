@@ -1,6 +1,6 @@
 
 from src.photo import PhotoVault, Photo
-from src.tags import TagMetadata
+from src.tags import Tags
 from src.commands.init import init
 
 def tag(dir: str, metadata_path: str):
@@ -8,10 +8,10 @@ def tag(dir: str, metadata_path: str):
      attributes to each image"""
 
   vault = PhotoVault(dir)
-  tag_metadata = TagMetadata(metadata_path)
+  tag_metadata = Tags(metadata_path)
 
   # set metadata on each image
-  for entry in vault.list_tagfiles():
+  for entry in vault.list_tagfile_image():
     fpath = entry['fpath']
     attrs = entry['attrs']
     album = entry['album']

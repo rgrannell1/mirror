@@ -2,15 +2,15 @@
    contains the logic for each command."""
 
 from src.photo import PhotoVault
-from src.tags import Tagfile
+from src.tagfile import Tagfile
 from src.manifest import Manifest
 
-def init(dir: str):
+def init(dir: str, metadata_path: str):
   """Create tags.md files in each photo-directory, with information
      extracted from extended-attributes. Create a manifest"""
 
   for dirname, images in PhotoVault(dir).list_by_folder().items():
-    Tagfile(dirname, images).write()
+    Tagfile(dirname, metadata_path, images).write()
 
   vault = PhotoVault(dir)
   db = Manifest()

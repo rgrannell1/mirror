@@ -3,3 +3,4 @@ __pycache__
 .env
 test.jpeg
 test.webp
+repair.py

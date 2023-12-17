@@ -3,6 +3,7 @@ import io
 import os
 import xattr
 import hashlib
+import warnings
 import requests
 from datetime import datetime
 
@@ -27,7 +28,7 @@ from .constants import (
   ATTR_LOCATION_LONGITUDE
 )
 
-from .tags import Tagfile
+from .tagfile import Tagfile
 from .album import Album
 
 class PhotoVault:
@@ -60,33 +61,37 @@ class PhotoVault:
 
     return albums
 
-  def list_tagfiles(self):
-    """List tagfiles across all photo-directories
-    """
-
+  def list_tfs(self):
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         if filename == 'tags.md':
-          fpath = os.path.join(dirpath, filename)
+          yield os.path.join(dirpath, filename)
 
-          tag_file = Tagfile.read(fpath)
-          for key, entry in tag_file['images'].items():
+  def list_tagfile_image(self):
+    """List tagfiles across all photo-directories
+    """
 
-            match = TITLE_PATTERN.search(key)
-            if match:
-                image_name = match.group(1)
+    for tagfile in self.list_tfs():
+      dpath = os.path.dirname(tagfile)
 
-            yield {
-              "fpath": os.path.join(dirpath, image_name),
-              "album": {
-                "fpath": dirpath,
-                "attrs": {
-                  ATTR_ALBUM_TITLE: tag_file[ATTR_ALBUM_TITLE],
-                  ATTR_ALBUM_COVER: tag_file[ATTR_ALBUM_COVER]
-                }
-              },
-              "attrs": entry
+      tag_file = Tagfile.read(tagfile)
+      for key, entry in tag_file['images'].items():
+
+        match = TITLE_PATTERN.search(key)
+        if match:
+            image_name = match.group(1)
+
+        yield {
+          "fpath": os.path.join(dpath, image_name),
+          "album": {
+            "fpath": dpath,
+            "attrs": {
+              ATTR_ALBUM_TITLE: tag_file[ATTR_ALBUM_TITLE],
+              ATTR_ALBUM_COVER: tag_file[ATTR_ALBUM_COVER]
             }
+          },
+          "attrs": entry
+        }
 
   def list_by_folder(self):
     """List all images by folder.
@@ -129,8 +134,11 @@ class Photo:
     """Get EXIF data from a photo."""
 
     try:
-      img = Image.open(self.path)
-      exif_data = img._getexif()
+      with warnings.catch_warnings():
+          warnings.filterwarnings("ignore")
+
+          img = Image.open(self.path)
+          exif_data = img._getexif()
     except:
       return {}
 

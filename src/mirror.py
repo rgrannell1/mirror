@@ -11,8 +11,8 @@ class Mirror:
   """The core-logic of Mirror."""
 
   @staticmethod
-  def init(dir: str) -> None:
-    init(dir)
+  def init(dir: str, metadata_path: str) -> None:
+    init(dir, metadata_path)
 
   @staticmethod
   def tag(dir: str, metadata_path: str) -> None:

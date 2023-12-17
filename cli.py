@@ -2,7 +2,7 @@
 
 """
 Usage:
-  mirror init                      <dir>
+  mirror init --metadata=<fpath>   <dir>
   mirror create-manifest           <dir>
   mirror tag --metadata=<fpath>    <dir>
   mirror list-tags                 <dir>
@@ -22,17 +22,21 @@ Tags:
   * user.xyz.rgrannell.photos.album_cover    the path of a cover-image for a photo-album
 
 Commands:
-  init         Initialize a directory with tags.md files. Old tags.md files will be moved to
-                 a backup file.
+  init               Initialize a directory with tags.md files. Old tags.md files will be moved to
+                       a backup file.
 
-  tag          Tag all images in a directory based on the tags.md files. Tag albums with
-                  a title, cover-image, and other information
+  create-manifest    Create a manifest-file for a directory. This file can be used to generate
 
-  list-tags    List all tags in a directory.
+  tag                Tag all images in a directory based on the tags.md files. Tag albums with
+                       a title, cover-image, and other information
 
-  list-photos  List photos and tag information. Optionally filter for a specific tag.
+  list-tags          List all tags in a directory.
 
-  publish      Publish images to Spaces, and generate a manifest-file
+  list-photos        List photos and tag information. Optionally filter for a specific tag.
+
+  publish            Publish images to Spaces, and generate a manifest-file
+
+  feed               Generate a feed-file for a directory
 
 Options:
   --metadata=<fpath>  The path to a YAML file containing metadata.
@@ -46,7 +50,7 @@ if __name__ == '__main__':
   args = docopt(__doc__)
 
   if args['init']:
-    Mirror.init(args['<dir>'])
+    Mirror.init(args['<dir>'], args['--metadata'])
   elif args['tag']:
     Mirror.tag(args['<dir>'], args['--metadata'])
   elif args['list-tags']:
