@@ -93,7 +93,8 @@ class Manifest:
     width = exif_md[ATTR_WIDTH]
     height = exif_md[ATTR_HEIGHT]
 
-    data = image.estimate_location()
+    #data = image.estimate_location()
+    data = None
 
     if not data:
       data = {}
@@ -260,11 +261,11 @@ class Manifest:
           'width': width,
           'height': height,
         },
-        'location': {
-          'address': address,
-          'longitude': longitude,
-          'latitude': latitude
-        },
+        #'location': {
+        #  'address': address,
+        #  'longitude': longitude,
+        #  'latitude': latitude
+        #},
         'image_url': image_url,
         'thumbnail_url': thumbnail_url
       })

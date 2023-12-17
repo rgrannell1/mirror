@@ -8,9 +8,12 @@ def list_photos(dir: str, tag: str):
   """List all photos in the directory, as a series of JSON objects. If
      a tag is specified, only list photos with that tag"""
 
-  for image in PhotoVault(dir).list_images():
+  vault = PhotoVault(dir)
+
+  for image in vault.list_images():
     attrs = image.has_metadata()
 
+    # skip the image if the tag doesn't match
     if tag and tag not in attrs.get(ATTR_TAG, []):
       continue
 

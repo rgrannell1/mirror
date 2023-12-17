@@ -1,3 +1,4 @@
+"""Album for a photo-album"""""
 
 import xattr
 
@@ -17,6 +18,7 @@ class Album:
 
     attrs = {attr for attr in xattr.listxattr(self.path)}
 
+    # No metadata is set on the album
     if ATTR_ALBUM_TITLE not in attrs:
       return None
 

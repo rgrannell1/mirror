@@ -6,7 +6,7 @@ import hashlib
 import requests
 from datetime import datetime
 
-from PIL import Image, ImageOps, ExifTags, TiffImagePlugin
+from PIL import Image, ImageOps, ExifTags
 
 from .constants import (
   ATTR_TAG,
@@ -226,7 +226,8 @@ class Photo:
     Album(album['fpath']).set_metadata(album['attrs'])
 
     exif_attrs = self.get_exif_metadata()
-    location = self.estimate_location()
+    # location = self.estimate_location()
+    location = None
 
     if location:
       for attr, value in location.items():

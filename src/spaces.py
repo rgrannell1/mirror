@@ -20,6 +20,8 @@ class Spaces:
 
   @classmethod
   def session(cls):
+    """Create a boto3 session for DigitalOcean Spaces"""
+
     return boto3.session.Session(
       region_name=SPACES_REGION,
       aws_access_key_id=SPACES_ACCESS_KEY_ID,
@@ -28,6 +30,8 @@ class Spaces:
 
   @classmethod
   def client(cls, session):
+    """Create a boto3 client for DigitalOcean Spaces"""
+
     return session.client(
       's3',
       config=botocore.config.Config(s3={'addressing_style': 'virtual'}),
@@ -42,6 +46,8 @@ class Spaces:
     self.client.put_bucket_acl(Bucket=SPACES_BUCKET, ACL='public-read')
 
   def set_bucket_cors_policy(self):
+    """Set the CORS policy for the bucket"""
+
     self.client.put_bucket_cors(
       Bucket=SPACES_BUCKET,
       CORSConfiguration={
@@ -119,6 +125,7 @@ class Spaces:
 
     objs = self.client.list_objects_v2(Bucket=SPACES_BUCKET)
 
+    # enumerate all objects in the bucket
     for item in objs['Contents']:
       key = item['Key']
 

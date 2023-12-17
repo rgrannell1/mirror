@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# DigitalOcean Spaces information
 SPACES_REGION = os.getenv('SPACES_REGION')
 SPACES_ENDPOINT_URL = os.getenv('SPACES_ENDPOINT_URL')
 SPACES_BUCKET = os.getenv('SPACES_BUCKET')

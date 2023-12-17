@@ -12,13 +12,16 @@ def init(dir: str):
   for dirname, images in PhotoVault(dir).list_by_folder().items():
     Tagfile(dirname, images).write()
 
+  vault = PhotoVault(dir)
   db = Manifest()
   db.create()
 
-  for image in PhotoVault(dir).list_images():
+
+  # add every image to the sqlite database
+  for image in vault.list_images():
     db.add_image(image)
 
-  for album in PhotoVault(dir).list_albums():
+  for album in vault.list_albums():
     md = album.get_metadata()
 
     if not md:

@@ -8,6 +8,7 @@ Usage:
   mirror list-tags                 <dir>
   mirror list-photos [--tag=<tag>] <dir>
   mirror publish                   <dir> <manifest>
+  mirror feed                      <dir> <feed>
   mirror (-h | --help)
 
 Description:

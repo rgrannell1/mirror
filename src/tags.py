@@ -16,7 +16,7 @@ from src.constants import (
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-schema_path = os.path.join(current_dir, "schema.json")
+schema_path = os.path.join(current_dir, "../schemas", "tagfile.json")
 
 def tag_tree(tree):
   """Expand a tag-tree so that subsumptions can be easily accessed"""
