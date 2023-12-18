@@ -1,5 +1,6 @@
 
 import io
+import re
 import os
 import xattr
 import hashlib
@@ -61,17 +62,37 @@ class PhotoVault:
 
     return albums
 
-  def list_tfs(self):
+  def list_tagfiles(self):
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         if filename == 'tags.md':
           yield os.path.join(dirpath, filename)
 
+  def list_tagfiles_and_archives(self):
+    for dirpath, _, filenames in os.walk(self.path):
+      for filename in filenames:
+        if filename == 'tags.md':
+          yield {
+            'current': True,
+            'dpath': dirpath,
+            'fpath': os.path.join(dirpath, filename)
+          }
+
+        matches = re.match("tags\.md-[0-9]{4}-[0-9]{1,2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}", filename)
+        if matches is None:
+          continue
+
+        yield {
+          'current': False,
+          'dpath': dirpath,
+          'fpath': os.path.join(dirpath, filename)
+        }
+
   def list_tagfile_image(self):
     """List tagfiles across all photo-directories
     """
 
-    for tagfile in self.list_tfs():
+    for tagfile in self.list_tagfiles():
       dpath = os.path.dirname(tagfile)
 
       tag_file = Tagfile.read(tagfile)
@@ -252,11 +273,8 @@ class Photo:
 
       tag_set = set()
 
-      for tag in value:
-        tag_set.add(tag)
-
-        for new_tag in tag_metadata.add_tags(tag):
-          tag_set.add(new_tag)
+      for new_tag in tag_metadata.expand(value):
+        tag_set.add(new_tag)
 
       xattr.setxattr(self.path, attr.encode(), ', '.join(tag_set).encode())
 
