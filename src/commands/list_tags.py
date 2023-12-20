@@ -4,12 +4,12 @@ import json
 from src.photo import PhotoVault
 from src.constants import ATTR_TAG
 
-def list_tags(dir: str):
+def list_tags(dir: str, metadata_path: str):
   """List all tags in all images in the directory, as a series
      of JSON objects"""
   tag_set = {}
 
-  for image in PhotoVault(dir).list_images():
+  for image in PhotoVault(dir, metadata_path).list_images():
     tags = image.get_metadata()
 
     if ATTR_TAG not in tags:

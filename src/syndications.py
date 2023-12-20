@@ -13,6 +13,8 @@ class JSONFeed:
 
   @classmethod
   def album(cls, album: dict):
+    metadata = album.get_metadata()
+
     return {
       'id': '',
       'url': 'https://photos.rgrannell.xyz/albums/album-id',
@@ -27,7 +29,8 @@ class JSONFeed:
       'date_modified': ''
     }
 
-  def feed(self, albums: List):
+  @classmethod
+  def feed(cls, albums: List):
     return {
       'version': 'https://jsonfeed.org/version/1',
       'title': '📷 photos.rgrannell.xyz',

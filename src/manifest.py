@@ -51,9 +51,10 @@ create table if not exists albums (
 """
 
 class Manifest:
-  def __init__(self):
+  def __init__(self, metadata_path: str):
     fpath = os.path.expanduser('~/.mirror-manifest.db')
     self.conn = sqlite3.connect(fpath)
+    self.metadata_path = metadata_path
 
   def create(self):
     """Create the local database"""
@@ -70,7 +71,7 @@ class Manifest:
     cursor.execute("select fpath from images where published = '1'")
 
     for row in cursor.fetchall():
-      yield Photo(row[0])
+      yield Photo(row[0], self.metadata_path)
 
   def add_image(self, image):
     """Add an image to the local database"""

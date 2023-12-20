@@ -4,11 +4,11 @@ import json
 from src.photo import PhotoVault
 from src.constants import ATTR_TAG
 
-def list_photos(dir: str, tag: str):
+def list_photos(dir: str, metadata_path: str, tag: str):
   """List all photos in the directory, as a series of JSON objects. If
      a tag is specified, only list photos with that tag"""
 
-  vault = PhotoVault(dir)
+  vault = PhotoVault(dir, metadata_path)
 
   for image in vault.list_images():
     attrs = image.has_metadata()

@@ -7,6 +7,7 @@ import hashlib
 import warnings
 import requests
 from datetime import datetime
+from src.tags import Tags
 
 from PIL import Image, ImageOps, ExifTags
 
@@ -34,8 +35,9 @@ from .album import Album
 
 class PhotoVault:
   """A directory of photos"""
-  def __init__(self, path):
+  def __init__(self, path: str, metadata_path: str):
     self.path = path
+    self.metadata_path = metadata_path
 
   def list_images(self):
     """Recursively list all files under a given path.
@@ -47,7 +49,7 @@ class PhotoVault:
         image_path = os.path.join(dirpath, filename)
 
         if Photo.is_image(image_path):
-          images.append(Photo(image_path))
+          images.append(Photo(image_path, self.metadata_path))
 
     return images
 
@@ -131,8 +133,9 @@ class PhotoVault:
 class Photo:
   """A photo, methods for retrieving & setting metadata, and
      methods for encoding images as Webp."""
-  def __init__(self, path):
+  def __init__(self, path: str, metadata_path: str):
     self.path = path
+    self.tag_metadata = Tags(metadata_path)
 
   @classmethod
   def is_image(cls, path):
@@ -249,7 +252,7 @@ class Photo:
 
     return data
 
-  def set_metadata(self, attrs, album, tag_metadata):
+  def set_metadata(self, attrs, album):
     """Set metadata on an image as extended-attributes"""
 
     Album(album['fpath']).set_metadata(album['attrs'])
@@ -262,7 +265,6 @@ class Photo:
       for attr, value in location.items():
         xattr.setxattr(self.path, attr.encode(), value.encode())
 
-
     for attr, value in exif_attrs.items():
       xattr.setxattr(self.path, attr.encode(), value.encode())
 
@@ -273,7 +275,7 @@ class Photo:
 
       tag_set = set()
 
-      for new_tag in tag_metadata.expand(value):
+      for new_tag in self.tag_metadata.expand(value):
         tag_set.add(new_tag)
 
       xattr.setxattr(self.path, attr.encode(), ', '.join(tag_set).encode())
@@ -292,7 +294,9 @@ class Photo:
     md = self.get_metadata()
 
     tags = md.get(ATTR_TAG, set())
-    return ', '.join(tags)
+    expanded = self.tag_metadata.expand(tags)
+
+    return ', '.join(expanded)
 
   def encode_thumbnail(self):
     """Encode a image as a thumbnail Webp, and remove EXIF data"""

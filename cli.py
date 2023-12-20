@@ -2,13 +2,12 @@
 
 """
 Usage:
-  mirror init --metadata=<fpath>   <dir>
-  mirror create-manifest           <dir>
-  mirror tag --metadata=<fpath>    <dir>
-  mirror list-tags                 <dir>
-  mirror list-photos [--tag=<tag>] <dir>
-  mirror publish                   <dir> <manifest>
-  mirror feed                      <dir> <feed>
+  mirror create-manifest               <dir>
+  mirror tag --metadata=<fpath>        <dir>
+  mirror list-tags --metadata=<fpath>  <dir>
+  mirror list-photos [--tag=<tag>]     <dir>
+  mirror publish --metadata=<fpath>    <dir> <manifest>
+  mirror feed                          <dir> <feed>
   mirror (-h | --help)
 
 Description:
@@ -17,14 +16,35 @@ Description:
   that can be used to generate a static website.
 
 Tags:
+
+
+
   * user.xyz.rgrannell.photos.tags           a CSV of tag-data.
+
+  ++ Photo Settings ++
+
+  * user.xyz.rgrannell.photos.fstop
+  * user.xyz.rgrannell.photos.focal_equivalent
+  * user.xyz.rgrannell.photos.model
+  * user.xyz.rgrannell.photos.iso
+
+  ++ Album Information ++
+
   * user.xyz.rgrannell.photos.album_title    the title of a photo-album
   * user.xyz.rgrannell.photos.album_cover    the path of a cover-image for a photo-album
 
-Commands:
-  init               Initialize a directory with tags.md files. Old tags.md files will be moved to
-                       a backup file.
+  ++ Image Dimensions ++
 
+  * user.xyz.rgrannell.photos.width     the width of an image in pixels
+  * user.xyz.rgrannell.photos.height    the height of an image in pixels
+
+  ++ Location Information ++
+
+  * user.xyz.rgrannell.photos.location_address    a human-readable address
+  * user.xyz.rgrannell.photos.location_latitude   a latitude coordinate
+  * user.xyz.rgrannell.photos.location_longitude  a longitude coordinate
+
+Commands:
   create-manifest    Create a manifest-file for a directory. This file can be used to generate
 
   tag                Tag all images in a directory based on the tags.md files. Tag albums with
@@ -49,16 +69,16 @@ from src.mirror import Mirror
 if __name__ == '__main__':
   args = docopt(__doc__)
 
-  if args['init']:
-    Mirror.init(args['<dir>'], args['--metadata'])
-  elif args['tag']:
+  if args['tag']:
     Mirror.tag(args['<dir>'], args['--metadata'])
   elif args['list-tags']:
-    Mirror.list_tags(args['<dir>'])
+    Mirror.list_tags(args['<dir>'], args['--metadata'])
   elif args['list-photos']:
-    Mirror.list_photos(args['<dir>'], args['--tag'])
+    Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'])
   elif args['publish']:
-    Mirror.publish(args['<dir>'], args['<manifest>'])
+    Mirror.publish(args['<dir>'], args['--metadata'], args['<manifest>'])
+  elif args['feed']:
+    Mirror.feed(args['<dir>'], args['<feed>'])
   else:
     print(__doc__)
     exit(1)

@@ -50,11 +50,10 @@ class Tagfile:
       if not image_md:
         image_md = {}
 
-      expander = Tags(self.metadata_path)
       tags = list({tag for tag in image_md.get(ATTR_TAG, set()) if tag})
 
       images[transclusion] = {
-        ATTR_TAG: expander.expand(tags)
+        ATTR_TAG: tags
       }
 
     tag_file = [{
@@ -72,13 +71,6 @@ class Tagfile:
     content = self.content()
 
     tag_path = f"{self.dirname}/tags.md"
-
-    # backup any existing tagfile
-    if os.path.exists(tag_path):
-      now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-      new_tag_path = f"{tag_path}-{now}"
-      shutil.move(tag_path, new_tag_path)
 
     # write the tagfile content to the directory
     with open(tag_path, "w") as conn:
