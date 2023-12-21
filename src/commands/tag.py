@@ -15,10 +15,10 @@ def tag(dir: str, metadata_path: str):
   vault = PhotoVault(dir, metadata_path)
   tag_metadata = Tags(metadata_path)
 
-  # set metadata on each image
   idx = 0
   images = list(vault.list_tagfile_image())
 
+  # set metadata on each image mentioned in a tagfile
   for entry in images:
     fpath = entry['fpath']
     attrs = entry['attrs']
@@ -32,6 +32,7 @@ def tag(dir: str, metadata_path: str):
   idx = 0
   by_folder = PhotoVault(dir, metadata_path).list_by_folder().items()
 
+  # update the tagfiles in each folder based on the newly written metadata
   for dirname, images in by_folder:
     Log.info(f"writing tagfile {idx} / { len(by_folder) }", clear=True)
     idx += 1

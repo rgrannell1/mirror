@@ -15,7 +15,8 @@ from .constants import (
   ATTR_HEIGHT,
   ATTR_LOCATION_ADDRESS,
   ATTR_LOCATION_LONGITUDE,
-  ATTR_LOCATION_LATITUDE
+  ATTR_LOCATION_LATITUDE,
+  SPACES_DOMAIN
 )
 
 IMAGES_TABLE = """
@@ -52,7 +53,7 @@ create table if not exists albums (
 
 class Manifest:
   def __init__(self, metadata_path: str):
-    fpath = os.path.expanduser('~/.mirror-manifest.db')
+    fpath = os.path.expanduser('/home/rg/.mirror-manifest.db')
     self.conn = sqlite3.connect(fpath)
     self.metadata_path = metadata_path
 
@@ -267,12 +268,17 @@ class Manifest:
         #  'longitude': longitude,
         #  'latitude': latitude
         #},
-        'image_url': image_url,
-        'thumbnail_url': thumbnail_url
+        'image_url': image_url.replace(SPACES_DOMAIN, ''),
+        'thumbnail_url': thumbnail_url.replace(SPACES_DOMAIN, '')
       })
 
+    manifest = {
+      'domain': SPACES_DOMAIN,
+      'folders': folders
+    }
+
     with open(manifest_file, 'w') as conn:
-      conn.write(json.dumps(folders))
+      conn.write(json.dumps(manifest))
 
   def close(self):
     """Close the local database connection"""

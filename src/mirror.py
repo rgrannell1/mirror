@@ -14,8 +14,8 @@ class Mirror:
     tag(dir, metadata_path)
 
   @staticmethod
-  def list_tags(dir: str, metadata_path: str) -> None:
-    list_tags(dir, metadata_path)
+  def list_tags(dir: str, opts) -> None:
+    list_tags(dir, opts)
 
   @staticmethod
   def list_photos(dir: str, metadata_path: str, tag: str) -> None:

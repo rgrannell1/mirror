@@ -3,11 +3,8 @@
 import os
 import json
 import yaml
-import shutil
-import datetime
 import jsonschema
 from src.album import Album
-from src.tags import Tags
 
 from src.constants import (
   ATTR_ALBUM_TITLE,

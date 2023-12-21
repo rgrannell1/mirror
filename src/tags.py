@@ -3,6 +3,7 @@
 import yaml
 from queue import Queue
 
+cache = {}
 
 class Tags:
   """Represents a tag metadata file, which provides a tree of subsumptions
@@ -10,11 +11,15 @@ class Tags:
   def __init__(self, fpath) -> None:
     self.fpath = fpath
 
-    # convert the tag metadata into a tag-tree
-    with open(fpath) as conn:
-      self.tag_tree = yaml.safe_load(conn)
+    if fpath not in cache:
+      with open(fpath) as conn:
+        cache[fpath] = yaml.safe_load(conn)
+
+    self.tag_tree = cache[fpath]
 
   def expand(self, tags):
+    """Given a list of tags, expand them to include their parents, and return"""
+
     expanded_tags = set()
     queue = Queue()
 

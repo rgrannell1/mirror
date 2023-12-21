@@ -2,12 +2,12 @@
 
 """
 Usage:
-  mirror create-manifest               <dir>
-  mirror tag --metadata=<fpath>        <dir>
-  mirror list-tags --metadata=<fpath>  <dir>
-  mirror list-photos [--tag=<tag>]     <dir>
-  mirror publish --metadata=<fpath>    <dir> <manifest>
-  mirror feed                          <dir> <feed>
+  mirror create-manifest                           <dir>
+  mirror tag --metadata=<fpath>                    <dir>
+  mirror list-tags --metadata=<fpath> [--graphvis] <dir>
+  mirror list-photos [--tag=<tag>]                 <dir>
+  mirror publish --metadata=<fpath>                <dir> <manifest>
+  mirror feed                                      <dir> <feed>
   mirror (-h | --help)
 
 Description:
@@ -59,9 +59,10 @@ Commands:
   feed               Generate a feed-file for a directory
 
 Options:
-  --metadata=<fpath>  The path to a YAML file containing metadata.
-  --tag=<tag>         The tag to list photos for.
-  -h, --help           Show this screen.
+  --graphvis            Output a graphvis file.
+  --metadata=<fpath>    The path to a YAML file containing metadata.
+  --tag=<tag>           The tag to list photos for.
+  -h, --help            Show this screen.
 """
 from docopt import docopt
 from src.mirror import Mirror
@@ -72,7 +73,10 @@ if __name__ == '__main__':
   if args['tag']:
     Mirror.tag(args['<dir>'], args['--metadata'])
   elif args['list-tags']:
-    Mirror.list_tags(args['<dir>'], args['--metadata'])
+    Mirror.list_tags(args['<dir>'], {
+      'graphvis': args['--graphvis'],
+      'metadata': args['--metadata']
+    })
   elif args['list-photos']:
     Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'])
   elif args['publish']:

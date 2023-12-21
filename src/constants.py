@@ -1,6 +1,9 @@
 """Various constants used throughout this project"""
 
 import re
+from src.config import SPACES_BUCKET
+
+SPACES_DOMAIN = f'https://{SPACES_BUCKET}.ams3.cdn.digitaloceanspaces.com/'
 
 # Album Attributes
 ATTR_ALBUM_TITLE = 'user.xyz.rgrannell.photos.album_title'

@@ -273,12 +273,7 @@ class Photo:
         xattr.setxattr(self.path, attr.encode(), value.encode())
         continue
 
-      tag_set = set()
-
-      for new_tag in self.tag_metadata.expand(value):
-        tag_set.add(new_tag)
-
-      xattr.setxattr(self.path, attr.encode(), ', '.join(tag_set).encode())
+      xattr.setxattr(self.path, attr.encode(), ', '.join(value).encode())
 
   def published(self):
     """Is this image publishable?"""
