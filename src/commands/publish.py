@@ -75,3 +75,4 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
     db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
   db.create_metadata_file(manifest_path)
+  db.copy_metadata_file(metadata_path, manifest_path)

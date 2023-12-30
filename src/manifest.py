@@ -2,6 +2,7 @@
 import os
 
 import json
+import yaml
 import sqlite3
 
 from .photo import Photo
@@ -212,6 +213,17 @@ class Manifest:
     """, (min_date, max_date, fpath))
 
     self.conn.commit()
+
+  def copy_metadata_file(self, metadata_path: str, manifest_path: str) -> None:
+    """Copy the metadata file to the destination"""
+
+    manifest_dname = os.path.dirname(manifest_path)
+    metadata_dst = os.path.join(manifest_dname, 'metadata.json')
+
+    content = yaml.safe_load(open(metadata_path))
+
+    with open(metadata_dst, 'w') as conn:
+      conn.write(json.dumps(content))
 
   def create_metadata_file(self, manifest_file: str) -> None:
     """Create a metadata file from the stored manifest file."""
