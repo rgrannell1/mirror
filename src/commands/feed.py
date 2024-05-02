@@ -1,15 +1,43 @@
 
 import json
 
+from src.manifest import Manifest
 from src.photo import PhotoVault
-from src.constants import ATTR_TAG
 from src.syndications import JSONFeed
+from collections import defaultdict
 
-def feed(dir: str, metadata_path: str, feed: str):
+def feed(dir: str, metadata_path: str, out_dir: str):
   """Generates a JSON feed for the given directory."""
 
-  vault = PhotoVault(dir, '')
+  image_by_tags = defaultdict(list)
+  images = []
 
-  albums = vault.list_albums()
+  db = Manifest(metadata_path)
 
-  feed = JSONFeed.feed(albums)
+  for image in db.list_publishable():
+    images.append(image)
+
+    if not image.exists():
+      continue
+
+    tags = image.tags()
+
+    if 'Published' not in tags:
+      continue
+
+    for tag in tags:
+      image_by_tags[tag].append(image)
+
+  # write each tag feed
+  for tag, images in image_by_tags.items():
+    feed = JSONFeed.tag_feed(db, tag, images)
+
+    with open(f'{out_dir}/tags/{tag}.json', 'w') as conn:
+      conn.write(json.dumps(feed, indent=2, ensure_ascii=False))
+
+  # write a root feed
+  for image in images:
+    feed = JSONFeed.feed(db, images)
+
+    with open(f'{out_dir}/tags/index.json', 'w') as conn:
+      conn.write(json.dumps(feed, indent=2, ensure_ascii=False))

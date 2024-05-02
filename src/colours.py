@@ -11,6 +11,8 @@ class bcolors:
   UNDERLINE = '\033[4m'
 
 class Colour:
+  """Construct ANSI colours"""
+
   @classmethod
   def blue(cls, text):
     return f"{bcolors.OKBLUE}{text}{bcolors.ENDC}"

@@ -7,7 +7,7 @@ Usage:
   mirror list-tags --metadata=<fpath> [--graphvis] <dir>
   mirror list-photos [--tag=<tag>]                 <dir>
   mirror publish --metadata=<fpath>                <dir> <manifest>
-  mirror feed                                      <dir> <feed>
+  mirror feed --metadata=<fpath>                   <dir> <outdir>
   mirror (-h | --help)
 
 Description:
@@ -82,7 +82,7 @@ if __name__ == '__main__':
   elif args['publish']:
     Mirror.publish(args['<dir>'], args['--metadata'], args['<manifest>'])
   elif args['feed']:
-    Mirror.feed(args['<dir>'], args['<feed>'])
+    Mirror.feed(args['<dir>'], args['--metadata'], args['<outdir>'])
   else:
     print(__doc__)
     exit(1)

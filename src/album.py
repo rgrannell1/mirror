@@ -6,6 +6,7 @@ from .constants import (
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_COVER,
 )
+from typing import Dict
 
 class Album:
   """A photo-album"""
@@ -13,7 +14,7 @@ class Album:
   def __init__(self, path):
     self.path = path
 
-  def get_metadata(self):
+  def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""
 
     attrs = {attr for attr in xattr.listxattr(self.path)}

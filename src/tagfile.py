@@ -5,6 +5,7 @@ import json
 import yaml
 import jsonschema
 from src.album import Album
+from typing import Dict
 
 from src.constants import (
   ATTR_ALBUM_TITLE,
@@ -74,7 +75,7 @@ class Tagfile:
       conn.write(content)
 
   @classmethod
-  def read(kls, fpath):
+  def read(kls, fpath) -> Dict:
     """Read a tagfile, and yield each image and its associated tags."""
 
     with open(schema_path) as conn:

@@ -9,6 +9,7 @@ import requests
 from datetime import datetime
 from src.tags import Tags
 
+from typing import List, Iterator, Dict, Optional
 from PIL import Image, ImageOps, ExifTags
 
 from .constants import (
@@ -24,10 +25,7 @@ from .constants import (
   ATTR_ALBUM_COVER,
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
-  TITLE_PATTERN,
-  ATTR_LOCATION_ADDRESS,
-  ATTR_LOCATION_LATITUDE,
-  ATTR_LOCATION_LONGITUDE
+  TITLE_PATTERN
 )
 
 from .tagfile import Tagfile
@@ -39,7 +37,7 @@ class PhotoVault:
     self.path = path
     self.metadata_path = metadata_path
 
-  def list_images(self):
+  def list_images(self) -> List['Photo']:
     """Recursively list all files under a given path.
     """
     images = []
@@ -53,7 +51,7 @@ class PhotoVault:
 
     return images
 
-  def list_albums(self):
+  def list_albums(self) -> List[Album]:
     """Recursively list all directories under a given path.
     """
     albums = []
@@ -64,13 +62,13 @@ class PhotoVault:
 
     return albums
 
-  def list_tagfiles(self):
+  def list_tagfiles(self) -> Iterator[str]:
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         if filename == 'tags.md':
           yield os.path.join(dirpath, filename)
 
-  def list_tagfiles_and_archives(self):
+  def list_tagfiles_and_archives(self) -> Iterator[Dict]:
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         if filename == 'tags.md':
@@ -90,7 +88,7 @@ class PhotoVault:
           'fpath': os.path.join(dirpath, filename)
         }
 
-  def list_tagfile_image(self):
+  def list_tagfile_image(self) -> Iterator[Dict]:
     """List tagfiles across all photo-directories
     """
 
@@ -116,7 +114,7 @@ class PhotoVault:
           "attrs": entry
         }
 
-  def list_by_folder(self):
+  def list_by_folder(self) -> Dict[str, List['Photo']]:
     """List all images by folder.
     """
     dirs = {}
@@ -138,23 +136,28 @@ class Photo:
     self.tag_metadata = Tags(metadata_path)
 
   @classmethod
-  def is_image(cls, path):
+  def is_image(cls, path) -> bool:
     """Check if a given file path is an image.
     """
     image_extensions = ('.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG')
     return os.path.isfile(path) and path.endswith(image_extensions)
 
-  def name(self):
+  def name(self) -> str:
     """Get the basename of the photo.
     """
     return os.path.basename(self.path)
 
-  def dirname(self):
+  def dirname(self) -> str:
     """Get the directory name of the photo.
     """
     return os.path.dirname(self.path)
 
-  def get_exif(self):
+  def exists(self) -> bool:
+    """Check if a photo exists.
+    """
+    return os.path.exists(self.path)
+
+  def get_exif(self) -> Dict:
     """Get EXIF data from a photo."""
 
     try:
@@ -179,7 +182,7 @@ class Photo:
 
     return output
 
-  def get_created_date(self):
+  def get_created_date(self) -> Optional[datetime]:
     """Get the date an image was created on"""
 
     exif = self.get_exif()
@@ -195,32 +198,7 @@ class Photo:
     except:
       return None
 
-  def estimate_location(self):
-    date = self.get_created_date()
-    if not date:
-      return None
-
-    res = requests.get('http://localhost:8080/location/at-date', params={
-      'date': self.get_created_date().isoformat()
-    })
-
-    data = res.json()
-
-    if data['time']['withinRange']:
-      address = data['location'].get('address')
-
-      if not address:
-        return None
-
-      first_address = address[0] if isinstance(address, list) else address
-
-      return {
-        ATTR_LOCATION_ADDRESS: first_address,
-        ATTR_LOCATION_LATITUDE: str(data['location']['latitude']),
-        ATTR_LOCATION_LONGITUDE: str(data['location']['longitude'])
-      }
-
-  def get_metadata(self):
+  def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""
 
     attrs = {attr for attr in xattr.listxattr(self.path)}
@@ -237,7 +215,8 @@ class Photo:
       **exif_attrs
     }
 
-  def get_exif_metadata(self):
+  def get_exif_metadata(self) -> Dict:
+    """Get metadata from an image as EXIF data"""
     data = {}
 
     exif = self.get_exif()
@@ -275,7 +254,7 @@ class Photo:
 
       xattr.setxattr(self.path, attr.encode(), ', '.join(value).encode())
 
-  def published(self):
+  def published(self) -> bool:
     """Is this image publishable?"""
 
     md = self.get_metadata()
@@ -283,17 +262,20 @@ class Photo:
     tags = md.get(ATTR_TAG, set())
     return 'Published' in tags
 
-  def tag_string(self):
+  def tag_string(self) -> str:
+    """Get the tag csv for an image"""
+
+    return ', '.join(self.tags())
+
+  def tags(self) -> List[str]:
     """Get the tag csv for an image"""
 
     md = self.get_metadata()
 
     tags = md.get(ATTR_TAG, set())
-    expanded = self.tag_metadata.expand(tags)
+    return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-    return ', '.join(expanded)
-
-  def encode_thumbnail(self):
+  def encode_thumbnail(self) -> Dict:
     """Encode a image as a thumbnail Webp, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -321,7 +303,7 @@ class Photo:
         'content': contents
       }
 
-  def encode_image(self):
+  def encode_image(self) -> Dict:
     """Encode an image as Webp, and remove EXIF data"""
 
     img = Image.open(self.path)

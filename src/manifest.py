@@ -5,6 +5,8 @@ import json
 import yaml
 import sqlite3
 
+from typing import Iterator
+
 from .photo import Photo
 from .constants import (
   ATTR_DATE_TIME,
@@ -66,7 +68,7 @@ class Manifest:
     for table in {IMAGES_TABLE, ALBUM_TABLE}:
       cursor.execute(table)
 
-  def list_publishable(self):
+  def list_publishable(self) -> Iterator[Photo]:
     """List all images that are ready to be published"""
 
     cursor = self.conn.cursor()
@@ -74,6 +76,20 @@ class Manifest:
 
     for row in cursor.fetchall():
       yield Photo(row[0], self.metadata_path)
+
+  def image_metadata(self, fpath: str) -> Iterator:
+    cursor = self.conn.cursor()
+    cursor.execute("""select
+      images.image_url, images.thumbnail_url,
+      images.dateTime, albums.album_name
+    from images
+    inner join albums on images.album = albums.fpath
+    where published = '1' and images.fpath = ?
+    """, (fpath,))
+
+    row = cursor.fetchone()
+    return row
+
 
   def add_image(self, image):
     """Add an image to the local database"""
@@ -225,7 +241,7 @@ class Manifest:
     with open(metadata_dst, 'w') as conn:
       conn.write(json.dumps(content))
 
-  def create_metadata_file(self, manifest_file: str) -> None:
+  def create_metadata_file(self, manifest_file: str, images: bool = True) -> None:
     """Create a metadata file from the stored manifest file."""
 
     cursor = self.conn.cursor()
@@ -259,30 +275,34 @@ class Manifest:
           'min_date': min_date,
           'max_date': max_date,
           'cover_image': os.path.join(dirname, cover_image),
-          'images': []
+          'images': [],
+          'image_count': 0
         }
 
-      folders[album_id]['images'].append({
-        'fpath': fpath,
-        'id': str(hash(fpath)),
-        'tags': tags.split(', '),
-        'exif': {
-          'dateTime': dateTime,
-          'fNumber': fNumber,
-          'focalLength': focalLength,
-          'model': model,
-          'iso': iso,
-          'width': width,
-          'height': height,
-        },
-        #'location': {
-        #  'address': address,
-        #  'longitude': longitude,
-        #  'latitude': latitude
-        #},
-        'image_url': image_url.replace(SPACES_DOMAIN, ''),
-        'thumbnail_url': thumbnail_url.replace(SPACES_DOMAIN, '')
-      })
+      folders[album_id]['image_count'] += 1
+
+      if images:
+        folders[album_id]['images'].append({
+          'fpath': fpath,
+          'id': str(hash(fpath)),
+          'tags': tags.split(', '),
+          'exif': {
+            'dateTime': dateTime,
+            'fNumber': fNumber,
+            'focalLength': focalLength,
+            'model': model,
+            'iso': iso,
+            'width': width,
+            'height': height,
+          },
+          #'location': {
+          #  'address': address,
+          #  'longitude': longitude,
+          #  'latitude': latitude
+          #},
+          'image_url': image_url.replace(SPACES_DOMAIN, ''),
+          'thumbnail_url': thumbnail_url.replace(SPACES_DOMAIN, '')
+        })
 
     manifest = {
       'domain': SPACES_DOMAIN,

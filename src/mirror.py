@@ -26,5 +26,5 @@ class Mirror:
     publish(dir, metadata_path, manifest_path)
 
   @staticmethod
-  def feed(dir: str, metadata_path: str, feed_path: str) -> None:
-    feed(dir, metadata_path, feed_path)
+  def feed(dir: str, metadata_path: str, out_dir: str) -> None:
+    feed(dir, metadata_path, out_dir)

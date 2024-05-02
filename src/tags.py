@@ -2,6 +2,7 @@
 
 import yaml
 from queue import Queue
+from typing import List
 
 cache = {}
 
@@ -17,7 +18,7 @@ class Tags:
 
     self.tag_tree = cache[fpath]
 
-  def expand(self, tags):
+  def expand(self, tags) -> List[str]:
     """Given a list of tags, expand them to include their parents, and return"""
 
     expanded_tags = set()

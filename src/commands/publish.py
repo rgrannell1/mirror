@@ -1,6 +1,4 @@
 
-import sys
-
 from src.photo import PhotoVault, Album
 from src.spaces import Spaces
 from src.manifest import Manifest
@@ -21,10 +19,12 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
   published = False
 
+  image_idx = 1
+
   for image in db.list_publishable():
     published = True
     Log.clear()
-    Log.info(f'Checking thumbnail is published for {image.path}')
+    Log.info(f'Checking thumbnail #{image_idx} is published for {image.path}')
 
     # create and upload a thumbnail
     if not db.has_thumbnail(image):
@@ -33,13 +33,12 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
       thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(encoded)
 
       if not thumbnail_in_spaces:
+        Log.info(f'Uploading thumbnail #{image_idx} for {image.path}', clear=True)
         spaces.upload_thumbnail(encoded)
-
-        Log.info(f'Uploaded thumbnail for {image.path}', clear=True)
 
       db.register_thumbnail_url(image, thumbnail_url)
 
-    Log.info(f'Checking image is published for {image.path}', clear=True)
+    Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
 
     # create an upload the image itself
     if not db.has_image(image):
@@ -48,11 +47,12 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
       image_in_spaces, image_url = spaces.image_status(encoded)
 
       if not image_in_spaces:
+        Log.info(f'Uploading #{image_idx} image for {image.path}', clear=True)
         spaces.upload_image(encoded)
 
-        Log.info(f'Uploaded image for {image.path}', clear=True)
-
       db.register_image_url(image, image_url)
+
+    image_idx += 1
 
   if not published:
     Log.info(f'No images published', clear=True)
@@ -74,5 +74,5 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
     db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
-  db.create_metadata_file(manifest_path)
+  db.create_metadata_file(manifest_path, images=True)
   db.copy_metadata_file(metadata_path, manifest_path)
