@@ -51,7 +51,7 @@ class JSONFeed:
     }
 
   @classmethod
-  def feed(cls, db, tag: str, images: List[Photo]):
+  def feed(cls, db, images: List[Photo]):
     return {
       'version': 'https://jsonfeed.org/version/1',
       'title': f'📷 photos.rgrannell.xyz',

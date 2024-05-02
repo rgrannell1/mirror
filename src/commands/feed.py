@@ -39,5 +39,5 @@ def feed(dir: str, metadata_path: str, out_dir: str):
   for image in images:
     feed = JSONFeed.feed(db, images)
 
-    with open(f'{out_dir}/tags/index.json', 'w') as conn:
+    with open(f'{out_dir}/index.json', 'w') as conn:
       conn.write(json.dumps(feed, indent=2, ensure_ascii=False))
