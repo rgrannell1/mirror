@@ -11,7 +11,8 @@ from src.constants import (
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_COVER,
   ATTR_ALBUM_ID,
-  ATTR_TAG
+  ATTR_TAG,
+  ATTR_DESCRIPTION
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -51,7 +52,8 @@ class Tagfile:
       tags = list({tag for tag in image_md.get(ATTR_TAG, set()) if tag})
 
       images[transclusion] = {
-        ATTR_TAG: tags
+        ATTR_TAG: tags,
+        ATTR_DESCRIPTION: ""
       }
 
     tag_file = [{

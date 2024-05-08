@@ -14,6 +14,7 @@ from PIL import Image, ImageOps, ExifTags
 
 from .constants import (
   ATTR_TAG,
+  ATTR_DESCRIPTION,
   ATTR_DATE_TIME,
   ATTR_FSTOP,
   ATTR_FOCAL_EQUIVALENT,
@@ -203,15 +204,19 @@ class Photo:
 
     attrs = {attr for attr in xattr.listxattr(self.path)}
 
-    if not ATTR_TAG in attrs:
-      return {}
+    tags = {}
+    if ATTR_TAG in attrs:
+      tags = {tag.strip() for tag in xattr.getxattr(self.path, ATTR_TAG).decode('utf-8').split(',')}
 
-    tags = {tag.strip() for tag in xattr.getxattr(self.path, ATTR_TAG).decode('utf-8').split(',')}
+    description = ""
+    if ATTR_DESCRIPTION in attrs:
+      description = xattr.getxattr(self.path, ATTR_DESCRIPTION).decode('utf-8')
 
     exif_attrs = self.get_exif_metadata()
 
     return {
       ATTR_TAG: tags,
+      ATTR_DESCRIPTION: description,
       **exif_attrs
     }
 

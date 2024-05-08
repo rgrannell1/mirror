@@ -12,6 +12,7 @@ ATTR_ALBUM_COVER = 'user.xyz.rgrannell.photos.album_cover'
 
 # Photo Attributes
 ATTR_TAG = 'user.xyz.rgrannell.photos.tags'
+ATTR_DESCRIPTION = 'user.xyz.rgrannell.photos.description'
 ATTR_DATE_TIME = 'user.xyz.rgrannell.photos.date_time'
 
 # Photo Settings

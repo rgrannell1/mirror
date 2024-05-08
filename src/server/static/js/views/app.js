@@ -89,14 +89,14 @@ export class MirrorApp extends LitElement {
     const client = new MirrorAPI(5000);
     const metadata = await client.getPhotoMetadata(id);
 
-    return html`<p>unimplemented</h>`
+    return html`<textarea id="description" name="description" rows="1" cols="80">unimplemented</textarea>`
   }
 
   async renderFilePath(id) {
     const client = new MirrorAPI(5000);
     const metadata = await client.getPhotoMetadata(id);
 
-    return html`<p>${ metadata.path }</p>`
+    return html`<pre>${ metadata.path }</pre>`
   }
 
   async renderRating(id) {
