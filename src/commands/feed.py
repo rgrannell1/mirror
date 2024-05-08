@@ -10,12 +10,12 @@ def feed(dir: str, metadata_path: str, out_dir: str):
   """Generates a JSON feed for the given directory."""
 
   image_by_tags = defaultdict(list)
-  images = []
+  all_images = []
 
   db = Manifest(metadata_path)
 
   for image in db.list_publishable():
-    images.append(image)
+    all_images.append(image)
 
     if not image.exists():
       continue
@@ -36,7 +36,7 @@ def feed(dir: str, metadata_path: str, out_dir: str):
       conn.write(json.dumps(feed, indent=2, ensure_ascii=False))
 
   # write a root feed
-  for image in images:
+  for image in all_images:
     feed = JSONFeed.feed(db, images)
 
     with open(f'{out_dir}/index.json', 'w') as conn:
