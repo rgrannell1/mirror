@@ -12,7 +12,14 @@ export class MirrorAPI {
 
     return body;
   }
-  async setPhotoMetadata() {
 
+  async photoCount() {
+    const res = await fetch(`http://localhost:${this.port}/photos/count`, {
+      mode: 'no-cors'
+    });
+
+    const body = await res.json();
+
+    return body.count;
   }
 }

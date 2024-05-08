@@ -18,9 +18,17 @@ app = Flask(__name__,
 ### ++++++++++ PHOTO ++++++++++ ###
 ### ++++++++++       ++++++++++ ###
 
+@app.route('/photos/count')
+def count_photos():
+    """Return the number of photos"""
+    return jsonify(count=len(images))
+
 @app.route('/photo/<id>')
 def get_photo(id):
     """Return the next photo, using some sort of ordering"""
+
+
+
     image_path = images[int(id)].path
     return send_file(image_path)
 

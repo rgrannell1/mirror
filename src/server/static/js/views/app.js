@@ -8,7 +8,7 @@ export class MirrorApp extends LitElement {
   static get properties() {
     return {
       id: { type: Number },
-      metadata: { type: Object }
+      count: { type: Number }
     };
   }
   connectedCallback() {
@@ -16,6 +16,12 @@ export class MirrorApp extends LitElement {
     this.setStateFromUrl();
     window.addEventListener("popstate", this.handlePopState.bind(this));
     document.addEventListener('keydown', this.handleKeyDown.bind(this));
+
+    const client = new MirrorAPI(5000);
+    client.photoCount().then(count => {
+      this.count = count;
+      this.requestUpdate();
+    });
   }
 
   setStateFromUrl() {
@@ -39,15 +45,32 @@ export class MirrorApp extends LitElement {
     window.removeEventListener("popstate", this.handlePopState.bind(this));
   }
 
+  handleArrorLeft() {
+    this.id--;
+    PageLocation.showPhotoUrl(this.id);
+    this.requestUpdate();
+  }
+
+  handleArrowRight() {
+    this.id++;
+    PageLocation.showPhotoUrl(this.id);
+    this.requestUpdate();
+  }
+
+  handleM() {
+    this.id = Math.floor(Math.random() * this.count);
+    PageLocation.showPhotoUrl(this.id);
+    this.requestUpdate();
+  }
+
   handleKeyDown(event) {
     if (event.key === 'ArrowLeft') {
-      this.id--;
-      PageLocation.showPhotoUrl(this.id);
-      this.requestUpdate();
+      this.handleArrorLeft();
     } else if (event.key === 'ArrowRight') {
-      this.id++;
-      PageLocation.showPhotoUrl(this.id);
-      this.requestUpdate();
+      this.handleArrowRight();
+    } else if (event.key === 'm') {
+      // gross; doesn't guarantee count is cached
+      this.handleM();
     }
   }
   url() {
@@ -83,15 +106,27 @@ export class MirrorApp extends LitElement {
     return html`<p>⭐⭐⭐⭐⭐</p>`
   }
 
+  async renderCount() {
+    const client = new MirrorAPI(5000);
+    const count = await client.photoCount();
+
+    return count
+  }
+
   render() {
     return html`
       <div>
         <h1>Mirror</h1>
 
+        <p>
+        Image #${this.id} / ${ until(this.renderCount(), html`Loading Image Count...`)}
+        </p>
+
         Shortcuts:
         <ul>
           <li><kbd>←</kbd> Previous</li>
           <li><kbd>→</kbd> Next</li>
+          <li><kbd>m</kbd> Random Image</li>
         </ul>
 
         <image width="800" src="${this.url()}"></image>
