@@ -24,6 +24,7 @@ from .constants import (
   ATTR_HEIGHT,
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_COVER,
+  ATTR_ALBUM_DESCRIPTION,
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
   TITLE_PATTERN
@@ -108,8 +109,9 @@ class PhotoVault:
           "album": {
             "fpath": dpath,
             "attrs": {
-              ATTR_ALBUM_TITLE: tag_file[ATTR_ALBUM_TITLE],
-              ATTR_ALBUM_COVER: tag_file[ATTR_ALBUM_COVER]
+              ATTR_ALBUM_TITLE: tag_file.get(ATTR_ALBUM_TITLE, ''),
+              ATTR_ALBUM_COVER: tag_file.get(ATTR_ALBUM_COVER, ''),
+              ATTR_ALBUM_DESCRIPTION: tag_file.get(ATTR_ALBUM_DESCRIPTION, '')
             }
           },
           "attrs": entry

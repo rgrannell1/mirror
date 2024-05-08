@@ -9,6 +9,7 @@ SPACES_DOMAIN = f'https://{SPACES_BUCKET}.ams3.cdn.digitaloceanspaces.com/'
 ATTR_ALBUM_TITLE = 'user.xyz.rgrannell.photos.album_title'
 ATTR_ALBUM_ID = 'user.xyz.rgrannell.photos.album_id'
 ATTR_ALBUM_COVER = 'user.xyz.rgrannell.photos.album_cover'
+ATTR_ALBUM_DESCRIPTION = 'user.xyz.rgrannell.photos.album_description'
 
 # Photo Attributes
 ATTR_TAG = 'user.xyz.rgrannell.photos.tags'

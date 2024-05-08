@@ -4,6 +4,7 @@ import xattr
 
 from .constants import (
   ATTR_ALBUM_TITLE,
+  ATTR_ALBUM_DESCRIPTION,
   ATTR_ALBUM_COVER,
 )
 from typing import Dict
@@ -23,9 +24,14 @@ class Album:
     if ATTR_ALBUM_TITLE not in attrs:
       return None
 
+    description = ""
+    if ATTR_ALBUM_DESCRIPTION in attrs:
+      description = xattr.getxattr(self.path, ATTR_ALBUM_DESCRIPTION).decode('utf-8')
+
     return {
       'fpath': self.path,
       'title': xattr.getxattr(self.path, ATTR_ALBUM_TITLE).decode('utf-8'),
+      'description': description,
       'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8')
     }
 

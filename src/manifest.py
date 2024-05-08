@@ -49,6 +49,7 @@ create table if not exists albums (
   fpath            text primary key,
   album_name       text,
   cover_image      text,
+  description      text,
   min_date         text,
   max_date         text
 )
@@ -170,10 +171,11 @@ class Manifest:
     fpath = album['fpath']
     album_name = album['title']
     cover_image = album['cover']
+    description = album['description']
 
     cursor = self.conn.cursor()
-    cursor.execute("insert or replace into albums (fpath, album_name, cover_image) values (?, ?, ?)", (
-      fpath, album_name, cover_image
+    cursor.execute("insert or replace into albums (fpath, album_name, cover_image, description) values (?, ?, ?, ?)", (
+      fpath, album_name, cover_image, description
     ))
     self.conn.commit()
 
@@ -251,7 +253,7 @@ class Manifest:
           images.dateTime, images.fNumber, images.focalLength, images.model,
           images.iso, images.width, images.height,
           images.address, images.longitude, images.latitude,
-          albums.album_name, albums.cover_image, albums.min_date, albums.max_date
+          albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date
         from images
         inner join albums on images.album = albums.fpath
         where published = '1'
@@ -263,7 +265,7 @@ class Manifest:
       (
         fpath, tags, image_url, thumbnail_url, dateTime,
         fNumber, focalLength, model, iso, width, height,
-        address, longitude, latitude, album_name, cover_image, min_date, max_date) = row
+        address, longitude, latitude, album_name, cover_image, description, min_date, max_date) = row
 
       dirname = os.path.dirname(fpath)
       album_id = str(hash(dirname))
@@ -275,6 +277,7 @@ class Manifest:
           'min_date': min_date,
           'max_date': max_date,
           'cover_image': os.path.join(dirname, cover_image),
+          'description': description,
           'images': [],
           'image_count': 0
         }

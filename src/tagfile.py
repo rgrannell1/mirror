@@ -9,6 +9,7 @@ from typing import Dict
 
 from src.constants import (
   ATTR_ALBUM_TITLE,
+  ATTR_ALBUM_DESCRIPTION,
   ATTR_ALBUM_COVER,
   ATTR_ALBUM_ID,
   ATTR_TAG,
@@ -59,6 +60,7 @@ class Tagfile:
     tag_file = [{
       ATTR_ALBUM_TITLE: album_md.get('title', self.dirname),
       ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
+      ATTR_ALBUM_DESCRIPTION: album_md.get('description', ''),
       ATTR_ALBUM_ID: self.id(),
       'images': images
     }]
