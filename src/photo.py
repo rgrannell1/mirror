@@ -222,6 +222,16 @@ class Photo:
       **exif_attrs
     }
 
+  def get_description(self) -> Optional[str]:
+    """Get the description of an image"""
+
+    attrs = {attr for attr in xattr.listxattr(self.path)}
+
+    if ATTR_DESCRIPTION in attrs:
+      return xattr.getxattr(self.path, ATTR_DESCRIPTION).decode('utf-8')
+
+    return None
+
   def get_exif_metadata(self) -> Dict:
     """Get metadata from an image as EXIF data"""
     data = {}

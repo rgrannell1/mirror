@@ -29,6 +29,7 @@ create table if not exists images (
   published        boolean,
   image_url        text,
   thumbnail_url    text,
+  description      text,
   album            text,
   dateTime         text,
   fNumber          text,
@@ -95,6 +96,7 @@ class Manifest:
   def add_image(self, image):
     """Add an image to the local database"""
 
+
     path = image.path
     album = os.path.dirname(path)
 
@@ -104,6 +106,7 @@ class Manifest:
     cursor = self.conn.cursor()
 
     exif_md = image.get_exif_metadata()
+    description = image.get_description()
 
     dateTime = exif_md[ATTR_DATE_TIME]
     fNumber = exif_md[ATTR_FSTOP]
@@ -128,6 +131,7 @@ class Manifest:
         "tags": tag_string,
         "published": published,
         "album": album,
+        "description": description,
         "dateTime": dateTime,
         "fNumber": fNumber,
         "focalLength": focalLength,
@@ -142,13 +146,14 @@ class Manifest:
 
     cursor.execute(
         """
-        insert into images (fpath, tags, published, album, dateTime, fNumber, focalLength, model, iso, width, height, address, longitude, latitude)
-        values (:fpath, :tags, :published, :album, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height, :address, :longitude, :latitude)
+        insert into images (fpath, tags, published, album, description, dateTime, fNumber, focalLength, model, iso, width, height, address, longitude, latitude)
+        values (:fpath, :tags, :published, :album, :description, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height, :address, :longitude, :latitude)
         on conflict(fpath)
         do update set
             tags = :tags,
             published = :published,
             album = :album,
+            description = :description,
             dateTime = :dateTime,
             fNumber = :fNumber,
             focalLength = :focalLength,
@@ -249,7 +254,7 @@ class Manifest:
     cursor = self.conn.cursor()
     cursor.execute("""
       select
-          images.fpath, images.tags, images.image_url, images.thumbnail_url,
+          images.fpath, images.tags, images.image_url, images.thumbnail_url, images.description as photo_description,
           images.dateTime, images.fNumber, images.focalLength, images.model,
           images.iso, images.width, images.height,
           images.address, images.longitude, images.latitude,
@@ -263,7 +268,7 @@ class Manifest:
 
     for row in cursor.fetchall():
       (
-        fpath, tags, image_url, thumbnail_url, dateTime,
+        fpath, tags, image_url, thumbnail_url, photo_description, dateTime,
         fNumber, focalLength, model, iso, width, height,
         address, longitude, latitude, album_name, cover_image, description, min_date, max_date) = row
 
@@ -289,6 +294,7 @@ class Manifest:
           'fpath': fpath,
           'id': str(hash(fpath)),
           'tags': tags.split(', '),
+          'description': photo_description,
           'exif': {
             'dateTime': dateTime,
             'fNumber': fNumber,

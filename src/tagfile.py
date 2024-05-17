@@ -54,7 +54,7 @@ class Tagfile:
 
       images[transclusion] = {
         ATTR_TAG: tags,
-        ATTR_DESCRIPTION: ""
+        ATTR_DESCRIPTION: image.get_description()
       }
 
     tag_file = [{
