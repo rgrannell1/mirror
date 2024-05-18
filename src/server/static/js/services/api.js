@@ -5,21 +5,31 @@ export class MirrorAPI {
   }
   async getPhotoMetadata(id) {
     const res = await fetch(`http://localhost:${this.port}/photo/${id}/metadata`, {
-      mode: 'no-cors'
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
 
-    const body = await res.json();
-
-    return body;
+    try {
+      const body = await res.json();
+      return body;
+    } catch (err) {
+      console.error(`failed to retrieve json for metadata request`);
+    }
   }
 
   async photoCount() {
     const res = await fetch(`http://localhost:${this.port}/photos/count`, {
-      mode: 'no-cors'
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
 
-    const body = await res.json();
-
-    return body.count;
+    try {
+      const body = await res.json();
+      return body.count;
+    } catch (err) {
+      console.error(`failed to retrieve json for metadata request`);
+    }
   }
 }
