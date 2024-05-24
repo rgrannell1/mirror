@@ -52,7 +52,8 @@ create table if not exists albums (
   cover_image      text,
   description      text,
   min_date         text,
-  max_date         text
+  max_date         text,
+  geolocation      text
 )
 """
 
@@ -177,10 +178,11 @@ class Manifest:
     album_name = album['title']
     cover_image = album['cover']
     description = album['description']
+    geolocation = album['geolocation']
 
     cursor = self.conn.cursor()
-    cursor.execute("insert or replace into albums (fpath, album_name, cover_image, description) values (?, ?, ?, ?)", (
-      fpath, album_name, cover_image, description
+    cursor.execute("insert or replace into albums (fpath, album_name, cover_image, description, geolocation) values (?, ?, ?, ?, ?)", (
+      fpath, album_name, cover_image, description, geolocation
     ))
     self.conn.commit()
 
@@ -258,7 +260,7 @@ class Manifest:
           images.dateTime, images.fNumber, images.focalLength, images.model,
           images.iso, images.width, images.height,
           images.address, images.longitude, images.latitude,
-          albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date
+          albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date, albums.geolocation
         from images
         inner join albums on images.album = albums.fpath
         where published = '1'
@@ -270,7 +272,7 @@ class Manifest:
       (
         fpath, tags, image_url, thumbnail_url, photo_description, dateTime,
         fNumber, focalLength, model, iso, width, height,
-        address, longitude, latitude, album_name, cover_image, description, min_date, max_date) = row
+        address, longitude, latitude, album_name, cover_image, description, min_date, max_date, geolocation) = row
 
       dirname = os.path.dirname(fpath)
       album_id = str(hash(dirname))
@@ -283,6 +285,7 @@ class Manifest:
           'max_date': max_date,
           'cover_image': os.path.join(dirname, cover_image),
           'description': description,
+          'geolocation': geolocation,
           'images': [],
           'image_count': 0
         }

@@ -27,7 +27,8 @@ from .constants import (
   ATTR_ALBUM_DESCRIPTION,
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
-  TITLE_PATTERN
+  TITLE_PATTERN,
+  ATTR_ALBUM_GEOLOCATION
 )
 
 from .tagfile import Tagfile
@@ -111,7 +112,8 @@ class PhotoVault:
             "attrs": {
               ATTR_ALBUM_TITLE: tag_file.get(ATTR_ALBUM_TITLE, ''),
               ATTR_ALBUM_COVER: tag_file.get(ATTR_ALBUM_COVER, ''),
-              ATTR_ALBUM_DESCRIPTION: tag_file.get(ATTR_ALBUM_DESCRIPTION, '')
+              ATTR_ALBUM_DESCRIPTION: tag_file.get(ATTR_ALBUM_DESCRIPTION, ''),
+              ATTR_ALBUM_GEOLOCATION: tag_file.get(ATTR_ALBUM_GEOLOCATION, '')
             }
           },
           "attrs": entry

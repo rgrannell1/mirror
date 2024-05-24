@@ -6,6 +6,7 @@ from .constants import (
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_DESCRIPTION,
   ATTR_ALBUM_COVER,
+  ATTR_ALBUM_GEOLOCATION
 )
 from typing import Dict
 
@@ -28,11 +29,16 @@ class Album:
     if ATTR_ALBUM_DESCRIPTION in attrs:
       description = xattr.getxattr(self.path, ATTR_ALBUM_DESCRIPTION).decode('utf-8')
 
+    geolocation = ""
+    if ATTR_ALBUM_GEOLOCATION in attrs:
+      geolocation = xattr.getxattr(self.path, ATTR_ALBUM_GEOLOCATION).decode('utf-8')
+
     return {
       'fpath': self.path,
       'title': xattr.getxattr(self.path, ATTR_ALBUM_TITLE).decode('utf-8'),
       'description': description,
-      'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8')
+      'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8'),
+      'geolocation': geolocation
     }
 
   def set_metadata(self, attrs):

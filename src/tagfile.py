@@ -11,6 +11,7 @@ from src.constants import (
   ATTR_ALBUM_TITLE,
   ATTR_ALBUM_DESCRIPTION,
   ATTR_ALBUM_COVER,
+  ATTR_ALBUM_GEOLOCATION,
   ATTR_ALBUM_ID,
   ATTR_TAG,
   ATTR_DESCRIPTION
@@ -62,6 +63,7 @@ class Tagfile:
       ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
       ATTR_ALBUM_DESCRIPTION: album_md.get('description', ''),
       ATTR_ALBUM_ID: self.id(),
+      ATTR_ALBUM_GEOLOCATION: album_md.get('geolocation', ''),
       'images': images
     }]
 
