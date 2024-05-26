@@ -1,4 +1,5 @@
 
+from src.constants import DB_PATH
 from src.photo import PhotoVault, Album
 from src.spaces import Spaces
 from src.manifest import Manifest
@@ -10,7 +11,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   the images to DigitalOcean Spaces.
   """
 
-  db = Manifest(metadata_path)
+  db = Manifest(DB_PATH, metadata_path)
   db.create()
 
   spaces = Spaces()

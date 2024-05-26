@@ -1,6 +1,7 @@
 
 import json
 
+from src.constants import DB_PATH
 from src.manifest import Manifest
 from src.photo import PhotoVault
 from src.syndications import JSONFeed
@@ -12,7 +13,7 @@ def feed(dir: str, metadata_path: str, out_dir: str):
   image_by_tags = defaultdict(list)
   all_images = []
 
-  db = Manifest(metadata_path)
+  db = Manifest(DB_PATH, metadata_path)
 
   for image in db.list_publishable():
     all_images.append(image)

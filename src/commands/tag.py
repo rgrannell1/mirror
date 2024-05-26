@@ -1,4 +1,5 @@
 
+from src.constants import DB_PATH
 from src.photo import PhotoVault, Photo
 from src.tags import Tags
 from src.tagfile import Tagfile
@@ -9,7 +10,7 @@ def tag(dir: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
      attributes to each image"""
 
-  db = Manifest(metadata_path)
+  db = Manifest(DB_PATH, metadata_path)
   db.create()
 
   vault = PhotoVault(dir, metadata_path)

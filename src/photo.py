@@ -232,7 +232,7 @@ class Photo:
     if ATTR_DESCRIPTION in attrs:
       return xattr.getxattr(self.path, ATTR_DESCRIPTION).decode('utf-8')
 
-    return None
+    return ""
 
   def get_exif_metadata(self) -> Dict:
     """Get metadata from an image as EXIF data"""
@@ -250,6 +250,13 @@ class Photo:
 
     return data
 
+  def set_xattr(self, attr, value):
+    """Set an extended-attribute on an image"""
+    try:
+      xattr.setxattr(self.path, attr.encode(), value.encode())
+    except Exception as err:
+      raise ValueError(f"failed to set xattr {attr} on {self.path}") from err
+
   def set_metadata(self, attrs, album):
     """Set metadata on an image as extended-attributes"""
 
@@ -261,17 +268,17 @@ class Photo:
 
     if location:
       for attr, value in location.items():
-        xattr.setxattr(self.path, attr.encode(), value.encode())
+        self.set_xattr(attr, value)
 
     for attr, value in exif_attrs.items():
-      xattr.setxattr(self.path, attr.encode(), value.encode())
+      self.set_xattr(attr, value)
 
     for attr, value in attrs.items():
       if attr != ATTR_TAG:
-        xattr.setxattr(self.path, attr.encode(), value.encode())
+        self.set_xattr(attr, value)
         continue
 
-      xattr.setxattr(self.path, attr.encode(), ', '.join(value).encode())
+      self.set_xattr(attr, ', '.join(value))
 
   def published(self) -> bool:
     """Is this image publishable?"""

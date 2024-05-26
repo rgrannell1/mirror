@@ -58,8 +58,8 @@ create table if not exists albums (
 """
 
 class Manifest:
-  def __init__(self, metadata_path: str):
-    fpath = os.path.expanduser('/home/rg/.mirror-manifest.db')
+  def __init__(self, db_path: str, metadata_path: str):
+    fpath = os.path.expanduser(db_path)
     self.conn = sqlite3.connect(fpath)
     self.metadata_path = metadata_path
 
@@ -307,11 +307,6 @@ class Manifest:
             'width': width,
             'height': height,
           },
-          #'location': {
-          #  'address': address,
-          #  'longitude': longitude,
-          #  'latitude': latitude
-          #},
           'image_url': image_url.replace(SPACES_DOMAIN, ''),
           'thumbnail_url': thumbnail_url.replace(SPACES_DOMAIN, '')
         })

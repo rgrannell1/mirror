@@ -3,6 +3,7 @@
 import re
 from src.config import SPACES_BUCKET
 
+DB_PATH = '/home/rg/.mirror-manifest.db'
 SPACES_DOMAIN = f'https://{SPACES_BUCKET}.ams3.cdn.digitaloceanspaces.com/'
 
 # Album Attributes

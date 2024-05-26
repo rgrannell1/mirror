@@ -32,7 +32,7 @@ class Tagfile:
   def id(self):
     return str(hash(self.dirname))
 
-  def content(self) -> str:
+  def data(self) -> str:
     """Given a series of images, and a directory, return the content of a tagfile."""
 
     images = {}
@@ -58,7 +58,7 @@ class Tagfile:
         ATTR_DESCRIPTION: image.get_description()
       }
 
-    tag_file = [{
+    return [{
       ATTR_ALBUM_TITLE: album_md.get('title', self.dirname),
       ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
       ATTR_ALBUM_DESCRIPTION: album_md.get('description', ''),
@@ -67,18 +67,17 @@ class Tagfile:
       'images': images
     }]
 
-    return yaml.dump(tag_file)
+  def to_yaml(self) -> str:
+    return yaml.dump(self.data())
 
   def write(self) -> None:
     """Write a tagfile to the current directory."""
-
-    content = self.content()
 
     tag_path = f"{self.dirname}/tags.md"
 
     # write the tagfile content to the directory
     with open(tag_path, "w") as conn:
-      conn.write(content)
+      conn.write(self.to_yaml())
 
   @classmethod
   def read(kls, fpath) -> Dict:
@@ -90,8 +89,11 @@ class Tagfile:
     with open(fpath, 'r') as conn:
       yaml_data = yaml.safe_load(conn)
 
-    jsonschema.validate(instance=yaml_data[0], schema=tag_schema)
-    tag_file = yaml_data[0]
+    try:
+      jsonschema.validate(instance=yaml_data[0], schema=tag_schema)
+      tag_file = yaml_data[0]
+    except Exception as err:
+      raise Exception(f"Error reading tagfile {fpath}") from err
 
     cover = tag_file[ATTR_ALBUM_COVER]
     dirpath = os.path.dirname(fpath)

@@ -1,5 +1,6 @@
 """Album for a photo-album"""""
 
+from functools import lru_cache
 import xattr
 
 from .constants import (
@@ -16,29 +17,40 @@ class Album:
   def __init__(self, path):
     self.path = path
 
+  @lru_cache(maxsize=None)
+  def list_xattrs(self) -> set:
+    """List all extended-attributes on the album"""
+
+    return {attr for attr in xattr.listxattr(self.path)}
+
+  @lru_cache(maxsize=None)
+  def has_xattr(self, attr) -> bool:
+    """Check if an extended-attribute exists on the album"""
+
+    return attr in self.list_xattrs()
+
+  @lru_cache(maxsize=None)
+  def get_xattr(self, attr: str, default=None) -> str:
+    """Get an extended-attribute from the album"""
+
+    if default is not None and not self.has_xattr(attr):
+      return default
+
+    return xattr.getxattr(self.path, attr).decode('utf-8')
+
   def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""
 
-    attrs = {attr for attr in xattr.listxattr(self.path)}
-
-    # No metadata is set on the album
-    if ATTR_ALBUM_TITLE not in attrs:
+    # No metadata is set on the album; ignore it.
+    if not self.has_xattr(ATTR_ALBUM_TITLE):
       return None
-
-    description = ""
-    if ATTR_ALBUM_DESCRIPTION in attrs:
-      description = xattr.getxattr(self.path, ATTR_ALBUM_DESCRIPTION).decode('utf-8')
-
-    geolocation = ""
-    if ATTR_ALBUM_GEOLOCATION in attrs:
-      geolocation = xattr.getxattr(self.path, ATTR_ALBUM_GEOLOCATION).decode('utf-8')
 
     return {
       'fpath': self.path,
-      'title': xattr.getxattr(self.path, ATTR_ALBUM_TITLE).decode('utf-8'),
-      'description': description,
-      'cover': xattr.getxattr(self.path, ATTR_ALBUM_COVER).decode('utf-8'),
-      'geolocation': geolocation
+      'title': self.get_xattr(ATTR_ALBUM_TITLE),
+      'description': self.get_xattr(ATTR_ALBUM_DESCRIPTION, ""),
+      'cover': self.get_xattr(ATTR_ALBUM_COVER),
+      'geolocation': self.get_xattr(ATTR_ALBUM_GEOLOCATION, "")
     }
 
   def set_metadata(self, attrs):
