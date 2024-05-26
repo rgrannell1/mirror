@@ -274,11 +274,13 @@ class Photo:
       self.set_xattr(attr, value)
 
     for attr, value in attrs.items():
-      if attr != ATTR_TAG:
-        self.set_xattr(attr, value)
-        continue
-
-      self.set_xattr(attr, ', '.join(value))
+      try:
+        if attr == ATTR_TAG:
+          self.set_xattr(attr, ', '.join(value))
+        else:
+          self.set_xattr(attr, value)
+      except Exception as err:
+        raise ValueError(f"failed to set {attr} to {value} on image") from err
 
   def published(self) -> bool:
     """Is this image publishable?"""
