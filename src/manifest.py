@@ -97,7 +97,6 @@ class Manifest:
   def add_image(self, image):
     """Add an image to the local database"""
 
-
     path = image.path
     album = os.path.dirname(path)
 

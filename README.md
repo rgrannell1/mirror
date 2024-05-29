@@ -20,6 +20,8 @@ flask --app src/server/app.py run
 
 Mirror generates a `tags.md` file for every folder in a photo-library. It applies tags to each photo by setting [extended-attributes](https://en.wikipedia.org/wiki/Extended_file_attributes)
 
+## Installation
+
 ## License
 
 The MIT License

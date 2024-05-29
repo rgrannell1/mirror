@@ -3,6 +3,7 @@
 from typing import List
 
 from src.photo import Photo
+from src.constants import PERSONAL_URL, PHOTOS_URL
 import datetime
 import re
 
@@ -11,8 +12,8 @@ class JSONFeed:
   def author(self):
     return {
       'name': 'Róisín Grannell',
-      'url': 'https://rgrannell.xyz',
-      'avatar': 'https://rgrannell.xyz/me.png'
+      'url': PERSONAL_URL,
+      'avatar': f'{PERSONAL_URL}/me.png'
     }
 
   @classmethod
@@ -39,12 +40,12 @@ class JSONFeed:
   def tag_feed(cls, db, tag: str, images: List[Photo]):
     return {
       'version': 'https://jsonfeed.org/version/1',
-      'title': f'📷 {tag} — photos.rgrannell.xyz',
-      'home_page_url': 'https://photos.rgrannell.xyz',
-      'feed_url': f'https://photos.rgrannell.xyz/feeds/{tag}.json',
+      'title': f'📷 {tag} — {PHOTOS_URL}',
+      'home_page_url': PHOTOS_URL,
+      'feed_url': f'{PHOTOS_URL}/feeds/{tag}.json',
       'description': f'📷 {tag} — photos.rgrannell.xyz',
-      'icon': 'https://photos.rgrannell.xyz/icons/android-chrome-512x512.png',
-      'favicon': 'https://photos.rgrannell.xyz/favicon.ico',
+      'icon': f'{PHOTOS_URL}/icons/android-chrome-512x512.png',
+      'favicon': f'{PHOTOS_URL}/favicon.ico',
       'author': JSONFeed.author(),
       'language': 'en-IE',
       'items': [JSONFeed.image(db, image) for image in images]
@@ -55,11 +56,11 @@ class JSONFeed:
     return {
       'version': 'https://jsonfeed.org/version/1',
       'title': f'📷 photos.rgrannell.xyz',
-      'home_page_url': 'https://photos.rgrannell.xyz',
-      'feed_url': 'https://photos.rgrannell.xyz/feeds/index.json',
+      'home_page_url': f'{PHOTOS_URL}',
+      'feed_url': f'{PHOTOS_URL}/feeds/index.json',
       'description': f'📷 photos.rgrannell.xyz',
-      'icon': 'https://photos.rgrannell.xyz/icons/android-chrome-512x512.png',
-      'favicon': 'https://photos.rgrannell.xyz/favicon.ico',
+      'icon': f'{PHOTOS_URL}/icons/android-chrome-512x512.png',
+      'favicon': f'{PHOTOS_URL}/favicon.ico',
       'author': JSONFeed.author(),
       'language': 'en-IE',
       'items': [JSONFeed.image(db, image) for image in images]

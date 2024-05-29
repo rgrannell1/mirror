@@ -3,12 +3,16 @@
 import boto3
 import botocore
 
+from typing import Tuple
 from .config import (
   SPACES_REGION,
   SPACES_ENDPOINT_URL,
   SPACES_BUCKET,
   SPACES_ACCESS_KEY_ID,
   SPACES_SECRET_KEY
+)
+from .constants import (
+  PHOTOS_URL
 )
 
 class Spaces:
@@ -55,14 +59,14 @@ class Spaces:
           {
             'AllowedHeaders': ['*'],
             'AllowedMethods': ['GET'],
-            'AllowedOrigins': ['https://photos.rgrannell.xyz'],
+            'AllowedOrigins': [PHOTOS_URL],
             'ExposeHeaders': ['ETag']
           }
         ]
       })
 
   def upload_public(self, key: str, content: str) -> bool:
-    """Check if a file exists in the Spaces bucket"""
+    """Upload a file publically to S3"""
 
     return self.client.put_object(
       Body=content,
@@ -106,14 +110,14 @@ class Spaces:
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
-  def thumbnail_status(self, encoded_image) -> (bool, str):
+  def thumbnail_status(self, encoded_image) -> Tuple[bool, str]:
     """Check if a thumbnail for an image exists in the Spaces bucket"""
 
     name = f"{encoded_image['hash']}_thumbnail.webp"
 
     return self.has_object(name), self.url(name)
 
-  def image_status(self, encoded_image) -> (bool, str):
+  def image_status(self, encoded_image) -> Tuple[bool, str]:
     """Check if an image exists in the Spaces bucket"""
 
     name = f"{encoded_image['hash']}.webp"
