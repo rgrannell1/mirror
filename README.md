@@ -4,10 +4,13 @@
 Bulk-tag a photo-library
 
 ```sh
-mirror tag                       <dir>
-mirror list-tags                 <dir>
-mirror list-photos [--tag=<tag>] <dir>
-mirror publish                   <dir>
+  mirror create-manifest                           <dir>
+  mirror tag --metadata=<fpath>                    <dir>
+  mirror list-tags --metadata=<fpath> [--graphvis] <dir>
+  mirror list-photos [--tag=<tag>]                 <dir>
+  mirror publish --metadata=<fpath>                <dir> <manifest>
+  mirror feed --metadata=<fpath>                   <dir> <outdir>
+  mirror (-h | --help)
 ```
 
 Start the server
