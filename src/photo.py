@@ -219,7 +219,7 @@ class Photo(Media):
   def set_metadata(self, attrs, album: TagfileAlbumConfiguration):
     """Set metadata on an image as extended-attributes"""
 
-    Album(album.fpath).set_metadata(album.attrs)
+    Album(album.fpath).set_xattrs(album.attrs)
 
     exif_attrs = self.get_exif_metadata()
 
@@ -251,9 +251,7 @@ class Photo(Media):
   def tags(self) -> List[str]:
     """Get the tag csv for an image"""
 
-    md = self.get_metadata()
-
-    tags = md.get(ATTR_TAG, set())
+    tags = self.get_metadata().get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
   def encode_thumbnail(self) -> ImageContent:

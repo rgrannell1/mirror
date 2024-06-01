@@ -118,16 +118,6 @@ class Manifest:
     width = exif_md[ATTR_WIDTH]
     height = exif_md[ATTR_HEIGHT]
 
-    #data = image.estimate_location()
-    data = None
-
-    if not data:
-      data = {}
-
-    address = data.get(ATTR_LOCATION_ADDRESS)
-    longitude = data.get(ATTR_LOCATION_LONGITUDE)
-    latitude = data.get(ATTR_LOCATION_LATITUDE)
-
     params = {
         "fpath": path,
         "tags": tag_string,
@@ -141,15 +131,12 @@ class Manifest:
         "iso": iso,
         "width": width,
         "height": height,
-        "address": address,
-        "longitude": longitude,
-        "latitude": latitude
     }
 
     cursor.execute(
         """
-        insert into images (fpath, tags, published, album, description, dateTime, fNumber, focalLength, model, iso, width, height, address, longitude, latitude)
-        values (:fpath, :tags, :published, :album, :description, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height, :address, :longitude, :latitude)
+        insert into images (fpath, tags, published, album, description, dateTime, fNumber, focalLength, model, iso, width, height)
+        values (:fpath, :tags, :published, :album, :description, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height)
         on conflict(fpath)
         do update set
             tags = :tags,
@@ -162,10 +149,7 @@ class Manifest:
             model = :model,
             iso = :iso,
             width = :width,
-            height = :height,
-            address = :address,
-            longitude = :longitude,
-            latitude = :latitude;
+            height = :height
         """,
         params
     )

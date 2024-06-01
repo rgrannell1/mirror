@@ -29,7 +29,9 @@ class Tagfile:
     self.images = images
     self.metadata_path = metadata_path
 
-  def id(self):
+  def id(self) -> str:
+    """Compute a directory-specific tagfile ID"""
+
     return str(hash(self.dirname))
 
   def data(self) -> str:

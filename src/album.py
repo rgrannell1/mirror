@@ -11,11 +11,10 @@ from .constants import (
   ATTR_ALBUM_COVER,
   ATTR_ALBUM_GEOLOCATION
 )
-from typing import Dict
-from typing import TypeVar, Optional
+from typing import Dict, TypeVar, Optional
+
+
 @dataclass
-
-
 class AlbumMetadata:
   """A dataclass representing metadata for an album"""
   fpath: str
@@ -54,6 +53,12 @@ class Album:
 
     return xattr.getxattr(self.path, attr).decode('utf-8')
 
+  def set_xattrs(self, attrs: Dict[str, str]):
+    """Set metadata on the album as extended-attributes"""
+
+    for attr, value in attrs.items():
+      xattr.setxattr(self.path, attr.encode(), value.encode())
+
   def get_metadata(self) -> Optional[AlbumMetadata]:
     """Get metadata from an image as extended-attributes"""
 
@@ -68,9 +73,3 @@ class Album:
       cover=self.get_xattr(ATTR_ALBUM_COVER),
       geolocation=self.get_xattr(ATTR_ALBUM_GEOLOCATION, "")
     )
-
-  def set_metadata(self, attrs: Dict):
-    """Set metadata on the album as extended-attributes"""
-
-    for attr, value in attrs.items():
-      xattr.setxattr(self.path, attr.encode(), value.encode())
