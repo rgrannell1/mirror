@@ -1,4 +1,5 @@
 
+from dataclasses import dataclass
 import io
 import os
 import xattr
@@ -25,6 +26,29 @@ from .constants import (
 from .tagfile import Tagfile
 from .album import Album
 
+
+@dataclass
+class TagfileAlbumConfiguration:
+  """Tagfile information about an album"""
+  fpath: str
+  attrs: Dict
+
+
+@dataclass
+class TagfileImageConfiguration:
+  """Tagfile information about an image"""
+  fpath: str
+  album: TagfileAlbumConfiguration
+  attrs: Dict
+
+
+@dataclass
+class ImageContent:
+  """A dataclass representing an images content"""
+  hash: str
+  content: str
+
+
 class PhotoVault:
   """A directory of photos"""
   def __init__(self, path: str, metadata_path: str):
@@ -46,8 +70,8 @@ class PhotoVault:
     return images
 
   def list_albums(self) -> List[Album]:
-    """Recursively list all directories under a given path.
-    """
+    """Recursively list all directories under a given path."""
+
     albums = []
 
     for dirpath, _, _ in os.walk(self.path):
@@ -64,8 +88,10 @@ class PhotoVault:
         if filename == 'tags.md':
           yield os.path.join(dirpath, filename)
 
-  def list_tagfile_image(self) -> Iterator[Dict]:
+  def list_tagfile_image(self) -> List[TagfileImageConfiguration]:
     """List images in tagfiles"""
+
+    output = []
 
     for tagfile in self.list_tagfiles():
       dpath = os.path.dirname(tagfile)
@@ -81,14 +107,16 @@ class PhotoVault:
         for attr in SET_ATTR_ALBUM:
           attrs[attr] = tag_file.get(attr, '')
 
-        yield {
-          "fpath": os.path.join(dpath, image_name),
-          "album": {
-            "fpath": dpath,
-            "attrs": attrs
-          },
-          "attrs": entry
-        }
+        output.append(TagfileImageConfiguration(
+          fpath=os.path.join(dpath, image_name),
+          album=TagfileAlbumConfiguration(
+            fpath=dpath,
+            attrs=attrs
+          ),
+          attrs=entry
+        ))
+
+    return output
 
   def list_by_folder(self) -> Dict[str, List['Photo']]:
     """List all images by folder."""
@@ -188,10 +216,10 @@ class Photo(Media):
 
     return data
 
-  def set_metadata(self, attrs, album):
+  def set_metadata(self, attrs, album: TagfileAlbumConfiguration):
     """Set metadata on an image as extended-attributes"""
 
-    Album(album['fpath']).set_metadata(album['attrs'])
+    Album(album.fpath).set_metadata(album.attrs)
 
     exif_attrs = self.get_exif_metadata()
 
@@ -228,7 +256,7 @@ class Photo(Media):
     tags = md.get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-  def encode_thumbnail(self) -> Dict:
+  def encode_thumbnail(self) -> ImageContent:
     """Encode a image as a thumbnail Webp, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -251,12 +279,12 @@ class Photo(Media):
       hasher = hashlib.new('sha256')
       hasher.update(contents)
 
-      return {
-        'hash': hasher.hexdigest(),
-        'content': contents
-      }
+      return ImageContent(
+        hash=hasher.hexdigest(),
+        content=contents
+      )
 
-  def encode_image(self) -> Dict:
+  def encode_image(self) -> ImageContent:
     """Encode an image as Webp, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -276,7 +304,7 @@ class Photo(Media):
       hasher = hashlib.new('sha256')
       hasher.update(contents)
 
-      return {
-        'hash': hasher.hexdigest(),
-        'content': contents
-      }
+      return ImageContent(
+        hash=hasher.hexdigest(),
+        content=contents
+      )

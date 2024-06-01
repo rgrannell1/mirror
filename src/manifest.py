@@ -7,6 +7,8 @@ import sqlite3
 
 from typing import Iterator
 
+from src.album import AlbumMetadata
+
 from .photo import Photo
 from .constants import (
   ATTR_DATE_TIME,
@@ -170,18 +172,16 @@ class Manifest:
 
     self.conn.commit()
 
-  def add_album(self, album):
+  def add_album(self, album_md: AlbumMetadata):
     """Add an album to the local database"""
-
-    fpath = album['fpath']
-    album_name = album['title']
-    cover_image = album['cover']
-    description = album['description']
-    geolocation = album['geolocation']
 
     cursor = self.conn.cursor()
     cursor.execute("insert or replace into albums (fpath, album_name, cover_image, description, geolocation) values (?, ?, ?, ?, ?)", (
-      fpath, album_name, cover_image, description, geolocation
+      album_md.fpath,
+      album_md.title,
+      album_md.cover,
+      album_md.description,
+      album_md.geolocation
     ))
     self.conn.commit()
 
@@ -211,10 +211,7 @@ class Manifest:
     if not row:
       False
 
-    if row[0]:
-      return True
-    else:
-      return False
+    return bool(row[0])
 
   def register_thumbnail_url(self, image, url):
     """Register a thumbnail URL for an image in the local database"""
@@ -258,7 +255,6 @@ class Manifest:
           images.fpath, images.tags, images.image_url, images.thumbnail_url, images.description as photo_description,
           images.dateTime, images.fNumber, images.focalLength, images.model,
           images.iso, images.width, images.height,
-          images.address, images.longitude, images.latitude,
           albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date, albums.geolocation
         from images
         inner join albums on images.album = albums.fpath
@@ -271,7 +267,7 @@ class Manifest:
       (
         fpath, tags, image_url, thumbnail_url, photo_description, dateTime,
         fNumber, focalLength, model, iso, width, height,
-        address, longitude, latitude, album_name, cover_image, description, min_date, max_date, geolocation) = row
+        album_name, cover_image, description, min_date, max_date, geolocation) = row
 
       dirname = os.path.dirname(fpath)
       album_id = str(hash(dirname))

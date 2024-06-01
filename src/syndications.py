@@ -1,9 +1,9 @@
 """An RSS feed for this site, at the album-level to avoid feed-bloat."""
 
-from typing import List
+from typing import List, Dict
 
 from src.photo import Photo
-from src.constants import PERSONAL_URL, PHOTOS_URL
+from src.constants import PERSONAL_URL, PHOTOS_URL, AUTHOR
 import datetime
 import re
 
@@ -11,7 +11,7 @@ class JSONFeed:
   @classmethod
   def author(self):
     return {
-      'name': 'Róisín Grannell',
+      'name': AUTHOR,
       'url': PERSONAL_URL,
       'avatar': f'{PERSONAL_URL}/me.png'
     }
@@ -26,7 +26,7 @@ class JSONFeed:
     return date_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
 
   @classmethod
-  def image(cls, db, image: Photo):
+  def image(cls, db, image: Photo) -> Dict:
     image_url, thumbnail_url, date_time, _ = db.image_metadata(image.path)
 
     return {
@@ -37,7 +37,7 @@ class JSONFeed:
     }
 
   @classmethod
-  def tag_feed(cls, db, tag: str, images: List[Photo]):
+  def tag_feed(cls, db, tag: str, images: List[Photo]) -> Dict:
     return {
       'version': 'https://jsonfeed.org/version/1',
       'title': f'📷 {tag} — {PHOTOS_URL}',
@@ -52,7 +52,7 @@ class JSONFeed:
     }
 
   @classmethod
-  def feed(cls, db, images: List[Photo]):
+  def feed(cls, db, images: List[Photo]) -> Dict:
     return {
       'version': 'https://jsonfeed.org/version/1',
       'title': f'📷 photos.rgrannell.xyz',

@@ -59,11 +59,11 @@ class Tagfile:
       }
 
     return [{
-      ATTR_ALBUM_TITLE: album_md.get('title', self.dirname),
-      ATTR_ALBUM_COVER: album_md.get('cover', 'Cover'),
-      ATTR_ALBUM_DESCRIPTION: album_md.get('description', ''),
+      ATTR_ALBUM_TITLE: album_md.title if album_md.title else self.dirname,
+      ATTR_ALBUM_COVER: album_md.cover if album_md.cover else 'Cover',
+      ATTR_ALBUM_DESCRIPTION: album_md.description,
       ATTR_ALBUM_ID: self.id(),
-      ATTR_ALBUM_GEOLOCATION: album_md.get('geolocation', ''),
+      ATTR_ALBUM_GEOLOCATION: album_md.geolocation,
       'images': images
     }]
 

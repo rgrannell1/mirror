@@ -12,6 +12,12 @@
     "user.xyz.rgrannell.photos.album_cover": {
       "type": "string"
     },
+    "user.xyz.rgrannell.photos.album_description": {
+      "type": "string"
+    },
+    "user.xyz.rgrannell.photos.geolocation": {
+      "type": "string"
+    },
     "images": {
       "type": "object",
       "additionalProperties": {
@@ -20,6 +26,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "user.xyz.rgrannell.photos.description": {
+          "type": "string"
         }
       }
     }

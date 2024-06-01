@@ -4,6 +4,8 @@ import boto3
 import botocore
 
 from typing import Tuple
+
+from src.photo import ImageContent
 from .config import (
   SPACES_REGION,
   SPACES_ENDPOINT_URL,
@@ -18,9 +20,9 @@ from .constants import (
 class Spaces:
   """Interface to DigitalOcean Spaces"""
 
-  def __init__(self):
-    self.session = Spaces.session()
-    self.client = Spaces.client(self.session)
+  def __init__(self, session: boto3.session.Session = None, client: boto3.client = None):
+    self.session = session if session else Spaces.session()
+    self.client = client if client else Spaces.client(self.session)
 
   @classmethod
   def session(cls):
@@ -33,7 +35,7 @@ class Spaces:
     )
 
   @classmethod
-  def client(cls, session):
+  def client(cls, session: boto3.session.Session):
     """Create a boto3 client for DigitalOcean Spaces"""
 
     return session.client(
@@ -77,23 +79,23 @@ class Spaces:
       ContentType='image/webp',
       ACL='public-read')
 
-  def upload_image(self, encoded_data):
-    """Upload an image to the Spaces bucket"""
+  def upload_image(self, encoded_data: ImageContent):
+    """Upload an image to the Spaces bucket. Return a CDN link"""
 
-    name = f"{encoded_data['hash']}.webp"
-    self.upload_public(name, encoded_data['content'])
-
-    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
-
-  def upload_thumbnail(self, encoded_data):
-    """Upload a thumbnail to the Spaces bucket"""
-
-    name = f"{encoded_data['hash']}_thumbnail.webp"
-    self.upload_public(name, encoded_data['content'])
+    name = f"{encoded_data.hash}.webp"
+    self.upload_public(name, encoded_data.content)
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
-  def has_object(self, name):
+  def upload_thumbnail(self, encoded_data: ImageContent):
+    """Upload a thumbnail to the Spaces bucket. Return a CDN link"""
+
+    name = f"{encoded_data.hash}_thumbnail.webp"
+    self.upload_public(name, encoded_data.content)
+
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+
+  def has_object(self, name: str) -> bool:
     """Check if a file exists in the Spaces bucket"""
 
     try:
@@ -102,25 +104,25 @@ class Spaces:
     except Exception as err:
       if "404" in str(err):
         return False
-      else:
-        raise
+
+      raise
 
   def url(self, name) -> str:
-    """Return the URL of a file in the Spaces bucket"""
+    """Return the CDN URL of a file in the Spaces bucket"""
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
-  def thumbnail_status(self, encoded_image) -> Tuple[bool, str]:
+  def thumbnail_status(self, encoded_image: ImageContent) -> Tuple[bool, str]:
     """Check if a thumbnail for an image exists in the Spaces bucket"""
 
-    name = f"{encoded_image['hash']}_thumbnail.webp"
+    name = f"{encoded_image.hash}_thumbnail.webp"
 
     return self.has_object(name), self.url(name)
 
-  def image_status(self, encoded_image) -> Tuple[bool, str]:
+  def image_status(self, encoded_image: ImageContent) -> Tuple[bool, str]:
     """Check if an image exists in the Spaces bucket"""
 
-    name = f"{encoded_image['hash']}.webp"
+    name = f"{encoded_image.hash}.webp"
 
     return self.has_object(name), self.url(name)
 

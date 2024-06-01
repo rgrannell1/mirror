@@ -14,20 +14,15 @@ def tag(dir: str, metadata_path: str):
   db.create()
 
   vault = PhotoVault(dir, metadata_path)
-  tag_metadata = Tags(metadata_path)
 
   idx = 0
-  images = list(vault.list_tagfile_image())
+  images = vault.list_tagfile_image()
 
   # set metadata on each image mentioned in a tagfile
   for entry in images:
-    fpath = entry['fpath']
-    attrs = entry['attrs']
-    album = entry['album']
-
     Log.info(f"setting xattr metadata on photo {idx} / { len(images) }", clear=True)
 
-    Photo(fpath, metadata_path).set_metadata(attrs, album)
+    Photo(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
     idx += 1
 
   idx = 0
@@ -47,9 +42,9 @@ def tag(dir: str, metadata_path: str):
     db.add_image(image)
 
   for album in vault.list_albums():
-    md = album.get_metadata()
+    album_md = album.get_metadata()
 
-    if not md:
+    if not album_md:
       continue
 
-    db.add_album(md)
+    db.add_album(album_md)

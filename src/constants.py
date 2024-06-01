@@ -13,6 +13,7 @@ ATTR_ALBUM_COVER = 'user.xyz.rgrannell.photos.album_cover'
 ATTR_ALBUM_DESCRIPTION = 'user.xyz.rgrannell.photos.album_description'
 ATTR_ALBUM_GEOLOCATION = 'user.xyz.rgrannell.photos.geolocation'
 
+# The set of attributes associated with an album
 SET_ATTR_ALBUM = {
   ATTR_ALBUM_ID,
   ATTR_ALBUM_TITLE,
@@ -50,11 +51,11 @@ DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 
 TITLE_PATTERN = re.compile(r'!\[(.*?)\]')
 
-# URLS
+# URLs
 PERSONAL_URL = "https://rgrannell.xyz"
 PHOTOS_URL = "https://photos.rgrannell.xyz"
 
-# Attr-Exif Associations
+# Attr-Exif Property Associations
 EXIF_ATTR_ASSOCIATIONS = [
   (ATTR_DATE_TIME, 'DateTimeOriginal'),
   (ATTR_FSTOP, 'FNumber'),
@@ -64,3 +65,6 @@ EXIF_ATTR_ASSOCIATIONS = [
   (ATTR_WIDTH, 'ExifImageWidth'),
   (ATTR_HEIGHT, 'ExifImageHeight')
 ]
+
+# Author
+AUTHOR = 'Róisín Grannell'

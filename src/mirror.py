@@ -7,7 +7,7 @@ from src.commands.publish import publish
 from src.commands.feed import feed
 
 class Mirror:
-  """The core-logic of Mirror."""
+  """The core-logic of Mirror. Invoked by the CLI"""
 
   @staticmethod
   def tag(dir: str, metadata_path: str) -> None:
