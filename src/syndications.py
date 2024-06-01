@@ -27,13 +27,13 @@ class JSONFeed:
 
   @classmethod
   def image(cls, db, image: Photo) -> Dict:
-    image_url, thumbnail_url, date_time, _ = db.image_metadata(image.path)
+    md = db.image_metadata(image.path)
 
     return {
-      "id": image_url,
-      "url": image_url,
-      "image": thumbnail_url,
-      "date_published": JSONFeed.rfc_date(date_time)
+      "id": md.image_url,
+      "url": md.image_url,
+      "image": md.thumbnail_url,
+      "date_published": JSONFeed.rfc_date(md.date_time)
     }
 
   @classmethod

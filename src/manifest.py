@@ -1,4 +1,5 @@
 
+from dataclasses import dataclass
 import os
 
 import json
@@ -18,31 +19,28 @@ from .constants import (
   ATTR_ISO,
   ATTR_WIDTH,
   ATTR_HEIGHT,
-  ATTR_LOCATION_ADDRESS,
-  ATTR_LOCATION_LONGITUDE,
-  ATTR_LOCATION_LATITUDE,
   SPACES_DOMAIN
 )
 
 IMAGES_TABLE = """
 create table if not exists images (
-  fpath            text primary key,
-  tags             text,
-  published        boolean,
-  image_url        text,
-  thumbnail_url    text,
-  description      text,
-  album            text,
-  dateTime         text,
-  fNumber          text,
-  focalLength      text,
-  model            text,
-  iso              text,
-  width            text,
-  height           text,
-  address          text,
-  longitude        text,
-  latitude         text,
+  fpath              text primary key,
+  tags               text,
+  published          boolean,
+  image_url          text,
+  thumbnail_url      text,
+  description        text,
+  album              text,
+  dateTime           text,
+  fNumber            text,
+  focalLength        text,
+  model              text,
+  iso                text,
+  width              text,
+  height             text,
+  address            text,
+  longitude          text,
+  latitude           text,
   foreign key(album) references albums(fpath)
 )
 """
@@ -59,7 +57,17 @@ create table if not exists albums (
 )
 """
 
+@dataclass
+class ImageMetadata:
+  image_url=str
+  thumbnail_url=str
+  date_time=str
+  album_name=str
+
+
 class Manifest:
+  """The local database containing information about the photo albums"""
+
   def __init__(self, db_path: str, metadata_path: str):
     fpath = os.path.expanduser(db_path)
     self.conn = sqlite3.connect(fpath)
@@ -82,74 +90,69 @@ class Manifest:
     for row in cursor.fetchall():
       yield Photo(row[0], self.metadata_path)
 
-  def image_metadata(self, fpath: str) -> Iterator:
+  def image_metadata(self, fpath: str) -> ImageMetadata:
+    """Get metadata for a specific image"""
+
     cursor = self.conn.cursor()
-    cursor.execute("""select
-      images.image_url, images.thumbnail_url,
-      images.dateTime, albums.album_name
-    from images
-    inner join albums on images.album = albums.fpath
-    where published = '1' and images.fpath = ?
+    cursor.execute("""
+      select
+        images.image_url, images.thumbnail_url,
+        images.dateTime, albums.album_name
+      from images
+      inner join albums on images.album = albums.fpath
+      where published = '1' and images.fpath = ?
     """, (fpath,))
 
     row = cursor.fetchone()
-    return row
+
+    return ImageMetadata(
+      image_url=row[0],
+      thumbnail_url=row[1],
+      date_time=row[2],
+      album_name=row[3]
+    )
 
 
-  def add_image(self, image):
+  def add_image(self, image: Photo):
     """Add an image to the local database"""
 
     path = image.path
     album = os.path.dirname(path)
 
-    published = image.published()
-    tag_string = image.tag_string()
-
-    cursor = self.conn.cursor()
-
     exif_md = image.get_exif_metadata()
-    description = image.get_description()
-
-    dateTime = exif_md[ATTR_DATE_TIME]
-    fNumber = exif_md[ATTR_FSTOP]
-    focalLength = exif_md[ATTR_FOCAL_EQUIVALENT]
-    model = exif_md[ATTR_MODEL]
-    iso = exif_md[ATTR_ISO]
-    width = exif_md[ATTR_WIDTH]
-    height = exif_md[ATTR_HEIGHT]
-
     params = {
         "fpath": path,
-        "tags": tag_string,
-        "published": published,
+        "tags": image.tag_string(),
+        "published": image.published(),
         "album": album,
-        "description": description,
-        "dateTime": dateTime,
-        "fNumber": fNumber,
-        "focalLength": focalLength,
-        "model": model,
-        "iso": iso,
-        "width": width,
-        "height": height,
+        "description": image.get_description(),
+        "dateTime": exif_md[ATTR_DATE_TIME],
+        "fNumber": exif_md[ATTR_FSTOP],
+        "focalLength": exif_md[ATTR_FOCAL_EQUIVALENT],
+        "model": exif_md[ATTR_MODEL],
+        "iso": exif_md[ATTR_ISO],
+        "width": exif_md[ATTR_WIDTH],
+        "height": exif_md[ATTR_HEIGHT],
     }
 
+    cursor = self.conn.cursor()
     cursor.execute(
         """
         insert into images (fpath, tags, published, album, description, dateTime, fNumber, focalLength, model, iso, width, height)
         values (:fpath, :tags, :published, :album, :description, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height)
         on conflict(fpath)
         do update set
-            tags = :tags,
-            published = :published,
-            album = :album,
+            tags =        :tags,
+            published =   :published,
+            album =       :album,
             description = :description,
-            dateTime = :dateTime,
-            fNumber = :fNumber,
+            dateTime =    :dateTime,
+            fNumber =     :fNumber,
             focalLength = :focalLength,
-            model = :model,
-            iso = :iso,
-            width = :width,
-            height = :height
+            model =       :model,
+            iso =         :iso,
+            width =       :width,
+            height =      :height
         """,
         params
     )
@@ -177,25 +180,17 @@ class Manifest:
 
     row = cursor.fetchone()
 
-    if not row:
-      False
-
-    if row[0]:
-      return True
-    else:
-      return False
+    return row and bool(row[0])
 
   def has_image(self, image):
     """Check if an image exists, according to the local database"""
+
     cursor = self.conn.cursor()
     cursor.execute("select image_url from images where fpath = ?", (image.path, ))
 
     row = cursor.fetchone()
 
-    if not row:
-      False
-
-    return bool(row[0])
+    return row and bool(row[0])
 
   def register_thumbnail_url(self, image, url):
     """Register a thumbnail URL for an image in the local database"""
@@ -205,33 +200,26 @@ class Manifest:
     self.conn.commit()
 
   def register_image_url(self, image, url):
+    """"""
+
     cursor = self.conn.cursor()
     cursor.execute("update images set image_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
   def register_dates(self, fpath, min_date, max_date):
+    """Set minimum and maximum dates for an album"""
+
     cursor = self.conn.cursor()
     cursor.execute("""
-    update albums
-      set min_date = ?, max_date = ?
-    where fpath = ?
+      update albums
+        set min_date = ?, max_date = ?
+      where fpath = ?
     """, (min_date, max_date, fpath))
 
     self.conn.commit()
 
-  def copy_metadata_file(self, metadata_path: str, manifest_path: str) -> None:
-    """Copy the metadata file to the destination"""
-
-    manifest_dname = os.path.dirname(manifest_path)
-    metadata_dst = os.path.join(manifest_dname, 'metadata.json')
-
-    content = yaml.safe_load(open(metadata_path))
-
-    with open(metadata_dst, 'w') as conn:
-      conn.write(json.dumps(content))
-
   def create_metadata_file(self, manifest_file: str, images: bool = True) -> None:
-    """Create a metadata file from the stored manifest file."""
+    """Create a metadata file from the stored manifest file"""
 
     cursor = self.conn.cursor()
     cursor.execute("""
@@ -257,6 +245,7 @@ class Manifest:
       album_id = str(hash(dirname))
 
       if not album_id in folders:
+        # construct the album object
         folders[album_id] = {
           'name': album_name,
           'id': album_id,
@@ -272,6 +261,8 @@ class Manifest:
       folders[album_id]['image_count'] += 1
 
       if images:
+        # append each image
+
         folders[album_id]['images'].append({
           'fpath': fpath,
           'id': str(hash(fpath)),
@@ -297,6 +288,17 @@ class Manifest:
 
     with open(manifest_file, 'w') as conn:
       conn.write(json.dumps(manifest))
+
+  def copy_metadata_file(self, metadata_path: str, manifest_path: str) -> None:
+    """Copy the metadata file to the target destination"""
+
+    manifest_dname = os.path.dirname(manifest_path)
+    metadata_dst = os.path.join(manifest_dname, 'metadata.json')
+
+    content = yaml.safe_load(open(metadata_path))
+
+    with open(metadata_dst, 'w') as conn:
+      conn.write(json.dumps(content))
 
   def close(self):
     """Close the local database connection"""
