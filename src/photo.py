@@ -97,6 +97,9 @@ class PhotoVault:
       dpath = os.path.dirname(tagfile)
 
       tag_file = Tagfile.read(tagfile)
+      if not tag_file:
+        continue
+
       for key, entry in tag_file['images'].items():
 
         match = TITLE_PATTERN.search(key)
@@ -139,7 +142,7 @@ class Photo(Media):
     self.path = path
     self.tag_metadata = Tags(metadata_path)
 
-  def get_exif(self) -> Dict:
+  def get_exif(self) -> Dict[str, str]:
     """Get EXIF data from a photo."""
 
     try:

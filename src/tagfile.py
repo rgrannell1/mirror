@@ -5,7 +5,7 @@ import json
 import yaml
 import jsonschema
 from src.album import Album
-from typing import Dict
+from typing import Dict, Optional
 
 from src.constants import (
   ATTR_ALBUM_TITLE,
@@ -42,9 +42,6 @@ class Tagfile:
     album = Album(self.dirname)
     album_md = album.get_metadata()
 
-    if not album_md:
-      album_md = {}
-
     for image in self.images:
       name = image.name()
       transclusion = f"![{name}]({name})"
@@ -61,11 +58,11 @@ class Tagfile:
       }
 
     return [{
-      ATTR_ALBUM_TITLE: album_md.title if album_md.title else self.dirname,
-      ATTR_ALBUM_COVER: album_md.cover if album_md.cover else 'Cover',
-      ATTR_ALBUM_DESCRIPTION: album_md.description,
+      ATTR_ALBUM_TITLE: album_md.title if album_md and album_md.title else self.dirname,
+      ATTR_ALBUM_COVER: album_md.cover if album_md and album_md.cover else 'Cover',
+      ATTR_ALBUM_DESCRIPTION: album_md.description if album_md and album_md.description else "",
       ATTR_ALBUM_ID: self.id(),
-      ATTR_ALBUM_GEOLOCATION: album_md.geolocation,
+      ATTR_ALBUM_GEOLOCATION: album_md.geolocation if album_md and album_md.geolocation else "",
       'images': images
     }]
 
@@ -82,7 +79,7 @@ class Tagfile:
       conn.write(self.to_yaml())
 
   @classmethod
-  def read(kls, fpath) -> Dict:
+  def read(kls, fpath) -> Optional[Dict]:
     """Read a tagfile, and yield each image and its associated tags."""
 
     with open(schema_path) as conn:
@@ -90,6 +87,8 @@ class Tagfile:
 
     with open(fpath, 'r') as conn:
       yaml_data = yaml.safe_load(conn)
+      if not yaml_data:
+        return None
 
     try:
       jsonschema.validate(instance=yaml_data[0], schema=tag_schema)
