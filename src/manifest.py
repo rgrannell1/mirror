@@ -229,7 +229,13 @@ class Manifest:
     self.conn.commit()
 
   def register_faces(self, image: Photo, face: List[int]):
-    pass
+    """Register a face in the local database"""
+
+    cursor = self.conn.cursor()
+    cursor.execute(
+        "insert into faces (x0, y0, x1, y1, identity, image) values (?, ?, ?, ?, ?, ?)",
+        (face[0], face[1], face[2], face[3], 'unknown', image.path))
+    self.conn.commit()
 
   def register_thumbnail_url(self, image: Photo, url: str, format='webp'):
     """Register a thumbnail URL for an image in the local database"""
