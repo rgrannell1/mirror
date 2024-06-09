@@ -59,16 +59,18 @@ class PhotoVault:
     self.metadata_path = metadata_path
 
   def list_images(self) -> List['Photo']:
-    """Recursively list all files under a given path.
-    """
+    """Recursively list all files under a given path."""
+
     images = []
 
     for dirpath, _, filenames in os.walk(self.path):
       for filename in filenames:
         image_path = os.path.join(dirpath, filename)
 
-        if Photo.is_image(image_path):
-          images.append(Photo(image_path, self.metadata_path))
+        if not Photo.is_image(image_path):
+          continue
+
+        images.append(Photo(image_path, self.metadata_path))
 
     return images
 
@@ -125,7 +127,7 @@ class PhotoVault:
     return output
 
   def list_by_folder(self) -> Dict[str, List['Photo']]:
-    """List all images by folder."""
+    """List all images by folder"""
 
     dirs = {}
 
@@ -187,8 +189,6 @@ class Photo(Media):
     exif = self.get_exif()
 
     date = exif.get('DateTimeOriginal')
-    if not date:
-      return None
 
     try:
       return datetime.strptime(date, DATE_FORMAT)
@@ -211,7 +211,10 @@ class Photo(Media):
 
     existing = self.get_xattr(ATTR_BLUR, None)
 
-    return round(float(existing)) if existing else round(self.blur_estimate())
+    try:
+      return round(float(existing)) if existing else round(self.blur_estimate())
+    except:
+      return -1
 
   def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""
@@ -274,8 +277,8 @@ class Photo(Media):
     tags = self.get_metadata().get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-  def encode_thumbnail(self) -> ImageContent:
-    """Encode a image as a thumbnail Webp, and remove EXIF data"""
+  def encode_thumbnail(self, format='WEBP') -> ImageContent:
+    """Encode a image as a thumbnail, and remove EXIF data"""
 
     img = Image.open(self.path)
     img = img.convert('RGB')
@@ -291,7 +294,7 @@ class Photo(Media):
     with io.BytesIO() as output:
       # return the image hash and contents
 
-      no_exif.save(output, format="WEBP", lossless=True)
+      no_exif.save(output, format=format, lossless=True)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')
@@ -302,7 +305,7 @@ class Photo(Media):
         content=contents
       )
 
-  def encode_image(self) -> ImageContent:
+  def encode_image(self, format='WEBP') -> ImageContent:
     """Encode an image as Webp, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -316,7 +319,7 @@ class Photo(Media):
     with io.BytesIO() as output:
       # return the image hash and contents
 
-      no_exif.save(output, format="WEBP", lossless=True)
+      no_exif.save(output, format=format, lossless=True)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')

@@ -29,18 +29,18 @@ create table if not exists images (
   published          boolean,
   image_url          text,
   thumbnail_url      text,
+  image_url_jpeg     text,
+  thumbnail_url_jpeg text,
   description        text,
   album              text,
-  dateTime           text,
-  fNumber            text,
-  focalLength        text,
+  date_time          text,
+  f_number           text,
+  focal_length       text,
   model              text,
   iso                text,
+  blur               text,
   width              text,
   height             text,
-  address            text,
-  longitude          text,
-  latitude           text,
   foreign key(album) references albums(fpath)
 )
 """
@@ -97,7 +97,7 @@ class Manifest:
     cursor.execute("""
       select
         images.image_url, images.thumbnail_url,
-        images.dateTime, albums.album_name
+        images.date_time, albums.album_name
       from images
       inner join albums on images.album = albums.fpath
       where published = '1' and images.fpath = ?
@@ -121,38 +121,40 @@ class Manifest:
 
     exif_md = image.get_exif_metadata()
     params = {
-        "fpath": path,
-        "tags": image.tag_string(),
-        "published": image.published(),
-        "album": album,
-        "description": image.get_description(),
-        "dateTime": exif_md[ATTR_DATE_TIME],
-        "fNumber": exif_md[ATTR_FSTOP],
-        "focalLength": exif_md[ATTR_FOCAL_EQUIVALENT],
-        "model": exif_md[ATTR_MODEL],
-        "iso": exif_md[ATTR_ISO],
-        "width": exif_md[ATTR_WIDTH],
-        "height": exif_md[ATTR_HEIGHT],
+      "fpath": path,
+      "tags": image.tag_string(),
+      "published": image.published(),
+      "album": album,
+      "description": image.get_description(),
+      "date_time": exif_md[ATTR_DATE_TIME],
+      "f_number": exif_md[ATTR_FSTOP],
+      "focal_length": exif_md[ATTR_FOCAL_EQUIVALENT],
+      "model": exif_md[ATTR_MODEL],
+      "iso": exif_md[ATTR_ISO],
+      "blur": image.get_blur(),
+      "width": exif_md[ATTR_WIDTH],
+      "height": exif_md[ATTR_HEIGHT],
     }
 
     cursor = self.conn.cursor()
     cursor.execute(
         """
-        insert into images (fpath, tags, published, album, description, dateTime, fNumber, focalLength, model, iso, width, height)
-        values (:fpath, :tags, :published, :album, :description, :dateTime, :fNumber, :focalLength, :model, :iso, :width, :height)
+        insert into images (fpath, tags, published, album, description, date_time, f_number, focal_length, model, iso, blur, width, height)
+        values (:fpath, :tags, :published, :album, :description, :date_time, :f_number, :focal_length, :model, :iso, :blur, :width, :height)
         on conflict(fpath)
         do update set
-            tags =        :tags,
-            published =   :published,
-            album =       :album,
-            description = :description,
-            dateTime =    :dateTime,
-            fNumber =     :fNumber,
-            focalLength = :focalLength,
-            model =       :model,
-            iso =         :iso,
-            width =       :width,
-            height =      :height
+            tags =         :tags,
+            published =    :published,
+            album =        :album,
+            description =  :description,
+            date_time =    :date_time,
+            f_number =     :f_number,
+            focal_length = :focal_length,
+            model =        :model,
+            iso =          :iso,
+            blur =         :blur,
+            width =        :width,
+            height =       :height
         """,
         params
     )
@@ -192,24 +194,25 @@ class Manifest:
 
     return row and bool(row[0])
 
-  def register_thumbnail_url(self, image, url):
+  def register_thumbnail_url(self, image: Photo, url: str):
     """Register a thumbnail URL for an image in the local database"""
 
     cursor = self.conn.cursor()
     cursor.execute("update images set thumbnail_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
-  def register_image_url(self, image, url):
+  def register_image_url(self, image: Photo, url: str):
     """"""
 
     cursor = self.conn.cursor()
     cursor.execute("update images set image_url = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
-  def register_dates(self, fpath, min_date, max_date):
+  def register_dates(self, fpath: str, min_date, max_date):
     """Set minimum and maximum dates for an album"""
 
     cursor = self.conn.cursor()
+
     cursor.execute("""
       update albums
         set min_date = ?, max_date = ?
@@ -225,8 +228,8 @@ class Manifest:
     cursor.execute("""
       select
           images.fpath, images.tags, images.image_url, images.thumbnail_url, images.description as photo_description,
-          images.dateTime, images.fNumber, images.focalLength, images.model,
-          images.iso, images.width, images.height,
+          images.date_time, images.f_number, images.focal_length, images.model,
+          images.iso, images.blur, images.width, images.height,
           albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date, albums.geolocation
         from images
         inner join albums on images.album = albums.fpath
@@ -237,8 +240,8 @@ class Manifest:
 
     for row in cursor.fetchall():
       (
-        fpath, tags, image_url, thumbnail_url, photo_description, dateTime,
-        fNumber, focalLength, model, iso, width, height,
+        fpath, tags, image_url, thumbnail_url, photo_description, date_time,
+        f_number, focal_length, model, iso, blur, width, height,
         album_name, cover_image, description, min_date, max_date, geolocation) = row
 
       dirname = os.path.dirname(fpath)
@@ -269,11 +272,12 @@ class Manifest:
           'tags': tags.split(', '),
           'description': photo_description,
           'exif': {
-            'dateTime': dateTime,
-            'fNumber': fNumber,
-            'focalLength': focalLength,
+            'date_time': date_time,
+            'f_number': f_number,
+            'focal_length': focal_length,
             'model': model,
             'iso': iso,
+            'blur': blur,
             'width': width,
             'height': height,
           },
