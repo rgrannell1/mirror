@@ -96,7 +96,7 @@ class Manifest:
     cursor = self.conn.cursor()
     cursor.execute("""
       select
-        images.image_url, images.thumbnail_url,
+        images.image_url_jpeg, images.thumbnail_url_jpeg,
         images.date_time, albums.album_name
       from images
       inner join albums on images.album = albums.fpath
@@ -174,38 +174,54 @@ class Manifest:
     ))
     self.conn.commit()
 
-  def has_thumbnail(self, image):
+  def has_thumbnail(self, image: Photo, format='webp'):
     """Check if a thumbnail exists, according to the local database"""
 
+    target_column = 'thumbnail_url'
+    if format == 'jpeg':
+      target_column = 'thumbnail_url_jpeg'
+
     cursor = self.conn.cursor()
-    cursor.execute("select thumbnail_url from images where fpath = ?", (image.path, ))
+    cursor.execute(f"select {target_column} from images where fpath = ?", (image.path, ))
 
     row = cursor.fetchone()
 
     return row and bool(row[0])
 
-  def has_image(self, image):
+  def has_image(self, image, format='webp'):
     """Check if an image exists, according to the local database"""
 
+    target_column = 'image_url'
+    if format == 'jpeg':
+      target_column = 'image_url_jpeg'
+
     cursor = self.conn.cursor()
-    cursor.execute("select image_url from images where fpath = ?", (image.path, ))
+    cursor.execute(f"select {target_column} from images where fpath = ?", (image.path, ))
 
     row = cursor.fetchone()
 
     return row and bool(row[0])
 
-  def register_thumbnail_url(self, image: Photo, url: str):
+  def register_thumbnail_url(self, image: Photo, url: str, format='webp'):
     """Register a thumbnail URL for an image in the local database"""
 
+    target_column = 'thumbnail_url'
+    if format == 'jpeg':
+      target_column = 'thumbnail_url_jpeg'
+
     cursor = self.conn.cursor()
-    cursor.execute("update images set thumbnail_url = ? where fpath = ?", (url, image.path))
+    cursor.execute(f"update images set {target_column} = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
-  def register_image_url(self, image: Photo, url: str):
+  def register_image_url(self, image: Photo, url: str, format='webp'):
     """"""
 
+    target_column = 'image_url'
+    if format == 'jpeg':
+      target_column = 'image_url_jpeg'
+
     cursor = self.conn.cursor()
-    cursor.execute("update images set image_url = ? where fpath = ?", (url, image.path))
+    cursor.execute(f"update images set {target_column} = ? where fpath = ?", (url, image.path))
     self.conn.commit()
 
   def register_dates(self, fpath: str, min_date, max_date):

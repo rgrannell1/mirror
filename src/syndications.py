@@ -30,9 +30,9 @@ class JSONFeed:
     md = db.image_metadata(image.path)
 
     return {
-      "id": md.image_url,
-      "url": md.image_url,
-      "image": md.thumbnail_url,
+      "id": md.image_url_jpeg,
+      "url": md.image_url_jpeg,
+      "image": md.thumbnail_url_jpeg,
       "date_published": JSONFeed.rfc_date(md.date_time)
     }
 

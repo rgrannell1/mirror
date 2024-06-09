@@ -277,7 +277,7 @@ class Photo(Media):
     tags = self.get_metadata().get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-  def encode_thumbnail(self, format='WEBP') -> ImageContent:
+  def encode_thumbnail(self, format='webp') -> ImageContent:
     """Encode a image as a thumbnail, and remove EXIF data"""
 
     img = Image.open(self.path)

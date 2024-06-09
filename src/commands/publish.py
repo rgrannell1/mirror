@@ -12,18 +12,19 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo, image_idx: int)
   Log.info(f'Checking thumbnail #{image_idx} is published for {image.path}')
 
   # create and upload a thumbnail
-  if not db.has_thumbnail(image):
-    encoded = image.encode_thumbnail()
+  for format in {'webp', 'jpeg'}:
+    if not db.has_thumbnail(image, format):
+      encoded = image.encode_thumbnail(format=format)
 
-    thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(encoded)
+      thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(encoded, format=format)
 
-    if not thumbnail_in_spaces:
-      Log.info(f'Uploading thumbnail #{image_idx} for {image.path}', clear=True)
-      spaces.upload_thumbnail(encoded)
+      if not thumbnail_in_spaces:
+        Log.info(f'Uploading thumbnail #{image_idx} for {image.path}', clear=True)
+        spaces.upload_thumbnail(encoded, format=format)
 
-    db.register_thumbnail_url(image, thumbnail_url)
+      db.register_thumbnail_url(image, thumbnail_url, format=format)
 
-  Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
+    Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
 
 
 def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
@@ -31,16 +32,17 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> 
   Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
 
   # create an upload the image itself
-  if not db.has_image(image):
-    encoded = image.encode_image()
+  for format in {'webp', 'jpeg'}:
+    if not db.has_image(image, format):
+      encoded = image.encode_image(format=format)
 
-    image_in_spaces, image_url = spaces.image_status(encoded)
+      image_in_spaces, image_url = spaces.image_status(encoded, format=format)
 
-    if not image_in_spaces:
-      Log.info(f'Uploading #{image_idx} image for {image.path}', clear=True)
-      spaces.upload_image(encoded)
+      if not image_in_spaces:
+        Log.info(f'Uploading #{image_idx} image for {image.path}', clear=True)
+        spaces.upload_image(encoded, format=format)
 
-    db.register_image_url(image, image_url)
+      db.register_image_url(image, image_url, format=format)
 
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
   album = Album(dir)
