@@ -6,7 +6,7 @@ from src.constants import ATTR_TAG
 
 def list_photos(dir: str, metadata_path: str, tag: str):
   """List all photos in the directory, as a series of JSON objects. If
-         a tag is specified, only list photos with that tag"""
+             a tag is specified, only list photos with that tag"""
 
   vault = PhotoVault(dir, metadata_path)
 

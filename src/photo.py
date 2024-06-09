@@ -133,7 +133,7 @@ class PhotoVault:
 
 class Photo(Media):
   """A photo, methods for retrieving & setting metadata, and
-         methods for encoding images as WEBP."""
+             methods for encoding images as WEBP."""
 
   def __init__(self, path: str, metadata_path: str):
     self.path = path

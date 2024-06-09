@@ -63,4 +63,4 @@ EXIF_ATTR_ASSOCIATIONS = [(ATTR_DATE_TIME, 'DateTimeOriginal'),
                           (ATTR_HEIGHT, 'ExifImageHeight')]
 
 # Author
-AUTHOR = 'Róisín Grannell'
+AUTHOR = 'R* Grannell'

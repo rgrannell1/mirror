@@ -3,7 +3,9 @@
 Usage:
   mirror create-manifest                           <dir>
   mirror tag --metadata=<fpath>                    <dir>
+  mirror tag-faces --metadata=<fpath>              <dir>
   mirror list-tags --metadata=<fpath> [--graphvis] <dir>
+  mirror list-tagfiles [--tag=<tag>]               <dir>
   mirror list-photos [--tag=<tag>]                 <dir>
   mirror publish --metadata=<fpath>                <dir> <manifest>
   mirror feed --metadata=<fpath>                   <dir> <outdir>
@@ -53,6 +55,8 @@ Commands:
 
   list-photos        List photos and tag information. Optionally filter for a specific tag.
 
+  list-tagfiles      List all tag-files in a directory.
+
   publish            Publish images to Spaces, and generate a manifest-file
 
   feed               Generate a feed-file for a directory
@@ -82,6 +86,10 @@ if __name__ == '__main__':
     Mirror.publish(args['<dir>'], args['--metadata'], args['<manifest>'])
   elif args['feed']:
     Mirror.feed(args['<dir>'], args['--metadata'], args['<outdir>'])
+  elif args['list-tagfiles']:
+    Mirror.list_tagfiles(args['<dir>'], args['--tag'])
+  elif args['tag-faces']:
+    Mirror.tag_faces(args['<dir>'], args['--metadata'])
   else:
     print(__doc__)
     exit(1)

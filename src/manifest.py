@@ -4,7 +4,7 @@ import os
 import json
 import yaml
 import sqlite3
-from typing import Iterator
+from typing import Iterator, List
 
 from src.album import AlbumMetadata
 from .photo import Photo
@@ -47,6 +47,23 @@ create table if not exists albums (
 )
 """
 
+IMAGE_FACES_TABLE = """
+create table if not exists faces (
+  x0                 text,
+  y0                 text,
+  x1                 text,
+  y1                 text,
+  identity           text,
+  image              text
+)
+"""
+
+IMAGE_JOBS = """
+create table if not exists jobs (
+  face_detection     boolean,
+  image              text
+)
+"""
 
 @dataclass
 class ImageMetadata:
@@ -54,6 +71,12 @@ class ImageMetadata:
   thumbnail_url = str
   date_time = str
   album_name = str
+
+  def __init__(self, image_url, thumbnail_url, date_time, album_name):
+    self.image_url = image_url
+    self.thumbnail_url = thumbnail_url
+    self.date_time = date_time
+    self.album_name = album_name
 
 
 class Manifest:
@@ -69,7 +92,7 @@ class Manifest:
 
     cursor = self.conn.cursor()
 
-    for table in {IMAGES_TABLE, ALBUM_TABLE}:
+    for table in {IMAGES_TABLE, ALBUM_TABLE, IMAGE_FACES_TABLE, IMAGE_JOBS}:
       cursor.execute(table)
 
   def list_publishable(self) -> Iterator[Photo]:
@@ -187,6 +210,26 @@ class Manifest:
     row = cursor.fetchone()
 
     return row and bool(row[0])
+
+  def job_status(self, image: Photo, job: str):
+    """Check if a job is complete, according to the local database"""
+
+    cursor = self.conn.cursor()
+    cursor.execute(f"select {job} from jobs where image = ?", (image.path, ))
+
+    row = cursor.fetchone()
+
+    return row and bool(row[0])
+
+  def register_job_complete(self, image: Photo, job: str):
+    """Register a job as complete in the local database"""
+
+    cursor = self.conn.cursor()
+    cursor.execute(f"insert into jobs (image, {job}) values (?, ?)", (image.path, 1))
+    self.conn.commit()
+
+  def register_faces(self, image: Photo, face: List[int]):
+    pass
 
   def register_thumbnail_url(self, image: Photo, url: str, format='webp'):
     """Register a thumbnail URL for an image in the local database"""

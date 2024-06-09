@@ -7,7 +7,7 @@ from src.tags import Tags
 
 def list_tags(dir: str, opts):
   """List all tags in all images in the directory, as a series
-         of JSON objects"""
+             of JSON objects"""
   tag_set = {}
 
   graphvis = opts['graphvis']
