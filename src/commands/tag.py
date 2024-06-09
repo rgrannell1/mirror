@@ -20,7 +20,7 @@ def tag(dir: str, metadata_path: str):
 
   # set metadata on each image mentioned in a tagfile
   for entry in images:
-    Log.info(f"setting xattr metadata on photo {idx} / { len(images) }", clear=True)
+    Log.info(f"setting xattr metadata on photo {idx:,} / {len(images):,}", clear=True)
 
     Photo(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
     idx += 1
