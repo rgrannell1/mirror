@@ -13,6 +13,7 @@ from src.constants import (
   ATTR_ALBUM_COVER,
   ATTR_ALBUM_GEOLOCATION,
   ATTR_ALBUM_ID,
+  ATTR_BLUR,
   ATTR_TAG,
   ATTR_DESCRIPTION
 )
@@ -34,7 +35,7 @@ class Tagfile:
 
     return str(hash(self.dirname))
 
-  def data(self) -> str:
+  def album_data(self) -> str:
     """Given a series of images, and a directory, return the content of a tagfile."""
 
     images = {}
@@ -54,7 +55,8 @@ class Tagfile:
 
       images[transclusion] = {
         ATTR_TAG: tags,
-        ATTR_DESCRIPTION: image.get_description()
+        ATTR_DESCRIPTION: image.get_description(),
+        ATTR_BLUR: image.get_blur()
       }
 
     return [{
@@ -67,7 +69,7 @@ class Tagfile:
     }]
 
   def to_yaml(self) -> str:
-    return yaml.dump(self.data())
+    return yaml.dump(self.album_data())
 
   def write(self) -> None:
     """Write a tagfile to the current directory."""

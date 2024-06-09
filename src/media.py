@@ -30,7 +30,7 @@ class Media:
 
     return os.path.exists(self.path)
 
-  def get_exif_attr(self, attr: str, default: Optional[T] = None) -> str | Optional[T]:
+  def get_xattr(self, attr: str, default: Optional[T] = None) -> str | Optional[T]:
     """Get an EXIF attribute from an image"""
 
     attrs = {attr for attr in xattr.listxattr(self.path)}
@@ -43,6 +43,11 @@ class Media:
   def set_xattr_attr(self, attr, value):
     """Set an extended-attribute on an image"""
     try:
-      xattr.setxattr(self.path, attr.encode(), value.encode())
+      if isinstance(value, str):
+        xattr.setxattr(self.path, attr.encode(), value.encode())
+      elif isinstance(value, float) or isinstance(value, int):
+        xattr.setxattr(self.path, attr.encode(), str(value).encode())
+      else:
+        raise ValueError(f"unsupported type {type(value)}")
     except Exception as err:
       raise ValueError(f"failed to set xattr {attr} on {self.path}") from err

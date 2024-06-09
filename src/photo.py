@@ -1,18 +1,21 @@
 
 from dataclasses import dataclass
+from functools import lru_cache
 import io
+import numpy
 import os
-import xattr
+import cv2
 import hashlib
 import warnings
 from datetime import datetime
 from src.tags import Tags
 from src.media import Media
 
-from typing import List, Iterator, Dict, Optional
+from typing import List, Iterator, Dict, Optional, Set
 from PIL import Image, ImageOps, ExifTags
 
 from .constants import (
+  ATTR_BLUR,
   ATTR_TAG,
   ATTR_DESCRIPTION,
   EXIF_ATTR_ASSOCIATIONS,
@@ -142,6 +145,16 @@ class Photo(Media):
     self.path = path
     self.tag_metadata = Tags(metadata_path)
 
+  @lru_cache(maxsize=None)
+  def blur_estimate(self) -> float:
+      """Compute the variance of the Laplacian of the image to measure sharpness."""
+
+      img = Image.open(self.path).convert('L')
+      img_cv = cv2.cvtColor(numpy.array(img), cv2.COLOR_GRAY2BGR)
+
+      return float(cv2.Laplacian(img_cv, cv2.CV_64F).var())
+
+  @lru_cache(maxsize=None)
   def get_exif(self) -> Dict[str, str]:
     """Get EXIF data from a photo."""
 
@@ -182,31 +195,35 @@ class Photo(Media):
     except:
       return None
 
+  def get_description(self) -> Optional[str]:
+    """Get the description of an image"""
+
+    return self.get_xattr(ATTR_DESCRIPTION, "")
+
+  def get_tags(self) -> Set[str]:
+    """Get the tags of an image"""
+
+    return set(tag.strip() for tag in self.get_xattr(ATTR_TAG, "").split(','))
+
+  @lru_cache(maxsize=None)
+  def get_blur(self) -> float:
+    """Get the blur of an image"""
+
+    existing = self.get_xattr(ATTR_BLUR, None)
+
+    return round(float(existing)) if existing else round(self.blur_estimate())
+
   def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""
-
-    attrs = {attr for attr in xattr.listxattr(self.path)}
-
-    tags = {}
-    if ATTR_TAG in attrs:
-      tags = {tag.strip() for tag in xattr.getxattr(self.path, ATTR_TAG).decode('utf-8').split(',')}
-
-    description = ""
-    if ATTR_DESCRIPTION in attrs:
-      description = xattr.getxattr(self.path, ATTR_DESCRIPTION).decode('utf-8')
 
     exif_attrs = self.get_exif_metadata()
 
     return {
-      ATTR_TAG: tags,
-      ATTR_DESCRIPTION: description,
+      ATTR_TAG: self.get_tags(),
+      ATTR_BLUR: self.get_blur(),
+      ATTR_DESCRIPTION: self.get_description(),
       **exif_attrs
     }
-
-  def get_description(self) -> Optional[str]:
-    """Get the description of an image"""
-
-    return self.get_exif_attr(ATTR_DESCRIPTION, "")
 
   def get_exif_metadata(self) -> Dict:
     """Get metadata from an image as EXIF data"""
