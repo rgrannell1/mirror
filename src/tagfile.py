@@ -7,16 +7,10 @@ import jsonschema
 from src.album import Album
 from typing import Dict, Optional
 
-from src.constants import (
-  ATTR_ALBUM_TITLE,
-  ATTR_ALBUM_DESCRIPTION,
-  ATTR_ALBUM_COVER,
-  ATTR_ALBUM_GEOLOCATION,
-  ATTR_ALBUM_ID,
-  ATTR_BLUR,
-  ATTR_TAG,
-  ATTR_DESCRIPTION
-)
+from src.constants import (ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
+                           ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
+                           ATTR_ALBUM_ID, ATTR_BLUR, ATTR_TAG,
+                           ATTR_DESCRIPTION)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 schema_path = os.path.join(current_dir, "../schemas", "tagfile.json")
@@ -54,18 +48,24 @@ class Tagfile:
       tags = list({tag for tag in image_md.get(ATTR_TAG, set()) if tag})
 
       images[transclusion] = {
-        ATTR_TAG: tags,
-        ATTR_DESCRIPTION: image.get_description(),
-        ATTR_BLUR: image.get_blur()
+          ATTR_TAG: tags,
+          ATTR_DESCRIPTION: image.get_description(),
+          ATTR_BLUR: image.get_blur()
       }
 
     return [{
-      ATTR_ALBUM_TITLE: album_md.title if album_md and album_md.title else self.dirname,
-      ATTR_ALBUM_COVER: album_md.cover if album_md and album_md.cover else 'Cover',
-      ATTR_ALBUM_DESCRIPTION: album_md.description if album_md and album_md.description else "",
-      ATTR_ALBUM_ID: self.id(),
-      ATTR_ALBUM_GEOLOCATION: album_md.geolocation if album_md and album_md.geolocation else "",
-      'images': images
+        ATTR_ALBUM_TITLE:
+        album_md.title if album_md and album_md.title else self.dirname,
+        ATTR_ALBUM_COVER:
+        album_md.cover if album_md and album_md.cover else 'Cover',
+        ATTR_ALBUM_DESCRIPTION:
+        album_md.description if album_md and album_md.description else "",
+        ATTR_ALBUM_ID:
+        self.id(),
+        ATTR_ALBUM_GEOLOCATION:
+        album_md.geolocation if album_md and album_md.geolocation else "",
+        'images':
+        images
     }]
 
   def to_yaml(self) -> str:

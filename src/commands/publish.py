@@ -1,4 +1,3 @@
-
 from typing import List
 from src.constants import DB_PATH
 from src.photo import PhotoVault, Album, Photo
@@ -7,7 +6,8 @@ from src.manifest import Manifest
 from src.log import Log
 
 
-def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
+def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
+                     image_idx: int) -> None:
 
   Log.info(f'Checking thumbnail #{image_idx} is published for {image.path}')
 
@@ -16,20 +16,25 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo, image_idx: int)
     if not db.has_thumbnail(image, format):
       encoded = image.encode_thumbnail(format=format)
 
-      thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(encoded, format=format)
+      thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(
+          encoded, format=format)
 
       if not thumbnail_in_spaces:
-        Log.info(f'Uploading thumbnail #{image_idx} for {image.path}', clear=True)
+        Log.info(f'Uploading thumbnail #{image_idx} for {image.path}',
+                 clear=True)
         spaces.upload_thumbnail(encoded, format=format)
 
       db.register_thumbnail_url(image, thumbnail_url, format=format)
 
-    Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
+    Log.info(f'Checking image #{image_idx} is published for {image.path}',
+             clear=True)
 
 
-def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
+def upload_image(db: Manifest, spaces: Spaces, image: Photo,
+                 image_idx: int) -> None:
 
-  Log.info(f'Checking image #{image_idx} is published for {image.path}', clear=True)
+  Log.info(f'Checking image #{image_idx} is published for {image.path}',
+           clear=True)
 
   # create an upload the image itself
   for format in {'webp', 'jpeg'}:
@@ -44,12 +49,15 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> 
 
       db.register_image_url(image, image_url, format=format)
 
+
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
   album = Album(dir)
 
   try:
-    min_date = min(img.get_created_date() for img in images if img.get_created_date())
-    max_date = max(img.get_created_date() for img in images if img.get_created_date())
+    min_date = min(img.get_created_date() for img in images
+                   if img.get_created_date())
+    max_date = max(img.get_created_date() for img in images
+                   if img.get_created_date())
   except ValueError:
     return
 
@@ -64,9 +72,9 @@ def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
-  and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
-  the images to DigitalOcean Spaces.
-  """
+      and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
+      the images to DigitalOcean Spaces.
+      """
 
   db = Manifest(DB_PATH, metadata_path)
   db.create()
@@ -90,7 +98,8 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   if not published:
     Log.info(f'No images published', clear=True)
 
-  Log.info(f"Finished! Publishing to {manifest_path} & {metadata_path}", clear=True)
+  Log.info(f"Finished! Publishing to {manifest_path} & {metadata_path}",
+           clear=True)
 
   for dir, images in PhotoVault(dir, metadata_path).list_by_folder().items():
     find_album_dates(db, dir, images)

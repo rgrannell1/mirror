@@ -1,10 +1,11 @@
-
 import sys
 from src.colours import Colour
 
+
 class Log:
+
   @classmethod
-  def info(self, text: str, clear: bool=False) -> None:
+  def info(self, text: str, clear: bool = False) -> None:
     """Print an info message to the terminal"""
     if clear:
       Log.clear()

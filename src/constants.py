@@ -15,11 +15,8 @@ ATTR_ALBUM_GEOLOCATION = 'user.xyz.rgrannell.photos.geolocation'
 
 # The set of attributes associated with an album
 SET_ATTR_ALBUM = {
-  ATTR_ALBUM_ID,
-  ATTR_ALBUM_TITLE,
-  ATTR_ALBUM_COVER,
-  ATTR_ALBUM_DESCRIPTION,
-  ATTR_ALBUM_GEOLOCATION
+    ATTR_ALBUM_ID, ATTR_ALBUM_TITLE, ATTR_ALBUM_COVER, ATTR_ALBUM_DESCRIPTION,
+    ATTR_ALBUM_GEOLOCATION
 }
 
 # Photo Attributes
@@ -57,15 +54,13 @@ PERSONAL_URL = "https://rgrannell.xyz"
 PHOTOS_URL = "https://photos.rgrannell.xyz"
 
 # Attr-Exif Property Associations
-EXIF_ATTR_ASSOCIATIONS = [
-  (ATTR_DATE_TIME, 'DateTimeOriginal'),
-  (ATTR_FSTOP, 'FNumber'),
-  (ATTR_FOCAL_EQUIVALENT, 'FocalLengthIn35mmFilm'),
-  (ATTR_MODEL, 'Model'),
-  (ATTR_ISO, 'PhotographicSensitivity'),
-  (ATTR_WIDTH, 'ExifImageWidth'),
-  (ATTR_HEIGHT, 'ExifImageHeight')
-]
+EXIF_ATTR_ASSOCIATIONS = [(ATTR_DATE_TIME, 'DateTimeOriginal'),
+                          (ATTR_FSTOP, 'FNumber'),
+                          (ATTR_FOCAL_EQUIVALENT, 'FocalLengthIn35mmFilm'),
+                          (ATTR_MODEL, 'Model'),
+                          (ATTR_ISO, 'PhotographicSensitivity'),
+                          (ATTR_WIDTH, 'ExifImageWidth'),
+                          (ATTR_HEIGHT, 'ExifImageHeight')]
 
 # Author
 AUTHOR = 'Róisín Grannell'

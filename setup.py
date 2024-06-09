@@ -6,17 +6,17 @@ setup(
     packages=find_packages(),
     install_requires=[
         'python-dotenv',  # for dotenv
-        'Flask',          # for Flask
-        'flask-cors',     # for Flask-CORS
-        'Pillow',         # for PIL
-        'boto3',          # for boto3
-        'botocore',       # for botocore
+        'Flask',  # for Flask
+        'flask-cors',  # for Flask-CORS
+        'Pillow',  # for PIL
+        'boto3',  # for boto3
+        'botocore',  # for botocore
         'opencv-python',  # for cv2
         'ffmpeg-python',  # for ffmpeg
-        'jsonschema',     # for jsonschema
-        'numpy',          # for np
-        'pyxattr',        # for xattr
-        'PyYAML',         # for yaml
+        'jsonschema',  # for jsonschema
+        'numpy',  # for np
+        'pyxattr',  # for xattr
+        'PyYAML',  # for yaml
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

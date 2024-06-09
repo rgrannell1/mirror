@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 Usage:
   mirror create-manifest                           <dir>
@@ -74,8 +73,8 @@ if __name__ == '__main__':
     Mirror.tag(args['<dir>'], args['--metadata'])
   elif args['list-tags']:
     Mirror.list_tags(args['<dir>'], {
-      'graphvis': args['--graphvis'],
-      'metadata': args['--metadata']
+        'graphvis': args['--graphvis'],
+        'metadata': args['--metadata']
     })
   elif args['list-photos']:
     Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'])

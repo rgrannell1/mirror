@@ -6,6 +6,7 @@ from src.commands.list_photos import list_photos
 from src.commands.publish import publish
 from src.commands.feed import feed
 
+
 class Mirror:
   """The core-logic of Mirror. Invoked by the CLI"""
 

@@ -1,4 +1,3 @@
-
 import json
 
 from src.constants import DB_PATH
@@ -6,6 +5,7 @@ from src.manifest import Manifest
 from src.photo import PhotoVault
 from src.syndications import JSONFeed
 from collections import defaultdict
+
 
 def feed(dir: str, metadata_path: str, out_dir: str):
   """Generates a JSON feed for the given directory."""

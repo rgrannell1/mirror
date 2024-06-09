@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 from functools import lru_cache
 import io
@@ -14,17 +13,10 @@ from src.media import Media
 from typing import List, Iterator, Dict, Optional, Set
 from PIL import Image, ImageOps, ExifTags
 
-from .constants import (
-  ATTR_BLUR,
-  ATTR_TAG,
-  ATTR_DESCRIPTION,
-  EXIF_ATTR_ASSOCIATIONS,
-  SET_ATTR_ALBUM,
-  THUMBNAIL_WIDTH,
-  THUMBNAIL_HEIGHT,
-  TITLE_PATTERN,
-  DATE_FORMAT
-)
+from .constants import (ATTR_BLUR, ATTR_TAG, ATTR_DESCRIPTION,
+                        EXIF_ATTR_ASSOCIATIONS, SET_ATTR_ALBUM,
+                        THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, TITLE_PATTERN,
+                        DATE_FORMAT)
 
 from .tagfile import Tagfile
 from .album import Album
@@ -54,6 +46,7 @@ class ImageContent:
 
 class PhotoVault:
   """A directory of photos"""
+
   def __init__(self, path: str, metadata_path: str):
     self.path = path
     self.metadata_path = metadata_path
@@ -109,20 +102,17 @@ class PhotoVault:
 
         match = TITLE_PATTERN.search(key)
         if match:
-            image_name = match.group(1)
+          image_name = match.group(1)
 
         attrs = {}
         for attr in SET_ATTR_ALBUM:
           attrs[attr] = tag_file.get(attr, '')
 
-        output.append(TagfileImageConfiguration(
-          fpath=os.path.join(dpath, image_name),
-          album=TagfileAlbumConfiguration(
-            fpath=dpath,
-            attrs=attrs
-          ),
-          attrs=entry
-        ))
+        output.append(
+            TagfileImageConfiguration(fpath=os.path.join(dpath, image_name),
+                                      album=TagfileAlbumConfiguration(
+                                          fpath=dpath, attrs=attrs),
+                                      attrs=entry))
 
     return output
 
@@ -140,21 +130,23 @@ class PhotoVault:
 
     return dirs
 
+
 class Photo(Media):
   """A photo, methods for retrieving & setting metadata, and
-     methods for encoding images as WEBP."""
+         methods for encoding images as WEBP."""
+
   def __init__(self, path: str, metadata_path: str):
     self.path = path
     self.tag_metadata = Tags(metadata_path)
 
   @lru_cache(maxsize=None)
   def blur_estimate(self) -> float:
-      """Compute the variance of the Laplacian of the image to measure sharpness."""
+    """Compute the variance of the Laplacian of the image to measure sharpness."""
 
-      img = Image.open(self.path).convert('L')
-      img_cv = cv2.cvtColor(numpy.array(img), cv2.COLOR_GRAY2BGR)
+    img = Image.open(self.path).convert('L')
+    img_cv = cv2.cvtColor(numpy.array(img), cv2.COLOR_GRAY2BGR)
 
-      return float(cv2.Laplacian(img_cv, cv2.CV_64F).var())
+    return float(cv2.Laplacian(img_cv, cv2.CV_64F).var())
 
   @lru_cache(maxsize=None)
   def get_exif(self) -> Dict[str, str]:
@@ -163,11 +155,11 @@ class Photo(Media):
     try:
       # ignore image warnings, not all exif will be valid
       with warnings.catch_warnings():
-          warnings.filterwarnings("ignore")
+        warnings.filterwarnings("ignore")
 
-          img = Image.open(self.path)
-          exif_data = img._getexif()
-    except:
+        img = Image.open(self.path)
+        exif_data = img._getexif()
+    except BaseException:
       return {}
 
     if not exif_data:
@@ -192,28 +184,30 @@ class Photo(Media):
 
     try:
       return datetime.strptime(date, DATE_FORMAT)
-    except:
+    except BaseException:
       return None
 
   def get_description(self) -> Optional[str]:
     """Get the description of an image"""
 
-    return self.get_xattr(ATTR_DESCRIPTION, "")
+    return self.get_xattr_attr(ATTR_DESCRIPTION, "")
 
   def get_tags(self) -> Set[str]:
     """Get the tags of an image"""
 
-    return set(tag.strip() for tag in self.get_xattr(ATTR_TAG, "").split(','))
+    return set(tag.strip()
+               for tag in self.get_xattr_attr(ATTR_TAG, "").split(','))
 
   @lru_cache(maxsize=None)
   def get_blur(self) -> float:
     """Get the blur of an image"""
 
-    existing = self.get_xattr(ATTR_BLUR, None)
+    existing = self.get_xattr_attr(ATTR_BLUR, None)
 
     try:
-      return round(float(existing)) if existing else round(self.blur_estimate())
-    except:
+      return round(float(existing)) if existing else round(
+          self.blur_estimate())
+    except BaseException:
       return -1
 
   def get_metadata(self) -> Dict:
@@ -222,10 +216,10 @@ class Photo(Media):
     exif_attrs = self.get_exif_metadata()
 
     return {
-      ATTR_TAG: self.get_tags(),
-      ATTR_BLUR: self.get_blur(),
-      ATTR_DESCRIPTION: self.get_description(),
-      **exif_attrs
+        ATTR_TAG: self.get_tags(),
+        ATTR_BLUR: self.get_blur(),
+        ATTR_DESCRIPTION: self.get_description(),
+        **exif_attrs
     }
 
   def get_exif_metadata(self) -> Dict:
@@ -300,10 +294,7 @@ class Photo(Media):
       hasher = hashlib.new('sha256')
       hasher.update(contents)
 
-      return ImageContent(
-        hash=hasher.hexdigest(),
-        content=contents
-      )
+      return ImageContent(hash=hasher.hexdigest(), content=contents)
 
   def encode_image(self, format='WEBP') -> ImageContent:
     """Encode an image as Webp, and remove EXIF data"""
@@ -325,7 +316,4 @@ class Photo(Media):
       hasher = hashlib.new('sha256')
       hasher.update(contents)
 
-      return ImageContent(
-        hash=hasher.hexdigest(),
-        content=contents
-      )
+      return ImageContent(hash=hasher.hexdigest(), content=contents)

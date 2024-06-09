@@ -6,9 +6,11 @@ from typing import List
 
 cache = {}
 
+
 class Tags:
   """Represents a tag metadata file, which provides a tree of subsumptions
-     describing tags and their parents"""
+         describing tags and their parents"""
+
   def __init__(self, fpath) -> None:
     self.fpath = fpath
 

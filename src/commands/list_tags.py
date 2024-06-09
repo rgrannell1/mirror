@@ -1,13 +1,13 @@
-
 import json
 
 from src.photo import PhotoVault
 from src.constants import ATTR_TAG
 from src.tags import Tags
 
+
 def list_tags(dir: str, opts):
   """List all tags in all images in the directory, as a series
-     of JSON objects"""
+         of JSON objects"""
   tag_set = {}
 
   graphvis = opts['graphvis']
@@ -26,10 +26,7 @@ def list_tags(dir: str, opts):
       tag_set[tag] += 1
 
   if graphvis:
-    graph = [
-      'graph tags {',
-      '  layout="fdp"'
-    ]
+    graph = ['graph tags {', '  layout="fdp"']
     vars = {}
 
     idx = 0
@@ -62,7 +59,4 @@ def list_tags(dir: str, opts):
     if tag == '':
       continue
 
-    print(json.dumps({
-      'tag': tag,
-      'count': count
-    }))
+    print(json.dumps({'tag': tag, 'count': count}))

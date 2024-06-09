@@ -6,21 +6,17 @@ import botocore
 from typing import Tuple
 
 from src.photo import ImageContent
-from .config import (
-  SPACES_REGION,
-  SPACES_ENDPOINT_URL,
-  SPACES_BUCKET,
-  SPACES_ACCESS_KEY_ID,
-  SPACES_SECRET_KEY
-)
-from .constants import (
-  PHOTOS_URL
-)
+from .config import (SPACES_REGION, SPACES_ENDPOINT_URL, SPACES_BUCKET,
+                     SPACES_ACCESS_KEY_ID, SPACES_SECRET_KEY)
+from .constants import (PHOTOS_URL)
+
 
 class Spaces:
   """Interface to DigitalOcean Spaces"""
 
-  def __init__(self, session: boto3.session.Session = None, client: boto3.client = None):
+  def __init__(self,
+               session: boto3.session.Session = None,
+               client: boto3.client = None):
     self.session = session if session else Spaces.session()
     self.client = client if client else Spaces.client(self.session)
 
@@ -28,23 +24,21 @@ class Spaces:
   def session(cls):
     """Create a boto3 session for DigitalOcean Spaces"""
 
-    return boto3.session.Session(
-      region_name=SPACES_REGION,
-      aws_access_key_id=SPACES_ACCESS_KEY_ID,
-      aws_secret_access_key=SPACES_SECRET_KEY
-    )
+    return boto3.session.Session(region_name=SPACES_REGION,
+                                 aws_access_key_id=SPACES_ACCESS_KEY_ID,
+                                 aws_secret_access_key=SPACES_SECRET_KEY)
 
   @classmethod
   def client(cls, session: boto3.session.Session):
     """Create a boto3 client for DigitalOcean Spaces"""
 
     return session.client(
-      's3',
-      config=botocore.config.Config(s3={'addressing_style': 'virtual'}),
-      region_name=SPACES_REGION,
-      endpoint_url=SPACES_ENDPOINT_URL,
-      aws_access_key_id=SPACES_ACCESS_KEY_ID,
-      aws_secret_access_key=SPACES_SECRET_KEY)
+        's3',
+        config=botocore.config.Config(s3={'addressing_style': 'virtual'}),
+        region_name=SPACES_REGION,
+        endpoint_url=SPACES_ENDPOINT_URL,
+        aws_access_key_id=SPACES_ACCESS_KEY_ID,
+        aws_secret_access_key=SPACES_SECRET_KEY)
 
   def set_bucket_acl(self):
     """Mark the bucket as public-read"""
@@ -54,30 +48,30 @@ class Spaces:
   def set_bucket_cors_policy(self):
     """Set the CORS policy for the bucket"""
 
-    self.client.put_bucket_cors(
-      Bucket=SPACES_BUCKET,
-      CORSConfiguration={
-        'CORSRules': [
-          {
-            'AllowedHeaders': ['*'],
-            'AllowedMethods': ['GET'],
-            'AllowedOrigins': [PHOTOS_URL],
-            'ExposeHeaders': ['ETag']
-          }
-        ]
-      })
+    self.client.put_bucket_cors(Bucket=SPACES_BUCKET,
+                                CORSConfiguration={
+                                    'CORSRules': [{
+                                        'AllowedHeaders': ['*'],
+                                        'AllowedMethods': ['GET'],
+                                        'AllowedOrigins': [PHOTOS_URL],
+                                        'ExposeHeaders': ['ETag']
+                                    }]
+                                })
 
-  def upload_public(self, key: str, content: str, mime_type: str = 'image/webp') -> bool:
+  def upload_public(self,
+                    key: str,
+                    content: str,
+                    mime_type: str = 'image/webp') -> bool:
     """Upload a file publically to S3"""
 
     return self.client.put_object(
-      Body=content,
-      Bucket=SPACES_BUCKET,
-      Key=key,
-      ContentDisposition='inline',
-      CacheControl='public, max-age=31536000, immutable',
-      ContentType=mime_type,
-      ACL='public-read')
+        Body=content,
+        Bucket=SPACES_BUCKET,
+        Key=key,
+        ContentDisposition='inline',
+        CacheControl='public, max-age=31536000, immutable',
+        ContentType=mime_type,
+        ACL='public-read')
 
   def upload_image(self, encoded_data: ImageContent, format='webp'):
     """Upload an image to the Spaces bucket. Return a CDN link"""
@@ -112,14 +106,18 @@ class Spaces:
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
-  def thumbnail_status(self, encoded_image: ImageContent, format='webp') -> Tuple[bool, str]:
+  def thumbnail_status(self,
+                       encoded_image: ImageContent,
+                       format='webp') -> Tuple[bool, str]:
     """Check if a thumbnail for an image exists in the Spaces bucket"""
 
     name = f"{encoded_image.hash}_thumbnail.{format}"
 
     return self.has_object(name), self.url(name)
 
-  def image_status(self, encoded_image: ImageContent, format='webp') -> Tuple[bool, str]:
+  def image_status(self,
+                   encoded_image: ImageContent,
+                   format='webp') -> Tuple[bool, str]:
     """Check if an image exists in the Spaces bucket"""
 
     name = f"{encoded_image.hash}.{format}"
@@ -135,16 +133,19 @@ class Spaces:
     for item in objs['Contents']:
       key = item['Key']
 
-      metadata = self.client.head_object(Bucket=SPACES_BUCKET, Key=key)['Metadata']
+      metadata = self.client.head_object(Bucket=SPACES_BUCKET,
+                                         Key=key)['Metadata']
 
       self.client.copy_object(
-        Bucket=SPACES_BUCKET,
-        Key=key,
-        CopySource={'Bucket': SPACES_BUCKET, 'Key': key},
-        Metadata=metadata,
-        MetadataDirective='REPLACE',
-        CacheControl='public, max-age=31536000, immutable',
-        ContentDisposition='inline',
-        ContentType=mime_type,
-        ACL='public-read'
-      )
+          Bucket=SPACES_BUCKET,
+          Key=key,
+          CopySource={
+              'Bucket': SPACES_BUCKET,
+              'Key': key
+          },
+          Metadata=metadata,
+          MetadataDirective='REPLACE',
+          CacheControl='public, max-age=31536000, immutable',
+          ContentDisposition='inline',
+          ContentType=mime_type,
+          ACL='public-read')

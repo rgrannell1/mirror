@@ -1,9 +1,9 @@
-
 import os
 import xattr
 from typing import TypeVar, Optional
 
 T = TypeVar('T')
+
 
 class Media:
   """An abstract class for media (video, images)."""
@@ -30,7 +30,9 @@ class Media:
 
     return os.path.exists(self.path)
 
-  def get_xattr(self, attr: str, default: Optional[T] = None) -> str | Optional[T]:
+  def get_xattr_attr(self,
+                     attr: str,
+                     default: Optional[T] = None) -> str | Optional[T]:
     """Get an EXIF attribute from an image"""
 
     attrs = {attr for attr in xattr.listxattr(self.path)}

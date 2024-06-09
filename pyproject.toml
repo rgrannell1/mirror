@@ -1,0 +1,9 @@
+[tool.autopep8]
+max_line_length = 140
+in-place = true
+recursive = true
+aggressive = 3
+
+[tool.yapf]
+based_on_style = "pep8"
+indent_width = 2
