@@ -54,16 +54,21 @@ create table if not exists faces (
   x1                 text,
   y1                 text,
   identity           text,
-  image              text
+  image              text,
+
+  primary key(x0, y0, x1, y1, identity, image)
 )
 """
 
 IMAGE_JOBS = """
 create table if not exists jobs (
   face_detection     boolean,
-  image              text
+  image              text,
+
+  primary key(image)
 )
 """
+
 
 @dataclass
 class ImageMetadata:
@@ -225,7 +230,11 @@ class Manifest:
     """Register a job as complete in the local database"""
 
     cursor = self.conn.cursor()
-    cursor.execute(f"insert into jobs (image, {job}) values (?, ?)", (image.path, 1))
+    cursor.execute(f"""
+        insert into jobs (image, {job})
+        values (?, ?)
+        on conflict(image) do update set {job} = 1
+    """, (image.path, 1))
     self.conn.commit()
 
   def register_faces(self, image: Photo, face: List[int]):

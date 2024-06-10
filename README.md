@@ -6,7 +6,9 @@ Bulk-tag a photo-library
 ```sh
   mirror create-manifest                           <dir>
   mirror tag --metadata=<fpath>                    <dir>
+  mirror tag-faces --metadata=<fpath>              <dir>
   mirror list-tags --metadata=<fpath> [--graphvis] <dir>
+  mirror list-tagfiles [--tag=<tag>]               <dir>
   mirror list-photos [--tag=<tag>]                 <dir>
   mirror publish --metadata=<fpath>                <dir> <manifest>
   mirror feed --metadata=<fpath>                   <dir> <outdir>
@@ -21,7 +23,7 @@ flask --app src/server/app.py run
 
 ## Overview
 
-Mirror generates a `tags.md` file for every folder in a photo-library. It applies tags to each photo by setting [extended-attributes](https://en.wikipedia.org/wiki/Extended_file_attributes)
+Mirror uses a yaml file impersonating a markdown file to store information about images in an album. Information like descriptions, tags and geolocations can be manually added to these `tags.md` files with help from a markdown supporting editor. Mirror then associates this metadata onto photos using [extended-attributes](https://en.wikipedia.org/wiki/Extended_file_attributes). Finally, it uploads this media to DigitalOcean Spaces and publishes metadata files locally.
 
 ## Installation
 

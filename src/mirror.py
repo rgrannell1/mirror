@@ -37,5 +37,5 @@ class Mirror:
     feed(dir, metadata_path, out_dir)
 
   @staticmethod
-  def tag_faces(dir: str, metadata_path: str) -> None:
-    tag_faces(dir, metadata_path)
+  def tag_faces(dir: str, metadata_path: str, exclude: str) -> None:
+    tag_faces(dir, metadata_path, exclude)

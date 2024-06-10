@@ -72,9 +72,9 @@ def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
-          and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
-          the images to DigitalOcean Spaces.
-          """
+                  and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
+                  the images to DigitalOcean Spaces.
+                  """
 
   db = Manifest(DB_PATH, metadata_path)
   db.create()

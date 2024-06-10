@@ -1,7 +1,7 @@
-
 from src.media import Media
 
 from typing import Dict
+
 
 class Video(Media):
   """A video file."""
