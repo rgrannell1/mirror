@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """
 Usage:
-  mirror tag --metadata=<fpath>                         <dir>
-  mirror tag-faces --metadata=<fpath> [--exclude=<str>] <dir>
-  mirror list-tags --metadata=<fpath> [--graphvis]      <dir>
-  mirror list-tagfiles [--tag=<tag>]                    <dir>
-  mirror list-photos [--tag=<tag>]                      <dir>
-  mirror publish --metadata=<fpath>                     <dir> <manifest>
-  mirror feed --metadata=<fpath>                        <dir> <outdir>
-  mirror add-google-photos-metadata --metadata=<fpath>  <dir> <google-photos-file>
+  mirror tag --metadata=<fpath>                                <dir>
+  mirror tag-faces --metadata=<fpath> [--exclude=<str>]        <dir>
+  mirror list-tags --metadata=<fpath> [--graphvis]             <dir>
+  mirror list-tagfiles [--tag=<tag>]                           <dir>
+  mirror list-photos --metadata=<fpath> [--tag=<tag>] [--from=<from>] [--to=<to>] <dir>
+  mirror publish --metadata=<fpath>                            <dir> <manifest>
+  mirror feed --metadata=<fpath>                               <dir> <outdir>
+  mirror add-google-photos-metadata --metadata=<fpath>         <dir> <google-photos-file>
   mirror (-h | --help)
 
 Description:
@@ -60,6 +60,8 @@ Options:
   --graphvis            Output a graphvis file.
   --metadata=<fpath>    The path to a YAML file containing metadata.
   --tag=<tag>           The tag to list photos for.
+  --from=<from>         The start of a date-range.
+  --to=<to>             The end of a date-range.
   -h, --help            Show this screen.
 
 """
@@ -77,7 +79,7 @@ if __name__ == '__main__':
         'metadata': args['--metadata']
     })
   elif args['list-photos']:
-    Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'])
+    Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'], args['--from'], args['--to'])
   elif args['publish']:
     Mirror.publish(args['<dir>'], args['--metadata'], args['<manifest>'])
   elif args['feed']:
@@ -89,5 +91,6 @@ if __name__ == '__main__':
   elif args['add-google-photos-metadata']:
     Mirror.add_google_photos_metadata(args['<dir>'], args['--metadata'], args['<google-photos-file>'])
   else:
+    print('Invalid command')
     print(__doc__)
     exit(1)

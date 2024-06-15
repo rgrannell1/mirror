@@ -1,5 +1,6 @@
 """The core-logic of Mirror."""
 
+from typing import Optional
 from src.commands.tag import tag
 from src.commands.list_tags import list_tags
 from src.commands.list_tagfiles import list_tagfiles
@@ -25,8 +26,8 @@ class Mirror:
     list_tagfiles(dir)
 
   @staticmethod
-  def list_photos(dir: str, metadata_path: str, tag: str) -> None:
-    list_photos(dir, metadata_path, tag)
+  def list_photos(dir: str, metadata_path: str, tag: str, start: Optional[str], end: Optional[str]) -> None:
+    list_photos(dir, metadata_path, tag, start, end)
 
   @staticmethod
   def publish(dir: str, metadata_path: str, manifest_path: str) -> None:

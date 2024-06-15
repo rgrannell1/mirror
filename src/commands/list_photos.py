@@ -1,23 +1,37 @@
 import json
 
+import dateparser
 from src.photo import PhotoVault
-from src.constants import ATTR_TAG
 
 
-def list_photos(dir: str, metadata_path: str, tag: str):
+def list_photos(dir: str, metadata_path: str, tag: str, start: str, end: str):
   """List all photos in the directory, as a series of JSON objects. If
-                     a tag is specified, only list photos with that tag"""
+                       a tag is specified, only list photos with that tag"""
 
   vault = PhotoVault(dir, metadata_path)
 
   for image in vault.list_images():
-    attrs = image.has_metadata()
-
     # skip the image if the tag doesn't match
-    if tag and tag not in attrs.get(ATTR_TAG, []):
+    if tag and tag not in image.tags():
       continue
 
-    if ATTR_TAG in attrs:
-      attrs[ATTR_TAG] = list(attrs[ATTR_TAG])
+    date = image.get_created_date()
+    if start:
+      start_parsed = dateparser.parse(start)
 
-    print(json.dumps({'fpath': image.path, 'attrs': attrs}))
+      if not date or date < start_parsed:
+        continue
+
+    if end:
+      end_parsed = dateparser.parse(end)
+
+      if not date or date > end_parsed:
+        continue
+
+    print(json.dumps({
+      'fpath': image.path,
+      'tags': image.tags(),
+      'date': str(image.get_created_date()),
+      'description': image.get_description(),
+      'blur': image.get_blur()
+    }))
