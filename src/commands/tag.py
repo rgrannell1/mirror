@@ -8,7 +8,7 @@ from src.log import Log
 
 def tag(dir: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
-                     attributes to each image"""
+                       attributes to each image"""
 
   db = Manifest(DB_PATH, metadata_path)
   db.create()

@@ -5,8 +5,10 @@ import json
 import yaml
 import sqlite3
 from typing import Iterator, List
+import numpy as np
 
 from src.album import AlbumMetadata
+from src.faces import Face
 from .photo import Photo
 from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
                         ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT,
@@ -31,6 +33,9 @@ create table if not exists images (
   blur               text,
   width              text,
   height             text,
+  latitude           text,
+  longitude          text,
+  address            text,
   foreign key(album) references albums(fpath)
 )
 """
@@ -55,6 +60,7 @@ create table if not exists faces (
   y1                 text,
   identity           text,
   image              text,
+  encoding           blob,
 
   primary key(x0, y0, x1, y1, identity, image)
 )
@@ -216,6 +222,24 @@ class Manifest:
 
     return row and bool(row[0])
 
+  def list_faces(self, identified=False) -> Iterator:
+    """Get faces from the local database"""
+
+    cursor = self.conn.cursor()
+
+    if identified:
+      cursor.execute("select image, identity, x0, y0, x1, y1, encoding from faces")
+    else:
+      cursor.execute(
+          "select image, identity, x0, y0, x1, y1, encoding from faces where identity = 'unknown'"
+      )
+
+    for row in cursor.fetchall():
+      bounds = [int(row[2]), int(row[3]), int(row[4]), int(row[5])]
+      encodings = np.array(json.loads(row[6]))
+
+      yield row[0], bounds, row[1], encodings
+
   def job_status(self, image: Photo, job: str):
     """Check if a job is complete, according to the local database"""
 
@@ -226,24 +250,51 @@ class Manifest:
 
     return row and bool(row[0])
 
+  def register_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
+    cursor = self.conn.cursor()
+    cursor.execute("""
+    update images
+      set latitude = ?, longitude = ?, address = ?
+      where fpath like '%' || ?;
+    """, (lat, lon, address, fpath))
+    self.conn.commit()
+
   def register_job_complete(self, image: Photo, job: str):
     """Register a job as complete in the local database"""
 
     cursor = self.conn.cursor()
-    cursor.execute(f"""
+    cursor.execute(
+        f"""
         insert into jobs (image, {job})
         values (?, ?)
         on conflict(image) do update set {job} = 1
     """, (image.path, 1))
     self.conn.commit()
 
-  def register_faces(self, image: Photo, face: List[int]):
-    """Register a face in the local database"""
+  def register_face_cluster(self, image: str, cluster: int):
+    """Register a face cluster in the local database"""
 
     cursor = self.conn.cursor()
     cursor.execute(
-        "insert into faces (x0, y0, x1, y1, identity, image) values (?, ?, ?, ?, ?, ?)",
-        (face[0], face[1], face[2], face[3], 'unknown', image.path))
+        """
+        update faces
+        set identity = ?
+        where image = ? and identity = 'unknown'
+        """, (cluster, image))
+    self.conn.commit()
+
+  def register_faces(self, image: Photo, bounds: List[int], encoding: List):
+    """Register a face in the local database"""
+
+    json_encoding = json.dumps(encoding)
+
+    cursor = self.conn.cursor()
+    cursor.execute(
+        """
+        insert into faces (x0, y0, x1, y1, identity, image, encoding)
+        values (?, ?, ?, ?, ?, ?, ?)
+        """,
+        (bounds[0], bounds[1], bounds[2], bounds[3], 'unknown', image.path, json_encoding))
     self.conn.commit()
 
   def register_thumbnail_url(self, image: Photo, url: str, format='webp'):

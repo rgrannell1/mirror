@@ -8,6 +8,7 @@ Usage:
   mirror list-photos [--tag=<tag>]                      <dir>
   mirror publish --metadata=<fpath>                     <dir> <manifest>
   mirror feed --metadata=<fpath>                        <dir> <outdir>
+  mirror add-google-photos-metadata --metadata=<fpath>  <dir> <google-photos-file>
   mirror (-h | --help)
 
 Description:
@@ -85,6 +86,8 @@ if __name__ == '__main__':
     Mirror.list_tagfiles(args['<dir>'], args['--tag'])
   elif args['tag-faces']:
     Mirror.tag_faces(args['<dir>'], args['--metadata'], args['--exclude'])
+  elif args['add-google-photos-metadata']:
+    Mirror.add_google_photos_metadata(args['<dir>'], args['--metadata'], args['<google-photos-file>'])
   else:
     print(__doc__)
     exit(1)
