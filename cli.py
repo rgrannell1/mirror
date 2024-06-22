@@ -5,6 +5,7 @@ Usage:
   mirror tag-faces --metadata=<fpath> [--exclude=<str>]        <dir>
   mirror list-tags --metadata=<fpath> [--graphvis]             <dir>
   mirror list-tagfiles [--tag=<tag>]                           <dir>
+  mirror show-tagfiles [--tag=<tag>]                           <dir>
   mirror list-photos --metadata=<fpath> [--tag=<tag>] [--from=<from>] [--to=<to>] <dir>
   mirror publish --metadata=<fpath>                            <dir> <manifest>
   mirror feed --metadata=<fpath>                               <dir> <outdir>
@@ -54,6 +55,8 @@ Commands:
 
   list-tagfiles                 List all tag-files in a directory. Optionally filter for a specific tag.
 
+  show-tagfiles                 Show all tag-files in a directory. Optionally filter for a specific tag.
+
   publish                       Publish images to Spaces, and generate a manifest-file.
 
   feed                          Generate a directory of JSONFeed's for a directory.
@@ -89,6 +92,8 @@ if __name__ == '__main__':
     Mirror.feed(args['<dir>'], args['--metadata'], args['<outdir>'])
   elif args['list-tagfiles']:
     Mirror.list_tagfiles(args['<dir>'], args['--tag'])
+  elif args['show-tagfiles']:
+    Mirror.show_tagfiles(args['<dir>'], args['--tag'])
   elif args['tag-faces']:
     Mirror.tag_faces(args['<dir>'], args['--metadata'], args['--exclude'])
   elif args['add-google-photos-metadata']:

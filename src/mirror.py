@@ -4,6 +4,7 @@ from typing import Optional
 from src.commands.tag import tag
 from src.commands.list_tags import list_tags
 from src.commands.list_tagfiles import list_tagfiles
+from src.commands.show_tagfiles import show_tagfiles
 from src.commands.list_photos import list_photos
 from src.commands.publish import publish
 from src.commands.feed import feed
@@ -24,6 +25,10 @@ class Mirror:
   @staticmethod
   def list_tagfiles(dir: str, tag: str) -> None:
     list_tagfiles(dir)
+
+  @staticmethod
+  def show_tagfiles(dir: str, tag: str) -> None:
+    show_tagfiles(dir, tag)
 
   @staticmethod
   def list_photos(dir: str, metadata_path: str, tag: str, start: Optional[str], end: Optional[str]) -> None:
