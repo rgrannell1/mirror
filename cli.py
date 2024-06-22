@@ -41,20 +41,23 @@ Description:
   * user.xyz.rgrannell.photos.geolocation          the geolocation of a photo-album, in GeoJSON format
 
 Commands:
-  tag                Tag all images in a directory based on the tags.md files. Tag albums with
-                       a title, cover-image, and other information
+  add-google-photos-metadata    Add scraped google metadata to the database.
 
-  tag-faces          Tag faces in a directory.
+  tag                           Tag all images in a directory based on the tags.md files. Tag albums with
+                                  a title, cover-image, and other information
 
-  list-tags          List all tags in a directory.
+  tag-faces                     Tag faces in a directory.
 
-  list-photos        List photos and tag information. Optionally filter for a specific tag.
+  list-tags                     List all tags in a directory.
 
-  list-tagfiles      List all tag-files in a directory. Optionally filter for a specific tag.
+  list-photos                   List photos and tag information. Optionally filter for a specific tag.
 
-  publish            Publish images to Spaces, and generate a manifest-file.
+  list-tagfiles                 List all tag-files in a directory. Optionally filter for a specific tag.
 
-  feed               Generate a directory of JSONFeed's for a directory
+  publish                       Publish images to Spaces, and generate a manifest-file.
+
+  feed                          Generate a directory of JSONFeed's for a directory.
+
 
 Options:
   --graphvis            Output a graphvis file.

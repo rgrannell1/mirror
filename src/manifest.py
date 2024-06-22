@@ -8,7 +8,6 @@ from typing import Iterator, List
 import numpy as np
 
 from src.album import AlbumMetadata
-from src.faces import Face
 from .photo import Photo
 from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
                         ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT,

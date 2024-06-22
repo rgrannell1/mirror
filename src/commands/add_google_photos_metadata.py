@@ -13,7 +13,7 @@ def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file:
     if not 'href' in image:
       continue
 
-    matches = re.search(r'(?P<lat>\d+\.\d+),(?P<lon>\d+\.\d+)', image['href'])
+    matches = re.search(r'(?P<lat>[-]?\d+\.\d+),(?P<lon>[-]\d+\.\d+)', image['href'])
     if not matches:
       continue
 
