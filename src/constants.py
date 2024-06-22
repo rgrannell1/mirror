@@ -58,7 +58,7 @@ EXIF_ATTR_ASSOCIATIONS = [(ATTR_DATE_TIME, 'DateTimeOriginal'),
                           (ATTR_FSTOP, 'FNumber'),
                           (ATTR_FOCAL_EQUIVALENT, 'FocalLengthIn35mmFilm'),
                           (ATTR_MODEL, 'Model'),
-                          (ATTR_ISO, 'PhotographicSensitivity'),
+                          (ATTR_ISO, 'ISOSpeedRatings'),
                           (ATTR_WIDTH, 'ExifImageWidth'),
                           (ATTR_HEIGHT, 'ExifImageHeight')]
 
