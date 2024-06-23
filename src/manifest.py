@@ -2,7 +2,6 @@ from dataclasses import dataclass
 import os
 
 import json
-import yaml
 import sqlite3
 from typing import Iterator
 
@@ -200,7 +199,7 @@ class Manifest:
 
     return row and bool(row[0])
 
-  def register_encoded_image_url(self, image: Photo, url: str, role: str, format='webp'):
+  def add_encoded_image_url(self, image: Photo, url: str, role: str, format='webp'):
     """Register a thumbnail URL for an image in the local database"""
 
     mimetype = f'image/{format}'
@@ -212,7 +211,7 @@ class Manifest:
     """, (image.path, mimetype, role, url))
     self.conn.commit()
 
-  def register_dates(self, fpath: str, min_date, max_date):
+  def add_album_dates(self, fpath: str, min_date, max_date):
     """Set minimum and maximum dates for an album"""
 
     cursor = self.conn.cursor()
@@ -230,8 +229,6 @@ class Manifest:
                            manifest_file: str,
                            images: bool = True) -> None:
     """Create a metadata file from the stored manifest file"""
-
-    # TODO
 
     cursor = self.conn.cursor()
     cursor.execute("""
@@ -325,18 +322,9 @@ class Manifest:
     with open(manifest_file, 'w') as conn:
       conn.write(json.dumps(manifest))
 
-  def copy_metadata_file(self, metadata_path: str, manifest_path: str) -> None:
-    """Copy the metadata file to the target destination"""
+  def add_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
+    """Insert location data into the images table"""
 
-    manifest_dname = os.path.dirname(manifest_path)
-    metadata_dst = os.path.join(manifest_dname, 'metadata.json')
-
-    content = yaml.safe_load(open(metadata_path))
-
-    with open(metadata_dst, 'w') as conn:
-      conn.write(json.dumps(content))
-
-  def register_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
     cursor = self.conn.cursor()
     cursor.execute("""
     update images

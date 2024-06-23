@@ -1,3 +1,6 @@
+import os
+import yaml
+import json
 from typing import List
 from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
@@ -26,7 +29,7 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
                  clear=True)
         spaces.upload_thumbnail(encoded_image, format=thumbnail_format)
 
-      db.register_encoded_image_url(image, thumbnail_url, role, format=thumbnail_format)
+      db.add_encoded_image_url(image, thumbnail_url, role, format=thumbnail_format)
 
     Log.info(f'Checking image #{image_idx} is published for {image.path}',
              clear=True)
@@ -52,7 +55,7 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
         Log.info(f'Uploading #{image_idx} image for {image.path}', clear=True)
         spaces.upload_image(encoded, format=thumbnail_format)
 
-      db.register_encoded_image_url(image, image_url, role, format=thumbnail_format)
+      db.add_encoded_image_url(image, image_url, role, format=thumbnail_format)
 
 
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
@@ -72,8 +75,18 @@ def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
   min_timestamp_ms = min_date.timestamp() * 1_000
   max_timestamp_ms = max_date.timestamp() * 1_000
 
-  db.register_dates(album.path, min_timestamp_ms, max_timestamp_ms)
+  db.add_album_dates(album.path, min_timestamp_ms, max_timestamp_ms)
 
+def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
+  """Copy the metadata file to the target destination"""
+
+  manifest_dname = os.path.dirname(manifest_path)
+  metadata_dst = os.path.join(manifest_dname, 'metadata.json')
+
+  content = yaml.safe_load(open(metadata_path))
+
+  with open(metadata_dst, 'w') as conn:
+    conn.write(json.dumps(content))
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
@@ -110,4 +123,5 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
     find_album_dates(db, dir, images)
 
   db.create_metadata_file(manifest_path, images=True)
-  db.copy_metadata_file(metadata_path, manifest_path)
+
+  copy_metadata_file(metadata_path, manifest_path)

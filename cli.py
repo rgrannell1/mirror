@@ -1,15 +1,22 @@
 #!/usr/bin/python3
 """
 Usage:
+  mirror tag
   mirror tag --metadata=<fpath>                                <dir>
-  mirror tag-faces --metadata=<fpath> [--exclude=<str>]        <dir>
+  mirror list-tags [--graphvis]
   mirror list-tags --metadata=<fpath> [--graphvis]             <dir>
+  mirror list-tagfiles [--tag=<tag>]
   mirror list-tagfiles [--tag=<tag>]                           <dir>
+  mirror show-tagfiles [--tag=<tag>]
   mirror show-tagfiles [--tag=<tag>]                           <dir>
+  mirror list-photos [--tag=<tag>] [--from=<from>] [--to=<to>]
   mirror list-photos --metadata=<fpath> [--tag=<tag>] [--from=<from>] [--to=<to>] <dir>
+  mirror publish
   mirror publish --metadata=<fpath>                            <dir> <manifest>
-  mirror feed --metadata=<fpath>                               <dir> <outdir>
+  mirror add-google-photos-metadata <google-photos-file>
   mirror add-google-photos-metadata --metadata=<fpath>         <dir> <google-photos-file>
+  mirror feed                                                  <outdir>
+  mirror feed --metadata=<fpath>                               <dir> <outdir>
   mirror (-h | --help)
 
 Description:
@@ -18,7 +25,6 @@ Description:
   - Indexes media into a SQLite "manifest" database.
   - Generates tagfiles, which are YAML files containing metadata for media.
   - Calculates image-blur
-  - Optionally applies face-recognition to the media library
   - Syncs information from tagfiles onto photos and other media.
   - Publishes a subset of media to DigitalOcean Spaces after transcoding to web-friendly formats.
   - Generates subscribable JSONFeed's for directories of media.
@@ -47,8 +53,6 @@ Commands:
   tag                           Tag all images in a directory based on the tags.md files. Tag albums with
                                   a title, cover-image, and other information
 
-  tag-faces                     Tag faces in a directory.
-
   list-tags                     List all tags in a directory.
 
   list-photos                   List photos and tag information. Optionally filter for a specific tag.
@@ -72,32 +76,32 @@ Options:
 
 """
 from docopt import docopt
+from src.config import MirrorConfig
 from src.mirror import Mirror
 
 if __name__ == '__main__':
   args = docopt(__doc__)
+  cfg = MirrorConfig.read(args)
 
   if args['tag']:
-    Mirror.tag(args['<dir>'], args['--metadata'])
+    Mirror.tag(cfg.directory, cfg.metadata)
   elif args['list-tags']:
-    Mirror.list_tags(args['<dir>'], {
+    Mirror.list_tags(cfg.directory, {
         'graphvis': args['--graphvis'],
-        'metadata': args['--metadata']
+        'metadata': cfg.metadata
     })
   elif args['list-photos']:
-    Mirror.list_photos(args['<dir>'], args['--metadata'], args['--tag'], args['--from'], args['--to'])
+    Mirror.list_photos(cfg.directory, cfg.metadata, args['--tag'], args['--from'], args['--to'])
   elif args['publish']:
-    Mirror.publish(args['<dir>'], args['--metadata'], args['<manifest>'])
+    Mirror.publish(cfg.directory, cfg.metadata, cfg.manifest)
   elif args['feed']:
-    Mirror.feed(args['<dir>'], args['--metadata'], args['<outdir>'])
+    Mirror.feed(cfg.directory, cfg.metadata, args['<outdir>'])
   elif args['list-tagfiles']:
-    Mirror.list_tagfiles(args['<dir>'], args['--tag'])
+    Mirror.list_tagfiles(cfg.directory, args['--tag'])
   elif args['show-tagfiles']:
-    Mirror.show_tagfiles(args['<dir>'], args['--tag'])
-  elif args['tag-faces']:
-    Mirror.tag_faces(args['<dir>'], args['--metadata'], args['--exclude'])
+    Mirror.show_tagfiles(cfg.directory, args['--tag'])
   elif args['add-google-photos-metadata']:
-    Mirror.add_google_photos_metadata(args['<dir>'], args['--metadata'], args['<google-photos-file>'])
+    Mirror.add_google_photos_metadata(cfg.directory, cfg.metadata, args['<google-photos-file>'])
   else:
     print('Invalid command')
     print(__doc__)

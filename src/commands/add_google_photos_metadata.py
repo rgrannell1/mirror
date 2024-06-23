@@ -26,4 +26,4 @@ def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file:
 
     tidy_address = re.sub("Estimated location.+Learn more", "", tidy_address)
 
-    db.register_google_photos_metadata(image['fpath'], tidy_address, lat, lon)
+    db.add_google_photos_metadata(image['fpath'], tidy_address, lat, lon)
