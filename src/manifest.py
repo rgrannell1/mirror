@@ -4,8 +4,7 @@ import os
 import json
 import yaml
 import sqlite3
-from typing import Iterator, List
-import numpy as np
+from typing import Iterator
 
 from src.album import AlbumMetadata
 from .photo import Photo
@@ -13,15 +12,22 @@ from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
                         ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT,
                         SPACES_DOMAIN)
 
+ENCODED_IMAGE_TABLE = """
+create table if not exists encoded_images (
+  fpath    text not null,
+  mimetype text not null,
+  role     text not null,
+  url      text not null,
+
+  primary key (fpath, mimetype, role)
+)
+"""
+
 IMAGES_TABLE = """
 create table if not exists images (
   fpath              text primary key,
   tags               text,
   published          boolean,
-  image_url          text,
-  thumbnail_url      text,
-  image_url_jpeg     text,
-  thumbnail_url_jpeg text,
   description        text,
   album              text,
   date_time          text,
@@ -51,30 +57,6 @@ create table if not exists albums (
 )
 """
 
-IMAGE_FACES_TABLE = """
-create table if not exists faces (
-  x0                 text,
-  y0                 text,
-  x1                 text,
-  y1                 text,
-  identity           text,
-  image              text,
-  encoding           blob,
-
-  primary key(x0, y0, x1, y1, identity, image)
-)
-"""
-
-IMAGE_JOBS = """
-create table if not exists jobs (
-  face_detection     boolean,
-  image              text,
-
-  primary key(image)
-)
-"""
-
-
 @dataclass
 class ImageMetadata:
   image_url = str
@@ -92,6 +74,8 @@ class ImageMetadata:
 class Manifest:
   """The local database containing information about the photo albums"""
 
+  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE}
+
   def __init__(self, db_path: str, metadata_path: str):
     fpath = os.path.expanduser(db_path)
     self.conn = sqlite3.connect(fpath)
@@ -102,7 +86,7 @@ class Manifest:
 
     cursor = self.conn.cursor()
 
-    for table in {IMAGES_TABLE, ALBUM_TABLE, IMAGE_FACES_TABLE, IMAGE_JOBS}:
+    for table in Manifest.TABLES:
       cursor.execute(table)
 
   def list_publishable(self) -> Iterator[Photo]:
@@ -118,14 +102,24 @@ class Manifest:
     """Get metadata for a specific image"""
 
     cursor = self.conn.cursor()
-    cursor.execute(
-        """
-      select
-        images.image_url_jpeg, images.thumbnail_url_jpeg,
-        images.date_time, albums.album_name
-      from images
-      inner join albums on images.album = albums.fpath
-      where published = '1' and images.fpath = ?
+    cursor.execute("""
+    select
+      full_sized_images.url as image_url_jpeg,
+      thumbnail_images.url as thumbnail_url_jpeg
+      images.date_time as date_time,
+      albums.album_name as album_name,
+    from images
+    inner join albums on images.album = albums.fpath
+    inner join encoded_images as full_sized_images
+      on full_sized_images .fpath = images.fpath
+    inner join encoded_images as thumbnail_images
+      on thumbnail_images.fpath = images.fpath
+    where images.published = '1'
+      and images.fpath = ?
+      and (
+        (full_sized_images.mimetype = 'image/jpeg' and full_sized_images.role = 'thumbnail_lossy')
+        or
+        (thumbnail_images.mimetype = 'image/jpeg' and thumbnail_images.role = 'full_image_lossy'))
     """, (fpath, ))
 
     row = cursor.fetchone()
@@ -191,133 +185,31 @@ class Manifest:
          album_md.geolocation))
     self.conn.commit()
 
-  def has_thumbnail(self, image: Photo, format='webp'):
+  def has_encoded_image(self, image: Photo, role: str, format='webp'):
     """Check if a thumbnail exists, according to the local database"""
 
-    target_column = 'thumbnail_url'
-    if format == 'jpeg':
-      target_column = 'thumbnail_url_jpeg'
+    mimetype = f'image/{format}'
 
-    cursor = self.conn.cursor()
-    cursor.execute(f"select {target_column} from images where fpath = ?",
-                   (image.path, ))
-
-    row = cursor.fetchone()
-
-    return row and bool(row[0])
-
-  def has_image(self, image, format='webp'):
-    """Check if an image exists, according to the local database"""
-
-    target_column = 'image_url'
-    if format == 'jpeg':
-      target_column = 'image_url_jpeg'
-
-    cursor = self.conn.cursor()
-    cursor.execute(f"select {target_column} from images where fpath = ?",
-                   (image.path, ))
-
-    row = cursor.fetchone()
-
-    return row and bool(row[0])
-
-  def list_faces(self, identified=False) -> Iterator:
-    """Get faces from the local database"""
-
-    cursor = self.conn.cursor()
-
-    if identified:
-      cursor.execute("select image, identity, x0, y0, x1, y1, encoding from faces")
-    else:
-      cursor.execute(
-          "select image, identity, x0, y0, x1, y1, encoding from faces where identity = 'unknown'"
-      )
-
-    for row in cursor.fetchall():
-      bounds = [int(row[2]), int(row[3]), int(row[4]), int(row[5])]
-      encodings = np.array(json.loads(row[6]))
-
-      yield row[0], bounds, row[1], encodings
-
-  def job_status(self, image: Photo, job: str):
-    """Check if a job is complete, according to the local database"""
-
-    cursor = self.conn.cursor()
-    cursor.execute(f"select {job} from jobs where image = ?", (image.path, ))
-
-    row = cursor.fetchone()
-
-    return row and bool(row[0])
-
-  def register_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
     cursor = self.conn.cursor()
     cursor.execute("""
-    update images
-      set latitude = ?, longitude = ?, address = ?
-      where fpath like '%' || ?;
-    """, (lat, lon, address, fpath))
-    self.conn.commit()
+    select fpath from encoded_images
+      where fpath = ? and mimetype = ? and role = ?
+    """, (image.path, mimetype, role))
 
-  def register_job_complete(self, image: Photo, job: str):
-    """Register a job as complete in the local database"""
+    row = cursor.fetchone()
 
-    cursor = self.conn.cursor()
-    cursor.execute(
-        f"""
-        insert into jobs (image, {job})
-        values (?, ?)
-        on conflict(image) do update set {job} = 1
-    """, (image.path, 1))
-    self.conn.commit()
+    return row and bool(row[0])
 
-  def register_face_cluster(self, image: str, cluster: int):
-    """Register a face cluster in the local database"""
-
-    cursor = self.conn.cursor()
-    cursor.execute(
-        """
-        update faces
-        set identity = ?
-        where image = ? and identity = 'unknown'
-        """, (cluster, image))
-    self.conn.commit()
-
-  def register_faces(self, image: Photo, bounds: List[int], encoding: List):
-    """Register a face in the local database"""
-
-    json_encoding = json.dumps(encoding)
-
-    cursor = self.conn.cursor()
-    cursor.execute(
-        """
-        insert into faces (x0, y0, x1, y1, identity, image, encoding)
-        values (?, ?, ?, ?, ?, ?, ?)
-        """,
-        (bounds[0], bounds[1], bounds[2], bounds[3], 'unknown', image.path, json_encoding))
-    self.conn.commit()
-
-  def register_thumbnail_url(self, image: Photo, url: str, format='webp'):
+  def register_encoded_image_url(self, image: Photo, url: str, role: str, format='webp'):
     """Register a thumbnail URL for an image in the local database"""
 
-    target_column = 'thumbnail_url'
-    if format == 'jpeg':
-      target_column = 'thumbnail_url_jpeg'
+    mimetype = f'image/{format}'
 
     cursor = self.conn.cursor()
-    cursor.execute(f"update images set {target_column} = ? where fpath = ?",
-                   (url, image.path))
-    self.conn.commit()
-
-  def register_image_url(self, image: Photo, url: str, format='webp'):
-    """"""
-
-    target_column = 'image_url'
-    if format == 'jpeg':
-      target_column = 'image_url_jpeg'
-
-    cursor = self.conn.cursor()
-    cursor.execute(f"update images set {target_column} = ? where fpath = ?",
-                   (url, image.path))
+    cursor.execute("""
+    insert or ignore into encoded_images (fpath, mimetype, role, url)
+      values (?, ?, ?, ?)
+    """, (image.path, mimetype, role, url))
     self.conn.commit()
 
   def register_dates(self, fpath: str, min_date, max_date):
@@ -339,16 +231,39 @@ class Manifest:
                            images: bool = True) -> None:
     """Create a metadata file from the stored manifest file"""
 
+    # TODO
+
     cursor = self.conn.cursor()
     cursor.execute("""
-      select
-          images.fpath, images.tags, images.image_url, images.thumbnail_url, images.description as photo_description,
-          images.date_time, images.f_number, images.focal_length, images.model,
-          images.iso, images.blur, images.width, images.height,
-          albums.album_name, albums.cover_image, albums.description, albums.min_date, albums.max_date, albums.geolocation
-        from images
-        inner join albums on images.album = albums.fpath
-        where published = '1'
+    select
+        images.fpath,
+        images.tags,
+        ei_image.url as image_url,
+        ei_thumbnail.url as thumbnail_url,
+        images.description as photo_description,
+        images.date_time,
+        images.f_number,
+        images.focal_length,
+        images.model,
+        images.iso,
+        images.blur,
+        images.width,
+        images.height,
+        albums.album_name,
+        albums.cover_image,
+        albums.description,
+        albums.min_date,
+        albums.max_date,
+        albums.geolocation
+    from images
+    inner join albums on images.album = albums.fpath
+    left join encoded_images ei_image on images.fpath = ei_image.fpath
+        and ei_image.mimetype = 'image/webp'
+        and ei_image.role = 'full_image_lossless'
+    left join encoded_images ei_thumbnail on images.fpath = ei_thumbnail.fpath
+        and ei_thumbnail.mimetype = 'image/webp'
+        and ei_thumbnail.role = 'thumbnail_lossless'
+    where images.published = '1';
       """)
 
     folders = {}
@@ -420,6 +335,15 @@ class Manifest:
 
     with open(metadata_dst, 'w') as conn:
       conn.write(json.dumps(content))
+
+  def register_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
+    cursor = self.conn.cursor()
+    cursor.execute("""
+    update images
+      set latitude = ?, longitude = ?, address = ?
+      where fpath like '%' || ?;
+    """, (lat, lon, address, fpath))
+    self.conn.commit()
 
   def close(self):
     """Close the local database connection"""

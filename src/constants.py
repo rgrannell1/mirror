@@ -64,3 +64,15 @@ EXIF_ATTR_ASSOCIATIONS = [(ATTR_DATE_TIME, 'DateTimeOriginal'),
 
 # Author
 AUTHOR = 'R* Grannell'
+
+# Thumbnail encodings
+THUMBNAIL_ENCODINGS = [
+  { 'format': 'webp', 'role': 'thumbnail_lossless' },
+  { 'format': 'jpeg', 'role': 'thumbnail_lossy' },
+]
+
+# Full sized image encodings
+IMAGE_ENCODINGS = [
+  { 'format': 'webp', 'role': 'full_image_lossless' },
+  { 'format': 'jpeg', 'role': 'full_image_lossy' },
+]

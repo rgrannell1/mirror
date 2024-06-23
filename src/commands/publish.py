@@ -1,10 +1,9 @@
 from typing import List
-from src.constants import DB_PATH
+from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
 from src.manifest import Manifest
 from src.log import Log
-
 
 def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
                      image_idx: int) -> None:
@@ -12,19 +11,22 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
   Log.info(f'Checking thumbnail #{image_idx} is published for {image.path}')
 
   # create and upload a thumbnail
-  for format in {'webp', 'jpeg'}:
-    if not db.has_thumbnail(image, format):
-      encoded = image.encode_thumbnail(format=format)
+  for thumbnail_encoding in THUMBNAIL_ENCODINGS:
+    thumbnail_format = thumbnail_encoding['format']
+    role = thumbnail_encoding['role']
+
+    if not db.has_encoded_image(image, role, thumbnail_format):
+      encoded_image = image.encode_thumbnail(format=thumbnail_format)
 
       thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(
-          encoded, format=format)
+          encoded_image, format=thumbnail_format)
 
       if not thumbnail_in_spaces:
         Log.info(f'Uploading thumbnail #{image_idx} for {image.path}',
                  clear=True)
-        spaces.upload_thumbnail(encoded, format=format)
+        spaces.upload_thumbnail(encoded_image, format=thumbnail_format)
 
-      db.register_thumbnail_url(image, thumbnail_url, format=format)
+      db.register_encoded_image_url(image, thumbnail_url, role, format=thumbnail_format)
 
     Log.info(f'Checking image #{image_idx} is published for {image.path}',
              clear=True)
@@ -37,17 +39,20 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
            clear=True)
 
   # create an upload the image itself
-  for format in {'webp', 'jpeg'}:
-    if not db.has_image(image, format):
-      encoded = image.encode_image(format=format)
+  for thumbnail_encoding in IMAGE_ENCODINGS:
+    thumbnail_format = thumbnail_encoding['format']
+    role = thumbnail_encoding['role']
 
-      image_in_spaces, image_url = spaces.image_status(encoded, format=format)
+    if not db.has_encoded_image(image, role, thumbnail_format):
+      encoded = image.encode_image(format=thumbnail_format)
+
+      image_in_spaces, image_url = spaces.image_status(encoded, format=thumbnail_format)
 
       if not image_in_spaces:
         Log.info(f'Uploading #{image_idx} image for {image.path}', clear=True)
-        spaces.upload_image(encoded, format=format)
+        spaces.upload_image(encoded, format=thumbnail_format)
 
-      db.register_image_url(image, image_url, format=format)
+      db.register_encoded_image_url(image, image_url, role, format=thumbnail_format)
 
 
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
