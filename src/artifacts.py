@@ -32,7 +32,8 @@ ALBUMS_HEADERS = [
 ]
 
 def add_id(row):
-  return [row[0], str(hash(row[0]))] + row[1:]
+  fpath = row[0]
+  return [fpath, str(hash(fpath))] + list(row[1:])
 
 class ImagesArtifacts:
   """Generate an artifact describing the images in the database."""
@@ -106,7 +107,12 @@ class AlbumArtifacts:
           where encoded_images.fpath = albums.cover_path
           and mimetype='image/bmp' and role = 'thumbnail_mosaic'
         ) as thumbnail_mosaic_url
-        from albums;
+        from albums
+        where albums.fpath in (
+            select distinct images.album
+            from images
+            where images.published = '1'
+        );
     """)
 
     return json.dumps([ALBUMS_HEADERS] + [row for row in cursor.fetchall()])
