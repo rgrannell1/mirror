@@ -98,10 +98,9 @@ class Tagfile:
     except Exception as err:
       raise Exception(f"Error reading tagfile {fpath}") from err
 
-    cover = tag_file[ATTR_ALBUM_COVER]
+    cover = os.path.basename(tag_file[ATTR_ALBUM_COVER])
     dirpath = os.path.dirname(fpath)
 
-    if f'![{cover}]({cover})' not in tag_file['images'] and cover != 'Cover':
+    if f'![{cover}]({cover})' not in tag_file['images'] and cover != 'Cover' and cover != 'Unknown':
       raise Exception(f"{cover} is not present in the album {dirpath}")
-
     return tag_file

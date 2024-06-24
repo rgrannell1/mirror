@@ -1,7 +1,9 @@
+import base64
 import os
 import yaml
 import json
 from typing import List
+from src.artifacts import AlbumArtifacts, ImagesArtifacts
 from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
@@ -58,6 +60,16 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
       db.add_encoded_image_url(image, image_url, role, format=thumbnail_format)
 
 
+def encode_mosaic(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
+  if not db.has_encoded_image(image, 'thumbnail_mosaic', 'bmp'):
+    encoded = image.encode_image_mosaic()
+
+    encoded_content = base64.b64encode(encoded.content).decode('ascii')
+    data_url = f"data:image/bmp;base64,{encoded_content}"
+
+    db.add_encoded_image_url(image, data_url, 'thumbnail_mosaic', 'bmp')
+
+
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
   album = Album(dir)
 
@@ -88,6 +100,15 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
   with open(metadata_dst, 'w') as conn:
     conn.write(json.dumps(content))
 
+def create_artifacts(db: Manifest, manifest_path: str) -> None:
+  with open(f'{manifest_path}/albums.json', 'w') as conn:
+    albums = AlbumArtifacts.content(db)
+    conn.write(albums)
+
+  with open(f'{manifest_path}/images.json', 'w') as conn:
+    images = ImagesArtifacts.content(db)
+    conn.write(images)
+
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
                   and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
@@ -110,6 +131,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
     upload_thumbnail(db, spaces, image, image_idx)
     upload_image(db, spaces, image, image_idx)
+    encode_mosaic(db, spaces, image, image_idx)
 
     image_idx += 1
 
@@ -122,6 +144,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   for dir, images in PhotoVault(dir, metadata_path).list_by_folder().items():
     find_album_dates(db, dir, images)
 
-  db.create_metadata_file(manifest_path, images=True)
+  #db.create_metadata_file(manifest_path, images=True)
 
   copy_metadata_file(metadata_path, manifest_path)
+  create_artifacts(db, manifest_path)

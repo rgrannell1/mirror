@@ -1,5 +1,7 @@
 """Album for a photo-album""" ""
 
+import os
+import re
 from typing import Optional
 from dataclasses import dataclass
 from functools import lru_cache
@@ -65,10 +67,12 @@ class Album:
     if not self.has_xattr(ATTR_ALBUM_TITLE):
       return None
 
+    cover = self.get_xattr(ATTR_ALBUM_COVER)
+
     return AlbumMetadata(fpath=self.path,
                          title=self.get_xattr(ATTR_ALBUM_TITLE),
                          description=self.get_xattr(ATTR_ALBUM_DESCRIPTION,
                                                     ""),
-                         cover=self.get_xattr(ATTR_ALBUM_COVER),
+                         cover=cover,
                          geolocation=self.get_xattr(ATTR_ALBUM_GEOLOCATION,
                                                     ""))

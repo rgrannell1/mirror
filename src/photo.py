@@ -15,7 +15,8 @@ from PIL import Image, ImageOps, ExifTags
 
 from .constants import (ATTR_BLUR, ATTR_TAG, ATTR_DESCRIPTION,
                         EXIF_ATTR_ASSOCIATIONS, SET_ATTR_ALBUM,
-                        THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, TITLE_PATTERN,
+                        THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT,
+                        MOSAIC_WIDTH, MOSAIC_HEIGHT, TITLE_PATTERN,
                         DATE_FORMAT)
 
 from .tagfile import Tagfile
@@ -289,6 +290,31 @@ class Photo(Media):
       # return the image hash and contents
 
       no_exif.save(output, format=format, lossless=True)
+      contents = output.getvalue()
+
+      hasher = hashlib.new('sha256')
+      hasher.update(contents)
+
+      return ImageContent(hash=hasher.hexdigest(), content=contents)
+
+  def encode_image_mosaic(self):
+    img = Image.open(self.path)
+    img = img.convert('RGB')
+
+    # reduce the dimensions of the image to the thumbnail size
+    thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+
+    # remove EXIF data from the image by cloning
+    data = list(thumb.getdata())
+    no_exif = Image.new(thumb.mode, thumb.size)
+    no_exif.putdata(data)
+
+    # resize down to a tiny mosaic data-url that can be used to
+    # "progressively render" a photo.
+    smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
+
+    with io.BytesIO() as output:
+      smaller.save(output, format='bmp', lossless=True)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')

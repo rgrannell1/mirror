@@ -3,7 +3,7 @@ import os
 
 import json
 import sqlite3
-from typing import Iterator
+from typing import Iterator, List
 
 from src.album import AlbumMetadata
 from .photo import Photo
@@ -48,6 +48,7 @@ ALBUM_TABLE = """
 create table if not exists albums (
   fpath            text primary key,
   album_name       text,
+  album_path       text,
   cover_image      text,
   description      text,
   min_date         text,
@@ -177,10 +178,12 @@ class Manifest:
   def add_album(self, album_md: AlbumMetadata):
     """Add an album to the local database"""
 
+    cover_path = os.path.join(album_md.fpath, album_md.cover) if album_md.cover != 'Cover' else None
+
     cursor = self.conn.cursor()
     cursor.execute(
-        "insert or replace into albums (fpath, album_name, cover_image, description, geolocation) values (?, ?, ?, ?, ?)",
-        (album_md.fpath, album_md.title, album_md.cover, album_md.description,
+        "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation) values (?, ?, ?, ?, ?, ?)",
+        (album_md.fpath, album_md.title, album_md.cover, cover_path, album_md.description,
          album_md.geolocation))
     self.conn.commit()
 
@@ -237,6 +240,7 @@ class Manifest:
         images.tags,
         ei_image.url as image_url,
         ei_thumbnail.url as thumbnail_url,
+        ei_mosaic_thumbnail.url as thumbnail_data_url,
         images.description as photo_description,
         images.date_time,
         images.f_number,
@@ -260,13 +264,16 @@ class Manifest:
     left join encoded_images ei_thumbnail on images.fpath = ei_thumbnail.fpath
         and ei_thumbnail.mimetype = 'image/webp'
         and ei_thumbnail.role = 'thumbnail_lossless'
+    left join encoded_images ei_mosaic_thumbnail on images.fpath = ei_mosaic_thumbnail.fpath
+        and ei_mosaic_thumbnail.mimetype = 'image/bmp'
+        and ei_mosaic_thumbnail.role = 'thumbnail_mosaic'
     where images.published = '1';
       """)
 
     folders = {}
 
     for row in cursor.fetchall():
-      (fpath, tags, image_url, thumbnail_url, photo_description, date_time,
+      (fpath, tags, image_url, thumbnail_url, thumbnail_data_url, photo_description, date_time,
        f_number, focal_length, model, iso, blur, width, height, album_name,
        cover_image, description, min_date, max_date, geolocation) = row
 
@@ -280,7 +287,7 @@ class Manifest:
             'id': album_id,
             'min_date': min_date,
             'max_date': max_date,
-            'cover_image': os.path.join(dirname, cover_image),
+            'cover_image': cover_image,
             'description': description,
             'geolocation': geolocation,
             'images': [],
@@ -314,7 +321,8 @@ class Manifest:
             'image_url':
             image_url.replace(SPACES_DOMAIN, ''),
             'thumbnail_url':
-            thumbnail_url.replace(SPACES_DOMAIN, '')
+            thumbnail_url.replace(SPACES_DOMAIN, ''),
+            'thumbnail_data_url': thumbnail_data_url
         })
 
     manifest = {'domain': SPACES_DOMAIN, 'folders': folders}

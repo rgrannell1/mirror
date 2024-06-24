@@ -44,6 +44,9 @@ ATTR_LOCATION_LONGITUDE = 'user.xyz.rgrannell.photos.location_longitude'
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 
+MOSAIC_WIDTH = 10
+MOSAIC_HEIGHT = 10
+
 # Output Date Format
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 
