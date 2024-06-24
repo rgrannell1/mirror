@@ -90,7 +90,7 @@ class AlbumArtifacts:
         description,
         (
           select count(*) from images
-          where images.album = albums.fpath
+          where images.album = albums.fpath and published = '1'
         ) as image_count,
         (
           select url from encoded_images
