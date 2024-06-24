@@ -15,7 +15,6 @@ IMAGES_HEADERS = [
   'blur',
   'width',
   'height',
-  'image_url',
   'thumbnail_url',
   'thumbnail_data_url'
 ]
@@ -55,11 +54,6 @@ class ImagesArtifacts:
         blur,
         width,
         height,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = images.fpath
-          and mimetype='image/webp' and role = 'full_image_lossless'
-        ) as image_url,
         (
           select url from encoded_images
           where encoded_images.fpath = images.fpath
