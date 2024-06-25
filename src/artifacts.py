@@ -5,6 +5,7 @@ from src.manifest import Manifest
 IMAGES_HEADERS = [
   'fpath',
   'id',
+  'album_id',
   'tags',
   'description',
   'date_time',
@@ -16,10 +17,12 @@ IMAGES_HEADERS = [
   'width',
   'height',
   'thumbnail_url',
-  'thumbnail_data_url'
+  'thumbnail_data_url',
+  'image_url',
 ]
 
 ALBUMS_HEADERS = [
+  'id',
   'album_name',
   'min_date',
   'max_date',
@@ -30,9 +33,16 @@ ALBUMS_HEADERS = [
   'thumbnail_mosaic_url'
 ]
 
-def add_id(row):
+def add_image_ids(row):
   fpath = row[0]
-  return [fpath, str(hash(fpath))] + list(row[1:])
+  album = row[1]
+
+  return [fpath, str(hash(fpath)), str(hash(album))] + list(row[2:])
+
+def add_album_id(row):
+  fpath = row[0]
+
+  return [str(hash(fpath))] + list(row[1:])
 
 class ImagesArtifacts:
   """Generate an artifact describing the images in the database."""
@@ -43,7 +53,7 @@ class ImagesArtifacts:
     cursor.execute(f"""
       select
         fpath,
-        'id',
+        album,
         tags,
         description,
         date_time,
@@ -63,12 +73,18 @@ class ImagesArtifacts:
           select url from encoded_images
           where encoded_images.fpath = images.fpath
           and mimetype='image/bmp' and role = 'thumbnail_mosaic'
-        ) as thumbnail_mosaic_url
+        ) as thumbnail_mosaic_url,
+        (
+          select url from encoded_images
+          where encoded_images.fpath = images.fpath
+          and mimetype ='image/webp' and role = 'full_image_lossless'
+        ) as image_url
+
       from images
       where published = '1'
     """)
 
-    return json.dumps([IMAGES_HEADERS] + [add_id(row) for row in cursor.fetchall()])
+    return json.dumps([IMAGES_HEADERS] + [add_image_ids(row) for row in cursor.fetchall()])
 
 class AlbumArtifacts:
   """Generate an artifact describing the albums in the database."""
@@ -78,6 +94,7 @@ class AlbumArtifacts:
     cursor = db.conn.cursor()
     cursor.execute("""
       select
+        fpath,
         album_name as name,
         min_date,
         max_date,
@@ -109,4 +126,4 @@ class AlbumArtifacts:
         );
     """)
 
-    return json.dumps([ALBUMS_HEADERS] + [row for row in cursor.fetchall()])
+    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in cursor.fetchall()])
