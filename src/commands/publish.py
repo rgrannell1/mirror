@@ -92,8 +92,7 @@ def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
 def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
   """Copy the metadata file to the target destination"""
 
-  manifest_dname = os.path.dirname(manifest_path)
-  metadata_dst = os.path.join(manifest_dname, 'metadata.json')
+  metadata_dst = os.path.join(manifest_path, 'metadata.json')
 
   content = yaml.safe_load(open(metadata_path))
 
@@ -143,8 +142,6 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
   for dir, images in PhotoVault(dir, metadata_path).list_by_folder().items():
     find_album_dates(db, dir, images)
-
-  #db.create_metadata_file(manifest_path, images=True)
 
   copy_metadata_file(metadata_path, manifest_path)
   create_artifacts(db, manifest_path)
