@@ -14,6 +14,7 @@ IMAGES_HEADERS = [
   'model',
   'iso',
   'blur',
+  'shutter_speed',
   'width',
   'height',
   'thumbnail_url',
@@ -62,6 +63,7 @@ class ImagesArtifacts:
         model,
         iso,
         blur,
+        shutter_speed,
         width,
         height,
         (

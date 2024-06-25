@@ -24,6 +24,7 @@ ATTR_TAG = 'user.xyz.rgrannell.photos.tags'
 ATTR_DESCRIPTION = 'user.xyz.rgrannell.photos.description'
 ATTR_DATE_TIME = 'user.xyz.rgrannell.photos.date_time'
 ATTR_BLUR = 'user.xyz.rgrannell.photos.blur'
+ATTR_SHUTTER_SPEED = 'user.xyz.rgrannell.photos.shutter_speed'
 
 # Photo Settings
 ATTR_FSTOP = 'user.xyz.rgrannell.photos.fstop'
@@ -61,6 +62,7 @@ EXIF_ATTR_ASSOCIATIONS = [(ATTR_DATE_TIME, 'DateTimeOriginal'),
                           (ATTR_FSTOP, 'FNumber'),
                           (ATTR_FOCAL_EQUIVALENT, 'FocalLengthIn35mmFilm'),
                           (ATTR_MODEL, 'Model'),
+                          (ATTR_SHUTTER_SPEED, 'ExposureTime'),
                           (ATTR_ISO, 'ISOSpeedRatings'),
                           (ATTR_WIDTH, 'ExifImageWidth'),
                           (ATTR_HEIGHT, 'ExifImageHeight')]

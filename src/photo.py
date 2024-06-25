@@ -13,7 +13,7 @@ from src.media import Media
 from typing import List, Iterator, Dict, Optional, Set
 from PIL import Image, ImageOps, ExifTags
 
-from .constants import (ATTR_BLUR, ATTR_TAG, ATTR_DESCRIPTION,
+from .constants import (ATTR_BLUR, ATTR_SHUTTER_SPEED, ATTR_TAG, ATTR_DESCRIPTION,
                         EXIF_ATTR_ASSOCIATIONS, SET_ATTR_ALBUM,
                         THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT,
                         MOSAIC_WIDTH, MOSAIC_HEIGHT, TITLE_PATTERN,
@@ -210,6 +210,11 @@ class Photo(Media):
           self.blur_estimate())
     except BaseException:
       return -1
+
+  def get_shutter_speed(self) -> Optional[str]:
+    """Get the shutter speed of an image"""
+
+    return self.get_xattr_attr(ATTR_SHUTTER_SPEED, None)
 
   def get_metadata(self) -> Dict:
     """Get metadata from an image as extended-attributes"""

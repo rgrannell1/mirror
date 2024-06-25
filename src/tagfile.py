@@ -9,7 +9,7 @@ from typing import Dict, Optional
 
 from src.constants import (ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
                            ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
-                           ATTR_ALBUM_ID, ATTR_BLUR, ATTR_TAG,
+                           ATTR_ALBUM_ID, ATTR_BLUR, ATTR_SHUTTER_SPEED, ATTR_TAG,
                            ATTR_DESCRIPTION)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +50,8 @@ class Tagfile:
       images[transclusion] = {
           ATTR_TAG: tags,
           ATTR_DESCRIPTION: image.get_description(),
-          ATTR_BLUR: image.get_blur()
+          ATTR_BLUR: image.get_blur(),
+          ATTR_SHUTTER_SPEED: image.get_shutter_speed(),
       }
 
     return [{
