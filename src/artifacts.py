@@ -1,4 +1,5 @@
 
+import sys
 import json
 from src.manifest import Manifest
 
@@ -128,4 +129,14 @@ class AlbumArtifacts:
         );
     """)
 
-    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in cursor.fetchall()])
+    rows = cursor.fetchall()
+    messages = []
+
+    for row in rows:
+      if not row[6]:
+        messages.append(f"did not find a cover image for album '{row[1]}'. Please update {row[0]}/tags.md")
+
+    if messages:
+      print('\n'.join(messages), file=sys.stderr)
+
+    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in rows])

@@ -72,12 +72,27 @@ AUTHOR = 'R* Grannell'
 
 # Thumbnail encodings
 THUMBNAIL_ENCODINGS = [
-  { 'format': 'webp', 'role': 'thumbnail_lossless' },
-  { 'format': 'jpeg', 'role': 'thumbnail_lossy' },
+  ('thumbnail_lossless', {
+    'format': 'webp',
+    'lossless': True
+  }),
+  ('thumbnail_lossy', {
+    'format': 'jpeg'
+  }),
+  ('thumbnail_lossy_v2', {
+    'format': 'webp',
+    'quality': 85,
+    'method': 6
+  })
 ]
 
 # Full sized image encodings
 IMAGE_ENCODINGS = [
-  { 'format': 'webp', 'role': 'full_image_lossless' },
-  { 'format': 'jpeg', 'role': 'full_image_lossy' },
+  ('full_image_lossless', {
+    'format': 'webp',
+    'lossless': True
+  }),
+  ('full_image_lossy', {
+    'format': 'webp'
+  })
 ]

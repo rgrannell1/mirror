@@ -277,7 +277,7 @@ class Photo(Media):
     tags = self.get_metadata().get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-  def encode_thumbnail(self, format='webp') -> ImageContent:
+  def encode_thumbnail(self, format, params) -> ImageContent:
     """Encode a image as a thumbnail, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -294,7 +294,7 @@ class Photo(Media):
     with io.BytesIO() as output:
       # return the image hash and contents
 
-      no_exif.save(output, format=format, lossless=True)
+      no_exif.save(output, **params)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')
@@ -327,7 +327,7 @@ class Photo(Media):
 
       return ImageContent(hash=hasher.hexdigest(), content=contents)
 
-  def encode_image(self, format='WEBP') -> ImageContent:
+  def encode_image(self, format, params) -> ImageContent:
     """Encode an image as Webp, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -341,7 +341,7 @@ class Photo(Media):
     with io.BytesIO() as output:
       # return the image hash and contents
 
-      no_exif.save(output, format=format, lossless=True)
+      no_exif.save(output, **params)
       contents = output.getvalue()
 
       hasher = hashlib.new('sha256')

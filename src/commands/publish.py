@@ -16,12 +16,11 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
   Log.info(f'Checking thumbnail #{image_idx} is published for {image.path}')
 
   # create and upload a thumbnail
-  for thumbnail_encoding in THUMBNAIL_ENCODINGS:
-    thumbnail_format = thumbnail_encoding['format']
-    role = thumbnail_encoding['role']
+  for role, encoding_params in THUMBNAIL_ENCODINGS:
+    thumbnail_format = encoding_params['format']
 
-    if not db.has_encoded_image(image, role, thumbnail_format):
-      encoded_image = image.encode_thumbnail(format=thumbnail_format)
+    if not db.has_encoded_image(image, role):
+      encoded_image = image.encode_thumbnail(thumbnail_format, encoding_params)
 
       thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(
           encoded_image, format=thumbnail_format)
@@ -44,11 +43,10 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
            clear=True)
 
   # create an upload the image itself
-  for thumbnail_encoding in IMAGE_ENCODINGS:
+  for role, thumbnail_encoding in IMAGE_ENCODINGS:
     thumbnail_format = thumbnail_encoding['format']
-    role = thumbnail_encoding['role']
 
-    if not db.has_encoded_image(image, role, thumbnail_format):
+    if not db.has_encoded_image(image, role):
       encoded = image.encode_image(format=thumbnail_format)
 
       image_in_spaces, image_url = spaces.image_status(encoded, format=thumbnail_format)
@@ -61,7 +59,7 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
 
 
 def encode_mosaic(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
-  if not db.has_encoded_image(image, 'thumbnail_mosaic', 'bmp'):
+  if not db.has_encoded_image(image, 'thumbnail_mosaic'):
     encoded = image.encode_image_mosaic()
 
     encoded_content = base64.b64encode(encoded.content).decode('ascii')

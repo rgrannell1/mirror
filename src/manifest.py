@@ -34,6 +34,7 @@ create table if not exists images (
   focal_length       text,
   model              text,
   iso                text,
+  shutter_speed      text,
   blur               text,
   width              text,
   height             text,
@@ -148,6 +149,7 @@ class Manifest:
         "model": exif_md[ATTR_MODEL],
         "iso": exif_md[ATTR_ISO],
         "blur": image.get_blur(),
+        "shutter_speed": image.get_shutter_speed(),
         "width": exif_md[ATTR_WIDTH],
         "height": exif_md[ATTR_HEIGHT],
     }
@@ -155,22 +157,23 @@ class Manifest:
     cursor = self.conn.cursor()
     cursor.execute(
         """
-        insert into images (fpath, tags, published, album, description, date_time, f_number, focal_length, model, iso, blur, width, height)
-        values (:fpath, :tags, :published, :album, :description, :date_time, :f_number, :focal_length, :model, :iso, :blur, :width, :height)
+        insert into images (fpath, tags, published, album, description, date_time, f_number, focal_length, model, iso, blur, shutter_speed, width, height)
+        values (:fpath, :tags, :published, :album, :description, :date_time, :f_number, :focal_length, :model, :iso, :blur, :shutter_speed, :width, :height)
         on conflict(fpath)
         do update set
-            tags =         :tags,
-            published =    :published,
-            album =        :album,
-            description =  :description,
-            date_time =    :date_time,
-            f_number =     :f_number,
-            focal_length = :focal_length,
-            model =        :model,
-            iso =          :iso,
-            blur =         :blur,
-            width =        :width,
-            height =       :height
+            tags =          :tags,
+            published =     :published,
+            album =         :album,
+            description =   :description,
+            date_time =     :date_time,
+            f_number =      :f_number,
+            focal_length =  :focal_length,
+            model =         :model,
+            iso =           :iso,
+            blur =          :blur,
+            shutter_speed = :shutter_speed,
+            width =         :width,
+            height =        :height
         """, params)
 
     self.conn.commit()
@@ -187,16 +190,14 @@ class Manifest:
          album_md.geolocation))
     self.conn.commit()
 
-  def has_encoded_image(self, image: Photo, role: str, format='webp'):
+  def has_encoded_image(self, image: Photo, role: str):
     """Check if a thumbnail exists, according to the local database"""
-
-    mimetype = f'image/{format}'
 
     cursor = self.conn.cursor()
     cursor.execute("""
     select fpath from encoded_images
-      where fpath = ? and mimetype = ? and role = ?
-    """, (image.path, mimetype, role))
+      where fpath = ? and role = ?
+    """, (image.path, role))
 
     row = cursor.fetchone()
 
