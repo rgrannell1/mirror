@@ -8,8 +8,8 @@ from src.commands.show_tagfiles import show_tagfiles
 from src.commands.list_photos import list_photos
 from src.commands.publish import publish
 from src.commands.feed import feed
-from src.commands.tag_faces import tag_faces
 from src.commands.add_google_photos_metadata import add_google_photos_metadata
+from src.commands.add_google_vision_metadata import add_google_vision_metadata
 
 class Mirror:
   """The core-logic of Mirror. Invoked by the CLI"""
@@ -43,9 +43,10 @@ class Mirror:
     feed(dir, metadata_path, out_dir)
 
   @staticmethod
-  def tag_faces(dir: str, metadata_path: str, exclude: str) -> None:
-    tag_faces(dir, metadata_path, exclude)
-
-  @staticmethod
   def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file: str) -> None:
     add_google_photos_metadata(dir, metadata_path, google_photos_file)
+    add_google_photos_metadata(dir, metadata_path, google_photos_file)
+
+  @staticmethod
+  def add_google_vision_metadata(dir: str, metadata_path: str) -> None:
+    add_google_vision_metadata(dir, metadata_path)

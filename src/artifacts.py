@@ -114,7 +114,7 @@ class AlbumArtifacts:
         (
           select url from encoded_images
           where encoded_images.fpath = albums.cover_path
-          and mimetype='image/webp' and role = 'thumbnail_lossless'
+          and mimetype='image/webp' and role = 'thumbnail_lossy_v2'
         ) as thumbnail_url,
         (
           select url from encoded_images
@@ -139,4 +139,4 @@ class AlbumArtifacts:
     if messages:
       print('\n'.join(messages), file=sys.stderr)
 
-    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in rows])
+    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in rows if row[6]])

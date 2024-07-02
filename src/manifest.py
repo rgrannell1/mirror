@@ -58,6 +58,18 @@ create table if not exists albums (
 )
 """
 
+GOOGLE_LABELS_TABLE = """
+create table if not exists google_labels (
+  fpath          text,
+  mid            text,
+  description    text,
+  score          text,
+  topicality     text,
+
+  primary key (fpath, mid)
+)
+"""
+
 @dataclass
 class ImageMetadata:
   image_url = str
@@ -75,7 +87,7 @@ class ImageMetadata:
 class Manifest:
   """The local database containing information about the photo albums"""
 
-  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE}
+  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE, GOOGLE_LABELS_TABLE}
 
   def __init__(self, db_path: str, metadata_path: str):
     fpath = os.path.expanduser(db_path)
@@ -175,6 +187,29 @@ class Manifest:
             width =         :width,
             height =        :height
         """, params)
+
+    self.conn.commit()
+
+  def has_google_labels(self, fpath: str):
+    """Check if Google Vision labels exist for an image"""
+
+    cursor = self.conn.cursor()
+    cursor.execute("select fpath from google_labels where fpath = ?", (fpath, ))
+
+    row = cursor.fetchone()
+
+    return row and bool(row[0])
+
+  def add_google_labels(self, fpath: str, labels: List):
+    """Add Google Vision labels to the local database"""
+
+    cursor = self.conn.cursor()
+
+    for label in labels:
+      cursor.execute("""
+      insert or replace into google_labels (fpath, mid, description, score, topicality)
+      values (?, ?, ?, ?, ?)
+      """, (fpath, label['mid'], label['description'], label['score'], label['topicality']))
 
     self.conn.commit()
 
