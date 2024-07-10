@@ -1,6 +1,5 @@
 
 from typing import List
-from google.cloud import vision
 
 from src.constants import DB_PATH
 from src.manifest import Manifest
@@ -8,9 +7,12 @@ from src.photo import Photo
 
 class GoogleVision:
   def __init__(self):
+    from google.cloud import vision
+
     self.client = vision.ImageAnnotatorClient()
 
   def analyse_image(self, photo: Photo, features: List):
+    from google.cloud import vision
     with open(photo.path, 'rb') as conn:
       request = vision.AnnotateImageRequest(
         image=vision.Image(content=conn.read()),
@@ -19,6 +21,7 @@ class GoogleVision:
       return self.client.annotate_image(request=request)
 
 def add_google_vision_metadata(dir: str, metadata_path: str):
+  from google.cloud import vision
   google_vision = GoogleVision()
 
   vision_features = [

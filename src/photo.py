@@ -250,6 +250,9 @@ class Photo(Media):
       self.set_xattr_attr(attr, value)
 
     for attr, value in attrs.items():
+      if value is None:
+        continue
+
       try:
         if attr == ATTR_TAG:
           self.set_xattr_attr(attr, ', '.join(value))
@@ -277,7 +280,7 @@ class Photo(Media):
     tags = self.get_metadata().get(ATTR_TAG, set())
     return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
-  def encode_thumbnail(self, format, params) -> ImageContent:
+  def encode_thumbnail(self, params) -> ImageContent:
     """Encode a image as a thumbnail, and remove EXIF data"""
 
     img = Image.open(self.path)
@@ -327,7 +330,7 @@ class Photo(Media):
 
       return ImageContent(hash=hasher.hexdigest(), content=contents)
 
-  def encode_image(self, format, params) -> ImageContent:
+  def encode_image(self, params) -> ImageContent:
     """Encode an image as Webp, and remove EXIF data"""
 
     img = Image.open(self.path)

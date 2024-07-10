@@ -49,3 +49,5 @@ def tag(dir: str, metadata_path: str):
       continue
 
     db.add_album(album_md)
+
+  Log.info(f"Tagging complete", clear=True)

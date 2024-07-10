@@ -20,7 +20,7 @@ def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
     thumbnail_format = encoding_params['format']
 
     if not db.has_encoded_image(image, role):
-      encoded_image = image.encode_thumbnail(thumbnail_format, encoding_params)
+      encoded_image = image.encode_thumbnail(encoding_params)
 
       thumbnail_in_spaces, thumbnail_url = spaces.thumbnail_status(
           encoded_image, format=thumbnail_format)
@@ -47,7 +47,7 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
     thumbnail_format = thumbnail_encoding['format']
 
     if not db.has_encoded_image(image, role):
-      encoded = image.encode_image(format=thumbnail_format)
+      encoded = image.encode_image(thumbnail_encoding)
 
       image_in_spaces, image_url = spaces.image_status(encoded, format=thumbnail_format)
 
