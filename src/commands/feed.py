@@ -31,6 +31,9 @@ def feed(dir: str, metadata_path: str, out_dir: str):
 
   # write each tag feed
   for tag, images in image_by_tags.items():
+    if tag == 'Published':
+      continue
+
     feed = JSONFeed.tag_feed(db, tag, images)
 
     with open(f'{out_dir}/tags/{tag}.json', 'w') as conn:

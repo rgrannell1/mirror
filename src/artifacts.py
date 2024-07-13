@@ -1,6 +1,7 @@
 
 import sys
 import json
+import markdown
 from src.manifest import Manifest
 
 IMAGES_HEADERS = [
@@ -34,17 +35,6 @@ ALBUMS_HEADERS = [
   'thumbnail_url',
   'thumbnail_mosaic_url'
 ]
-
-def add_image_ids(row):
-  fpath = row[0]
-  album = row[1]
-
-  return [fpath, str(hash(fpath)), str(hash(album))] + list(row[2:])
-
-def add_album_id(row):
-  fpath = row[0]
-
-  return [str(hash(fpath))] + list(row[1:])
 
 class ImagesArtifacts:
   """Generate an artifact describing the images in the database."""
@@ -87,7 +77,19 @@ class ImagesArtifacts:
       where published = '1'
     """)
 
-    return json.dumps([IMAGES_HEADERS] + [add_image_ids(row) for row in cursor.fetchall()])
+    rows = [IMAGES_HEADERS]
+
+    for row in cursor.fetchall():
+      fpath, album, tags, description, *rest = row
+      rows.append([
+        fpath,
+        str(hash(fpath)),
+        str(hash(album)),
+        tags,
+        markdown.markdown(description)
+      ] + rest)
+
+    return json.dumps(rows)
 
 class AlbumArtifacts:
   """Generate an artifact describing the albums in the database."""
@@ -129,14 +131,25 @@ class AlbumArtifacts:
         );
     """)
 
-    rows = cursor.fetchall()
     messages = []
+    rows = [ALBUMS_HEADERS]
 
-    for row in rows:
+    for row in cursor.fetchall():
       if not row[6]:
         messages.append(f"did not find a cover image for album '{row[1]}'. Please update {row[0]}/tags.md")
+        continue
+
+      fpath, album_name, min_date, max_date, description, *rest = row
+
+      rows.append([
+        str(hash(fpath)),
+        album_name,
+        min_date,
+        max_date,
+        markdown.markdown(description)
+      ] + rest)
 
     if messages:
       print('\n'.join(messages), file=sys.stderr)
 
-    return json.dumps([ALBUMS_HEADERS] + [add_album_id(row) for row in rows if row[6]])
+    return json.dumps(rows)
