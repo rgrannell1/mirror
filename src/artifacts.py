@@ -22,6 +22,8 @@ IMAGES_HEADERS = [
   'thumbnail_url',
   'thumbnail_data_url',
   'image_url',
+  'rating',
+  'subject'
 ]
 
 ALBUMS_HEADERS = [
@@ -71,7 +73,17 @@ class ImagesArtifacts:
           select url from encoded_images
           where encoded_images.fpath = images.fpath
           and mimetype ='image/webp' and role = 'full_image_lossless'
-        ) as image_url
+        ) as image_url,
+        (
+          select target from photo_relations
+          where photo_relations.fpath = images.fpath and photo_relations.relation = 'rating'
+          limit 1
+        ) as rating,
+        (
+          select target from photo_relations
+          where photo_relations.fpath = images.fpath and photo_relations.relation = 'photo_subject'
+          limit 1
+        ) as subject
 
       from images
       where published = '1'
