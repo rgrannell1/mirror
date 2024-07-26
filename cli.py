@@ -17,6 +17,8 @@ Usage:
   mirror add-google-photos-metadata --metadata=<fpath>         <dir> <google-photos-file>
   mirror add-google-vision-metadata --metadata=<fpath>         <dir>
   mirror add-google-vision-metadata
+  mirror add-answers --metadata=<fpath>                        <dir> <answers-db>
+  mirror add-answers                                           <answers-db>
   mirror feed                                                  <outdir>
   mirror feed --metadata=<fpath>                               <dir> <outdir>
   mirror (-h | --help)
@@ -50,6 +52,8 @@ Description:
   * user.xyz.rgrannell.photos.geolocation          the geolocation of a photo-album, in GeoJSON format
 
 Commands:
+  add-answers                   Add answers to the photo database.
+
   add-google-photos-metadata    Add scraped google metadata to the database.
 
   add-google-vision-metadata    Add google-vision metadata to the database.
@@ -106,9 +110,10 @@ if __name__ == '__main__':
     Mirror.show_tagfiles(cfg.directory, args['--tag'])
   elif args['add-google-photos-metadata']:
     Mirror.add_google_photos_metadata(cfg.directory, cfg.metadata, args['<google-photos-file>'])
-  elif args['add-google-vision-metadata']:
-    Mirror.add_google_vision_metadata(cfg.directory, cfg.metadata)
+  elif args['add-answers']:
+    Mirror.add_answers(cfg.directory, cfg.metadata, args['<answers-db>'])
   else:
     print('Invalid command')
+    print('+++++++++++++++++++++++++++++++++++++++++')
     print(__doc__)
     exit(1)

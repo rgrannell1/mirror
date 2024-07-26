@@ -10,6 +10,7 @@ from src.commands.publish import publish
 from src.commands.feed import feed
 from src.commands.add_google_photos_metadata import add_google_photos_metadata
 from src.commands.add_google_vision_metadata import add_google_vision_metadata
+from src.commands.add_answers import add_answers
 
 class Mirror:
   """The core-logic of Mirror. Invoked by the CLI"""
@@ -50,3 +51,7 @@ class Mirror:
   @staticmethod
   def add_google_vision_metadata(dir: str, metadata_path: str) -> None:
     add_google_vision_metadata(dir, metadata_path)
+
+  @staticmethod
+  def add_answers(dir: str, metadata_path: str, answers_db: str) -> None:
+    add_answers(dir, metadata_path, answers_db)

@@ -70,6 +70,16 @@ create table if not exists google_labels (
 )
 """
 
+PHOTO_RELATIONS_TABLE = """
+create table if not exists photo_relations (
+  fpath     text,
+  relation  text,
+  target    text,
+
+  primary key (fpath, relation, target)
+)
+"""
+
 @dataclass
 class ImageMetadata:
   image_url = str
@@ -87,7 +97,7 @@ class ImageMetadata:
 class Manifest:
   """The local database containing information about the photo albums"""
 
-  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE, GOOGLE_LABELS_TABLE}
+  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE, PHOTO_RELATIONS_TABLE, GOOGLE_LABELS_TABLE}
 
   def __init__(self, db_path: str, metadata_path: str):
     fpath = os.path.expanduser(db_path)
@@ -118,23 +128,26 @@ class Manifest:
     cursor.execute("""
     select
       full_sized_images.url as image_url_jpeg,
-      thumbnail_images.url as thumbnail_url_jpeg
+      thumbnail_images.url as thumbnail_url_jpeg,
       images.date_time as date_time,
-      albums.album_name as album_name,
+      albums.album_name as album_name
     from images
     inner join albums on images.album = albums.fpath
     inner join encoded_images as full_sized_images
-      on full_sized_images .fpath = images.fpath
+      on full_sized_images.fpath = images.fpath
     inner join encoded_images as thumbnail_images
       on thumbnail_images.fpath = images.fpath
     where images.published = '1'
       and images.fpath = ?
       and (
-        (full_sized_images.mimetype = 'image/jpeg' and full_sized_images.role = 'thumbnail_lossy')
-        or
-        (thumbnail_images.mimetype = 'image/jpeg' and thumbnail_images.role = 'full_image_lossy'))
+        (full_sized_images.mimetype = 'image/jpeg' and full_sized_images.role = 'full_image_lossy')
+        and
+        (thumbnail_images.mimetype = 'image/jpeg' and thumbnail_images.role = 'thumbnail_lossy'))
     """, (fpath, ))
 
+
+    for row in cursor:
+      print(row)
     row = cursor.fetchone()
 
     return ImageMetadata(image_url=row[0],
@@ -223,6 +236,23 @@ class Manifest:
         "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation) values (?, ?, ?, ?, ?, ?)",
         (album_md.fpath, album_md.title, album_md.cover, cover_path, album_md.description,
          album_md.geolocation))
+    self.conn.commit()
+
+  def clear_photo_relations(self):
+    """Clear all relations between images and targets"""
+
+    cursor = self.conn.cursor()
+    cursor.execute("delete from photo_relations")
+    self.conn.commit
+
+  def add_photo_relation(self, fpath: str, relation: str, target: str):
+    """Add a relation between an image and a target"""
+
+    cursor = self.conn.cursor()
+    cursor.execute("""
+    insert or replace into photo_relations (fpath, relation, target)
+    values (?, ?, ?)
+    """, (fpath, relation, target))
     self.conn.commit()
 
   def has_encoded_image(self, image: Photo, role: str):
