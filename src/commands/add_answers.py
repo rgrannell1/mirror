@@ -66,6 +66,14 @@ def to_relations(question_id: str, target: str):
     return [
       ('description', target)
     ]
+  elif question_id == 'q12':
+    return [
+      ('contains', target)
+    ]
+  elif question_id == 'q13':
+    return [
+      ('contains', target)
+    ]
   else:
     raise Exception(f"Unknown question_id: {question_id}")
 

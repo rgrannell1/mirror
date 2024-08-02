@@ -6,7 +6,6 @@ Bulk-tag a photo-library
 ```sh
   mirror create-manifest                           <dir>
   mirror tag --metadata=<fpath>                    <dir>
-  mirror tag-faces --metadata=<fpath>              <dir>
   mirror list-tags --metadata=<fpath> [--graphvis] <dir>
   mirror list-tagfiles [--tag=<tag>]               <dir>
   mirror list-photos [--tag=<tag>]                 <dir>

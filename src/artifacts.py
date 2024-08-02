@@ -1,4 +1,5 @@
 
+import re
 import sys
 import json
 import markdown
@@ -49,6 +50,10 @@ class ImagesArtifacts:
         fpath,
         album,
         tags,
+        (
+          select group_concat(target, ',') from photo_relations
+          where relation = 'contains' and photo_relations.fpath = images.fpath
+        ) as tags_v2,
         description,
         date_time,
         f_number,
@@ -92,12 +97,15 @@ class ImagesArtifacts:
     rows = [IMAGES_HEADERS]
 
     for row in cursor.fetchall():
-      fpath, album, tags, description, *rest = row
+      fpath, album, tags, tags_v2, description, *rest = row
+
+      joined_tags = {tag.strip() for tag in re.split(r'\s*,\s*', tags if tags else '') + re.split(r'\s*,\s*', tags_v2 if tags_v2 else '') if tag}
+
       rows.append([
         fpath,
         str(hash(fpath)),
         str(hash(album)),
-        tags,
+        ','.join(joined_tags),
         markdown.markdown(description)
       ] + rest)
 
