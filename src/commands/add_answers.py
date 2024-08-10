@@ -1,11 +1,25 @@
 import os
+import csv
 import sqlite3
-from typing import List
+import sys
 
 from src.constants import DB_PATH
 from src.manifest import Manifest
-from src.photo import PhotoVault
 
+
+def read_birds():
+  birds = {}
+
+  with open('/home/rg/Code/mirror/src/data/birds.csv', 'r') as conn:
+    reader = csv.reader(conn)
+    next(reader)
+
+    for name, species in reader:
+      birds[species] = name
+
+  return birds
+
+birds = read_birds()
 
 def to_relations(question_id: str, target: str):
   if question_id == 'q01':
@@ -73,6 +87,18 @@ def to_relations(question_id: str, target: str):
   elif question_id == 'q13':
     return [
       ('contains', target)
+    ]
+  elif question_id == 'q14':
+    bird_species = target.split(',')
+
+    for bird in bird_species:
+      if bird.strip() not in birds:
+        print(f"Unknown bird species: {bird}", file=sys.stderr)
+
+    return [
+      ('contains', birds[species.strip()])
+      for species in bird_species
+      if species in birds
     ]
   else:
     raise Exception(f"Unknown question_id: {question_id}")
