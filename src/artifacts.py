@@ -47,23 +47,23 @@ class ImagesArtifacts:
     cursor = db.conn.cursor()
     cursor.execute(f"""
       select
-        fpath,
-        album,
+        images.fpath,
+        albums.permalink,
         tags,
         (
           select group_concat(target, ',') from photo_relations
           where relation = 'contains' and photo_relations.fpath = images.fpath
         ) as tags_v2,
-        description,
-        date_time,
-        f_number,
-        focal_length,
-        model,
-        iso,
-        blur,
-        shutter_speed,
-        width,
-        height,
+        images.description,
+        images.date_time,
+        images.f_number,
+        images.focal_length,
+        images.model,
+        images.iso,
+        images.blur,
+        images.shutter_speed,
+        images.width,
+        images.height,
         (
           select url from encoded_images
           where encoded_images.fpath = images.fpath
@@ -89,22 +89,22 @@ class ImagesArtifacts:
           where photo_relations.fpath = images.fpath and photo_relations.relation = 'photo_subject'
           limit 1
         ) as subject
-
       from images
+      join albums on albums.fpath = images.album
       where published = '1'
     """)
 
     rows = [IMAGES_HEADERS]
 
     for row in cursor.fetchall():
-      fpath, album, tags, tags_v2, description, *rest = row
+      fpath, album_permalink, tags, tags_v2, description, *rest = row
 
       joined_tags = {tag.strip() for tag in re.split(r'\s*,\s*', tags if tags else '') + re.split(r'\s*,\s*', tags_v2 if tags_v2 else '') if tag}
 
       rows.append([
         fpath,
         str(hash(fpath)),
-        str(hash(album)),
+        album_permalink,
         ','.join(joined_tags),
         markdown.markdown(description)
       ] + rest)
@@ -119,7 +119,7 @@ class AlbumArtifacts:
     cursor = db.conn.cursor()
     cursor.execute("""
       select
-        fpath,
+        permalink,
         album_name as name,
         min_date,
         max_date,
@@ -155,14 +155,18 @@ class AlbumArtifacts:
     rows = [ALBUMS_HEADERS]
 
     for row in cursor.fetchall():
+      if not row[0]:
+        messages.append(f"did not find a permalink for album '{row[1]}'. Please update {row[0]}/tags.md")
+        continue
+
       if not row[6]:
         messages.append(f"did not find a cover image for album '{row[1]}'. Please update {row[0]}/tags.md")
         continue
 
-      fpath, album_name, min_date, max_date, description, *rest = row
+      permalink, album_name, min_date, max_date, description, *rest = row
 
       rows.append([
-        str(hash(fpath)),
+        permalink,
         album_name,
         min_date,
         max_date,

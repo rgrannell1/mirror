@@ -8,7 +8,7 @@ from functools import lru_cache
 import xattr
 
 from .constants import (ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
-                        ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION)
+                        ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION, ATTR_ALBUM_PERMALINK)
 from typing import Dict, TypeVar, Optional
 
 
@@ -17,6 +17,7 @@ class AlbumMetadata:
   """A dataclass representing metadata for an album"""
   fpath: str
   title: str
+  permalink: str
   cover: str
   description: str = ""
   geolocation: str = ""
@@ -68,9 +69,11 @@ class Album:
       return None
 
     cover = self.get_xattr(ATTR_ALBUM_COVER)
+    permalink = self.get_xattr(ATTR_ALBUM_PERMALINK, "")
 
     return AlbumMetadata(fpath=self.path,
                          title=self.get_xattr(ATTR_ALBUM_TITLE),
+                         permalink=permalink,
                          description=self.get_xattr(ATTR_ALBUM_DESCRIPTION,
                                                     ""),
                          cover=cover,

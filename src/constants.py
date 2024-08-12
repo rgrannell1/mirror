@@ -12,11 +12,12 @@ ATTR_ALBUM_ID = 'user.xyz.rgrannell.photos.album_id'
 ATTR_ALBUM_COVER = 'user.xyz.rgrannell.photos.album_cover'
 ATTR_ALBUM_DESCRIPTION = 'user.xyz.rgrannell.photos.album_description'
 ATTR_ALBUM_GEOLOCATION = 'user.xyz.rgrannell.photos.geolocation'
+ATTR_ALBUM_PERMALINK = 'user.xyz.rgrannell.photos.permalink'
 
 # The set of attributes associated with an album
 SET_ATTR_ALBUM = {
     ATTR_ALBUM_ID, ATTR_ALBUM_TITLE, ATTR_ALBUM_COVER, ATTR_ALBUM_DESCRIPTION,
-    ATTR_ALBUM_GEOLOCATION
+    ATTR_ALBUM_GEOLOCATION, ATTR_ALBUM_PERMALINK
 }
 
 # Photo Attributes

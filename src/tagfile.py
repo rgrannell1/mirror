@@ -7,7 +7,7 @@ import jsonschema
 from src.album import Album
 from typing import Dict, Optional
 
-from src.constants import (ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
+from src.constants import (ATTR_ALBUM_PERMALINK, ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
                            ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
                            ATTR_ALBUM_ID, ATTR_BLUR, ATTR_SHUTTER_SPEED, ATTR_TAG,
                            ATTR_DESCRIPTION)
@@ -65,6 +65,8 @@ class Tagfile:
         self.id(),
         ATTR_ALBUM_GEOLOCATION:
         album_md.geolocation if album_md and album_md.geolocation else "",
+        ATTR_ALBUM_PERMALINK:
+        album_md.permalink if album_md and album_md.permalink else "",
         'images':
         images
     }]

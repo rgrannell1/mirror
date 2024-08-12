@@ -1,8 +1,8 @@
 import json
+import os
 
 from src.constants import DB_PATH
 from src.manifest import Manifest
-from src.photo import PhotoVault
 from src.syndications import JSONFeed
 from collections import defaultdict
 
@@ -35,6 +35,8 @@ def feed(dir: str, metadata_path: str, out_dir: str):
       continue
 
     feed = JSONFeed.tag_feed(db, tag, images)
+
+    os.makedirs(f'{out_dir}/tags', exist_ok=True)
 
     with open(f'{out_dir}/tags/{tag}.json', 'w') as conn:
       conn.write(json.dumps(feed, indent=2, ensure_ascii=False))

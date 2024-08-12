@@ -3,7 +3,7 @@ import os
 
 import json
 import sqlite3
-from typing import Iterator, List
+from typing import Iterator, List, Optional
 
 from src.album import AlbumMetadata
 from .photo import Photo
@@ -121,7 +121,7 @@ class Manifest:
     for row in cursor.fetchall():
       yield Photo(row[0], self.metadata_path)
 
-  def image_metadata(self, fpath: str) -> ImageMetadata:
+  def image_metadata(self, fpath: str) -> Optional[ImageMetadata]:
     """Get metadata for a specific image"""
 
     cursor = self.conn.cursor()
@@ -140,15 +140,15 @@ class Manifest:
     where images.published = '1'
       and images.fpath = ?
       and (
-        (full_sized_images.mimetype = 'image/jpeg' and full_sized_images.role = 'full_image_lossy')
+        (full_sized_images.mimetype = 'image/webp' and full_sized_images.role = 'full_image_lossless')
         and
-        (thumbnail_images.mimetype = 'image/jpeg' and thumbnail_images.role = 'thumbnail_lossy'))
+        (thumbnail_images.mimetype = 'image/webp' and thumbnail_images.role = 'thumbnail_lossless'))
     """, (fpath, ))
 
 
-    for row in cursor:
-      print(row)
     row = cursor.fetchone()
+    if not row:
+      return
 
     return ImageMetadata(image_url=row[0],
                          thumbnail_url=row[1],
@@ -233,9 +233,9 @@ class Manifest:
 
     cursor = self.conn.cursor()
     cursor.execute(
-        "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation) values (?, ?, ?, ?, ?, ?)",
+        "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation, permalink) values (?, ?, ?, ?, ?, ?, ?)",
         (album_md.fpath, album_md.title, album_md.cover, cover_path, album_md.description,
-         album_md.geolocation))
+         album_md.geolocation, album_md.permalink))
     self.conn.commit()
 
   def clear_photo_relations(self):
@@ -293,108 +293,6 @@ class Manifest:
     """, (min_date, max_date, fpath))
 
     self.conn.commit()
-
-  def create_metadata_file(self,
-                           manifest_file: str,
-                           images: bool = True) -> None:
-    """Create a metadata file from the stored manifest file"""
-
-    cursor = self.conn.cursor()
-    cursor.execute("""
-    select
-        images.fpath,
-        images.tags,
-        ei_image.url as image_url,
-        ei_thumbnail.url as thumbnail_url,
-        ei_mosaic_thumbnail.url as thumbnail_data_url,
-        images.description as photo_description,
-        images.date_time,
-        images.f_number,
-        images.focal_length,
-        images.model,
-        images.iso,
-        images.blur,
-        images.width,
-        images.height,
-        albums.album_name,
-        albums.cover_image,
-        albums.description,
-        albums.min_date,
-        albums.max_date,
-        albums.geolocation
-    from images
-    inner join albums on images.album = albums.fpath
-    left join encoded_images ei_image on images.fpath = ei_image.fpath
-        and ei_image.mimetype = 'image/webp'
-        and ei_image.role = 'full_image_lossless'
-    left join encoded_images ei_thumbnail on images.fpath = ei_thumbnail.fpath
-        and ei_thumbnail.mimetype = 'image/webp'
-        and ei_thumbnail.role = 'thumbnail_lossless'
-    left join encoded_images ei_mosaic_thumbnail on images.fpath = ei_mosaic_thumbnail.fpath
-        and ei_mosaic_thumbnail.mimetype = 'image/bmp'
-        and ei_mosaic_thumbnail.role = 'thumbnail_mosaic'
-    where images.published = '1';
-      """)
-
-    folders = {}
-
-    for row in cursor.fetchall():
-      (fpath, tags, image_url, thumbnail_url, thumbnail_data_url, photo_description, date_time,
-       f_number, focal_length, model, iso, blur, width, height, album_name,
-       cover_image, description, min_date, max_date, geolocation) = row
-
-      dirname = os.path.dirname(fpath)
-      album_id = str(hash(dirname))
-
-      if album_id not in folders:
-        # construct the album object
-        folders[album_id] = {
-            'name': album_name,
-            'id': album_id,
-            'min_date': min_date,
-            'max_date': max_date,
-            'cover_image': cover_image,
-            'description': description,
-            'geolocation': geolocation,
-            'images': [],
-            'image_count': 0
-        }
-
-      folders[album_id]['image_count'] += 1
-
-      if images:
-        # append each image
-
-        folders[album_id]['images'].append({
-            'fpath':
-            fpath,
-            'id':
-            str(hash(fpath)),
-            'tags':
-            tags.split(', '),
-            'description':
-            photo_description,
-            'exif': {
-                'date_time': date_time,
-                'f_number': f_number,
-                'focal_length': focal_length,
-                'model': model,
-                'iso': iso,
-                'blur': blur,
-                'width': width,
-                'height': height,
-            },
-            'image_url':
-            image_url.replace(SPACES_DOMAIN, ''),
-            'thumbnail_url':
-            thumbnail_url.replace(SPACES_DOMAIN, ''),
-            'thumbnail_data_url': thumbnail_data_url
-        })
-
-    manifest = {'domain': SPACES_DOMAIN, 'folders': folders}
-
-    with open(manifest_file, 'w') as conn:
-      conn.write(json.dumps(manifest))
 
   def add_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
     """Insert location data into the images table"""
