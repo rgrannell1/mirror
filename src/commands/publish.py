@@ -1,5 +1,7 @@
 import base64
+import math
 import os
+import time
 import yaml
 import json
 from typing import List
@@ -58,7 +60,7 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
       db.add_encoded_image_url(image, image_url, role, format=thumbnail_format)
 
 
-def encode_mosaic(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
+def encode_mosaic(db: Manifest, image: Photo, image_idx: int) -> None:
   if not db.has_encoded_image(image, 'thumbnail_mosaic'):
     encoded = image.encode_image_mosaic()
 
@@ -98,13 +100,28 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
     conn.write(json.dumps(content))
 
 def create_artifacts(db: Manifest, manifest_path: str) -> None:
-  with open(f'{manifest_path}/albums.json', 'w') as conn:
+  publication_id = math.floor(time.time())
+
+  # clear existing albums and images
+
+  removeable = [file for file in os.listdir(manifest_path) if file.startswith(('albums', 'images'))]
+
+  for file in removeable:
+    os.remove(f'{manifest_path}/{file}')
+
+  # create new albums and images
+  with open(f'{manifest_path}/albums.{publication_id}.json', 'w') as conn:
     albums = AlbumArtifacts.content(db)
     conn.write(albums)
 
-  with open(f'{manifest_path}/images.json', 'w') as conn:
+  with open(f'{manifest_path}/images.{publication_id}.json', 'w') as conn:
     images = ImagesArtifacts.content(db)
     conn.write(images)
+
+  with open(f'{manifest_path}/env.json', 'w') as conn:
+    conn.write(json.dumps({
+      'publication_id': publication_id
+    }))
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
@@ -128,7 +145,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
     upload_thumbnail(db, spaces, image, image_idx)
     upload_image(db, spaces, image, image_idx)
-    encode_mosaic(db, spaces, image, image_idx)
+    encode_mosaic(db, image, image_idx)
 
     image_idx += 1
 

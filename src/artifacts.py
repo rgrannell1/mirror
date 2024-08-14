@@ -34,7 +34,6 @@ ALBUMS_HEADERS = [
   'max_date',
   'description',
   'image_count',
-  'image_url',
   'thumbnail_url',
   'thumbnail_mosaic_url'
 ]
@@ -128,11 +127,6 @@ class AlbumArtifacts:
           select count(*) from images
           where images.album = albums.fpath and published = '1'
         ) as image_count,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = albums.cover_path
-          and mimetype='image/webp' and role = 'full_image_lossless'
-        ) as image_url,
         (
           select url from encoded_images
           where encoded_images.fpath = albums.cover_path
