@@ -21,72 +21,77 @@ def read_birds():
 
 birds = read_birds()
 
-def to_relations(question_id: str, target: str):
+def to_relations(question_id: str, source: str, target: str):
   if question_id == 'q01':
     return [
-      ('photo_subject', target)
+      (source, 'photo_subject', target)
     ]
   elif question_id == 'q02':
     return [
-      ('contains', 'Animal'),
-      ('contains', target)
+      (source, 'contains', 'Animal'),
+      (source, 'contains', target),
+      (target, 'is-a', 'Animal')
     ]
   elif question_id == 'q03':
     return [
-      ('animal_lifestyle', target)
+      (source, 'animal_lifestyle', target),
+      (source, 'contains', 'Animal'),
+      (target, 'is-a', 'Animal')
     ]
   elif question_id == 'q03_5':
     return [
-      ('animal_lifestyle', target)
+      (source, 'animal_lifestyle', target),
+      (source, 'contains', 'Animal'),
+      (target, 'is-a', 'Animal')
     ]
   elif question_id == 'q04':
     if target == 'Unsure' or target == 'Other':
       return []
 
     return [
-      ('contains', target)
+      (source, 'contains', target)
     ]
   elif question_id == 'q05':
     return [
-      ('rating', target)
+      (source, 'rating', target)
     ]
   elif question_id == 'q06':
     if target == 'Yes':
       return [
-        ('animal_behaviour', 'Flying')
+        (source, 'animal_behaviour', 'Flying')
       ]
 
     return []
   elif question_id == 'q07':
     if target == "Yes":
       return [
-        ('contains', "Water")
+        (source, 'contains', "Water")
       ]
     else:
       return []
   elif question_id == 'q08':
     return [
-      ('waterway_type', target)
+      (source, 'waterway_type', target)
     ]
   elif question_id == 'q09':
     return [
-      ('cityscape_focus', target)
+      (source, 'cityscape_focus', target)
     ]
   elif question_id == 'q10':
     return [
-      ('waterway_type', target)
+      (source, 'waterway_type', target)
     ]
   elif question_id == 'q11':
     return [
-      ('description', target)
+      (source, 'description', target)
     ]
   elif question_id == 'q12':
     return [
-      ('contains', target)
+      (source, 'contains', target)
     ]
   elif question_id == 'q13':
     return [
-      ('contains', target)
+      (source, 'contains', target)
     ]
   elif question_id == 'q14':
     bird_species = target.split(',')
@@ -95,11 +100,19 @@ def to_relations(question_id: str, target: str):
       if bird.strip() not in birds:
         print(f"Unknown bird species: {bird}", file=sys.stderr)
 
-    return [
-      ('contains', birds[species.strip()])
-      for species in bird_species
-      if species in birds
-    ]
+    rows = []
+
+    for species in bird_species:
+      if species in birds:
+        rows += [
+          (source, 'contains', birds[species.strip()]),
+          (birds[species.strip()], 'is-a', 'Bird'),
+          (birds[species.strip()], 'is-a', 'Animal'),
+        ]
+      else:
+        print(f"Unknown bird species: {species}")
+
+    return rows
   else:
     raise Exception(f"Unknown question_id: {question_id}")
 
@@ -116,7 +129,7 @@ class AnswersDB:
     return [row for row in cursor.fetchall()]
 
 
-def add_answers(dir: str, metadata_path: str, database_path: str):
+def add_answers(_: str, metadata_path: str, database_path: str):
   answers_db = AnswersDB(database_path)
   manifest = Manifest(DB_PATH, metadata_path)
   manifest.create()
@@ -125,12 +138,10 @@ def add_answers(dir: str, metadata_path: str, database_path: str):
 
   for question_id, content_id, answer in answers_db.get_photo_answers():
     try:
-      relations = to_relations(question_id, answer)
+      relations = to_relations(question_id, content_id, answer)
     except Exception as err:
       print(err)
       continue
 
-    for relation in relations:
-      rel, val = relation
-
-      manifest.add_photo_relation(content_id, rel, val)
+    for source, relation, target in relations:
+      manifest.add_photo_relation(source, relation, target)

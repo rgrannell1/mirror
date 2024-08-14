@@ -72,11 +72,11 @@ create table if not exists google_labels (
 
 PHOTO_RELATIONS_TABLE = """
 create table if not exists photo_relations (
-  fpath     text,
+  source    text,
   relation  text,
   target    text,
 
-  primary key (fpath, relation, target)
+  primary key (source, relation, target)
 )
 """
 
@@ -245,14 +245,14 @@ class Manifest:
     cursor.execute("delete from photo_relations")
     self.conn.commit
 
-  def add_photo_relation(self, fpath: str, relation: str, target: str):
+  def add_photo_relation(self, source: str, relation: str, target: str):
     """Add a relation between an image and a target"""
 
     cursor = self.conn.cursor()
     cursor.execute("""
-    insert or replace into photo_relations (fpath, relation, target)
+    insert or replace into photo_relations (source, relation, target)
     values (?, ?, ?)
-    """, (fpath, relation, target))
+    """, (source, relation, target))
     self.conn.commit()
 
   def has_encoded_image(self, image: Photo, role: str):

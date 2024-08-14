@@ -51,7 +51,7 @@ class ImagesArtifacts:
         tags,
         (
           select group_concat(target, ',') from photo_relations
-          where relation = 'contains' and photo_relations.fpath = images.fpath
+          where relation = 'contains' and photo_relations.source = images.fpath
         ) as tags_v2,
         images.description,
         images.date_time,
@@ -80,12 +80,12 @@ class ImagesArtifacts:
         ) as image_url,
         (
           select target from photo_relations
-          where photo_relations.fpath = images.fpath and photo_relations.relation = 'rating'
+          where photo_relations.source = images.fpath and photo_relations.relation = 'rating'
           limit 1
         ) as rating,
         (
           select target from photo_relations
-          where photo_relations.fpath = images.fpath and photo_relations.relation = 'photo_subject'
+          where photo_relations.source = images.fpath and photo_relations.relation = 'photo_subject'
           limit 1
         ) as subject
       from images
