@@ -171,3 +171,36 @@ class AlbumArtifacts:
       print('\n'.join(messages), file=sys.stderr)
 
     return json.dumps(rows)
+
+class MetadataArtifacts:
+  @staticmethod
+  def get_subsumed(db: Manifest, is_a: str):
+    cursor = db.conn.cursor()
+    cursor.execute(f"""
+    select distinct(source) from photo_relations
+      where relation = 'is-a' and target = ?
+      order by source;
+    """, (is_a,))
+
+    children = set()
+
+    for row in cursor.fetchall():
+      sources = row[0].split(',')
+      for source in sources:
+        children.add(source)
+
+    return sorted(list(children))
+
+  @staticmethod
+  def content(db: Manifest):
+    return {
+      'Bird': {
+        'children': MetadataArtifacts.get_subsumed(db, 'Bird')
+      },
+      'Plane': {
+        'children': MetadataArtifacts.get_subsumed(db, 'Plane')
+      },
+      'Mammal': {
+        'children': MetadataArtifacts.get_subsumed(db, 'Mammal')
+      }
+    }

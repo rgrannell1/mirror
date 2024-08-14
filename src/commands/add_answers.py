@@ -49,7 +49,9 @@ def to_relations(question_id: str, source: str, target: str):
       return []
 
     return [
-      (source, 'contains', target)
+      (source, 'contains', target),
+      (target, 'is-a', 'Animal'),
+      (target, 'is-a', 'Amphibian'),
     ]
   elif question_id == 'q05':
     return [
