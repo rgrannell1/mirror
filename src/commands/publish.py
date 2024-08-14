@@ -100,7 +100,7 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
     conn.write(json.dumps(content))
 
 def create_artifacts(db: Manifest, manifest_path: str) -> None:
-  publication_id = math.floor(time.time())
+  publication_id = str(hash(str(math.floor(time.time()))))
 
   # clear existing albums and images
 
