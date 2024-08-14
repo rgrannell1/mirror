@@ -83,7 +83,8 @@ def to_relations(question_id: str, source: str, target: str):
     ]
   elif question_id == 'q11':
     return [
-      (source, 'description', target)
+      (source, 'description', target),
+      (target, 'is-a', 'Description')
     ]
   elif question_id == 'q12':
     return [
@@ -91,7 +92,8 @@ def to_relations(question_id: str, source: str, target: str):
     ]
   elif question_id == 'q13':
     return [
-      (source, 'contains', target)
+      (source, 'contains', target),
+      (target, 'is-a', 'Plane')
     ]
   elif question_id == 'q14':
     bird_species = target.split(',')
