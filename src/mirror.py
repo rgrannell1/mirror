@@ -53,5 +53,5 @@ class Mirror:
     add_google_vision_metadata(dir, metadata_path)
 
   @staticmethod
-  def add_answers(dir: str, metadata_path: str, answers_db: str) -> None:
-    add_answers(dir, metadata_path, answers_db)
+  def add_answers(dir: str, metadata_path: str, images_db: str, albums_db: str) -> None:
+    add_answers(dir, metadata_path, images_db, albums_db)

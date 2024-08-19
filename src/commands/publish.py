@@ -5,7 +5,7 @@ import time
 import yaml
 import json
 from typing import List
-from src.artifacts import AlbumArtifacts, ImagesArtifacts
+from src.artifacts import AlbumArtifacts, ImagesArtifacts, MetadataArtifacts
 from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
@@ -123,6 +123,10 @@ def create_artifacts(db: Manifest, manifest_path: str) -> None:
       'publication_id': publication_id
     }))
 
+  with open(f'{manifest_path}/metadata.json', 'w') as conn:
+    md = MetadataArtifacts.content(db)
+    conn.write(json.dumps(md))
+
 def publish(dir: str, metadata_path: str, manifest_path: str):
   """List all images tagged with 'Published'. Find what images are already published,
                   and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
@@ -158,5 +162,5 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   for dir, images in PhotoVault(dir, metadata_path).list_by_folder().items():
     find_album_dates(db, dir, images)
 
-  copy_metadata_file(metadata_path, manifest_path)
+  ##copy_metadata_file(metadata_path, manifest_path)
   create_artifacts(db, manifest_path)

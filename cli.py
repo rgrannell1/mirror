@@ -17,8 +17,8 @@ Usage:
   mirror add-google-photos-metadata --metadata=<fpath>         <dir> <google-photos-file>
   mirror add-google-vision-metadata --metadata=<fpath>         <dir>
   mirror add-google-vision-metadata
-  mirror add-answers --metadata=<fpath>                        <dir> <answers-db>
-  mirror add-answers                                           <answers-db>
+  mirror add-answers --metadata=<fpath>                        <dir> <answers-db> <albums-answers-db>
+  mirror add-answers                                           <answers-db> <albums-answers-db>
   mirror feed                                                  <outdir>
   mirror feed --metadata=<fpath>                               <dir> <outdir>
   mirror (-h | --help)
@@ -111,7 +111,7 @@ if __name__ == '__main__':
   elif args['add-google-photos-metadata']:
     Mirror.add_google_photos_metadata(cfg.directory, cfg.metadata, args['<google-photos-file>'])
   elif args['add-answers']:
-    Mirror.add_answers(cfg.directory, cfg.metadata, args['<answers-db>'])
+    Mirror.add_answers(cfg.directory, cfg.metadata, args['<answers-db>'], args['<albums-answers-db>'])
   else:
     print('Invalid command')
     print('+++++++++++++++++++++++++++++++++++++++++')

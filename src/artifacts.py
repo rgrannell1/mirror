@@ -35,7 +35,8 @@ ALBUMS_HEADERS = [
   'description',
   'image_count',
   'thumbnail_url',
-  'thumbnail_mosaic_url'
+  'thumbnail_mosaic_url',
+  'flags'
 ]
 
 class ImagesArtifacts:
@@ -88,6 +89,7 @@ class ImagesArtifacts:
           where photo_relations.source = images.fpath and photo_relations.relation = 'photo_subject'
           limit 1
         ) as subject
+
       from images
       join albums on albums.fpath = images.album
       where published = '1'
@@ -136,7 +138,17 @@ class AlbumArtifacts:
           select url from encoded_images
           where encoded_images.fpath = albums.cover_path
           and mimetype='image/bmp' and role = 'thumbnail_mosaic'
-        ) as thumbnail_mosaic_url
+        ) as thumbnail_mosaic_url,
+        (
+          select group_concat(target, ',')
+          from photo_relations
+          where relation = 'flag' and source in
+          (
+            select target from photo_relations
+            where source = albums.fpath and relation = 'country'
+          )
+        ) as flags
+
         from albums
         where albums.fpath in (
             select distinct images.album
