@@ -19,9 +19,35 @@ def read_birds():
 
   return birds
 
-birds = read_birds()
+def read_mammals():
+  mammals = {}
 
-def to_relations(question_id: str, source: str, target: str):
+  with open('/home/rg/Code/mirror/src/data/mammals.csv', 'r') as conn:
+    reader = csv.reader(conn)
+    next(reader)
+
+    for name, species in reader:
+      mammals[species] = name
+
+  return mammals
+
+def read_flags():
+  flags = {}
+
+  with open('/home/rg/Code/mirror/src/data/flags.csv', 'r') as conn:
+    reader = csv.reader(conn)
+    next(reader)
+
+    for name, flag in reader:
+      flags[name] = flag
+
+  return flags
+
+birds = read_birds()
+mammals = read_mammals()
+flags = read_flags()
+
+def image_answers_to_relations(question_id: str, source: str, target: str):
   if question_id == 'q01':
     return [
       (source, 'photo_subject', target)
@@ -117,32 +143,78 @@ def to_relations(question_id: str, source: str, target: str):
         print(f"Unknown bird species: {species}")
 
     return rows
+  elif question_id == 'q15':
+    mammal_species = target.split(',')
+
+    for mammal in mammal_species:
+      if mammal.strip() not in mammals:
+        print(f"Unknown mammal species: {mammal}", file=sys.stderr)
+
+    rows = []
+
+    for species in mammal_species:
+      if species in mammals:
+        rows += [
+          (source, 'contains', mammals[species.strip()]),
+          (mammals[species.strip()], 'is-a', 'Mammal'),
+          (mammals[species.strip()], 'is-a', 'Animal'),
+        ]
+      else:
+        print(f"Unknown mammal species: {species}")
   else:
     raise Exception(f"Unknown question_id: {question_id}")
 
+  return rows
+
+def album_answers_to_relations(question_id: str, album_id: str, target: str):
+  if question_id == 'q01':
+    countries = target.split(',')
+
+    rows = []
+    for country in countries:
+      flag = flags.get(country.strip())
+
+      if flag is None:
+        rows += [(album_id, 'country', country.strip())]
+
+      rows += [(album_id, 'country', country.strip()), (country.strip(), 'flag', flag)]
+
+    return rows
 
 class AnswersDB:
   def __init__(self, db_path: str):
     fpath = os.path.expanduser(db_path)
     self.conn = sqlite3.connect(fpath)
 
-  def get_photo_answers(self):
+  def get_answers(self):
     cursor = self.conn.cursor()
     cursor.execute("select questionId, contentId, answer from answers", ())
 
     return [row for row in cursor.fetchall()]
 
 
-def add_answers(_: str, metadata_path: str, database_path: str):
-  answers_db = AnswersDB(database_path)
+def add_answers(_: str, metadata_path: str, database_path: str, album_database_path: str):
+  image_answers_db = AnswersDB(database_path)
+  album_answers_db = AnswersDB(album_database_path)
+
   manifest = Manifest(DB_PATH, metadata_path)
   manifest.create()
 
   manifest.clear_photo_relations()
 
-  for question_id, content_id, answer in answers_db.get_photo_answers():
+  for question_id, content_id, answer in image_answers_db.get_answers():
     try:
-      relations = to_relations(question_id, content_id, answer)
+      relations = image_answers_to_relations(question_id, content_id, answer)
+    except Exception as err:
+      print(err)
+      continue
+
+    for source, relation, target in relations:
+      manifest.add_photo_relation(source, relation, target)
+
+  for question_id, content_id, answer in album_answers_db.get_answers():
+    try:
+      relations = album_answers_to_relations(question_id, content_id, answer)
     except Exception as err:
       print(err)
       continue

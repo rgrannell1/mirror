@@ -7,3 +7,5 @@ repair.py
 graph.png
 results.json
 env/
+# Local Netlify folder
+.netlify
