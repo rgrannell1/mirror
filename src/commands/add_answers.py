@@ -186,23 +186,27 @@ class AnswersDB:
     fpath = os.path.expanduser(db_path)
     self.conn = sqlite3.connect(fpath)
 
-  def get_answers(self):
+  def get_image_answers(self):
     cursor = self.conn.cursor()
-    cursor.execute("select questionId, contentId, answer from answers", ())
+    cursor.execute("select questionId, contentId, answer from image_answers", ())
 
     return [row for row in cursor.fetchall()]
 
+  def get_album_answers(self):
+    cursor = self.conn.cursor()
+    cursor.execute("select questionId, contentId, answer from album_answers", ())
 
-def add_answers(_: str, metadata_path: str, database_path: str, album_database_path: str):
-  image_answers_db = AnswersDB(database_path)
-  album_answers_db = AnswersDB(album_database_path)
+    return [row for row in cursor.fetchall()]
+
+def add_answers(_: str, metadata_path: str, database_path: str):
+  answers_db = AnswersDB(database_path)
 
   manifest = Manifest(DB_PATH, metadata_path)
   manifest.create()
 
   manifest.clear_photo_relations()
 
-  for question_id, content_id, answer in image_answers_db.get_answers():
+  for question_id, content_id, answer in answers_db.get_image_answers():
     try:
       relations = image_answers_to_relations(question_id, content_id, answer)
     except Exception as err:
@@ -212,7 +216,7 @@ def add_answers(_: str, metadata_path: str, database_path: str, album_database_p
     for source, relation, target in relations:
       manifest.add_photo_relation(source, relation, target)
 
-  for question_id, content_id, answer in album_answers_db.get_answers():
+  for question_id, content_id, answer in answers_db.get_album_answers():
     try:
       relations = album_answers_to_relations(question_id, content_id, answer)
     except Exception as err:
