@@ -124,7 +124,10 @@ class AlbumArtifacts:
         album_name as name,
         min_date,
         max_date,
-        description,
+        coalesce((
+          select target from photo_relations
+          where source = albums.fpath and relation = 'description'
+        ), '') as description,
         (
           select count(*) from images
           where images.album = albums.fpath and published = '1'

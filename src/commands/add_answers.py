@@ -167,10 +167,10 @@ def image_answers_to_relations(question_id: str, source: str, target: str):
   return rows
 
 def album_answers_to_relations(question_id: str, album_id: str, target: str):
+  rows = []
   if question_id == 'q01':
     countries = target.split(',')
 
-    rows = []
     for country in countries:
       flag = flags.get(country.strip())
 
@@ -179,7 +179,10 @@ def album_answers_to_relations(question_id: str, album_id: str, target: str):
 
       rows += [(album_id, 'country', country.strip()), (country.strip(), 'flag', flag)]
 
-    return rows
+  elif question_id == 'q02':
+    return [(album_id, 'description', target)]
+
+  return rows
 
 class AnswersDB:
   def __init__(self, db_path: str):
