@@ -120,8 +120,14 @@ class AlbumArtifacts:
     cursor = db.conn.cursor()
     cursor.execute("""
       select
-        permalink,
-        album_name as name,
+        (
+          select target from photo_relations
+          where source = albums.fpath and relation = 'permalink'
+        ),
+        (
+          select target from photo_relations
+          where source = albums.fpath and relation = 'album_name'
+        ),
         min_date,
         max_date,
         coalesce((

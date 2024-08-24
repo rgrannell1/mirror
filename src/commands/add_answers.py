@@ -181,6 +181,10 @@ def album_answers_to_relations(question_id: str, album_id: str, target: str):
 
   elif question_id == 'q02':
     return [(album_id, 'description', target)]
+  elif question_id == 'q03':
+    return [(album_id, 'album_name', target)]
+  elif question_id == 'q04':
+    return [(album_id, 'permalink', target)]
 
   return rows
 
