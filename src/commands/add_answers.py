@@ -161,6 +161,11 @@ def image_answers_to_relations(question_id: str, source: str, target: str):
         ]
       else:
         print(f"Unknown mammal species: {species}")
+  elif question_id == 'q16':
+    return [
+      (source, 'contains', target),
+      (target, 'is-a', 'Named Body of Water')
+    ]
   elif question_id == 'q17':
     return [
       (source, 'contains', target),
