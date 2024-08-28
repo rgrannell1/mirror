@@ -6,6 +6,7 @@ import sqlite3
 from typing import Iterator, List, Optional
 
 from src.album import AlbumMetadata
+from src.video import Video
 from .photo import Photo
 from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
                         ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT,
@@ -42,6 +43,18 @@ create table if not exists images (
   longitude          text,
   address            text,
   foreign key(album) references albums(fpath)
+)
+"""
+
+VIDEOS_TABLE = """
+create table if not exists videos (
+  fpath              text primary key,
+  tags               text,
+  published          boolean,
+  description        text,
+  album              text,
+
+    foreign key(album) references albums(fpath)
 )
 """
 
@@ -85,7 +98,13 @@ class ImageMetadata:
 class Manifest:
   """The local database containing information about the photo albums"""
 
-  TABLES = {IMAGES_TABLE, ALBUM_TABLE, ENCODED_IMAGE_TABLE, PHOTO_RELATIONS_TABLE}
+  TABLES = {
+    IMAGES_TABLE,
+    VIDEOS_TABLE,
+    ALBUM_TABLE,
+    ENCODED_IMAGE_TABLE,
+    PHOTO_RELATIONS_TABLE
+  }
 
   def __init__(self, db_path: str, metadata_path: str):
     fpath = os.path.expanduser(db_path)
@@ -188,6 +207,31 @@ class Manifest:
             width =         :width,
             height =        :height
         """, params)
+
+    self.conn.commit()
+
+  def add_video(self, video: Video):
+    path = video.path
+    album = os.path.dirname(path)
+
+    cursor = self.conn.cursor()
+    cursor.execute(
+        """
+        insert into videos (fpath, tags, published, album, description)
+        values (:fpath, :tags, :published, :album, :description)
+        on conflict(fpath)
+        do update set
+            tags =        :tags,
+            published =   :published,
+            album =       :album,
+            description = :description
+        """, {
+          "fpath": path,
+          "tags": video.tag_string(),
+          "published": video.published(),
+          "album": album,
+          "description": video.get_description()
+      })
 
     self.conn.commit()
 

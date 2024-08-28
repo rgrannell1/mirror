@@ -5,7 +5,7 @@ import json
 import yaml
 import jsonschema
 from src.album import Album
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from src.constants import (ATTR_ALBUM_PERMALINK, ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
                            ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
@@ -19,10 +19,11 @@ schema_path = os.path.join(current_dir, "../schemas", "tagfile.json")
 class Tagfile:
   """Represents a Tagfile in a directory of images"""
 
-  def __init__(self, dirname: str, metadata_path, images) -> None:
+  def __init__(self, dirname: str, metadata_path, images: List, videos: List) -> None:
     self.dirname = dirname
     self.images = images
     self.metadata_path = metadata_path
+    self.videos = videos
 
   def id(self) -> str:
     """Compute a directory-specific tagfile ID"""
@@ -106,4 +107,8 @@ class Tagfile:
 
     if f'![{cover}]({cover})' not in tag_file['images'] and cover != 'Cover' and cover != 'Unknown':
       raise Exception(f"{cover} is not present in the album {dirpath}")
+
+    if not 'videos' in tag_file:
+      tag_file['videos'] = {}
+
     return tag_file

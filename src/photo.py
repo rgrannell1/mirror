@@ -13,6 +13,8 @@ from src.media import Media
 from typing import List, Iterator, Dict, Optional, Set
 from PIL import Image, ImageOps, ExifTags
 
+from src.video import Video
+
 from .constants import (ATTR_BLUR, ATTR_SHUTTER_SPEED, ATTR_TAG, ATTR_DESCRIPTION,
                         EXIF_ATTR_ASSOCIATIONS, SET_ATTR_ALBUM,
                         THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT,
@@ -33,6 +35,14 @@ class TagfileAlbumConfiguration:
 @dataclass
 class TagfileImageConfiguration:
   """Tagfile information about an image"""
+  fpath: str
+  album: TagfileAlbumConfiguration
+  attrs: Dict
+
+
+@dataclass
+class TagfileVideoConfiguration:
+  """Tagfile information about a video"""
   fpath: str
   album: TagfileAlbumConfiguration
   attrs: Dict
@@ -68,6 +78,22 @@ class PhotoVault:
 
     return images
 
+  def list_videos(self) -> List['Video']:
+    """Recursively list all files under a given path."""
+
+    videos = []
+
+    for dirpath, _, filenames in os.walk(self.path):
+      for filename in filenames:
+        video_path = os.path.join(dirpath, filename)
+
+        if not Video.is_video(video_path):
+          continue
+
+        videos.append(Video(video_path, self.metadata_path))
+
+    return videos
+
   def list_albums(self) -> List[Album]:
     """Recursively list all directories under a given path."""
 
@@ -102,6 +128,7 @@ class PhotoVault:
       for key, entry in tag_file['images'].items():
 
         match = TITLE_PATTERN.search(key)
+
         if match:
           image_name = match.group(1)
 
@@ -116,6 +143,37 @@ class PhotoVault:
                                       attrs=entry))
 
     return output
+
+  def list_tagfile_video(self) -> List[TagfileImageConfiguration]:
+    """List videos in tagfiles"""
+
+    output = []
+
+    for tagfile in self.list_tagfiles():
+      dpath = os.path.dirname(tagfile)
+
+      tag_file = Tagfile.read(tagfile)
+      if not tag_file:
+        continue
+
+      for key, entry in tag_file['videos'].items():
+
+        match = TITLE_PATTERN.search(key)
+
+        if match and match.group(1).lower().endswith('.mp4'):
+          video_name = match.group(1)
+
+        attrs = {}
+        for attr in SET_ATTR_ALBUM:
+          attrs[attr] = tag_file.get(attr, '')
+
+        output.append(
+            TagfileVideoConfiguration(fpath=os.path.join(dpath, video_name),
+                                      album=TagfileAlbumConfiguration(
+                                          fpath=dpath, attrs=attrs),
+                                      attrs=entry))
+
+      return output
 
   def list_by_folder(self) -> Dict[str, List['Photo']]:
     """List all images by folder"""
@@ -188,16 +246,6 @@ class Photo(Media):
     except BaseException:
       return None
 
-  def get_description(self) -> Optional[str]:
-    """Get the description of an image"""
-
-    return self.get_xattr_attr(ATTR_DESCRIPTION, "")
-
-  def get_tags(self) -> Set[str]:
-    """Get the tags of an image"""
-
-    return set(tag.strip()
-               for tag in self.get_xattr_attr(ATTR_TAG, "").split(','))
 
   @lru_cache(maxsize=None)
   def get_blur(self) -> float:
@@ -260,25 +308,6 @@ class Photo(Media):
           self.set_xattr_attr(attr, value)
       except Exception as err:
         raise ValueError(f"failed to set {attr} to {value} on image") from err
-
-  def published(self) -> bool:
-    """Is this image publishable?"""
-
-    md = self.get_metadata()
-
-    tags = md.get(ATTR_TAG, set())
-    return 'Published' in tags
-
-  def tag_string(self) -> str:
-    """Get the tag csv for an image"""
-
-    return ', '.join(self.tags())
-
-  def tags(self) -> List[str]:
-    """Get the tag csv for an image"""
-
-    tags = self.get_metadata().get(ATTR_TAG, set())
-    return [tag for tag in self.tag_metadata.expand(tags) if tag]
 
   def encode_thumbnail(self, params) -> ImageContent:
     """Encode a image as a thumbnail, and remove EXIF data"""

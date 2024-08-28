@@ -1,6 +1,8 @@
 import os
 import xattr
-from typing import TypeVar, Optional
+from typing import List, Set, TypeVar, Optional
+
+from src.constants import ATTR_DESCRIPTION, ATTR_TAG
 
 T = TypeVar('T')
 
@@ -14,6 +16,14 @@ class Media:
 
     image_extensions = ('.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG')
     return os.path.isfile(path) and path.endswith(image_extensions)
+
+  @classmethod
+  def is_video(cls, path) -> bool:
+    """Check if a given file path is an image."""
+
+    video_extensions = ('.mp4', '.MP4')
+    return os.path.isfile(path) and path.endswith(video_extensions)
+
 
   def name(self) -> str:
     """Get the basename of the media."""
@@ -53,3 +63,30 @@ class Media:
         raise ValueError(f"unsupported type {type(value)}")
     except Exception as err:
       raise ValueError(f"failed to set xattr {attr} on {self.path}") from err
+
+  def get_description(self) -> Optional[str]:
+    """Get the description of an image or video"""
+
+    return self.get_xattr_attr(ATTR_DESCRIPTION, "")
+
+  def get_tags(self) -> Set[str]:
+    """Get the tags of an image"""
+
+    return set(tag.strip()
+               for tag in self.get_xattr_attr(ATTR_TAG, "").split(','))
+
+  def tags(self) -> List[str]:
+    """Get the tag csv for an image"""
+
+    return [tag for tag in self.tag_metadata.expand(self.get_tags()) if tag]
+
+  def published(self) -> bool:
+    """Is this image publishable?"""
+
+    tags = self.get_tags()
+    return 'Published' in tags
+
+  def tag_string(self) -> str:
+    """Get the tag csv for an image"""
+
+    return ', '.join(self.tags())

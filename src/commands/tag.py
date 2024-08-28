@@ -1,9 +1,9 @@
 from src.constants import DB_PATH
 from src.photo import PhotoVault, Photo
-from src.tags import Tags
 from src.tagfile import Tagfile
 from src.manifest import Manifest
 from src.log import Log
+from src.video import Video
 
 
 def tag(dir: str, metadata_path: str):
@@ -26,6 +26,17 @@ def tag(dir: str, metadata_path: str):
     Photo(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
     idx += 1
 
+  videos = vault.list_tagfile_video()
+  print(videos)
+
+  # set metadata on each video mentioned in a tagfile
+  for entry in videos:
+    Log.info(f"setting xattr metadata on video {idx:,} / {len(videos):,}",
+             clear=True)
+
+    Video(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
+    idx += 1
+
   idx = 0
   by_folder = PhotoVault(dir, metadata_path).list_by_folder().items()
 
@@ -34,7 +45,7 @@ def tag(dir: str, metadata_path: str):
     Log.info(f"writing tagfile {idx} / {len(by_folder)}", clear=True)
     idx += 1
 
-    Tagfile(dirname, metadata_path, images).write()
+    Tagfile(dirname, metadata_path, images, []).write()
 
   Log.info(f"updating database", clear=True)
 
@@ -42,12 +53,14 @@ def tag(dir: str, metadata_path: str):
   for image in vault.list_images():
     db.add_image(image)
 
+  # add every video to the sqlite database
+  for video in vault.list_videos():
+    db.add_video(video)
+
   for album in vault.list_albums():
     album_md = album.get_metadata()
 
-    if not album_md:
-      continue
-
-    db.add_album(album_md)
+    if album_md:
+      db.add_album(album_md)
 
   Log.info(f"Tagging complete", clear=True)
