@@ -3,8 +3,6 @@
 Usage:
   mirror tag
   mirror tag --metadata=<fpath>                                <dir>
-  mirror list-tags [--graphvis]
-  mirror list-tags --metadata=<fpath> [--graphvis]             <dir>
   mirror list-tagfiles [--tag=<tag>]
   mirror list-tagfiles [--tag=<tag>]                           <dir>
   mirror show-tagfiles [--tag=<tag>]
@@ -61,8 +59,6 @@ Commands:
   tag                           Tag all images in a directory based on the tags.md files. Tag albums with
                                   a title, cover-image, and other information
 
-  list-tags                     List all tags in a directory.
-
   list-photos                   List photos and tag information. Optionally filter for a specific tag.
 
   list-tagfiles                 List all tag-files in a directory. Optionally filter for a specific tag.
@@ -93,11 +89,6 @@ if __name__ == '__main__':
 
   if args['tag']:
     Mirror.tag(cfg.directory, cfg.metadata)
-  elif args['list-tags']:
-    Mirror.list_tags(cfg.directory, {
-        'graphvis': args['--graphvis'],
-        'metadata': cfg.metadata
-    })
   elif args['list-photos']:
     Mirror.list_photos(cfg.directory, cfg.metadata, args['--tag'], args['--from'], args['--to'])
   elif args['publish']:
@@ -113,7 +104,7 @@ if __name__ == '__main__':
   elif args['add-answers']:
     Mirror.add_answers(cfg.directory, cfg.metadata, args['<answers-db>'])
   else:
-    print('Invalid command')
+    print(f'Invalid command {args}')
     print('+++++++++++++++++++++++++++++++++++++++++')
     print(__doc__)
     exit(1)

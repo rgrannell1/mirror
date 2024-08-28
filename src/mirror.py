@@ -2,7 +2,6 @@
 
 from typing import Optional
 from src.commands.tag import tag
-from src.commands.list_tags import list_tags
 from src.commands.list_tagfiles import list_tagfiles
 from src.commands.show_tagfiles import show_tagfiles
 from src.commands.list_photos import list_photos
@@ -17,10 +16,6 @@ class Mirror:
   @staticmethod
   def tag(dir: str, metadata_path: str) -> None:
     tag(dir, metadata_path)
-
-  @staticmethod
-  def list_tags(dir: str, opts) -> None:
-    list_tags(dir, opts)
 
   @staticmethod
   def list_tagfiles(dir: str, tag: str) -> None:
