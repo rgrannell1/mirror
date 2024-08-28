@@ -9,7 +9,6 @@ from src.commands.list_photos import list_photos
 from src.commands.publish import publish
 from src.commands.feed import feed
 from src.commands.add_google_photos_metadata import add_google_photos_metadata
-from src.commands.add_google_vision_metadata import add_google_vision_metadata
 from src.commands.add_answers import add_answers
 
 class Mirror:
@@ -47,10 +46,6 @@ class Mirror:
   def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file: str) -> None:
     add_google_photos_metadata(dir, metadata_path, google_photos_file)
     add_google_photos_metadata(dir, metadata_path, google_photos_file)
-
-  @staticmethod
-  def add_google_vision_metadata(dir: str, metadata_path: str) -> None:
-    add_google_vision_metadata(dir, metadata_path)
 
   @staticmethod
   def add_answers(dir: str, metadata_path: str, db_fpath: str) -> None:

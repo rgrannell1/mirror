@@ -100,6 +100,9 @@ class ImagesArtifacts:
     for row in cursor.fetchall():
       fpath, album_permalink, tags, tags_v2, description, *rest = row
 
+      if (not album_permalink):
+        raise ValueError(f"did not find a permalink for image '{fpath}'. Please update {fpath}/tags.md")
+
       joined_tags = {tag.strip() for tag in re.split(r'\s*,\s*', tags if tags else '') + re.split(r'\s*,\s*', tags_v2 if tags_v2 else '') if tag}
 
       rows.append([
@@ -220,6 +223,9 @@ class MetadataArtifacts:
       },
       'Plane': {
         'children': MetadataArtifacts.get_subsumed(db, 'Plane')
+      },
+      'Helicopter': {
+        'children': MetadataArtifacts.get_subsumed(db, 'Helicopter')
       },
       'Mammal': {
         'children': MetadataArtifacts.get_subsumed(db, 'Mammal')
