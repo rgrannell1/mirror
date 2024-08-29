@@ -41,11 +41,14 @@ def tag(dir: str, metadata_path: str):
   by_folder = PhotoVault(dir, metadata_path).list_by_folder().items()
 
   # update the tagfiles in each folder based on the newly written metadata
-  for dirname, images in by_folder:
+  for dirname, dir_data in by_folder:
+    images = dir_data['images']
+    videos = dir_data['videos']
+
     Log.info(f"writing tagfile {idx} / {len(by_folder)}", clear=True)
     idx += 1
 
-    Tagfile(dirname, metadata_path, images, []).write()
+    Tagfile(dirname, metadata_path, images, videos).write()
 
   Log.info(f"updating database", clear=True)
 

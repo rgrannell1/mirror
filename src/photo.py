@@ -156,6 +156,9 @@ class PhotoVault:
       if not tag_file:
         continue
 
+      if not len(tag_file['videos']) and isinstance(tag_file['videos'], list):
+        tag_file['videos'] = {}
+
       for key, entry in tag_file['videos'].items():
 
         match = TITLE_PATTERN.search(key)
@@ -183,9 +186,22 @@ class PhotoVault:
     for image in self.list_images():
       dirname = image.dirname()
       if dirname not in dirs:
-        dirs[dirname] = []
+        dirs[dirname] = {
+          'images': [],
+          'videos': []
+        }
 
-      dirs[dirname].append(image)
+      dirs[dirname]['images'].append(image)
+
+    for video in self.list_videos():
+      dirname = video.dirname()
+      if dirname not in dirs:
+        dirs[dirname] = {
+          'images': [],
+          'videos': []
+        }
+
+      dirs[dirname]['videos'].append(video)
 
     return dirs
 

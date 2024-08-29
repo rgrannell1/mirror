@@ -126,11 +126,11 @@ class AlbumArtifacts:
         (
           select target from photo_relations
           where source = albums.fpath and relation = 'permalink'
-        ),
+        ) as permalink,
         (
           select target from photo_relations
           where source = albums.fpath and relation = 'album_name'
-        ),
+        ) as name,
         min_date,
         max_date,
         coalesce((
@@ -166,7 +166,7 @@ class AlbumArtifacts:
             select distinct images.album
             from images
             where images.published = '1'
-        );
+        ) and name != "Misc";
     """)
 
     messages = []

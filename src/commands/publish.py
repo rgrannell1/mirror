@@ -159,7 +159,9 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   Log.info(f"Finished! Publishing to {manifest_path} & {metadata_path}",
            clear=True)
 
-  for dir, images in PhotoVault(dir, metadata_path).list_by_folder().items():
+  for dir, dir_data in PhotoVault(dir, metadata_path).list_by_folder().items():
+    images = dir_data['images']
+
     find_album_dates(db, dir, images)
 
   ##copy_metadata_file(metadata_path, manifest_path)

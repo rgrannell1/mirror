@@ -48,12 +48,23 @@ class Tagfile:
 
       tags = list({tag for tag in image_md.get(ATTR_TAG, set()) if tag})
 
+      # properties written back to the tagfile for an image
       images[transclusion] = {
           ATTR_TAG: tags,
-          ATTR_DESCRIPTION: image.get_description(),
-          ATTR_BLUR: image.get_blur(),
-          ATTR_SHUTTER_SPEED: image.get_shutter_speed(),
+          ATTR_DESCRIPTION: image.get_description()
       }
+
+    videos = {}
+
+    for video in self.videos:
+      name = video.name()
+      transclusion = f"![{name}]({name})"
+
+      videos[transclusion] = {
+          ATTR_TAG: list(video.get_tags()),
+          ATTR_DESCRIPTION: video.get_description()
+      }
+
 
     return [{
         ATTR_ALBUM_TITLE:
@@ -69,7 +80,8 @@ class Tagfile:
         ATTR_ALBUM_PERMALINK:
         album_md.permalink if album_md and album_md.permalink else "",
         'images':
-        images
+        images,
+        'videos': videos
     }]
 
   def to_yaml(self) -> str:
@@ -107,8 +119,5 @@ class Tagfile:
 
     if f'![{cover}]({cover})' not in tag_file['images'] and cover != 'Cover' and cover != 'Unknown':
       raise Exception(f"{cover} is not present in the album {dirpath}")
-
-    if not 'videos' in tag_file:
-      tag_file['videos'] = {}
 
     return tag_file

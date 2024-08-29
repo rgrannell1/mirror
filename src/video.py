@@ -1,4 +1,5 @@
 import ffmpeg
+from src.album import Album
 from src.media import Media
 
 from typing import Dict
@@ -14,3 +15,11 @@ class Video(Media):
   def encode_video(self) -> Dict:
     pass
     # stabilise and convert
+
+  def get_exif_metadata(self) -> Dict:
+    return {}
+
+  def set_metadata(self, attrs, album):
+    Album(album.fpath).set_xattrs(album.attrs)
+
+    # TODO implement this! Set description at least.
