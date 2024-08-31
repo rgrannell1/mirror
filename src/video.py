@@ -64,7 +64,8 @@ class Video(Media):
       "strict": '-2',
       "movflags": '+faststart',
       "preset": 'veryslow',
-      "format": 'mp4'
+      "format": 'mp4',
+      'loglevel': 'error'
     }
 
     if width and height:

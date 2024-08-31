@@ -11,6 +11,7 @@ from src.constants import (ATTR_ALBUM_PERMALINK, ATTR_ALBUM_TITLE, ATTR_ALBUM_DE
                            ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
                            ATTR_ALBUM_ID, ATTR_BLUR, ATTR_SHARE_AUDIO, ATTR_SHUTTER_SPEED, ATTR_TAG,
                            ATTR_DESCRIPTION)
+from src.utils import deterministic_hash
 from src.video import Video
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +30,7 @@ class Tagfile:
   def id(self) -> str:
     """Compute a directory-specific tagfile ID"""
 
-    return str(hash(self.dirname))
+    return deterministic_hash(self.dirname)
 
   def album_data(self) -> str:
     """Given a series of images, and a directory, return the content of a tagfile."""

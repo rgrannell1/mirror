@@ -6,6 +6,7 @@ import botocore
 from typing import Tuple
 
 from src.photo import ImageContent
+from src.utils import deterministic_hash
 from .config import (SPACES_REGION, SPACES_ENDPOINT_URL, SPACES_BUCKET,
                      SPACES_ACCESS_KEY_ID, SPACES_SECRET_KEY)
 from .constants import (PHOTOS_URL)
@@ -99,7 +100,7 @@ class Spaces:
   def upload_video(self, initial_path: str, encoded_path: str, format='mp4'):
     """Upload a video to the Spaces bucket. Return a CDN link"""
 
-    name = f"{hash(initial_path)}.{format}"
+    name = f"{deterministic_hash(initial_path)}.{format}"
     self.upload_public(name, open(encoded_path, 'rb').read(), f'video/{format}')
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
@@ -151,7 +152,7 @@ class Spaces:
   def video_name(cls, fpath: str, format='mp4') -> str:
     """Return the name of the video in the Spaces bucket"""
 
-    return f"{hash(fpath)}.{format}"
+    return f"{deterministic_hash(fpath)}.{format}"
 
   def video_status(self, video_name: str) -> Tuple[bool, str]:
     """Check if a video exists in the Spaces bucket"""

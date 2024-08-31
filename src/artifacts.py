@@ -4,6 +4,7 @@ import sys
 import json
 import markdown
 from src.manifest import Manifest
+from src.utils import deterministic_hash
 
 IMAGES_HEADERS = [
   'fpath',
@@ -107,7 +108,7 @@ class ImagesArtifacts:
 
       rows.append([
         fpath,
-        str(hash(fpath)),
+        deterministic_hash(fpath),
         album_permalink,
         ','.join(joined_tags),
         markdown.markdown(description)

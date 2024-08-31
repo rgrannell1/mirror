@@ -11,6 +11,7 @@ from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
 from src.manifest import Manifest
 from src.log import Log
+from src.utils import deterministic_hash
 from src.video import Video
 
 def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
@@ -64,16 +65,15 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
 def upload_video(db: Manifest, spaces: Spaces, video: Video,
                  image_idx: int) -> None:
 
-  Log.info(f'Checking video #{image_idx} is published for {video.path}')
+  upload_file_name = Spaces.video_name(video.path)
+  Log.info(f'Checking video #{image_idx} ({upload_file_name}) is published for {video.path}')
 
   for role, encoding_params in VIDEO_ENCODINGS:
     bitrate = encoding_params['bitrate']
     width = encoding_params['width']
     height = encoding_params['height']
 
-    upload_file_name = Spaces.video_name(video.path)
     encoded_video_path = video.encode_video(bitrate, width, height)
-
     video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
     if not video_in_spaces:
@@ -122,7 +122,7 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
     conn.write(json.dumps(content))
 
 def create_artifacts(db: Manifest, manifest_path: str) -> None:
-  publication_id = str(hash(str(math.floor(time.time()))))
+  publication_id = deterministic_hash(str(math.floor(time.time())))
 
   # clear existing albums and images
 
@@ -176,7 +176,6 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   video_idx = 1
 
   for video in db.list_publishable_videos():
-    continue
     Log.clear()
 
     upload_video(db, spaces, video, video_idx)
