@@ -15,13 +15,13 @@ def feed(dir: str, metadata_path: str, out_dir: str):
 
   db = Manifest(DB_PATH, metadata_path)
 
-  for image in db.list_publishable():
+  for image in db.list_publishable_images():
     all_images.append(image)
 
     if not image.exists():
       continue
 
-    tags = image.tags()
+    tags = image.get_xattr_tags()
 
     if 'Published' not in tags:
       continue

@@ -1,88 +1,21 @@
 from dataclasses import dataclass
 import os
 
-import json
 import sqlite3
-from typing import Iterator, List, Optional
+from typing import Iterator, Optional
 
 from src.album import AlbumMetadata
 from src.video import Video
 from .photo import Photo
+from .tables import (
+  ENCODED_IMAGE_TABLE, IMAGES_TABLE, VIDEOS_TABLE, ALBUM_TABLE, PHOTO_RELATIONS_TABLE
+)
 from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
-                        ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT,
-                        SPACES_DOMAIN)
-
-ENCODED_IMAGE_TABLE = """
-create table if not exists encoded_images (
-  fpath    text not null,
-  mimetype text not null,
-  role     text not null,
-  url      text not null,
-
-  primary key (fpath, mimetype, role)
-)
-"""
-
-IMAGES_TABLE = """
-create table if not exists images (
-  fpath              text primary key,
-  tags               text,
-  published          boolean,
-  description        text,
-  album              text,
-  date_time          text,
-  f_number           text,
-  focal_length       text,
-  model              text,
-  iso                text,
-  shutter_speed      text,
-  blur               text,
-  width              text,
-  height             text,
-  latitude           text,
-  longitude          text,
-  address            text,
-  foreign key(album) references albums(fpath)
-)
-"""
-
-VIDEOS_TABLE = """
-create table if not exists videos (
-  fpath              text primary key,
-  tags               text,
-  published          boolean,
-  description        text,
-  album              text,
-
-    foreign key(album) references albums(fpath)
-)
-"""
-
-ALBUM_TABLE = """
-create table if not exists albums (
-  fpath            text primary key,
-  album_name       text,
-  album_path       text,
-  cover_image      text,
-  description      text,
-  min_date         text,
-  max_date         text,
-  geolocation      text
-)
-"""
-
-PHOTO_RELATIONS_TABLE = """
-create table if not exists photo_relations (
-  source    text,
-  relation  text,
-  target    text,
-
-  primary key (source, relation, target)
-)
-"""
+                        ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT)
 
 @dataclass
 class ImageMetadata:
+  """Dataclass for image metadata"""
   image_url = str
   thumbnail_url = str
   date_time = str
@@ -94,6 +27,10 @@ class ImageMetadata:
     self.date_time = date_time
     self.album_name = album_name
 
+@dataclass
+class VideoMetadata:
+  """Dataclass for video metadata"""
+  pass
 
 class Manifest:
   """The local database containing information about the photo albums"""
@@ -119,7 +56,7 @@ class Manifest:
     for table in Manifest.TABLES:
       cursor.execute(table)
 
-  def list_publishable(self) -> Iterator[Photo]:
+  def list_publishable_images(self) -> Iterator[Photo]:
     """List all images that are ready to be published"""
 
     cursor = self.conn.cursor()
@@ -127,6 +64,15 @@ class Manifest:
 
     for row in cursor.fetchall():
       yield Photo(row[0], self.metadata_path)
+
+  def list_publishable_videos(self) -> Iterator[Video]:
+    """List all videos that are ready to be published"""
+
+    cursor = self.conn.cursor()
+    cursor.execute("select fpath from videos where published = '1'")
+
+    for row in cursor.fetchall():
+      yield Video(row[0], self.metadata_path)
 
   def image_metadata(self, fpath: str) -> Optional[ImageMetadata]:
     """Get metadata for a specific image"""
@@ -162,6 +108,23 @@ class Manifest:
                          date_time=row[2],
                          album_name=row[3])
 
+  def video_metadata(self, fpath: str) -> Optional[VideoMetadata]:
+    """Get metadata for a specific video"""
+
+    pass
+
+  def add_album(self, album_md: AlbumMetadata):
+    """Add an album to the local database"""
+
+    cover_path = os.path.join(album_md.fpath, album_md.cover) if album_md.cover != 'Cover' else None
+
+    cursor = self.conn.cursor()
+    cursor.execute(
+        "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation, permalink) values (?, ?, ?, ?, ?, ?, ?)",
+        (album_md.fpath, album_md.title, album_md.cover, cover_path, album_md.description,
+         album_md.geolocation, album_md.permalink))
+    self.conn.commit()
+
   def add_image(self, image: Photo):
     """Add an image to the local database"""
 
@@ -171,10 +134,10 @@ class Manifest:
     exif_md = image.get_exif_metadata()
     params = {
         "fpath": path,
-        "tags": image.tag_string(),
-        "published": image.published(),
+        "tags": image.get_xattr_tag_string(),
+        "published": image.is_published(),
         "album": album,
-        "description": image.get_description(),
+        "description": image.get_xattr_description(),
         "date_time": exif_md[ATTR_DATE_TIME],
         "f_number": exif_md[ATTR_FSTOP],
         "focal_length": exif_md[ATTR_FOCAL_EQUIVALENT],
@@ -227,32 +190,13 @@ class Manifest:
             description = :description
         """, {
           "fpath": path,
-          "tags": video.tag_string(),
-          "published": video.published(),
+          "tags": video.get_xattr_tag_string(),
+          "published": video.is_published(),
           "album": album,
-          "description": video.get_description()
+          "description": video.get_xattr_description()
       })
 
     self.conn.commit()
-
-  def add_album(self, album_md: AlbumMetadata):
-    """Add an album to the local database"""
-
-    cover_path = os.path.join(album_md.fpath, album_md.cover) if album_md.cover != 'Cover' else None
-
-    cursor = self.conn.cursor()
-    cursor.execute(
-        "insert or replace into albums (fpath, album_name, cover_image, cover_path, description, geolocation, permalink) values (?, ?, ?, ?, ?, ?, ?)",
-        (album_md.fpath, album_md.title, album_md.cover, cover_path, album_md.description,
-         album_md.geolocation, album_md.permalink))
-    self.conn.commit()
-
-  def clear_photo_relations(self):
-    """Clear all relations between images and targets"""
-
-    cursor = self.conn.cursor()
-    cursor.execute("delete from photo_relations")
-    self.conn.commit
 
   def add_photo_relation(self, source: str, relation: str, target: str):
     """Add a relation between an image and a target"""
@@ -312,6 +256,14 @@ class Manifest:
       set latitude = ?, longitude = ?, address = ?
       where fpath like '%' || ?;
     """, (lat, lon, address, fpath))
+    self.conn.commit()
+
+
+  def clear_photo_relations(self):
+    """Clear all relations between images and targets"""
+
+    cursor = self.conn.cursor()
+    cursor.execute("delete from photo_relations")
     self.conn.commit()
 
   def close(self):

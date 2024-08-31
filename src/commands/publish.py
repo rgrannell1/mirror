@@ -6,11 +6,12 @@ import yaml
 import json
 from typing import List
 from src.artifacts import AlbumArtifacts, ImagesArtifacts, MetadataArtifacts
-from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS
+from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
 from src.manifest import Manifest
 from src.log import Log
+from src.video import Video
 
 def upload_thumbnail(db: Manifest, spaces: Spaces, image: Photo,
                      image_idx: int) -> None:
@@ -58,6 +59,20 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
         spaces.upload_image(encoded, format=thumbnail_format)
 
       db.add_encoded_image_url(image, image_url, role, format=thumbnail_format)
+
+
+def upload_video(db: Manifest, spaces: Spaces, video: Video,
+                 image_idx: int) -> None:
+
+  Log.info(f'Checking video #{image_idx} is published for {video.path}')
+
+  for role, encoding_params in VIDEO_ENCODINGS:
+    bitrate = encoding_params['bitrate']
+    width = encoding_params['width']
+    height = encoding_params['height']
+
+    encoded_video = video.encode_video(bitrate, width, height)
+
 
 
 def encode_mosaic(db: Manifest, image: Photo, image_idx: int) -> None:
@@ -141,10 +156,8 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   spaces.set_bucket_cors_policy()
 
   image_idx = 1
-  published = False
 
-  for image in db.list_publishable():
-    published = True
+  for image in db.list_publishable_images():
     Log.clear()
 
     upload_thumbnail(db, spaces, image, image_idx)
@@ -153,8 +166,13 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
     image_idx += 1
 
-  if not published:
-    Log.info(f'No images published', clear=True)
+  video_idx = 1
+
+  for video in db.list_publishable_videos():
+    Log.clear()
+
+    upload_video(db, spaces, video, video_idx)
+    video_idx += 1
 
   Log.info(f"Finished! Publishing to {manifest_path} & {metadata_path}",
            clear=True)
@@ -164,5 +182,4 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
 
     find_album_dates(db, dir, images)
 
-  ##copy_metadata_file(metadata_path, manifest_path)
   create_artifacts(db, manifest_path)

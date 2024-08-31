@@ -126,7 +126,6 @@ class PhotoVault:
         continue
 
       for key, entry in tag_file['images'].items():
-
         match = TITLE_PATTERN.search(key)
 
         if match:
@@ -160,7 +159,6 @@ class PhotoVault:
         tag_file['videos'] = {}
 
       for key, entry in tag_file['videos'].items():
-
         match = TITLE_PATTERN.search(key)
 
         if match and match.group(1).lower().endswith('.mp4'):
@@ -286,9 +284,9 @@ class Photo(Media):
     exif_attrs = self.get_exif_metadata()
 
     return {
-        ATTR_TAG: self.get_tags(),
+        ATTR_TAG: self.get_xattr_tags(),
         ATTR_BLUR: self.get_blur(),
-        ATTR_DESCRIPTION: self.get_description(),
+        ATTR_DESCRIPTION: self.get_xattr_description(),
         **exif_attrs
     }
 

@@ -51,7 +51,7 @@ class Tagfile:
       # properties written back to the tagfile for an image
       images[transclusion] = {
           ATTR_TAG: tags,
-          ATTR_DESCRIPTION: image.get_description()
+          ATTR_DESCRIPTION: image.get_xattr_description()
       }
 
     videos = {}
@@ -61,10 +61,9 @@ class Tagfile:
       transclusion = f"![{name}]({name})"
 
       videos[transclusion] = {
-          ATTR_TAG: list(video.get_tags()),
-          ATTR_DESCRIPTION: video.get_description()
+          ATTR_TAG: list(video.get_xattr_tags()),
+          ATTR_DESCRIPTION: video.get_xattr_description()
       }
-
 
     return [{
         ATTR_ALBUM_TITLE:
@@ -97,7 +96,7 @@ class Tagfile:
       conn.write(self.to_yaml())
 
   @classmethod
-  def read(kls, fpath) -> Optional[Dict]:
+  def read(kls, fpath: str) -> Optional[Dict]:
     """Read a tagfile, and yield each image and its associated tags."""
 
     with open(schema_path) as conn:

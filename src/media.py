@@ -1,6 +1,6 @@
 import os
 import xattr
-from typing import List, Set, TypeVar, Optional
+from typing import Set, TypeVar, Optional
 
 from src.constants import ATTR_DESCRIPTION, ATTR_TAG
 
@@ -64,29 +64,26 @@ class Media:
     except Exception as err:
       raise ValueError(f"failed to set xattr {attr} on {self.path}") from err
 
-  def get_description(self) -> Optional[str]:
+  def get_xattr_description(self) -> Optional[str]:
     """Get the description of an image or video"""
 
     return self.get_xattr_attr(ATTR_DESCRIPTION, "")
 
-  def get_tags(self) -> Set[str]:
+  def get_xattr_tags(self) -> Set[str]:
     """Get the tags of an image"""
 
-    return set(tag.strip()
-               for tag in self.get_xattr_attr(ATTR_TAG, "").split(','))
+    tag_attr = self.get_xattr_attr(ATTR_TAG, "")
 
-  def tags(self) -> List[str]:
+    return set(tag.strip()
+               for tag in tag_attr.split(',') if tag.strip())
+
+  def get_xattr_tag_string(self) -> str:
     """Get the tag csv for an image"""
 
-    return [tag for tag in self.tag_metadata.expand(self.get_tags()) if tag]
+    return ', '.join(list(self.get_xattr_tags()))
 
-  def published(self) -> bool:
+  def is_published(self) -> bool:
     """Is this image publishable?"""
 
-    tags = self.get_tags()
+    tags = self.get_xattr_tags()
     return 'Published' in tags
-
-  def tag_string(self) -> str:
-    """Get the tag csv for an image"""
-
-    return ', '.join(self.tags())

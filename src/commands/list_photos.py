@@ -12,7 +12,7 @@ def list_photos(dir: str, metadata_path: str, tag: str, start: str, end: str):
 
   for image in vault.list_images():
     # skip the image if the tag doesn't match
-    if tag and tag not in image.tags():
+    if tag and tag not in image.get_xattr_tags():
       continue
 
     date = image.get_created_date()
@@ -30,8 +30,8 @@ def list_photos(dir: str, metadata_path: str, tag: str, start: str, end: str):
 
     print(json.dumps({
       'fpath': image.path,
-      'tags': image.tags(),
+      'tags': list(image.get_xattr_tags()),
       'date': str(image.get_created_date()),
-      'description': image.get_description(),
+      'description': image.get_xattr_description(),
       'blur': image.get_blur()
     }))

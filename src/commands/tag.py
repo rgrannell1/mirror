@@ -27,7 +27,6 @@ def tag(dir: str, metadata_path: str):
     idx += 1
 
   videos = vault.list_tagfile_video()
-  print(videos)
 
   # set metadata on each video mentioned in a tagfile
   for entry in videos:

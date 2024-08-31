@@ -97,3 +97,11 @@ IMAGE_ENCODINGS = [
     'format': 'webp'
   })
 ]
+
+VIDEO_ENCODINGS = [
+  ('video_libx265_1080p', {
+    'bitrate': '5000k',
+    'width': 1920,
+    'height': 1080,
+  })
+]
