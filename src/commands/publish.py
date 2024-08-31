@@ -71,9 +71,16 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video,
     width = encoding_params['width']
     height = encoding_params['height']
 
-    encoded_video = video.encode_video(bitrate, width, height)
+    upload_file_name = Spaces.video_name(video.path)
+    encoded_video_path = video.encode_video(bitrate, width, height)
 
+    video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
+    if not video_in_spaces:
+      Log.info(f'Uploading video #{image_idx} for {video.path}', clear=True)
+      spaces.upload_file_public(upload_file_name, encoded_video_path)
+
+    db.add_encoded_video_url(video, video_url, role)
 
 def encode_mosaic(db: Manifest, image: Photo, image_idx: int) -> None:
   if not db.has_encoded_image(image, 'thumbnail_mosaic'):
@@ -169,6 +176,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
   video_idx = 1
 
   for video in db.list_publishable_videos():
+    continue
     Log.clear()
 
     upload_video(db, spaces, video, video_idx)

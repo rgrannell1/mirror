@@ -6,14 +6,14 @@ from src.log import Log
 from src.video import Video
 
 
-def tag(dir: str, metadata_path: str):
+def tag(dpath: str, metadata_path: str):
   """Read tags.md files in each photo-directory, and write extended
                        attributes to each image"""
 
   db = Manifest(DB_PATH, metadata_path)
   db.create()
 
-  vault = PhotoVault(dir, metadata_path)
+  vault = PhotoVault(dpath, metadata_path)
 
   idx = 0
   images = vault.list_tagfile_image()
@@ -37,7 +37,7 @@ def tag(dir: str, metadata_path: str):
     idx += 1
 
   idx = 0
-  by_folder = PhotoVault(dir, metadata_path).list_by_folder().items()
+  by_folder = PhotoVault(dpath, metadata_path).list_by_folder().items()
 
   # update the tagfiles in each folder based on the newly written metadata
   for dirname, dir_data in by_folder:

@@ -73,11 +73,34 @@ class Spaces:
         ContentType=mime_type,
         ACL='public-read')
 
+  def upload_file_public(self, name: str,
+                         encoded_path: str) -> bool:
+
+    return self.client.upload_file(
+        Filename=encoded_path,
+        Bucket=SPACES_BUCKET,
+        Key=name,
+        ExtraArgs={
+            'ContentDisposition': 'inline',
+            'CacheControl': 'public, max-age=31536000, immutable',
+            'ContentType': 'video/mp4',
+            'ACL': 'public-read'
+        }
+      )
+
   def upload_image(self, encoded_data: ImageContent, format='webp'):
     """Upload an image to the Spaces bucket. Return a CDN link"""
 
     name = f"{encoded_data.hash}.{format}"
     self.upload_public(name, encoded_data.content)
+
+    return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+
+  def upload_video(self, initial_path: str, encoded_path: str, format='mp4'):
+    """Upload a video to the Spaces bucket. Return a CDN link"""
+
+    name = f"{hash(initial_path)}.{format}"
+    self.upload_public(name, open(encoded_path, 'rb').read(), f'video/{format}')
 
     return f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
 
@@ -123,6 +146,17 @@ class Spaces:
     name = f"{encoded_image.hash}.{format}"
 
     return self.has_object(name), self.url(name)
+
+  @classmethod
+  def video_name(cls, fpath: str, format='mp4') -> str:
+    """Return the name of the video in the Spaces bucket"""
+
+    return f"{hash(fpath)}.{format}"
+
+  def video_status(self, video_name: str) -> Tuple[bool, str]:
+    """Check if a video exists in the Spaces bucket"""
+
+    return self.has_object(video_name), self.url(video_name)
 
   def patch_content_metadata(self, mime_type: str = 'image/webp'):
     """Update the metadata for all objects in the Spaces bucket"""

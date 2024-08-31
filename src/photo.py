@@ -143,7 +143,7 @@ class PhotoVault:
 
     return output
 
-  def list_tagfile_video(self) -> List[TagfileImageConfiguration]:
+  def list_tagfile_video(self) -> List[TagfileVideoConfiguration]:
     """List videos in tagfiles"""
 
     output = []
@@ -155,7 +155,7 @@ class PhotoVault:
       if not tag_file:
         continue
 
-      if not len(tag_file['videos']) and isinstance(tag_file['videos'], list):
+      if not len(tag_file['videos']):
         tag_file['videos'] = {}
 
       for key, entry in tag_file['videos'].items():
@@ -308,9 +308,11 @@ class Photo(Media):
 
     exif_attrs = self.get_exif_metadata()
 
+    # set exif-derived attributes on the image
     for attr, value in exif_attrs.items():
       self.set_xattr_attr(attr, value)
 
+    # set each other attribute
     for attr, value in attrs.items():
       if value is None:
         continue

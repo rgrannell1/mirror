@@ -10,6 +10,17 @@ create table if not exists encoded_images (
 )
 """
 
+ENCODED_VIDEO_TABLE = """
+create table if not exists encoded_videos (
+  fpath          text not null,
+  mimetype       text not null,
+  role           text not null,
+  url            text not null,
+
+  primary key (fpath, mimetype, role)
+)
+"""
+
 IMAGES_TABLE = """
 create table if not exists images (
   fpath              text primary key,
@@ -40,8 +51,9 @@ create table if not exists videos (
   published          boolean,
   description        text,
   album              text,
+  share_audio        text,
 
-    foreign key(album) references albums(fpath)
+  foreign key(album) references albums(fpath)
 )
 """
 

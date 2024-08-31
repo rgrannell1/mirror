@@ -8,7 +8,7 @@ from src.album import AlbumMetadata
 from src.video import Video
 from .photo import Photo
 from .tables import (
-  ENCODED_IMAGE_TABLE, IMAGES_TABLE, VIDEOS_TABLE, ALBUM_TABLE, PHOTO_RELATIONS_TABLE
+  ENCODED_IMAGE_TABLE, IMAGES_TABLE, VIDEOS_TABLE, ALBUM_TABLE, PHOTO_RELATIONS_TABLE, ENCODED_VIDEO_TABLE
 )
 from .constants import (ATTR_DATE_TIME, ATTR_FSTOP, ATTR_FOCAL_EQUIVALENT,
                         ATTR_MODEL, ATTR_ISO, ATTR_WIDTH, ATTR_HEIGHT)
@@ -40,6 +40,7 @@ class Manifest:
     VIDEOS_TABLE,
     ALBUM_TABLE,
     ENCODED_IMAGE_TABLE,
+    ENCODED_VIDEO_TABLE,
     PHOTO_RELATIONS_TABLE
   }
 
@@ -180,20 +181,22 @@ class Manifest:
     cursor = self.conn.cursor()
     cursor.execute(
         """
-        insert into videos (fpath, tags, published, album, description)
-        values (:fpath, :tags, :published, :album, :description)
+        insert into videos (fpath, tags, published, album, description, share_audio)
+        values (:fpath, :tags, :published, :album, :description, :share_audio)
         on conflict(fpath)
         do update set
             tags =        :tags,
             published =   :published,
             album =       :album,
-            description = :description
+            description = :description,
+            share_audio = :share_audio
         """, {
           "fpath": path,
           "tags": video.get_xattr_tag_string(),
           "published": video.is_published(),
           "album": album,
-          "description": video.get_xattr_description()
+          "description": video.get_xattr_description(),
+          "share_audio": video.get_xattr_share_audio()
       })
 
     self.conn.commit()
@@ -231,6 +234,18 @@ class Manifest:
     insert or ignore into encoded_images (fpath, mimetype, role, url)
       values (?, ?, ?, ?)
     """, (image.path, mimetype, role, url))
+    self.conn.commit()
+
+  def add_encoded_video_url(self, video: Video, url: str, role: str, format='mp4'):
+    """Register a video URL in the local database"""
+
+    mimetype = f'video/{format}'
+
+    cursor = self.conn.cursor()
+    cursor.execute("""
+    insert or ignore into encoded_videos (fpath, mimetype, role, url)
+      values (?, ?, ?, ?)
+    """, (video.path, mimetype, role, url))
     self.conn.commit()
 
   def add_album_dates(self, fpath: str, min_date, max_date):

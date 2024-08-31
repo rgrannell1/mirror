@@ -27,6 +27,9 @@ ATTR_DATE_TIME = 'user.xyz.rgrannell.photos.date_time'
 ATTR_BLUR = 'user.xyz.rgrannell.photos.blur'
 ATTR_SHUTTER_SPEED = 'user.xyz.rgrannell.photos.shutter_speed'
 
+# Video Attributes
+ATTR_SHARE_AUDIO = 'user.xyz.rgrannell.photos.share_audio'
+
 # Photo Settings
 ATTR_FSTOP = 'user.xyz.rgrannell.photos.fstop'
 ATTR_FOCAL_EQUIVALENT = 'user.xyz.rgrannell.photos.focal_equivalent'
@@ -99,9 +102,24 @@ IMAGE_ENCODINGS = [
 ]
 
 VIDEO_ENCODINGS = [
-  ('video_libx265_1080p', {
+  ('video_libx264_unscaled', {
+    'bitrate': '30M',
+    'width': None,
+    'height': None,
+  }),
+  ('video_libx264_1080p', {
     'bitrate': '5000k',
     'width': 1920,
     'height': 1080,
+  }),
+  ('video_libx264_720p', {
+    'bitrate': '2500k',
+    'width': 1280,
+    'height': 720,
+  }),
+  ('video_libx264_480p', {
+    'bitrate': '1000k',
+    'width': 854,
+    'height': 480,
   })
 ]

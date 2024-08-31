@@ -9,8 +9,9 @@ from typing import Dict, List, Optional
 
 from src.constants import (ATTR_ALBUM_PERMALINK, ATTR_ALBUM_TITLE, ATTR_ALBUM_DESCRIPTION,
                            ATTR_ALBUM_COVER, ATTR_ALBUM_GEOLOCATION,
-                           ATTR_ALBUM_ID, ATTR_BLUR, ATTR_SHUTTER_SPEED, ATTR_TAG,
+                           ATTR_ALBUM_ID, ATTR_BLUR, ATTR_SHARE_AUDIO, ATTR_SHUTTER_SPEED, ATTR_TAG,
                            ATTR_DESCRIPTION)
+from src.video import Video
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 schema_path = os.path.join(current_dir, "../schemas", "tagfile.json")
@@ -19,7 +20,7 @@ schema_path = os.path.join(current_dir, "../schemas", "tagfile.json")
 class Tagfile:
   """Represents a Tagfile in a directory of images"""
 
-  def __init__(self, dirname: str, metadata_path, images: List, videos: List) -> None:
+  def __init__(self, dirname: str, metadata_path, images: List, videos: List[Video]) -> None:
     self.dirname = dirname
     self.images = images
     self.metadata_path = metadata_path
@@ -62,7 +63,8 @@ class Tagfile:
 
       videos[transclusion] = {
           ATTR_TAG: list(video.get_xattr_tags()),
-          ATTR_DESCRIPTION: video.get_xattr_description()
+          ATTR_DESCRIPTION: video.get_xattr_description(),
+          ATTR_SHARE_AUDIO: video.get_xattr_share_audio(),
       }
 
     return [{
