@@ -65,22 +65,24 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo,
 def upload_video(db: Manifest, spaces: Spaces, video: Video,
                  image_idx: int) -> None:
 
-  upload_file_name = Spaces.video_name(video.path)
-  Log.info(f'Checking video #{image_idx} ({upload_file_name}) is published for {video.path}')
+  Log.info(f'Checking video #{image_idx} is published for {video.path}')
 
   for role, encoding_params in VIDEO_ENCODINGS:
     bitrate = encoding_params['bitrate']
     width = encoding_params['width']
     height = encoding_params['height']
 
-    encoded_video_path = video.encode_video(bitrate, width, height)
+    share_audio = video.get_xattr_share_audio()
+
+    upload_file_name = Spaces.video_name(video.path, bitrate, width, height)
     video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
     if not video_in_spaces:
       Log.info(f'Uploading video #{image_idx} for {video.path}', clear=True)
+      encoded_video_path = video.encode_video(bitrate, width, height, share_audio)
       spaces.upload_file_public(upload_file_name, encoded_video_path)
 
-    db.add_encoded_video_url(video, video_url, role)
+    db.add_encoded_video_url(video, video_url, role, share_audio=share_audio)
 
 def encode_mosaic(db: Manifest, image: Photo, image_idx: int) -> None:
   if not db.has_encoded_image(image, 'thumbnail_mosaic'):

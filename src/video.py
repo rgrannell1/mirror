@@ -48,7 +48,7 @@ class Video(Media):
       except Exception as err:
         raise ValueError(f"failed to set {attr} to {value} on image") from err
 
-  def encode_video(self, video_bitrate: str, width: Optional[int], height: Optional[int], disable_audio: bool = False) -> Tuple[str, str]:
+  def encode_video(self, video_bitrate: str, width: Optional[int], height: Optional[int], share_audio: bool = False) -> Tuple[str, str]:
     """Encode the video"""
 
     actual_width, actual_height = self.get_resolution()
@@ -60,12 +60,12 @@ class Video(Media):
     kwargs = {
       "vcodec": VIDEO_CODEC,
       "video_bitrate": video_bitrate,
-      "acodec": 'aac' if not disable_audio else 'an',
+      "acodec": 'aac' if share_audio else 'an',
       "strict": '-2',
       "movflags": '+faststart',
-      "preset": 'veryslow',
+      "preset": 'slow',
       "format": 'mp4',
-      'loglevel': 'error'
+      'loglevel': 'info'
     }
 
     if width and height:

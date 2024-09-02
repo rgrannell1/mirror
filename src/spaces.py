@@ -149,10 +149,10 @@ class Spaces:
     return self.has_object(name), self.url(name)
 
   @classmethod
-  def video_name(cls, fpath: str, format='mp4') -> str:
+  def video_name(cls, fpath: str, bitrate: str, width: str, height: str, format='mp4') -> str:
     """Return the name of the video in the Spaces bucket"""
 
-    return f"{deterministic_hash(fpath)}.{format}"
+    return f"{deterministic_hash(f"{fpath}{bitrate}{width}{height}")}.{format}"
 
   def video_status(self, video_name: str) -> Tuple[bool, str]:
     """Check if a video exists in the Spaces bucket"""

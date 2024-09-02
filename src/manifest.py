@@ -236,23 +236,22 @@ class Manifest:
     """, (image.path, mimetype, role, url))
     self.conn.commit()
 
-  def add_encoded_video_url(self, video: Video, url: str, role: str, format='mp4'):
+  def add_encoded_video_url(self, video: Video, url: str, role: str, share_audio: bool, format='mp4'):
     """Register a video URL in the local database"""
 
     mimetype = f'video/{format}'
 
     cursor = self.conn.cursor()
     cursor.execute("""
-    insert or ignore into encoded_videos (fpath, mimetype, role, url)
-      values (?, ?, ?, ?)
-    """, (video.path, mimetype, role, url))
+    insert or ignore into encoded_videos (fpath, mimetype, role, url, share_audio)
+      values (?, ?, ?, ?, ? )
+    """, (video.path, mimetype, role, url, share_audio))
     self.conn.commit()
 
   def add_album_dates(self, fpath: str, min_date, max_date):
     """Set minimum and maximum dates for an album"""
 
     cursor = self.conn.cursor()
-
     cursor.execute(
         """
       update albums
