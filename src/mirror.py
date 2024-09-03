@@ -10,38 +10,43 @@ from src.commands.feed import feed
 from src.commands.add_google_photos_metadata import add_google_photos_metadata
 from src.commands.add_answers import add_answers
 
+
 class Mirror:
-  """The core-logic of Mirror. Invoked by the CLI"""
+    """The core-logic of Mirror. Invoked by the CLI"""
 
-  @staticmethod
-  def tag(dir: str, metadata_path: str) -> None:
-    tag(dir, metadata_path)
+    @staticmethod
+    def tag(dir: str, metadata_path: str) -> None:
+        tag(dir, metadata_path)
 
-  @staticmethod
-  def list_tagfiles(dir: str, tag: str) -> None:
-    list_tagfiles(dir)
+    @staticmethod
+    def list_tagfiles(dir: str, tag: str) -> None:
+        list_tagfiles(dir)
 
-  @staticmethod
-  def show_tagfiles(dir: str, tag: str) -> None:
-    show_tagfiles(dir, tag)
+    @staticmethod
+    def show_tagfiles(dir: str, tag: str) -> None:
+        show_tagfiles(dir, tag)
 
-  @staticmethod
-  def list_photos(dir: str, metadata_path: str, tag: str, start: Optional[str], end: Optional[str]) -> None:
-    list_photos(dir, metadata_path, tag, start, end)
+    @staticmethod
+    def list_photos(
+        dir: str, metadata_path: str, tag: str, start: Optional[str], end: Optional[str]
+    ) -> None:
+        list_photos(dir, metadata_path, tag, start, end)
 
-  @staticmethod
-  def publish(dir: str, metadata_path: str, manifest_path: str) -> None:
-    publish(dir, metadata_path, manifest_path)
+    @staticmethod
+    def publish(dir: str, metadata_path: str, manifest_path: str) -> None:
+        publish(dir, metadata_path, manifest_path)
 
-  @staticmethod
-  def feed(dir: str, metadata_path: str, out_dir: str) -> None:
-    feed(dir, metadata_path, out_dir)
+    @staticmethod
+    def feed(dir: str, metadata_path: str, out_dir: str) -> None:
+        feed(dir, metadata_path, out_dir)
 
-  @staticmethod
-  def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file: str) -> None:
-    add_google_photos_metadata(dir, metadata_path, google_photos_file)
-    add_google_photos_metadata(dir, metadata_path, google_photos_file)
+    @staticmethod
+    def add_google_photos_metadata(
+        dir: str, metadata_path: str, google_photos_file: str
+    ) -> None:
+        add_google_photos_metadata(dir, metadata_path, google_photos_file)
+        add_google_photos_metadata(dir, metadata_path, google_photos_file)
 
-  @staticmethod
-  def add_answers(dir: str, metadata_path: str, db_fpath: str) -> None:
-    add_answers(dir, metadata_path, db_fpath)
+    @staticmethod
+    def add_answers(dir: str, metadata_path: str, db_fpath: str) -> None:
+        add_answers(dir, metadata_path, db_fpath)

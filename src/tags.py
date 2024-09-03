@@ -8,34 +8,34 @@ cache = {}
 
 
 class Tags:
-  """Represents a tag metadata file, which provides a tree of subsumptions
-                     describing tags and their parents"""
+    """Represents a tag metadata file, which provides a tree of subsumptions
+    describing tags and their parents"""
 
-  def __init__(self, fpath) -> None:
-    self.fpath = fpath
+    def __init__(self, fpath) -> None:
+        self.fpath = fpath
 
-    if fpath not in cache:
-      with open(fpath) as conn:
-        cache[fpath] = yaml.safe_load(conn)
+        if fpath not in cache:
+            with open(fpath) as conn:
+                cache[fpath] = yaml.safe_load(conn)
 
-    self.tag_tree = cache[fpath]
+        self.tag_tree = cache[fpath]
 
-  def expand(self, tags) -> List[str]:
-    """Given a list of tags, expand them to include their parents, and return"""
+    def expand(self, tags) -> List[str]:
+        """Given a list of tags, expand them to include their parents, and return"""
 
-    expanded_tags = set()
-    queue = Queue()
+        expanded_tags = set()
+        queue = Queue()
 
-    for tag in tags:
-      queue.put(tag)
+        for tag in tags:
+            queue.put(tag)
 
-    while not queue.empty():
-      tag = queue.get()
-      expanded_tags.add(tag)
+        while not queue.empty():
+            tag = queue.get()
+            expanded_tags.add(tag)
 
-      for parent_tag, children_tags in self.tag_tree.items():
-        if tag in children_tags:
-          queue.put(parent_tag)
-          expanded_tags.add(parent_tag)
+            for parent_tag, children_tags in self.tag_tree.items():
+                if tag in children_tags:
+                    queue.put(parent_tag)
+                    expanded_tags.add(parent_tag)
 
-    return list(expanded_tags)
+        return list(expanded_tags)

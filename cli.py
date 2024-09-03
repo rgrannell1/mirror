@@ -79,32 +79,37 @@ Options:
   -h, --help            Show this screen.
 
 """
+
 from docopt import docopt
 from src.config import MirrorConfig
 from src.mirror import Mirror
 
-if __name__ == '__main__':
-  args = docopt(__doc__)
-  cfg = MirrorConfig.read(args)
+if __name__ == "__main__":
+    args = docopt(__doc__)
+    cfg = MirrorConfig.read(args)
 
-  if args['tag']:
-    Mirror.tag(cfg.directory, cfg.metadata)
-  elif args['list-photos']:
-    Mirror.list_photos(cfg.directory, cfg.metadata, args['--tag'], args['--from'], args['--to'])
-  elif args['publish']:
-    Mirror.publish(cfg.directory, cfg.metadata, cfg.manifest)
-  elif args['feed']:
-    Mirror.feed(cfg.directory, cfg.metadata, args['<outdir>'])
-  elif args['list-tagfiles']:
-    Mirror.list_tagfiles(cfg.directory, args['--tag'])
-  elif args['show-tagfiles']:
-    Mirror.show_tagfiles(cfg.directory, args['--tag'])
-  elif args['add-google-photos-metadata']:
-    Mirror.add_google_photos_metadata(cfg.directory, cfg.metadata, args['<google-photos-file>'])
-  elif args['add-answers']:
-    Mirror.add_answers(cfg.directory, cfg.metadata, args['<answers-db>'])
-  else:
-    print(f'Invalid command {args}')
-    print('+++++++++++++++++++++++++++++++++++++++++')
-    print(__doc__)
-    exit(1)
+    if args["tag"]:
+        Mirror.tag(cfg.directory, cfg.metadata)
+    elif args["list-photos"]:
+        Mirror.list_photos(
+            cfg.directory, cfg.metadata, args["--tag"], args["--from"], args["--to"]
+        )
+    elif args["publish"]:
+        Mirror.publish(cfg.directory, cfg.metadata, cfg.manifest)
+    elif args["feed"]:
+        Mirror.feed(cfg.directory, cfg.metadata, args["<outdir>"])
+    elif args["list-tagfiles"]:
+        Mirror.list_tagfiles(cfg.directory, args["--tag"])
+    elif args["show-tagfiles"]:
+        Mirror.show_tagfiles(cfg.directory, args["--tag"])
+    elif args["add-google-photos-metadata"]:
+        Mirror.add_google_photos_metadata(
+            cfg.directory, cfg.metadata, args["<google-photos-file>"]
+        )
+    elif args["add-answers"]:
+        Mirror.add_answers(cfg.directory, cfg.metadata, args["<answers-db>"])
+    else:
+        print(f"Invalid command {args}")
+        print("+++++++++++++++++++++++++++++++++++++++++")
+        print(__doc__)
+        exit(1)

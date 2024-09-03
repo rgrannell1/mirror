@@ -1,9 +1,8 @@
 from src.photo import PhotoVault
-from src.constants import ATTR_TAG
 
 
 def list_tagfiles(dir: str, tag: str = None):
-  """List all tag-files in a directory."""
+    """List all tag-files in a directory."""
 
-  for tagfile in PhotoVault(dir, metadata_path=None).list_tagfiles():
-    print(tagfile)
+    for tagfile in PhotoVault(dir, metadata_path=None).list_tagfiles():
+        print(tagfile)

@@ -1,5 +1,4 @@
 import os
-import time
 import ffmpeg
 from src.album import Album
 from src.constants import ATTR_SHARE_AUDIO, ATTR_TAG
@@ -8,81 +7,98 @@ from src.media import Media
 from typing import Dict, Optional, Tuple
 from src.tags import Tags
 
+
 class Video(Media):
-  """A video file."""
+    """A video file."""
 
-  def __init__(self, path: str, metadata_path: str):
-    self.path = path
-    self.tag_metadata = Tags(metadata_path)
+    def __init__(self, path: str, metadata_path: str):
+        self.path = path
+        self.tag_metadata = Tags(metadata_path)
 
-  def get_exif_metadata(self) -> Dict:
-    """Exif support is not available for videos"""
-    return {}
+    def get_exif_metadata(self) -> Dict:
+        """Exif support is not available for videos"""
+        return {}
 
-  def get_xattr_share_audio(self) -> Optional[bool]:
-    return bool(self.get_xattr_attr(ATTR_SHARE_AUDIO))
+    def get_xattr_share_audio(self) -> bool:
+        """Should the audio also be shared?"""
 
-  def get_resolution(self) -> Optional[Tuple[int, int]]:
-    probe = ffmpeg.probe(self.path)
-    video_streams =  [stream for stream in probe['streams'] if stream['codec_type'] == 'video']
+        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) is None else False
 
-    if len(video_streams) > 0:
-      width = int(video_streams[0]['width'])
-      height = int(video_streams[0]['height'])
+    def get_resolution(self) -> Optional[Tuple[int, int]]:
+        probe = ffmpeg.probe(self.path)
+        video_streams = [
+            stream for stream in probe["streams"] if stream["codec_type"] == "video"
+        ]
 
-      return width, height
-    else:
-      return None, None
+        if len(video_streams) > 0:
+            width = int(video_streams[0]["width"])
+            height = int(video_streams[0]["height"])
 
-  def set_metadata(self, attrs, album):
-    """set metadata as xattrs on the video"""
-    Album(album.fpath).set_xattrs(album.attrs)
+            return width, height
+        else:
+            return None, None
 
-    for attr, value in attrs.items():
-      if value is None:
-        continue
+    def set_metadata(self, attrs, album):
+        """set metadata as xattrs on the video"""
 
-      try:
-        if attr == ATTR_TAG:
-          self.set_xattr_attr(attr, ', '.join(value))
-      except Exception as err:
-        raise ValueError(f"failed to set {attr} to {value} on image") from err
+        Album(album.fpath).set_xattrs(album.attrs)
 
-  def encode_video(self, video_bitrate: str, width: Optional[int], height: Optional[int], share_audio: bool = False) -> Tuple[str, str]:
-    """Encode the video"""
+        for attr, value in attrs.items():
+            if value is None:
+                continue
 
-    actual_width, actual_height = self.get_resolution()
-    if actual_width and actual_height and width and height and (actual_width < width or actual_height < height):
-      return
+            try:
+                if attr == ATTR_TAG:
+                    self.set_xattr_attr(attr, ", ".join(value))
+            except Exception as err:
+                raise ValueError(f"failed to set {attr} to {value} on image") from err
 
-    VIDEO_CODEC = 'libx264'
+    def encode_video(
+        self,
+        video_bitrate: str,
+        width: Optional[int],
+        height: Optional[int],
+        share_audio: bool = False,
+    ) -> Tuple[str, str]:
+        """Encode the video"""
 
-    kwargs = {
-      "vcodec": VIDEO_CODEC,
-      "video_bitrate": video_bitrate,
-      "acodec": 'aac' if share_audio else 'an',
-      "strict": '-2',
-      "movflags": '+faststart',
-      "preset": 'slow',
-      "format": 'mp4',
-      'loglevel': 'info'
-    }
+        actual_width, actual_height = self.get_resolution()
+        if (
+            actual_width
+            and actual_height
+            and width
+            and height
+            and (actual_width < width or actual_height < height)
+        ):
+            return
 
-    if width and height:
-      kwargs['vf'] = f'scale={width}:{height}'
+        VIDEO_CODEC = "libx264"
 
-    fpath = '/tmp/mirror-encoded-video.mp4'
+        kwargs = {
+            "vcodec": VIDEO_CODEC,
+            "video_bitrate": video_bitrate,
+            "strict": "-2",
+            "movflags": "+faststart",
+            "preset": "slow",
+            "format": "mp4",
+            "loglevel": "info",
+        }
 
-    try:
-      os.remove(fpath)
-    except FileNotFoundError:
-      pass
+        if share_audio:
+            kwargs["acodec"] = "aac"
+        else:
+            kwargs["an"] = None
 
-    (
-        ffmpeg
-        .input(self.path)
-        .output(fpath, **kwargs)
-        .run()
-    )
+        if width and height:
+            kwargs["vf"] = f"scale={width}:{height}"
 
-    return fpath
+        fpath = "/tmp/mirror-encoded-video.mp4"
+
+        try:
+            os.remove(fpath)
+        except FileNotFoundError:
+            pass
+
+        (ffmpeg.input(self.path).output(fpath, **kwargs).run())
+
+        return fpath

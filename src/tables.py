@@ -1,4 +1,3 @@
-
 ENCODED_IMAGE_TABLE = """
 create table if not exists encoded_images (
   fpath    text not null,
