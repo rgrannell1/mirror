@@ -2,11 +2,12 @@ import base64
 import math
 import os
 import time
+from urllib.parse import urlparse
 import yaml
 import json
 from typing import List
 from src.artifacts import AlbumArtifacts, ImagesArtifacts, MetadataArtifacts
-from src.constants import DB_PATH, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from src.constants import DB_PATH, MAX_DELETION_LIMIT, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
 from src.manifest import Manifest
@@ -191,8 +192,14 @@ def remove_unpublished_media(db, spaces):
 
     published_media = set(spaces.list_objects())
 
-    # TODO list keys of published entries
-    print(len(published_media))
+    currently_published = {urlparse(url).path[1:] for url in db.list_media_urls()}
+    to_delist = published_media - currently_published
+
+    if len(to_delist) > MAX_DELETION_LIMIT:
+        raise Exception("Too many files to delist, simply refusing! Fix your code!")
+
+    for file in to_delist:
+        spaces.delete_object(file)
 
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
@@ -219,5 +226,4 @@ def publish(dir: str, metadata_path: str, manifest_path: str):
         find_album_dates(db, dir, images)
 
     create_artifacts(db, manifest_path)
-
     remove_unpublished_media(db, spaces)

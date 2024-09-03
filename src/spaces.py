@@ -210,3 +210,6 @@ class Spaces:
         for page in paginator.paginate(Bucket=SPACES_BUCKET):
             for obj in page["Contents"]:
                 yield obj["Key"]
+
+    def delete_object(self, key: str):
+        self.client.delete_object(Bucket=SPACES_BUCKET, Key=key)

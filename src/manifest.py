@@ -74,6 +74,21 @@ class Manifest:
         for table in Manifest.TABLES:
             cursor.execute(table)
 
+    def list_media_urls(self) -> Iterator[str]:
+        """List all published URLs"""
+
+        cursor = self.conn.cursor()
+        cursor.execute("select distinct(url) from encoded_images")
+
+        for row in cursor.fetchall():
+            yield row[0]
+
+        cursor = self.conn.cursor()
+        cursor.execute("select distinct(url) from encoded_videos")
+
+        for row in cursor.fetchall():
+            yield row[0]
+
     def list_publishable_images(self) -> Iterator[Photo]:
         """List all images that are ready to be published"""
 

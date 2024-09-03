@@ -6,6 +6,8 @@ from src.config import SPACES_BUCKET
 DB_PATH = "/home/rg/.mirror-manifest.db"
 SPACES_DOMAIN = f"https://{SPACES_BUCKET}.ams3.cdn.digitaloceanspaces.com/"
 
+MAX_DELETION_LIMIT = 50
+
 # Album Attributes
 ATTR_ALBUM_TITLE = "user.xyz.rgrannell.photos.album_title"
 ATTR_ALBUM_ID = "user.xyz.rgrannell.photos.album_id"
