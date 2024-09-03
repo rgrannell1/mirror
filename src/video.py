@@ -22,7 +22,7 @@ class Video(Media):
     def get_xattr_share_audio(self) -> bool:
         """Should the audio also be shared?"""
 
-        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) is None else False
+        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == 'true' else False
 
     def get_resolution(self) -> Optional[Tuple[int, int]]:
         probe = ffmpeg.probe(self.path)
@@ -50,6 +50,10 @@ class Video(Media):
             try:
                 if attr == ATTR_TAG:
                     self.set_xattr_attr(attr, ", ".join(value))
+                elif attr == ATTR_SHARE_AUDIO:
+                    self.set_xattr_attr(attr, "true" if value else "false")
+                else:
+                    self.set_xattr_attr(attr, value)
             except Exception as err:
                 raise ValueError(f"failed to set {attr} to {value} on image") from err
 
