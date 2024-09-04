@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 import yaml
 import json
 from typing import List
-from src.artifacts import AlbumArtifacts, ImagesArtifacts, MetadataArtifacts
+from src.artifacts import AlbumArtifacts, ImagesArtifacts, VideoArtifacts, MetadataArtifacts
 from src.constants import DB_PATH, MAX_DELETION_LIMIT, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
@@ -153,6 +153,10 @@ def create_artifacts(db: Manifest, manifest_path: str) -> None:
 
     with open(f"{manifest_path}/images.{publication_id}.json", "w") as conn:
         images = ImagesArtifacts.content(db)
+        conn.write(images)
+
+    with open(f"{manifest_path}/videos.{publication_id}.json", "w") as conn:
+        images = VideoArtifacts.content(db)
         conn.write(images)
 
     with open(f"{manifest_path}/env.json", "w") as conn:

@@ -22,7 +22,7 @@ class Video(Media):
     def get_xattr_share_audio(self) -> bool:
         """Should the audio also be shared?"""
 
-        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == 'true' else False
+        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == "true" else False
 
     def get_resolution(self) -> Optional[Tuple[int, int]]:
         probe = ffmpeg.probe(self.path)
@@ -78,6 +78,7 @@ class Video(Media):
 
         VIDEO_CODEC = "libx264"
 
+        global_args = []
         kwargs = {
             "vcodec": VIDEO_CODEC,
             "video_bitrate": video_bitrate,
@@ -91,7 +92,7 @@ class Video(Media):
         if share_audio:
             kwargs["acodec"] = "aac"
         else:
-            kwargs["an"] = None
+            global_args.append("-an")
 
         if width and height:
             kwargs["vf"] = f"scale={width}:{height}"
@@ -103,6 +104,20 @@ class Video(Media):
         except FileNotFoundError:
             pass
 
-        (ffmpeg.input(self.path).output(fpath, **kwargs).run())
+        print(
+            (
+                ffmpeg.input(self.path)
+                .output(fpath, **kwargs)
+                .global_args(*global_args)
+                .compile()
+            )
+        )
+
+        (
+            ffmpeg.input(self.path)
+            .output(fpath, **kwargs)
+            .global_args(*global_args)
+            .run()
+        )
 
         return fpath
