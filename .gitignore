@@ -9,3 +9,4 @@ results.json
 env/
 # Local Netlify folder
 .netlify
+.ruff_cache/

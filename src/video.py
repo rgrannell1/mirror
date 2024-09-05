@@ -59,6 +59,7 @@ class Video(Media):
 
     def encode_video(
         self,
+        upload_file_name: str,
         video_bitrate: str,
         width: Optional[int],
         height: Optional[int],
@@ -78,7 +79,7 @@ class Video(Media):
 
         VIDEO_CODEC = "libx264"
 
-        global_args = []
+        input_args = {}
         kwargs = {
             "vcodec": VIDEO_CODEC,
             "video_bitrate": video_bitrate,
@@ -92,31 +93,24 @@ class Video(Media):
         if share_audio:
             kwargs["acodec"] = "aac"
         else:
-            global_args.append("-an")
+            input_args["an"] = None
 
         if width and height:
             kwargs["vf"] = f"scale={width}:{height}"
 
-        fpath = "/tmp/mirror-encoded-video.mp4"
+        fpath = f"/tmp/mirror/{upload_file_name}"
+
+        os.makedirs(os.path.dirname(fpath), exist_ok=True)
 
         try:
             os.remove(fpath)
         except FileNotFoundError:
             pass
 
-        print(
-            (
-                ffmpeg.input(self.path)
-                .output(fpath, **kwargs)
-                .global_args(*global_args)
-                .compile()
-            )
-        )
-
         (
-            ffmpeg.input(self.path)
+            ffmpeg
+            .input(self.path, **input_args)
             .output(fpath, **kwargs)
-            .global_args(*global_args)
             .run()
         )
 

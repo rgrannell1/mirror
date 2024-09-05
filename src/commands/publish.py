@@ -83,7 +83,7 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
 
         if not video_in_spaces:
             Log.info(f"Uploading video #{image_idx} for {video.path}", clear=True)
-            encoded_video_path = video.encode_video(bitrate, width, height, share_audio)
+            encoded_video_path = video.encode_video(upload_file_name, bitrate, width, height, share_audio)
             spaces.upload_file_public(upload_file_name, encoded_video_path)
 
         db.add_encoded_video_url(video, video_url, role)
@@ -140,7 +140,7 @@ def create_artifacts(db: Manifest, manifest_path: str) -> None:
     removeable = [
         file
         for file in os.listdir(manifest_path)
-        if file.startswith(("albums", "images"))
+        if file.startswith(("albums", "images", "videos"))
     ]
 
     for file in removeable:
@@ -202,8 +202,11 @@ def remove_unpublished_media(db, spaces):
     if len(to_delist) > MAX_DELETION_LIMIT:
         raise Exception("Too many files to delist, simply refusing! Fix your code!")
 
-    for file in to_delist:
-        spaces.delete_object(file)
+    for fname in to_delist:
+        spaces.delete_object(fname)
+
+    if to_delist:
+        Log.info(f"Deleted {len(to_delist)} unpublished files from Spaces")
 
 
 def publish(dir: str, metadata_path: str, manifest_path: str):
