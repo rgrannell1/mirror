@@ -84,6 +84,7 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
         if not video_in_spaces:
             Log.info(f"Uploading video #{image_idx} for {video.path}", clear=True)
             encoded_video_path = video.encode_video(upload_file_name, bitrate, width, height, share_audio)
+
             spaces.upload_file_public(upload_file_name, encoded_video_path)
 
         db.add_encoded_video_url(video, video_url, role)

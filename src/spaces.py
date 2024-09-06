@@ -87,6 +87,9 @@ class Spaces:
         )
 
     def upload_file_public(self, name: str, encoded_path: str) -> bool:
+        if not encoded_path.startswith("/tmp"):
+            raise ValueError(f"Refusing to upload unencoded content {name}")
+
         return self.client.upload_file(
             Filename=encoded_path,
             Bucket=SPACES_BUCKET,
