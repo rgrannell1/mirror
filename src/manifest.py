@@ -279,7 +279,7 @@ class Manifest:
 
         return row and bool(row[0])
 
-    def add_encoded_image_url(self, image: Photo, url: str, role: str, format="webp"):
+    def add_encoded_image_url(self, fpath: str, url: str, role: str, format="webp"):
         """Register a thumbnail URL for an image in the local database"""
 
         mimetype = f"image/{format}"
@@ -290,7 +290,7 @@ class Manifest:
     insert or ignore into encoded_images (fpath, mimetype, role, url)
       values (?, ?, ?, ?)
     """,
-            (image.path, mimetype, role, url),
+            (fpath, mimetype, role, url),
         )
         self.conn.commit()
 

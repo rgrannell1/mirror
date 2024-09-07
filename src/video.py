@@ -1,11 +1,17 @@
+import hashlib
+import io
 import os
+import cv2
 import ffmpeg
 from src.album import Album
-from src.constants import ATTR_SHARE_AUDIO, ATTR_TAG
+from src.constants import ATTR_SHARE_AUDIO, ATTR_TAG, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
 from src.media import Media
+from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
 from src.tags import Tags
+from src.types import ImageContent
+from src.utils import deterministic_byte_hash
 
 
 class Video(Media):
@@ -57,6 +63,30 @@ class Video(Media):
             except Exception as err:
                 raise ValueError(f"failed to set {attr} to {value} on image") from err
 
+    def fetch_thumbnail(self, fpath: str, params) -> ImageContent:
+        video = cv2.VideoCapture(fpath)
+        ret, frame = video.read()
+        if not ret:
+            raise ValueError(f"Failed to read frame from {fpath}")
+
+        img_bytes = cv2.imencode(".webp", frame)[1].tobytes()
+
+        img = Image.open(io.BytesIO(img_bytes))
+        thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+
+        data = list(thumb.getdata())
+        no_exif = Image.new(thumb.mode, thumb.size)
+        no_exif.putdata(data)
+
+        with io.BytesIO() as output:
+            # return the image hash and contents
+
+            no_exif.save(output, **params)
+            contents = output.getvalue()
+
+            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)
+
+
     def encode_video(
         self,
         upload_file_name: str,
@@ -87,7 +117,7 @@ class Video(Media):
             "movflags": "+faststart",
             "preset": "slow",
             "format": "mp4",
-            "loglevel": "info",
+            "loglevel": "error",
         }
 
         if share_audio:
@@ -107,11 +137,6 @@ class Video(Media):
         except FileNotFoundError:
             pass
 
-        (
-            ffmpeg
-            .input(self.path, **input_args)
-            .output(fpath, **kwargs)
-            .run()
-        )
+        (ffmpeg.input(self.path, **input_args).output(fpath, **kwargs).run())
 
         return fpath

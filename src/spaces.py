@@ -5,7 +5,7 @@ import botocore
 
 from typing import Iterator, Tuple
 
-from src.photo import ImageContent
+from src.types import ImageContent
 from src.utils import deterministic_hash
 from .config import (
     SPACES_REGION,

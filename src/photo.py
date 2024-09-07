@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from functools import lru_cache
 import io
 import numpy
@@ -13,6 +12,13 @@ from src.media import Media
 from typing import List, Iterator, Dict, Optional
 from PIL import Image, ImageOps, ExifTags
 
+from src.types import (
+    ImageContent,
+    TagfileAlbumConfiguration,
+    TagfileImageConfiguration,
+    TagfileVideoConfiguration,
+)
+from src.utils import deterministic_byte_hash
 from src.video import Video
 
 from .constants import (
@@ -32,40 +38,6 @@ from .constants import (
 
 from .tagfile import Tagfile
 from .album import Album
-
-
-@dataclass
-class TagfileAlbumConfiguration:
-    """Tagfile information about an album"""
-
-    fpath: str
-    attrs: Dict
-
-
-@dataclass
-class TagfileImageConfiguration:
-    """Tagfile information about an image"""
-
-    fpath: str
-    album: TagfileAlbumConfiguration
-    attrs: Dict
-
-
-@dataclass
-class TagfileVideoConfiguration:
-    """Tagfile information about a video"""
-
-    fpath: str
-    album: TagfileAlbumConfiguration
-    attrs: Dict
-
-
-@dataclass
-class ImageContent:
-    """A dataclass representing an images content"""
-
-    hash: str
-    content: str
 
 
 class PhotoVault:
@@ -351,10 +323,8 @@ class Photo(Media):
             no_exif.save(output, **params)
             contents = output.getvalue()
 
-            hasher = hashlib.new("sha256")
-            hasher.update(contents)
+            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)
 
-            return ImageContent(hash=hasher.hexdigest(), content=contents)
 
     def encode_image_mosaic(self):
         img = Image.open(self.path)
@@ -400,7 +370,4 @@ class Photo(Media):
             no_exif.save(output, **params)
             contents = output.getvalue()
 
-            hasher = hashlib.new("sha256")
-            hasher.update(contents)
-
-            return ImageContent(hash=hasher.hexdigest(), content=contents)
+            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)

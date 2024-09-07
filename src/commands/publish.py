@@ -6,8 +6,19 @@ from urllib.parse import urlparse
 import yaml
 import json
 from typing import List
-from src.artifacts import AlbumArtifacts, ImagesArtifacts, VideoArtifacts, MetadataArtifacts
-from src.constants import DB_PATH, MAX_DELETION_LIMIT, THUMBNAIL_ENCODINGS, IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from src.artifacts import (
+    AlbumArtifacts,
+    ImagesArtifacts,
+    VideoArtifacts,
+    MetadataArtifacts,
+)
+from src.constants import (
+    DB_PATH,
+    MAX_DELETION_LIMIT,
+    THUMBNAIL_ENCODINGS,
+    IMAGE_ENCODINGS,
+    VIDEO_ENCODINGS,
+)
 from src.photo import PhotoVault, Album, Photo
 from src.spaces import Spaces
 from src.manifest import Manifest
@@ -32,14 +43,14 @@ def upload_thumbnail(
                 encoded_image, format=thumbnail_format
             )
 
-            if not thumbnail_in_spaces:
+            if not thumbnail_in_spaces or True:
                 Log.info(
                     f"Uploading thumbnail #{image_idx} for {image.path}", clear=True
                 )
                 spaces.upload_thumbnail(encoded_image, format=thumbnail_format)
 
             db.add_encoded_image_url(
-                image, thumbnail_url, role, format=thumbnail_format
+                image.path, thumbnail_url, role, format=thumbnail_format
             )
 
         Log.info(
@@ -65,11 +76,17 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> 
                 Log.info(f"Uploading #{image_idx} image for {image.path}", clear=True)
                 spaces.upload_image(encoded, format=thumbnail_format)
 
-            db.add_encoded_image_url(image, image_url, role, format=thumbnail_format)
+            db.add_encoded_image_url(
+                image.path, image_url, role, format=thumbnail_format
+            )
 
 
 def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> None:
     Log.info(f"Checking video #{image_idx} is published for {video.path}")
+
+    FULL_SIZED_ROLE = "video_libx264_unscaled"
+    THUMBNAIL_ROLE = "video_thumbnail_webp"
+    THUMBNAIL_FORMAT = "webp"
 
     for role, encoding_params in VIDEO_ENCODINGS:
         bitrate = encoding_params["bitrate"]
@@ -81,13 +98,41 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
         upload_file_name = Spaces.video_name(video.path, bitrate, width, height)
         video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
-        if not video_in_spaces:
+        if not video_in_spaces or role == FULL_SIZED_ROLE:
             Log.info(f"Uploading video #{image_idx} for {video.path}", clear=True)
-            encoded_video_path = video.encode_video(upload_file_name, bitrate, width, height, share_audio)
+            encoded_video_path = video.encode_video(
+                upload_file_name, bitrate, width, height, share_audio
+            )
 
-            spaces.upload_file_public(upload_file_name, encoded_video_path)
+            # spaces.upload_file_public(upload_file_name, encoded_video_path)
+            # db.add_encoded_video_url(video, video_url, role)
 
-        db.add_encoded_video_url(video, video_url, role)
+            if role != FULL_SIZED_ROLE:
+                continue
+
+            Log.info(f"Encoding thumbnail for video #{image_idx} for {video.path}")
+
+            # add a thumbnail that can be used as a poster for the video,
+            # since loading to get the thumbnail is hideously expensive (at least 200MB / page-load)
+
+            encoded_thumbnail = video.fetch_thumbnail(encoded_video_path, {
+                "format": THUMBNAIL_FORMAT,
+                "lossless": False
+            })
+
+            image_in_spaces, image_url = spaces.image_status(
+                encoded_thumbnail, format=THUMBNAIL_FORMAT
+            )
+
+            if image_in_spaces:
+                continue
+
+            Log.info(f"Uploading thumbnail for video #{image_idx} for {video.path}")
+
+            spaces.upload_image(encoded_thumbnail, format=THUMBNAIL_FORMAT)
+            db.add_encoded_image_url(
+                video.path, image_url, THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT
+            )
 
 
 def encode_thumbnail_data_url(db: Manifest, image: Photo, image_idx: int) -> None:
@@ -97,7 +142,7 @@ def encode_thumbnail_data_url(db: Manifest, image: Photo, image_idx: int) -> Non
         encoded_content = base64.b64encode(encoded.content).decode("ascii")
         data_url = f"data:image/bmp;base64,{encoded_content}"
 
-        db.add_encoded_image_url(image, data_url, "thumbnail_mosaic", "bmp")
+        db.add_encoded_image_url(image.path, data_url, "thumbnail_mosaic", "bmp")
 
 
 def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:

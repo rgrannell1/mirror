@@ -28,15 +28,15 @@ IMAGES_HEADERS = [
 ]
 
 VIDEO_HEADERS = [
-  "fpath",
-  "id",
-  "album_id",
-  "tags",
-  "description",
-  "video_url_unscaled",
-  "video_url_1080p",
-  "video_url_720p",
-  "video_url_480p"
+    "fpath",
+    "id",
+    "album_id",
+    "tags",
+    "description",
+    "video_url_unscaled",
+    "video_url_1080p",
+    "video_url_720p",
+    "video_url_480p",
 ]
 
 ALBUMS_HEADERS = [
@@ -50,6 +50,7 @@ ALBUMS_HEADERS = [
     "thumbnail_mosaic_url",
     "flags",
 ]
+
 
 class ImagesArtifacts:
     """Generate an artifact describing the images in the database."""
@@ -139,68 +140,72 @@ class ImagesArtifacts:
 
 
 class VideoArtifacts:
+    @staticmethod
+    def content(db: Manifest):
+        cursor = db.conn.cursor()
+        cursor.execute("""
+        select
+          videos.fpath,
+          albums.permalink,
+          (
+            select group_concat(target, ',') from photo_relations
+            where relation = 'contains' and photo_relations.source = videos.fpath
+          ) as tags,
+          (
+            select target from photo_relations
+            where relation = 'description' and photo_relations.source = videos.fpath
+            limit 1
+          ) as description,
+          (
+            select url from encoded_videos
+            where encoded_videos.fpath = videos.fpath
+            and role = 'video_libx264_unscaled'
+          ) as video_url_unscaled,
+          (
+            select url from encoded_videos
+            where encoded_videos.fpath = videos.fpath
+            and role = 'video_libx264_1080p'
+          ) as video_url_1080p,
+          (
+            select url from encoded_videos
+            where encoded_videos.fpath = videos.fpath
+            and role = 'video_libx264_720p'
+          ) as video_url_720p,
+          (
+            select url from encoded_videos
+            where encoded_videos.fpath = videos.fpath
+            and role = 'video_libx264_480p'
+          ) as video_url_480p,
+          (
+            select url from encoded_images
+            where encoded_images.fpath = videos.fpath
+            and role = 'video_thumbnail_webp'
+          ) as poster_url
 
-  @staticmethod
-  def content(db: Manifest):
-    cursor = db.conn.cursor()
-    cursor.execute("""
-    select
-    videos.fpath,
-    albums.permalink,
-    (
-      select group_concat(target, ',') from photo_relations
-      where relation = 'contains' and photo_relations.source = videos.fpath
-    ) as tags,
-    (
-      select target from photo_relations
-      where relation = 'description' and photo_relations.source = videos.fpath
-      limit 1
-    ) as description,
-    (
-      select url from encoded_videos
-      where encoded_videos.fpath = videos.fpath
-      and role = 'video_libx264_unscaled'
-    ) as video_url_unscaled,
-    (
-      select url from encoded_videos
-      where encoded_videos.fpath = videos.fpath
-      and role = 'video_libx264_1080p'
-    ) as video_url_1080p,
-    (
-      select url from encoded_videos
-      where encoded_videos.fpath = videos.fpath
-      and role = 'video_libx264_720p'
-    ) as video_url_720p,
-    (
-      select url from encoded_videos
-      where encoded_videos.fpath = videos.fpath
-      and role = 'video_libx264_480p'
-    ) as video_url_480p
-
-    from videos
-    join albums on albums.fpath = videos.album
-    where published = '1'
+          from videos
+          join albums on albums.fpath = videos.album
+          where published = '1'
     """)
-    rows = [VIDEO_HEADERS]
+        rows = [VIDEO_HEADERS]
 
-    for row in cursor.fetchall():
-        fpath, album_permalink, *rest = row
+        for row in cursor.fetchall():
+            fpath, album_permalink, *rest = row
 
-        if not album_permalink:
-            raise ValueError(
-                f"did not find a permalink for image '{fpath}'. Please update {fpath}/tags.md"
+            if not album_permalink:
+                raise ValueError(
+                    f"did not find a permalink for image '{fpath}'. Please update {fpath}/tags.md"
+                )
+
+            rows.append(
+                [
+                    fpath,
+                    deterministic_hash(fpath),
+                    album_permalink,
+                ]
+                + rest
             )
 
-        rows.append(
-            [
-                fpath,
-                deterministic_hash(fpath),
-                album_permalink,
-            ]
-            + rest
-        )
-
-    return json.dumps(rows)
+        return json.dumps(rows)
 
 
 class AlbumArtifacts:
