@@ -21,6 +21,7 @@ def set_images_metadata(vault: PhotoVault, metadata_path: str):
 
 
 def set_videos_metadata(vault: PhotoVault, metadata_path: str):
+    """set metadata (non-exif in this case) for videos"""
     idx = 0
     # broken; only two videos are listed in the tagfiles?
     # but there is stuff in the tagfiles

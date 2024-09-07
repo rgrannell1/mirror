@@ -27,9 +27,10 @@ from src.utils import deterministic_hash
 from src.video import Video
 
 
-def upload_thumbnail(
+def upload_photo_thumbnail(
     db: Manifest, spaces: Spaces, image: Photo, image_idx: int
 ) -> None:
+    """Upload an thumbnail for a photo"""
     Log.info(f"Checking thumbnail #{image_idx} is published for {image.path}")
 
     # create and upload a thumbnail
@@ -104,8 +105,8 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
                 upload_file_name, bitrate, width, height, share_audio
             )
 
-            # spaces.upload_file_public(upload_file_name, encoded_video_path)
-            # db.add_encoded_video_url(video, video_url, role)
+            spaces.upload_file_public(upload_file_name, encoded_video_path)
+            db.add_encoded_video_url(video, video_url, role)
 
             if role != FULL_SIZED_ROLE:
                 continue
@@ -219,7 +220,7 @@ def publish_images(db, spaces):
     for image in db.list_publishable_images():
         Log.clear()
 
-        upload_thumbnail(db, spaces, image, image_idx)
+        upload_photo_thumbnail(db, spaces, image, image_idx)
         upload_image(db, spaces, image, image_idx)
         encode_thumbnail_data_url(db, image, image_idx)
 

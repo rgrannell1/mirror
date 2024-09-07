@@ -37,6 +37,7 @@ VIDEO_HEADERS = [
     "video_url_1080p",
     "video_url_720p",
     "video_url_480p",
+    "poster_url"
 ]
 
 ALBUMS_HEADERS = [

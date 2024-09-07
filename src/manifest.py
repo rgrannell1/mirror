@@ -1,3 +1,14 @@
+"""
+Mirror doesn't really store much locally, but it keeps track of:
+
+- encoded public versions of images and videos, and roles that can be used to reference them
+- image and video listings
+- album listing
+- image and video metadata (this will also largely be echoed onto media via `xattr`)
+- arbitrary relations (mostly referring to photos or vidoes) that are imported from external sources. This triple data
+  can be treated as an open-schema graph database. It mostly contains Q&A information pulled from Linnaeus
+"""
+
 from dataclasses import dataclass
 import os
 
