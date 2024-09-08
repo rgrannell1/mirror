@@ -162,10 +162,10 @@ class PhotoVault:
                 )
         return video_configs
 
-    def list_by_folder(self) -> Dict[str, List["Photo"]]:
+    def list_by_folder(self) -> Dict[str, Dict]:
         """List all images by folder"""
 
-        dirs = {}
+        dirs: Dict[str, Dict] = {}
 
         for image in self.list_images():
             dirname = image.dirname()
@@ -234,6 +234,8 @@ class Photo(Media):
         exif = self.get_exif()
 
         date = exif.get("DateTimeOriginal")
+        if not date:
+            return None
 
         try:
             return datetime.strptime(date, DATE_FORMAT)
@@ -279,7 +281,7 @@ class Photo(Media):
 
         return data
 
-    def set_metadata(self, attrs, album: TagfileAlbumConfiguration):
+    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
         """Set metadata on an image as extended-attributes"""
 
         Album(album.fpath).set_xattrs(album.attrs)
@@ -303,14 +305,14 @@ class Photo(Media):
             except Exception as err:
                 raise ValueError(f"failed to set {attr} to {value} on image") from err
 
-    def encode_thumbnail(self, params) -> ImageContent:
+    def encode_thumbnail(self, params: Dict) -> ImageContent:
         """Encode a image as a thumbnail, and remove EXIF data"""
 
         img = Image.open(self.path)
-        img = img.convert("RGB")
+        rgb = img.convert("RGB")
 
         # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
 
         # remove EXIF data from the image by cloning
         data = list(thumb.getdata())
@@ -323,15 +325,16 @@ class Photo(Media):
             no_exif.save(output, **params)
             contents = output.getvalue()
 
-            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)
-
+            return ImageContent(
+                hash=deterministic_byte_hash(contents), content=contents
+            )
 
     def encode_image_mosaic(self):
         img = Image.open(self.path)
-        img = img.convert("RGB")
+        rgb = img.convert("RGB")
 
         # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
 
         # remove EXIF data from the image by cloning
         data = list(thumb.getdata())
@@ -353,15 +356,15 @@ class Photo(Media):
 
             return ImageContent(hash=hasher.hexdigest(), content=contents)
 
-    def encode_image(self, params) -> ImageContent:
+    def encode_image(self, params: Dict) -> ImageContent:
         """Encode an image as Webp, and remove EXIF data"""
 
         img = Image.open(self.path)
-        img = img.convert("RGB")
+        rgb = img.convert("RGB")
 
         # remove EXIF data from the image by cloning
-        data = list(img.getdata())
-        no_exif = Image.new(img.mode, img.size)
+        data = list(rgb.getdata())
+        no_exif = Image.new(rgb.mode, rgb.size)
         no_exif.putdata(data)
 
         with io.BytesIO() as output:
@@ -370,4 +373,6 @@ class Photo(Media):
             no_exif.save(output, **params)
             contents = output.getvalue()
 
-            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)
+            return ImageContent(
+                hash=deterministic_byte_hash(contents), content=contents
+            )

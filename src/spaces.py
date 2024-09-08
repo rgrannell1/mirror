@@ -1,6 +1,7 @@
 """Interface to DigitalOcean Spaces"""
 
 import boto3
+import boto3.session
 import botocore
 
 from typing import Iterator, Tuple
@@ -20,6 +21,9 @@ from .constants import PHOTOS_URL
 class Spaces:
     """Interface to DigitalOcean Spaces"""
 
+    session: boto3.session.Session
+    client: boto3.client
+
     def __init__(
         self, session: boto3.session.Session = None, client: boto3.client = None
     ):
@@ -37,7 +41,7 @@ class Spaces:
         )
 
     @classmethod
-    def client(cls, session: boto3.session.Session):
+    def client(cls, session: boto3.session.Session) -> boto3.client:
         """Create a boto3 client for DigitalOcean Spaces"""
 
         return session.client(
@@ -214,5 +218,5 @@ class Spaces:
             for obj in page["Contents"]:
                 yield obj["Key"]
 
-    def delete_object(self, key: str):
+    def delete_object(self, key: str) -> None:
         self.client.delete_object(Bucket=SPACES_BUCKET, Key=key)

@@ -1,6 +1,6 @@
 import os
 import xattr
-from typing import Set, TypeVar, Optional
+from typing import Dict, Set, TypeVar, Optional
 
 from src.constants import ATTR_DESCRIPTION, ATTR_TAG
 
@@ -9,6 +9,8 @@ T = TypeVar("T")
 
 class Media:
     """An abstract class for media (video, images)."""
+
+    path: str
 
     @classmethod
     def is_image(cls, path) -> bool:
@@ -51,7 +53,7 @@ class Media:
 
         return default
 
-    def set_xattr_attr(self, attr, value):
+    def set_xattr_attr(self, attr: Dict, value: str) -> None:
         """Set an extended-attribute on an image"""
         try:
             if isinstance(value, str):

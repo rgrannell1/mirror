@@ -1,4 +1,3 @@
-import hashlib
 import io
 import os
 import cv2
@@ -30,7 +29,7 @@ class Video(Media):
 
         return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == "true" else False
 
-    def get_resolution(self) -> Optional[Tuple[int, int]]:
+    def get_resolution(self) -> Tuple[Optional[int], Optional[int]]:
         probe = ffmpeg.probe(self.path)
         video_streams = [
             stream for stream in probe["streams"] if stream["codec_type"] == "video"
@@ -63,7 +62,7 @@ class Video(Media):
             except Exception as err:
                 raise ValueError(f"failed to set {attr} to {value} on image") from err
 
-    def fetch_thumbnail(self, fpath: str, params) -> ImageContent:
+    def fetch_thumbnail(self, fpath: str, params: Dict) -> ImageContent:
         video = cv2.VideoCapture(fpath)
         ret, frame = video.read()
         if not ret:
@@ -84,8 +83,9 @@ class Video(Media):
             no_exif.save(output, **params)
             contents = output.getvalue()
 
-            return ImageContent(hash=deterministic_byte_hash(contents), content=contents)
-
+            return ImageContent(
+                hash=deterministic_byte_hash(contents), content=contents
+            )
 
     def encode_video(
         self,
@@ -94,7 +94,7 @@ class Video(Media):
         width: Optional[int],
         height: Optional[int],
         share_audio: bool = False,
-    ) -> Tuple[str, str]:
+    ) -> Optional[str]:
         """Encode the video"""
 
         actual_width, actual_height = self.get_resolution()
@@ -105,11 +105,11 @@ class Video(Media):
             and height
             and (actual_width < width or actual_height < height)
         ):
-            return
+            return None
 
         VIDEO_CODEC = "libx264"
 
-        input_args = {}
+        input_args: Dict = {}
         kwargs = {
             "vcodec": VIDEO_CODEC,
             "video_bitrate": video_bitrate,

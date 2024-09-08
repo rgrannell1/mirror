@@ -2,12 +2,13 @@ import os
 import csv
 import sqlite3
 import sys
+from typing import Dict, List
 
 from src.constants import DB_PATH
 from src.manifest import Manifest
 
 
-def read_birds():
+def read_birds() -> Dict:
     birds = {}
 
     with open("/home/rg/Code/mirror/src/data/birds.csv", "r") as conn:
@@ -20,7 +21,7 @@ def read_birds():
     return birds
 
 
-def read_mammals():
+def read_mammals() -> Dict:
     mammals = {}
 
     with open("/home/rg/Code/mirror/src/data/mammals.csv", "r") as conn:
@@ -33,7 +34,7 @@ def read_mammals():
     return mammals
 
 
-def read_flags():
+def read_flags() -> Dict:
     flags = {}
 
     with open("/home/rg/Code/mirror/src/data/flags.csv", "r") as conn:
@@ -51,7 +52,7 @@ mammals = read_mammals()
 flags = read_flags()
 
 
-def image_answers_to_relations(question_id: str, source: str, target: str):
+def image_answers_to_relations(question_id: str, source: str, target: str) -> List:
     if question_id == "q01":
         return [(source, "photo_subject", target)]
     elif question_id == "q02":
@@ -153,7 +154,7 @@ def image_answers_to_relations(question_id: str, source: str, target: str):
     return rows
 
 
-def album_answers_to_relations(question_id: str, album_id: str, target: str):
+def album_answers_to_relations(question_id: str, album_id: str, target: str) -> List:
     rows = []
     if question_id == "q01":
         countries = target.split(",")
@@ -197,7 +198,7 @@ class AnswersDB:
         return [row for row in cursor.fetchall()]
 
 
-def add_answers(_: str, metadata_path: str, database_path: str):
+def add_answers(_: str, metadata_path: str, database_path: str) -> None:
     answers_db = AnswersDB(database_path)
 
     manifest = Manifest(DB_PATH, metadata_path)

@@ -14,25 +14,25 @@ class Colour:
     """Construct ANSI colours"""
 
     @classmethod
-    def blue(cls, text):
+    def blue(cls, text: str) -> str:
         return f"{bcolors.OKBLUE}{text}{bcolors.ENDC}"
 
     @classmethod
-    def cyan(cls, text):
+    def cyan(cls, text: str) -> str:
         return f"{bcolors.OKCYAN}{text}{bcolors.ENDC}"
 
     @classmethod
-    def green(cls, text):
+    def green(cls, text: str) -> str:
         return f"{bcolors.OKGREEN}{text}{bcolors.ENDC}"
 
     @classmethod
-    def red(cls, text):
+    def red(cls, text: str) -> str:
         return f"{bcolors.FAIL}{text}{bcolors.ENDC}"
 
     @classmethod
-    def yellow(cls, text):
+    def yellow(cls, text: str) -> str:
         return f"{bcolors.WARNING}{text}{bcolors.ENDC}"
 
     @classmethod
-    def bold(cls, text):
+    def bold(cls, text: str) -> str:
         return f"{bcolors.BOLD}{text}{bcolors.ENDC}"

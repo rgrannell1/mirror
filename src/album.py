@@ -33,7 +33,9 @@ T = TypeVar("T")
 class Album:
     """A photo-album"""
 
-    def __init__(self, path):
+    path: str
+
+    def __init__(self, path: str):
         self.path = path
 
     @lru_cache(maxsize=None)
@@ -43,7 +45,7 @@ class Album:
         return {attr for attr in xattr.listxattr(self.path)}
 
     @lru_cache(maxsize=None)
-    def has_xattr(self, attr) -> bool:
+    def has_xattr(self, attr: str) -> bool:
         """Check if an extended-attribute exists on the album"""
 
         return attr in self.list_xattrs()
@@ -57,7 +59,7 @@ class Album:
 
         return xattr.getxattr(self.path, attr).decode("utf-8")
 
-    def set_xattrs(self, attrs: Dict[str, str]):
+    def set_xattrs(self, attrs: Dict[str, str]) -> None:
         """Set metadata on the album as extended-attributes"""
 
         for attr, value in attrs.items():

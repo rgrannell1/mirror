@@ -1,3 +1,5 @@
+"""Types shared across the project"""
+
 from dataclasses import dataclass
 from typing import Dict
 
@@ -33,4 +35,4 @@ class ImageContent:
     """A dataclass representing an images content"""
 
     hash: str
-    content: str
+    content: bytes

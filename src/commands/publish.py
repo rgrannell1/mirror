@@ -118,10 +118,9 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
             # add a thumbnail that can be used as a poster for the video,
             # since loading to get the thumbnail is hideously expensive (at least 200MB / page-load)
 
-            encoded_thumbnail = video.fetch_thumbnail(encoded_video_path, {
-                "format": THUMBNAIL_FORMAT,
-                "lossless": False
-            })
+            encoded_thumbnail = video.fetch_thumbnail(
+                encoded_video_path, {"format": THUMBNAIL_FORMAT, "lossless": False}
+            )
 
             image_in_spaces, image_url = spaces.image_status(
                 encoded_thumbnail, format=THUMBNAIL_FORMAT

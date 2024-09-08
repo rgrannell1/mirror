@@ -41,12 +41,14 @@ from .constants import (
 class ImageMetadata:
     """Dataclass for image metadata"""
 
-    image_url = str
-    thumbnail_url = str
-    date_time = str
-    album_name = str
+    image_url: str
+    thumbnail_url: str
+    date_time: str
+    album_name: str
 
-    def __init__(self, image_url, thumbnail_url, date_time, album_name):
+    def __init__(
+        self, image_url: str, thumbnail_url: str, date_time: str, album_name: str
+    ):
         self.image_url = image_url
         self.thumbnail_url = thumbnail_url
         self.date_time = date_time
@@ -147,7 +149,7 @@ class Manifest:
 
         row = cursor.fetchone()
         if not row:
-            return
+            return None
 
         return ImageMetadata(
             image_url=row[0], thumbnail_url=row[1], date_time=row[2], album_name=row[3]
@@ -158,7 +160,7 @@ class Manifest:
 
         pass
 
-    def add_album(self, album_md: AlbumMetadata):
+    def add_album(self, album_md: AlbumMetadata) -> None:
         """Add an album to the local database"""
 
         cover_path = (
@@ -182,7 +184,7 @@ class Manifest:
         )
         self.conn.commit()
 
-    def add_image(self, image: Photo):
+    def add_image(self, image: Photo) -> None:
         """Add an image to the local database"""
 
         path = image.path
@@ -232,7 +234,7 @@ class Manifest:
 
         self.conn.commit()
 
-    def add_video(self, video: Video):
+    def add_video(self, video: Video) -> None:
         path = video.path
         album = os.path.dirname(path)
 
@@ -261,7 +263,7 @@ class Manifest:
 
         self.conn.commit()
 
-    def add_photo_relation(self, source: str, relation: str, target: str):
+    def add_photo_relation(self, source: str, relation: str, target: str) -> None:
         """Add a relation between an image and a target"""
 
         cursor = self.conn.cursor()
@@ -274,7 +276,7 @@ class Manifest:
         )
         self.conn.commit()
 
-    def has_encoded_image(self, image: Photo, role: str):
+    def has_encoded_image(self, image: Photo, role: str) -> bool:
         """Check if a thumbnail exists, according to the local database"""
 
         cursor = self.conn.cursor()
@@ -290,7 +292,25 @@ class Manifest:
 
         return row and bool(row[0])
 
-    def add_encoded_image_url(self, fpath: str, url: str, role: str, format="webp"):
+    def has_video_thumbnail(self, video: Video) -> bool:
+        """Check if a video thumbnail exists, according to the local database"""
+
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+    select fpath from encoded_videos
+      where fpath = ? and role = ?
+    """,
+            (video.path, "video_thumbnail_webp"),
+        )
+
+        row = cursor.fetchone()
+
+        return row and bool(row[0])
+
+    def add_encoded_image_url(
+        self, fpath: str, url: str, role: str, format: str = "webp"
+    ) -> None:
         """Register a thumbnail URL for an image in the local database"""
 
         mimetype = f"image/{format}"
@@ -305,7 +325,9 @@ class Manifest:
         )
         self.conn.commit()
 
-    def add_encoded_video_url(self, video: Video, url: str, role: str, format="mp4"):
+    def add_encoded_video_url(
+        self, video: Video, url: str, role: str, format: str = "mp4"
+    ) -> None:
         """Register a video URL in the local database"""
 
         mimetype = f"video/{format}"
@@ -320,7 +342,7 @@ class Manifest:
         )
         self.conn.commit()
 
-    def add_album_dates(self, fpath: str, min_date, max_date):
+    def add_album_dates(self, fpath: str, min_date: str, max_date: str) -> None:
         """Set minimum and maximum dates for an album"""
 
         cursor = self.conn.cursor()
@@ -335,7 +357,9 @@ class Manifest:
 
         self.conn.commit()
 
-    def add_google_photos_metadata(self, fpath: str, address: str, lat: str, lon: str):
+    def add_google_photos_metadata(
+        self, fpath: str, address: str, lat: str, lon: str
+    ) -> None:
         """Insert location data into the images table"""
 
         cursor = self.conn.cursor()

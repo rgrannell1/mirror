@@ -1,6 +1,7 @@
 import re
 import sys
 import json
+from typing import Dict, List
 import markdown
 from src.manifest import Manifest
 from src.utils import deterministic_hash
@@ -37,7 +38,7 @@ VIDEO_HEADERS = [
     "video_url_1080p",
     "video_url_720p",
     "video_url_480p",
-    "poster_url"
+    "poster_url",
 ]
 
 ALBUMS_HEADERS = [
@@ -57,7 +58,7 @@ class ImagesArtifacts:
     """Generate an artifact describing the images in the database."""
 
     @staticmethod
-    def content(db: Manifest):
+    def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("""
       select
@@ -142,7 +143,7 @@ class ImagesArtifacts:
 
 class VideoArtifacts:
     @staticmethod
-    def content(db: Manifest):
+    def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("""
         select
@@ -213,7 +214,7 @@ class AlbumArtifacts:
     """Generate an artifact describing the albums in the database."""
 
     @staticmethod
-    def content(db: Manifest):
+    def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("""
       select
@@ -300,7 +301,7 @@ class AlbumArtifacts:
 
 class MetadataArtifacts:
     @staticmethod
-    def get_subsumed(db: Manifest, is_a: str):
+    def get_subsumed(db: Manifest, is_a: str) -> List[str]:
         cursor = db.conn.cursor()
         cursor.execute(
             """
@@ -321,7 +322,7 @@ class MetadataArtifacts:
         return sorted(list(children))
 
     @staticmethod
-    def content(db: Manifest):
+    def content(db: Manifest) -> Dict:
         return {
             "Bird": {"children": MetadataArtifacts.get_subsumed(db, "Bird")},
             "Plane": {"children": MetadataArtifacts.get_subsumed(db, "Plane")},
