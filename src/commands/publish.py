@@ -99,7 +99,9 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
         upload_file_name = Spaces.video_name(video.path, bitrate, width, height)
         video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
-        if not video_in_spaces or role == FULL_SIZED_ROLE:
+        needs_thumbnail = db.has_video_thumbnail(video)
+
+        if not video_in_spaces or (needs_thumbnail and role == FULL_SIZED_ROLE):
             Log.info(f"Uploading video #{image_idx} for {video.path}", clear=True)
             encoded_video_path = video.encode_video(
                 upload_file_name, bitrate, width, height, share_audio
