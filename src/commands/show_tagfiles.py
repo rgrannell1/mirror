@@ -1,10 +1,11 @@
 import json
+from typing import Optional
 from src.photo import PhotoVault
 from src.constants import ATTR_TAG
 from src.tagfile import Tagfile
 
 
-def show_tagfiles(dir: str, tag: str = None):
+def show_tagfiles(dir: str, tag: Optional[str] = None) -> None:
     """List all tag-files in a directory."""
 
     for tagfile in PhotoVault(dir, metadata_path=None).list_tagfiles():

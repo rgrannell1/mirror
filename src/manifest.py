@@ -79,7 +79,7 @@ class Manifest:
         self.conn = sqlite3.connect(fpath)
         self.metadata_path = metadata_path
 
-    def create(self):
+    def create(self) -> None:
         """Create the local database"""
 
         cursor = self.conn.cursor()

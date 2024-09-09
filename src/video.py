@@ -9,7 +9,7 @@ from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
 from src.tags import Tags
-from src.types import ImageContent
+from src.types import ImageContent, TagfileAlbumConfiguration
 from src.utils import deterministic_byte_hash
 
 
@@ -17,6 +17,9 @@ class Video(Media):
     """A video file."""
 
     def __init__(self, path: str, metadata_path: str):
+        if not isinstance(path, str):
+            raise ValueError("path must be a string")
+
         self.path = path
         self.tag_metadata = Tags(metadata_path)
 
@@ -43,7 +46,7 @@ class Video(Media):
         else:
             return None, None
 
-    def set_metadata(self, attrs, album):
+    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
         """set metadata as xattrs on the video"""
 
         Album(album.fpath).set_xattrs(album.attrs)

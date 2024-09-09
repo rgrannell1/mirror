@@ -6,7 +6,7 @@ from src.log import Log
 from src.video import Video
 
 
-def set_images_metadata(vault: PhotoVault, metadata_path: str):
+def set_images_metadata(vault: PhotoVault, metadata_path: str) -> None:
     idx = 0
     images = vault.list_tagfile_image()
 
@@ -16,11 +16,16 @@ def set_images_metadata(vault: PhotoVault, metadata_path: str):
             f"setting xattr metadata on photo {idx:,} / {len(images):,}", clear=True
         )
 
-        Photo(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
+        photo = Photo(entry.fpath, metadata_path)
+
+        if not photo.exists():
+            continue
+
+        photo.set_metadata(entry.attrs, entry.album)
         idx += 1
 
 
-def set_videos_metadata(vault: PhotoVault, metadata_path: str):
+def set_videos_metadata(vault: PhotoVault, metadata_path: str) -> None:
     """set metadata (non-exif in this case) for videos"""
     idx = 0
     # broken; only two videos are listed in the tagfiles?
@@ -33,11 +38,17 @@ def set_videos_metadata(vault: PhotoVault, metadata_path: str):
             f"setting xattr metadata on video {idx:,} / {len(videos):,}", clear=True
         )
 
-        Video(entry.fpath, metadata_path).set_metadata(entry.attrs, entry.album)
+        video = Video(entry.fpath, metadata_path)
+
+        if not video.exists():
+            # TODO; remove old images from the database
+            continue
+
+        video.set_metadata(entry.attrs, entry.album)
         idx += 1
 
 
-def tag(dpath: str, metadata_path: str):
+def tag(dpath: str, metadata_path: str) -> None:
     """Read tags.md files in each photo-directory, and write extended
     attributes to each image"""
 

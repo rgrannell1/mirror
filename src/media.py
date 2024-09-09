@@ -1,6 +1,6 @@
 import os
 import xattr
-from typing import Dict, Set, TypeVar, Optional
+from typing import Any, Dict, Set, TypeVar, Optional
 
 from src.constants import ATTR_DESCRIPTION, ATTR_TAG
 
@@ -12,15 +12,18 @@ class Media:
 
     path: str
 
+    def exists(self)  -> bool:
+        return os.path.exists(self.path)
+
     @classmethod
-    def is_image(cls, path) -> bool:
+    def is_image(cls, path: str) -> bool:
         """Check if a given file path is an image."""
 
         image_extensions = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
         return os.path.isfile(path) and path.endswith(image_extensions)
 
     @classmethod
-    def is_video(cls, path) -> bool:
+    def is_video(cls, path: str) -> bool:
         """Check if a given file path is an image."""
 
         video_extensions = (".mp4", ".MP4")
@@ -53,7 +56,7 @@ class Media:
 
         return default
 
-    def set_xattr_attr(self, attr: Dict, value: str) -> None:
+    def set_xattr_attr(self, attr: Dict, value: Any) -> None:
         """Set an extended-attribute on an image"""
         try:
             if isinstance(value, str):

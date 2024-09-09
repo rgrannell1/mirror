@@ -43,7 +43,13 @@ from .album import Album
 class PhotoVault:
     """A directory of photos"""
 
-    def __init__(self, path: str, metadata_path: str):
+    path: str
+    metadata_path: Optional[str]
+
+    def __init__(self, path: str, metadata_path: Optional[str]):
+        if not isinstance(path, str):
+            raise ValueError("path must be a string")
+
         self.path = path
         self.metadata_path = metadata_path
 
@@ -189,6 +195,9 @@ class Photo(Media):
     methods for encoding images as WEBP."""
 
     def __init__(self, path: str, metadata_path: str):
+        if not isinstance(path, str):
+            raise ValueError("path must be a string")
+
         self.path = path
         self.tag_metadata = Tags(metadata_path)
 
