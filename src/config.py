@@ -1,7 +1,7 @@
 """Environment variables"""
 
 import os
-from typing import Optional
+from typing import Dict, Optional
 import yaml
 from dataclasses import dataclass
 from dotenv import load_dotenv
@@ -25,12 +25,12 @@ class MirrorConfig:
     directory: Optional[str]
 
     @classmethod
-    def exists(cls):
+    def exists(cls) -> bool:
         config_path = os.path.expanduser("/home/rg/.config/mirror/config.yaml")
         return os.path.exists(config_path)
 
     @classmethod
-    def read(cls, args):
+    def read(cls, args: Dict) -> 'MirrorConfig':
         config_path = os.path.expanduser("/home/rg/.config/mirror/config.yaml")
 
         with open(config_path, "r") as file:

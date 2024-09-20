@@ -215,7 +215,7 @@ def create_artifacts(db: Manifest, manifest_path: str) -> None:
         conn.write(json.dumps(md))
 
 
-def publish_images(db, spaces):
+def publish_images(db: Manifest, spaces: Spaces) -> None:
     image_idx = 1
 
     for image in db.list_publishable_images():
@@ -228,7 +228,7 @@ def publish_images(db, spaces):
         image_idx += 1
 
 
-def publish_videos(db, spaces):
+def publish_videos(db: Manifest, spaces: Spaces) -> None:
     video_idx = 1
 
     for video in db.list_publishable_videos():
@@ -238,7 +238,7 @@ def publish_videos(db, spaces):
         video_idx += 1
 
 
-def remove_unpublished_media(db, spaces):
+def remove_unpublished_media(db: Manifest, spaces: Spaces) -> None:
     """Remove artifacts from the Spaces bucket that are no longer published, to allow
     unpublishing"""
 
@@ -257,7 +257,7 @@ def remove_unpublished_media(db, spaces):
         Log.info(f"Deleted {len(to_delist)} unpublished files from Spaces")
 
 
-def publish(dir: str, metadata_path: str, manifest_path: str):
+def publish(dir: str, metadata_path: str, manifest_path: str) -> None:
     """List all images tagged with 'Published'. Find what images are already published,
     and compute a minimal set of optimised Webp images and thumbnails to publish. Publish
     the images to DigitalOcean Spaces.
