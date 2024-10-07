@@ -5,7 +5,7 @@ import json
 import yaml
 import jsonschema
 from src.album import Album
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from src.constants import (
     ATTR_ALBUM_PERMALINK,
@@ -29,7 +29,7 @@ class Tagfile:
     """Represents a Tagfile in a directory of images"""
 
     def __init__(
-        self, dirname: str, metadata_path, images: List, videos: List[Video]
+        self, dirname: str, metadata_path: str, images: List, videos: List[Video]
     ) -> None:
         self.dirname = dirname
         self.images = images
@@ -41,7 +41,7 @@ class Tagfile:
 
         return deterministic_hash(self.dirname)
 
-    def album_data(self) -> str:
+    def album_data(self) -> List[Dict[str, Any]]:
         """Given a series of images, and a directory, return the content of a tagfile."""
 
         images = {}

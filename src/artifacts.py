@@ -117,7 +117,7 @@ class ImagesArtifacts:
 
             if not album_permalink:
                 raise ValueError(
-                    f"did not find a permalink for image '{fpath}'. Please update {fpath}/tags.md"
+                    f"did not find a permalink for album '{fpath}'. Please update {fpath}/tags.md"
                 )
 
             joined_tags = {

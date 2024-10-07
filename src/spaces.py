@@ -53,9 +53,10 @@ class Spaces:
             aws_secret_access_key=SPACES_SECRET_KEY,
         )
 
-    def set_bucket_acl(self):
+    def set_bucket_acl(self) -> None:
         """Mark the bucket as public-read"""
 
+        return
         self.client.put_bucket_acl(Bucket=SPACES_BUCKET, ACL="public-read")
 
     def set_bucket_cors_policy(self):
@@ -106,34 +107,34 @@ class Spaces:
             },
         )
 
-    def upload_image(self, encoded_data: ImageContent, format="webp"):
+    def upload_image(self, encoded_data: ImageContent, format:str="webp") -> str:
         """Upload an image to the Spaces bucket. Return a CDN link"""
 
         name = f"{encoded_data.hash}.{format}"
         self.upload_public(name, encoded_data.content)
 
         return (
-            f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+            f"https://photos-cdn.rgrannell.xyz//{name}"
         )
 
-    def upload_video(self, initial_path: str, encoded_path: str, format="mp4"):
+    def upload_video(self, initial_path: str, encoded_path: str, format:str="mp4") -> str:
         """Upload a video to the Spaces bucket. Return a CDN link"""
 
         name = f"{deterministic_hash(initial_path)}.{format}"
         self.upload_public(name, open(encoded_path, "rb").read(), f"video/{format}")
 
         return (
-            f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+            f"https://photos-cdn.rgrannell.xyz//{name}"
         )
 
-    def upload_thumbnail(self, encoded_data: ImageContent, format="webp"):
+    def upload_thumbnail(self, encoded_data: ImageContent, format:str="webp") -> str:
         """Upload a thumbnail to the Spaces bucket. Return a CDN link"""
 
         name = f"{encoded_data.hash}_thumbnail.{format}"
         self.upload_public(name, encoded_data.content)
 
         return (
-            f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+            f"https://photos-cdn.rgrannell.xyz//{name}"
         )
 
     def has_object(self, name: str) -> bool:
@@ -148,15 +149,15 @@ class Spaces:
 
             raise
 
-    def url(self, name) -> str:
+    def url(self, name: str) -> str:
         """Return the CDN URL of a file in the Spaces bucket"""
 
         return (
-            f"https://{SPACES_BUCKET}.{SPACES_REGION}.cdn.digitaloceanspaces.com/{name}"
+            f"https://photos-cdn.rgrannell.xyz//{name}"
         )
 
     def thumbnail_status(
-        self, encoded_image: ImageContent, format="webp"
+        self, encoded_image: ImageContent, format:str="webp"
     ) -> Tuple[bool, str]:
         """Check if a thumbnail for an image exists in the Spaces bucket"""
 
@@ -165,7 +166,7 @@ class Spaces:
         return self.has_object(name), self.url(name)
 
     def image_status(
-        self, encoded_image: ImageContent, format="webp"
+        self, encoded_image: ImageContent, format:str="webp"
     ) -> Tuple[bool, str]:
         """Check if an image exists in the Spaces bucket"""
 
@@ -175,7 +176,7 @@ class Spaces:
 
     @classmethod
     def video_name(
-        cls, fpath: str, bitrate: str, width: str, height: str, format="mp4"
+        cls, fpath: str, bitrate: str, width: str, height: str, format: str="mp4"
     ) -> str:
         """Return the name of the video in the Spaces bucket"""
 
@@ -186,7 +187,7 @@ class Spaces:
 
         return self.has_object(video_name), self.url(video_name)
 
-    def patch_content_metadata(self, mime_type: str = "image/webp"):
+    def patch_content_metadata(self, mime_type: str = "image/webp") -> None:
         """Update the metadata for all objects in the Spaces bucket"""
 
         objs = self.client.list_objects_v2(Bucket=SPACES_BUCKET)
