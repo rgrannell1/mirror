@@ -1,7 +1,10 @@
+import math
+import os
 import re
 import sys
 import json
-from typing import Dict, List
+import time
+from typing import Dict, List, Protocol
 import markdown
 from src.manifest import Manifest
 from src.utils import deterministic_hash
@@ -53,62 +56,18 @@ ALBUMS_HEADERS = [
     "flags",
 ]
 
+class IArtifact(Protocol):
+    @staticmethod
+    def content(db: Manifest) -> str:
+        pass
 
-class ImagesArtifacts:
+class ImagesArtifacts(IArtifact):
     """Generate an artifact describing the images in the database."""
 
     @staticmethod
     def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
-        cursor.execute("""
-      select
-        images.fpath,
-        albums.permalink,
-        tags,
-        (
-          select group_concat(target, ',') from photo_relations
-          where relation = 'contains' and photo_relations.source = images.fpath
-        ) as tags_v2,
-        images.description,
-        images.date_time,
-        images.f_number,
-        images.focal_length,
-        images.model,
-        images.iso,
-        images.blur,
-        images.shutter_speed,
-        images.width,
-        images.height,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = images.fpath
-          and mimetype='image/webp' and role = 'thumbnail_lossless'
-        ) as thumbnail_url,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = images.fpath
-          and mimetype='image/bmp' and role = 'thumbnail_mosaic'
-        ) as thumbnail_mosaic_url,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = images.fpath
-          and mimetype ='image/webp' and role = 'full_image_lossless'
-        ) as image_url,
-        (
-          select target from photo_relations
-          where photo_relations.source = images.fpath and photo_relations.relation = 'rating'
-          limit 1
-        ) as rating,
-        (
-          select target from photo_relations
-          where photo_relations.source = images.fpath and photo_relations.relation = 'photo_subject'
-          limit 1
-        ) as subject
-
-      from images
-      join albums on albums.fpath = images.album
-      where published = '1'
-    """)
+        cursor.execute("select * from images_artifact")
 
         rows = [IMAGES_HEADERS]
 
@@ -141,53 +100,11 @@ class ImagesArtifacts:
         return json.dumps(rows)
 
 
-class VideoArtifacts:
+class VideoArtifacts(IArtifact):
     @staticmethod
     def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
-        cursor.execute("""
-        select
-          videos.fpath,
-          albums.permalink,
-          (
-            select group_concat(target, ',') from photo_relations
-            where relation = 'contains' and photo_relations.source = videos.fpath
-          ) as tags,
-          (
-            select target from photo_relations
-            where relation = 'description' and photo_relations.source = videos.fpath
-            limit 1
-          ) as description,
-          (
-            select url from encoded_videos
-            where encoded_videos.fpath = videos.fpath
-            and role = 'video_libx264_unscaled'
-          ) as video_url_unscaled,
-          (
-            select url from encoded_videos
-            where encoded_videos.fpath = videos.fpath
-            and role = 'video_libx264_1080p'
-          ) as video_url_1080p,
-          (
-            select url from encoded_videos
-            where encoded_videos.fpath = videos.fpath
-            and role = 'video_libx264_720p'
-          ) as video_url_720p,
-          (
-            select url from encoded_videos
-            where encoded_videos.fpath = videos.fpath
-            and role = 'video_libx264_480p'
-          ) as video_url_480p,
-          (
-            select url from encoded_images
-            where encoded_images.fpath = videos.fpath
-            and role = 'video_thumbnail_webp'
-          ) as poster_url
-
-          from videos
-          join albums on albums.fpath = videos.album
-          where published = '1'
-    """)
+        cursor.execute("select * from videos_artifact")
         rows = [VIDEO_HEADERS]
 
         for row in cursor.fetchall():
@@ -210,59 +127,13 @@ class VideoArtifacts:
         return json.dumps(rows)
 
 
-class AlbumArtifacts:
+class AlbumArtifacts(IArtifact):
     """Generate an artifact describing the albums in the database."""
 
     @staticmethod
     def content(db: Manifest) -> str:
         cursor = db.conn.cursor()
-        cursor.execute("""
-      select
-        (
-          select target from photo_relations
-          where source = albums.fpath and relation = 'permalink'
-        ) as permalink,
-        (
-          select target from photo_relations
-          where source = albums.fpath and relation = 'album_name'
-        ) as name,
-        min_date,
-        max_date,
-        coalesce((
-          select target from photo_relations
-          where source = albums.fpath and relation = 'description'
-        ), '') as description,
-        (
-          select count(*) from images
-          where images.album = albums.fpath and published = '1'
-        ) as image_count,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = albums.cover_path
-          and mimetype='image/webp' and role = 'thumbnail_lossy_v2'
-        ) as thumbnail_url,
-        (
-          select url from encoded_images
-          where encoded_images.fpath = albums.cover_path
-          and mimetype='image/bmp' and role = 'thumbnail_mosaic'
-        ) as thumbnail_mosaic_url,
-        (
-          select group_concat(target, ',')
-          from photo_relations
-          where relation = 'flag' and source in
-          (
-            select target from photo_relations
-            where source = albums.fpath and relation = 'country'
-          )
-        ) as flags
-
-        from albums
-        where albums.fpath in (
-            select distinct images.album
-            from images
-            where images.published = '1'
-        ) and name != "Misc";
-    """)
+        cursor.execute("select * from albums_artifact")
 
         messages = []
         rows = [ALBUMS_HEADERS]
@@ -299,7 +170,7 @@ class AlbumArtifacts:
         return json.dumps(rows)
 
 
-class MetadataArtifacts:
+class MetadataArtifacts(IArtifact):
     @staticmethod
     def get_subsumed(db: Manifest, is_a: str) -> List[str]:
         cursor = db.conn.cursor()
@@ -322,12 +193,47 @@ class MetadataArtifacts:
         return sorted(list(children))
 
     @staticmethod
-    def content(db: Manifest) -> Dict:
-        return {
+    def content(db: Manifest) -> str:
+        return json.dumps({
             "Bird": {"children": MetadataArtifacts.get_subsumed(db, "Bird")},
             "Plane": {"children": MetadataArtifacts.get_subsumed(db, "Plane")},
             "Helicopter": {
                 "children": MetadataArtifacts.get_subsumed(db, "Helicopter")
             },
             "Mammal": {"children": MetadataArtifacts.get_subsumed(db, "Mammal")},
-        }
+        })
+
+
+def create_artifacts(db: Manifest, manifest_path: str) -> None:
+    publication_id = deterministic_hash(str(math.floor(time.time())))
+
+    # clear existing albums and images
+
+    removeable = [
+        file
+        for file in os.listdir(manifest_path)
+        if file.startswith(("albums", "images", "videos"))
+    ]
+
+    for file in removeable:
+        os.remove(f"{manifest_path}/{file}")
+
+    # create new albums and images
+    with open(f"{manifest_path}/albums.{publication_id}.json", "w") as conn:
+        albums = AlbumArtifacts.content(db)
+        conn.write(albums)
+
+    with open(f"{manifest_path}/images.{publication_id}.json", "w") as conn:
+        images = ImagesArtifacts.content(db)
+        conn.write(images)
+
+    with open(f"{manifest_path}/videos.{publication_id}.json", "w") as conn:
+        images = VideoArtifacts.content(db)
+        conn.write(images)
+
+    with open(f"{manifest_path}/env.json", "w") as conn:
+        conn.write(json.dumps({"publication_id": publication_id}))
+
+    with open(f"{manifest_path}/metadata.json", "w") as conn:
+        md = MetadataArtifacts.content(db)
+        conn.write(md)

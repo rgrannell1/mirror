@@ -7,10 +7,7 @@ import yaml
 import json
 from typing import List
 from src.artifacts import (
-    AlbumArtifacts,
-    ImagesArtifacts,
-    VideoArtifacts,
-    MetadataArtifacts,
+    create_artifacts,
 )
 from src.constants import (
     DB_PATH,
@@ -178,41 +175,6 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
 
     with open(metadata_dst, "w") as conn:
         conn.write(json.dumps(content))
-
-
-def create_artifacts(db: Manifest, manifest_path: str) -> None:
-    publication_id = deterministic_hash(str(math.floor(time.time())))
-
-    # clear existing albums and images
-
-    removeable = [
-        file
-        for file in os.listdir(manifest_path)
-        if file.startswith(("albums", "images", "videos"))
-    ]
-
-    for file in removeable:
-        os.remove(f"{manifest_path}/{file}")
-
-    # create new albums and images
-    with open(f"{manifest_path}/albums.{publication_id}.json", "w") as conn:
-        albums = AlbumArtifacts.content(db)
-        conn.write(albums)
-
-    with open(f"{manifest_path}/images.{publication_id}.json", "w") as conn:
-        images = ImagesArtifacts.content(db)
-        conn.write(images)
-
-    with open(f"{manifest_path}/videos.{publication_id}.json", "w") as conn:
-        images = VideoArtifacts.content(db)
-        conn.write(images)
-
-    with open(f"{manifest_path}/env.json", "w") as conn:
-        conn.write(json.dumps({"publication_id": publication_id}))
-
-    with open(f"{manifest_path}/metadata.json", "w") as conn:
-        md = MetadataArtifacts.content(db)
-        conn.write(json.dumps(md))
 
 
 def publish_images(db: Manifest, spaces: Spaces) -> None:

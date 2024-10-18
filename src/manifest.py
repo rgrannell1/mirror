@@ -21,10 +21,13 @@ from .photo import Photo
 from .tables import (
     ENCODED_IMAGE_TABLE,
     IMAGES_TABLE,
+    VIDEOS_ARTIFACT_VIEW,
+    IMAGES_ARTIFACT_VIEW,
     VIDEOS_TABLE,
     ALBUM_TABLE,
     PHOTO_RELATIONS_TABLE,
     ENCODED_VIDEO_TABLE,
+    ALBUMS_ARTIFACT_VIEW
 )
 from .constants import (
     ATTR_DATE_TIME,
@@ -72,6 +75,9 @@ class Manifest:
         ENCODED_IMAGE_TABLE,
         ENCODED_VIDEO_TABLE,
         PHOTO_RELATIONS_TABLE,
+        ALBUMS_ARTIFACT_VIEW,
+        VIDEOS_ARTIFACT_VIEW,
+        IMAGES_ARTIFACT_VIEW
     }
 
     def __init__(self, db_path: str, metadata_path: str):
@@ -373,14 +379,14 @@ class Manifest:
         )
         self.conn.commit()
 
-    def clear_photo_relations(self):
+    def clear_photo_relations(self) -> None:
         """Clear all relations between images and targets"""
 
         cursor = self.conn.cursor()
         cursor.execute("delete from photo_relations")
         self.conn.commit()
 
-    def close(self):
+    def close(self) -> None:
         """Close the local database connection"""
 
         self.conn.close()

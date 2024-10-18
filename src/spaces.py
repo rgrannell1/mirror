@@ -114,7 +114,7 @@ class Spaces:
         self.upload_public(name, encoded_data.content)
 
         return (
-            f"https://photos-cdn.rgrannell.xyz//{name}"
+            f"https://photos-cdn.rgrannell.xyz/{name}"
         )
 
     def upload_video(self, initial_path: str, encoded_path: str, format:str="mp4") -> str:
@@ -124,7 +124,7 @@ class Spaces:
         self.upload_public(name, open(encoded_path, "rb").read(), f"video/{format}")
 
         return (
-            f"https://photos-cdn.rgrannell.xyz//{name}"
+            f"https://photos-cdn.rgrannell.xyz/{name}"
         )
 
     def upload_thumbnail(self, encoded_data: ImageContent, format:str="webp") -> str:
@@ -134,7 +134,7 @@ class Spaces:
         self.upload_public(name, encoded_data.content)
 
         return (
-            f"https://photos-cdn.rgrannell.xyz//{name}"
+            f"https://photos-cdn.rgrannell.xyz/{name}"
         )
 
     def has_object(self, name: str) -> bool:
@@ -153,7 +153,7 @@ class Spaces:
         """Return the CDN URL of a file in the Spaces bucket"""
 
         return (
-            f"https://photos-cdn.rgrannell.xyz//{name}"
+            f"https://photos-cdn.rgrannell.xyz/{name}"
         )
 
     def thumbnail_status(
