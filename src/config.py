@@ -30,7 +30,7 @@ class MirrorConfig:
         return os.path.exists(config_path)
 
     @classmethod
-    def read(cls, args: Dict) -> 'MirrorConfig':
+    def read(cls, args: Dict) -> "MirrorConfig":
         config_path = os.path.expanduser("/home/rg/.config/mirror/config.yaml")
 
         with open(config_path, "r") as file:

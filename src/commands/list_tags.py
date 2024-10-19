@@ -5,7 +5,7 @@ from src.constants import ATTR_TAG
 from src.tags import Tags
 
 
-def list_tags(dir: str, opts):
+def list_tags(dir: str, opts) -> None:
     """List all tags in all images in the directory, as a series
     of JSON objects"""
     tag_set = {}

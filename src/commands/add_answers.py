@@ -2,13 +2,13 @@ import os
 import csv
 import sqlite3
 import sys
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from src.constants import DB_PATH
 from src.manifest import Manifest
 
 
-def read_birds() -> Dict:
+def read_birds() -> Dict[str, str]:
     birds = {}
 
     with open("/home/rg/Code/mirror/src/data/birds.csv", "r") as conn:
@@ -21,7 +21,7 @@ def read_birds() -> Dict:
     return birds
 
 
-def read_mammals() -> Dict:
+def read_mammals() -> Dict[str, str]:
     mammals = {}
 
     with open("/home/rg/Code/mirror/src/data/mammals.csv", "r") as conn:
@@ -34,7 +34,7 @@ def read_mammals() -> Dict:
     return mammals
 
 
-def read_flags() -> Dict:
+def read_flags() -> Dict[str, str]:
     flags = {}
 
     with open("/home/rg/Code/mirror/src/data/flags.csv", "r") as conn:
@@ -52,7 +52,9 @@ mammals = read_mammals()
 flags = read_flags()
 
 
-def image_answers_to_relations(question_id: str, source: str, target: str) -> List:
+def image_answers_to_relations(
+    question_id: str, source: str, target: str
+) -> List[Tuple[str, str, str]]:
     if question_id == "q01":
         return [(source, "photo_subject", target)]
     elif question_id == "q02":
@@ -164,11 +166,11 @@ def album_answers_to_relations(question_id: str, album_id: str, target: str) -> 
 
             if flag is None:
                 rows += [(album_id, "country", country.strip())]
-
-            rows += [
-                (album_id, "country", country.strip()),
-                (country.strip(), "flag", flag),
-            ]
+            else:
+                rows += [
+                    (album_id, "country", country.strip()),
+                    (country.strip(), "flag", flag),
+                ]
 
     elif question_id == "q02":
         return [(album_id, "description", target)]
@@ -185,13 +187,13 @@ class AnswersDB:
         fpath = os.path.expanduser(db_path)
         self.conn = sqlite3.connect(fpath)
 
-    def get_image_answers(self):
+    def get_image_answers(self) -> List:
         cursor = self.conn.cursor()
         cursor.execute("select questionId, contentId, answer from image_answers", ())
 
         return [row for row in cursor.fetchall()]
 
-    def get_album_answers(self):
+    def get_album_answers(self) -> List:
         cursor = self.conn.cursor()
         cursor.execute("select questionId, contentId, answer from album_answers", ())
 

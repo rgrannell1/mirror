@@ -3,9 +3,10 @@ import math
 import os
 import time
 from urllib.parse import urlparse
-import yaml
 import json
 from typing import List
+
+import yaml
 from src.artifacts import (
     create_artifacts,
 )
@@ -17,7 +18,7 @@ from src.constants import (
     VIDEO_ENCODINGS,
 )
 from src.photo import PhotoVault, Album, Photo
-from src.spaces import Spaces
+from src.storage import Storage
 from src.manifest import Manifest
 from src.log import Log
 from src.utils import deterministic_hash
@@ -25,7 +26,7 @@ from src.video import Video
 
 
 def upload_photo_thumbnail(
-    db: Manifest, spaces: Spaces, image: Photo, image_idx: int
+    db: Manifest, spaces: Storage, image: Photo, image_idx: int
 ) -> None:
     """Upload an thumbnail for a photo"""
     Log.info(f"Checking thumbnail #{image_idx} is published for {image.path}")
@@ -56,7 +57,7 @@ def upload_photo_thumbnail(
         )
 
 
-def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> None:
+def upload_image(db: Manifest, spaces: Storage, image: Photo, image_idx: int) -> None:
     Log.info(f"Checking image #{image_idx} is published for {image.path}", clear=True)
 
     # create an upload the image itself
@@ -79,7 +80,7 @@ def upload_image(db: Manifest, spaces: Spaces, image: Photo, image_idx: int) -> 
             )
 
 
-def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> None:
+def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) -> None:
     Log.info(f"Checking video #{image_idx} is published for {video.path}")
 
     FULL_SIZED_ROLE = "video_libx264_unscaled"
@@ -93,7 +94,7 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
 
         share_audio = video.get_xattr_share_audio()
 
-        upload_file_name = Spaces.video_name(video.path, bitrate, width, height)
+        upload_file_name = Storage.video_name(video.path, bitrate, width, height)
         video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
         needs_thumbnail = db.has_video_thumbnail(video)
@@ -103,6 +104,9 @@ def upload_video(db: Manifest, spaces: Spaces, video: Video, image_idx: int) -> 
             encoded_video_path = video.encode_video(
                 upload_file_name, bitrate, width, height, share_audio
             )
+
+            if not encoded_video_path:
+                raise Exception(f"failed to encode {upload_file_name}")
 
             spaces.upload_file_public(upload_file_name, encoded_video_path)
             db.add_encoded_video_url(video, video_url, role)
@@ -148,12 +152,10 @@ def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
     album = Album(dir)
 
     try:
-        min_date = min(
-            img.get_created_date() for img in images if img.get_created_date()
-        )
-        max_date = max(
-            img.get_created_date() for img in images if img.get_created_date()
-        )
+        created_dates = [img.get_created_date() for img in images]
+        non_empty = [date for date in created_dates if date]
+        min_date = min(non_empty)
+        max_date = max(non_empty)
     except ValueError:
         return
 
@@ -177,7 +179,7 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
         conn.write(json.dumps(content))
 
 
-def publish_images(db: Manifest, spaces: Spaces) -> None:
+def publish_images(db: Manifest, spaces: Storage) -> None:
     image_idx = 1
 
     for image in db.list_publishable_images():
@@ -190,7 +192,7 @@ def publish_images(db: Manifest, spaces: Spaces) -> None:
         image_idx += 1
 
 
-def publish_videos(db: Manifest, spaces: Spaces) -> None:
+def publish_videos(db: Manifest, spaces: Storage) -> None:
     video_idx = 1
 
     for video in db.list_publishable_videos():
@@ -200,7 +202,7 @@ def publish_videos(db: Manifest, spaces: Spaces) -> None:
         video_idx += 1
 
 
-def remove_unpublished_media(db: Manifest, spaces: Spaces) -> None:
+def remove_unpublished_media(db: Manifest, spaces: Storage) -> None:
     """Remove artifacts from the Spaces bucket that are no longer published, to allow
     unpublishing"""
 
@@ -228,8 +230,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str) -> None:
     db = Manifest(DB_PATH, metadata_path)
     db.create()
 
-    spaces = Spaces()
-    spaces.set_bucket_acl()
+    spaces = Storage()
     spaces.set_bucket_cors_policy()
 
     publish_images(db, spaces)

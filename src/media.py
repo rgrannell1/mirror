@@ -1,10 +1,16 @@
 import os
 import xattr
-from typing import Any, Dict, Set, TypeVar, Optional
+from typing import Any, Dict, Set, TypeVar, Optional, Protocol
 
 from src.constants import ATTR_DESCRIPTION, ATTR_TAG
+from src.types import TagfileAlbumConfiguration
 
 T = TypeVar("T")
+
+
+class IMedia(Protocol):
+    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
+        pass
 
 
 class Media:
@@ -12,7 +18,7 @@ class Media:
 
     path: str
 
-    def exists(self)  -> bool:
+    def exists(self) -> bool:
         return os.path.exists(self.path)
 
     @classmethod

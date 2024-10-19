@@ -27,7 +27,7 @@ from .tables import (
     ALBUM_TABLE,
     PHOTO_RELATIONS_TABLE,
     ENCODED_VIDEO_TABLE,
-    ALBUMS_ARTIFACT_VIEW
+    ALBUMS_ARTIFACT_VIEW,
 )
 from .constants import (
     ATTR_DATE_TIME,
@@ -77,7 +77,7 @@ class Manifest:
         PHOTO_RELATIONS_TABLE,
         ALBUMS_ARTIFACT_VIEW,
         VIDEOS_ARTIFACT_VIEW,
-        IMAGES_ARTIFACT_VIEW
+        IMAGES_ARTIFACT_VIEW,
     }
 
     def __init__(self, db_path: str, metadata_path: str):
@@ -348,7 +348,7 @@ class Manifest:
         )
         self.conn.commit()
 
-    def add_album_dates(self, fpath: str, min_date: str, max_date: str) -> None:
+    def add_album_dates(self, fpath: str, min_date: float, max_date: float) -> None:
         """Set minimum and maximum dates for an album"""
 
         cursor = self.conn.cursor()

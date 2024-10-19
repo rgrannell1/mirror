@@ -4,72 +4,49 @@ import re
 import sys
 import json
 import time
-from typing import Dict, List, Protocol
+from typing import List, Protocol
 import markdown
 from src.manifest import Manifest
 from src.utils import deterministic_hash
 
-IMAGES_HEADERS = [
-    "fpath",
-    "id",
-    "album_id",
-    "tags",
-    "description",
-    "date_time",
-    "f_number",
-    "focal_length",
-    "model",
-    "iso",
-    "blur",
-    "shutter_speed",
-    "width",
-    "height",
-    "thumbnail_url",
-    "thumbnail_data_url",
-    "image_url",
-    "rating",
-    "subject",
-]
-
-VIDEO_HEADERS = [
-    "fpath",
-    "id",
-    "album_id",
-    "tags",
-    "description",
-    "video_url_unscaled",
-    "video_url_1080p",
-    "video_url_720p",
-    "video_url_480p",
-    "poster_url",
-]
-
-ALBUMS_HEADERS = [
-    "id",
-    "album_name",
-    "min_date",
-    "max_date",
-    "description",
-    "image_count",
-    "thumbnail_url",
-    "thumbnail_mosaic_url",
-    "flags",
-]
 
 class IArtifact(Protocol):
-    @staticmethod
-    def content(db: Manifest) -> str:
+    @classmethod
+    def content(cls, db: Manifest) -> str:
         pass
+
 
 class ImagesArtifacts(IArtifact):
     """Generate an artifact describing the images in the database."""
 
-    @staticmethod
-    def content(db: Manifest) -> str:
+    HEADERS = [
+        "fpath",
+        "id",
+        "album_id",
+        "tags",
+        "description",
+        "date_time",
+        "f_number",
+        "focal_length",
+        "model",
+        "iso",
+        "blur",
+        "shutter_speed",
+        "width",
+        "height",
+        "thumbnail_url",
+        "thumbnail_data_url",
+        "image_url",
+        "rating",
+        "subject",
+    ]
+
+    @classmethod
+    def content(cls, db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("select * from images_artifact")
 
-        rows = [IMAGES_HEADERS]
+        rows = [cls.HEADERS]
 
         for row in cursor.fetchall():
             fpath, album_permalink, tags, tags_v2, description, *rest = row
@@ -101,11 +78,24 @@ class ImagesArtifacts(IArtifact):
 
 
 class VideoArtifacts(IArtifact):
-    @staticmethod
-    def content(db: Manifest) -> str:
+    HEADERS = [
+        "fpath",
+        "id",
+        "album_id",
+        "tags",
+        "description",
+        "video_url_unscaled",
+        "video_url_1080p",
+        "video_url_720p",
+        "video_url_480p",
+        "poster_url",
+    ]
+
+    @classmethod
+    def content(cls, db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("select * from videos_artifact")
-        rows = [VIDEO_HEADERS]
+        rows = [cls.HEADERS]
 
         for row in cursor.fetchall():
             fpath, album_permalink, *rest = row
@@ -130,13 +120,25 @@ class VideoArtifacts(IArtifact):
 class AlbumArtifacts(IArtifact):
     """Generate an artifact describing the albums in the database."""
 
-    @staticmethod
-    def content(db: Manifest) -> str:
+    HEADERS = [
+        "id",
+        "album_name",
+        "min_date",
+        "max_date",
+        "description",
+        "image_count",
+        "thumbnail_url",
+        "thumbnail_mosaic_url",
+        "flags",
+    ]
+
+    @classmethod
+    def content(cls, db: Manifest) -> str:
         cursor = db.conn.cursor()
         cursor.execute("select * from albums_artifact")
 
         messages = []
-        rows = [ALBUMS_HEADERS]
+        rows = [cls.HEADERS]
 
         for row in cursor.fetchall():
             if not row[0]:
@@ -194,21 +196,20 @@ class MetadataArtifacts(IArtifact):
 
     @staticmethod
     def content(db: Manifest) -> str:
-        return json.dumps({
-            "Bird": {"children": MetadataArtifacts.get_subsumed(db, "Bird")},
-            "Plane": {"children": MetadataArtifacts.get_subsumed(db, "Plane")},
-            "Helicopter": {
-                "children": MetadataArtifacts.get_subsumed(db, "Helicopter")
-            },
-            "Mammal": {"children": MetadataArtifacts.get_subsumed(db, "Mammal")},
-        })
+        return json.dumps(
+            {
+                "Bird": {"children": MetadataArtifacts.get_subsumed(db, "Bird")},
+                "Plane": {"children": MetadataArtifacts.get_subsumed(db, "Plane")},
+                "Helicopter": {
+                    "children": MetadataArtifacts.get_subsumed(db, "Helicopter")
+                },
+                "Mammal": {"children": MetadataArtifacts.get_subsumed(db, "Mammal")},
+            }
+        )
 
 
-def create_artifacts(db: Manifest, manifest_path: str) -> None:
-    publication_id = deterministic_hash(str(math.floor(time.time())))
-
+def remove_current_artifacts(manifest_path: str) -> None:
     # clear existing albums and images
-
     removeable = [
         file
         for file in os.listdir(manifest_path)
@@ -217,6 +218,12 @@ def create_artifacts(db: Manifest, manifest_path: str) -> None:
 
     for file in removeable:
         os.remove(f"{manifest_path}/{file}")
+
+
+def create_artifacts(db: Manifest, manifest_path: str) -> None:
+    publication_id = deterministic_hash(str(math.floor(time.time())))
+
+    remove_current_artifacts(manifest_path)
 
     # create new albums and images
     with open(f"{manifest_path}/albums.{publication_id}.json", "w") as conn:

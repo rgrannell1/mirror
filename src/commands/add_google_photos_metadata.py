@@ -4,7 +4,9 @@ from src.constants import DB_PATH
 from src.manifest import Manifest
 
 
-def add_google_photos_metadata(dir: str, metadata_path: str, google_photos_file: str):
+def add_google_photos_metadata(
+    dir: str, metadata_path: str, google_photos_file: str
+) -> None:
     db = Manifest(DB_PATH, metadata_path)
     db.create()
 

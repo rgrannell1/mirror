@@ -1,7 +1,6 @@
 """Various constants used throughout this project"""
 
 import re
-from src.config import SPACES_BUCKET
 
 DB_PATH = "/home/rg/.mirror-manifest.db"
 

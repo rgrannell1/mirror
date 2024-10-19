@@ -4,16 +4,15 @@ import cv2
 import ffmpeg
 from src.album import Album
 from src.constants import ATTR_SHARE_AUDIO, ATTR_TAG, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
-from src.media import Media
+from src.media import IMedia, Media
 from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
-from src.tags import Tags
 from src.types import ImageContent, TagfileAlbumConfiguration
 from src.utils import deterministic_byte_hash
 
 
-class Video(Media):
+class Video(Media, IMedia):
     """A video file."""
 
     def __init__(self, path: str, metadata_path: str):
@@ -21,11 +20,6 @@ class Video(Media):
             raise ValueError("path must be a string")
 
         self.path = path
-        self.tag_metadata = Tags(metadata_path)
-
-    def get_exif_metadata(self) -> Dict:
-        """Exif support is not available for videos"""
-        return {}
 
     def get_xattr_share_audio(self) -> bool:
         """Should the audio also be shared?"""
@@ -33,18 +27,20 @@ class Video(Media):
         return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == "true" else False
 
     def get_resolution(self) -> Tuple[Optional[int], Optional[int]]:
+        "Returns resolution of the video, if it's possible to determine?"
+
         probe = ffmpeg.probe(self.path)
         video_streams = [
             stream for stream in probe["streams"] if stream["codec_type"] == "video"
         ]
 
-        if len(video_streams) > 0:
+        if video_streams:
             width = int(video_streams[0]["width"])
             height = int(video_streams[0]["height"])
 
             return width, height
-        else:
-            return None, None
+
+        return None, None
 
     def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
         """set metadata as xattrs on the video"""
@@ -52,13 +48,14 @@ class Video(Media):
         Album(album.fpath).set_xattrs(album.attrs)
 
         for attr, value in attrs.items():
+            # skip attributes without a defined value
             if value is None:
                 continue
 
             try:
-                if attr == ATTR_TAG:
+                if isinstance(value, list):
                     self.set_xattr_attr(attr, ", ".join(value))
-                elif attr == ATTR_SHARE_AUDIO:
+                elif isinstance(value, bool):
                     self.set_xattr_attr(attr, "true" if value else "false")
                 else:
                     self.set_xattr_attr(attr, value)

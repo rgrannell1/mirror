@@ -6,8 +6,7 @@ import cv2
 import hashlib
 import warnings
 from datetime import datetime
-from src.tags import Tags
-from src.media import Media
+from src.media import IMedia, Media
 
 from typing import List, Iterator, Dict, Optional
 from PIL import Image, ImageOps, ExifTags
@@ -190,7 +189,7 @@ class PhotoVault:
         return dirs
 
 
-class Photo(Media):
+class Photo(Media, IMedia):
     """A photo, methods for retrieving & setting metadata, and
     methods for encoding images as WEBP."""
 
@@ -199,7 +198,6 @@ class Photo(Media):
             raise ValueError("path must be a string")
 
         self.path = path
-        self.tag_metadata = Tags(metadata_path)
 
     @lru_cache(maxsize=None)
     def blur_estimate(self) -> float:
@@ -338,7 +336,7 @@ class Photo(Media):
                 hash=deterministic_byte_hash(contents), content=contents
             )
 
-    def encode_image_mosaic(self):
+    def encode_image_mosaic(self) -> ImageContent:
         img = Image.open(self.path)
         rgb = img.convert("RGB")
 
