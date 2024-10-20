@@ -6,7 +6,7 @@ from src.log import Log
 from src.video import Video
 
 
-def set_images_metadata(vault: PhotoVault, metadata_path: str) -> None:
+def set_images_metadata(vault: PhotoVault, db: Manifest, metadata_path: str) -> None:
     idx = 0
     images = vault.list_tagfile_image()
 
@@ -21,7 +21,7 @@ def set_images_metadata(vault: PhotoVault, metadata_path: str) -> None:
         if not photo.exists():
             continue
 
-        photo.set_metadata(entry.attrs, entry.album)
+        photo.set_metadata(db, entry.attrs, entry.album)
         idx += 1
 
 
@@ -57,7 +57,7 @@ def tag(dpath: str, metadata_path: str) -> None:
 
     vault = PhotoVault(dpath, metadata_path)
 
-    set_images_metadata(vault, metadata_path)
+    set_images_metadata(vault, db, metadata_path)
     set_videos_metadata(vault, metadata_path)
 
     idx = 0

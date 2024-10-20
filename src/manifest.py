@@ -269,6 +269,34 @@ class Manifest:
 
         self.conn.commit()
 
+    def get_exif_hash(self, fpath: str) -> Optional[str]:
+        cursor = self.conn.cursor()
+        cursor.execute("select exif_hash from images where fpath = ?", (fpath, ))
+
+        row = cursor.fetchone()
+        return row[0] if row else None
+
+    def get_metadata_hash(self, fpath: str) -> Optional[str]:
+        cursor = self.conn.cursor()
+        cursor.execute("select metadata_hash from images where fpath = ?", (fpath, ))
+
+        row = cursor.fetchone()
+        return row[0] if row else None
+
+    def set_exif_hash(self, fpath: str, exif_hash: str) -> None:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            "update images set exif_hash = ? where fpath = ?", (exif_hash, fpath)
+        )
+        self.conn.commit()
+
+    def set_metadata_hash(self, fpath: str, metadata_hash: str) -> None:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            "update images set metadata_hash = ? where fpath = ?", (metadata_hash, fpath)
+        )
+        self.conn.commit()
+
     def add_photo_relation(self, source: str, relation: str, target: str) -> None:
         """Add a relation between an image and a target"""
 

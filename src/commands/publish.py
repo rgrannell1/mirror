@@ -148,7 +148,7 @@ def encode_thumbnail_data_url(db: Manifest, image: Photo, image_idx: int) -> Non
         db.add_encoded_image_url(image.path, data_url, "thumbnail_mosaic", "bmp")
 
 
-def find_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
+def add_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
     album = Album(dir)
 
     try:
@@ -241,7 +241,7 @@ def publish(dir: str, metadata_path: str, manifest_path: str) -> None:
     for dir, dir_data in PhotoVault(dir, metadata_path).list_by_folder().items():
         images = dir_data["images"]
 
-        find_album_dates(db, dir, images)
+        add_album_dates(db, dir, images)
 
     create_artifacts(db, manifest_path)
     remove_unpublished_media(db, spaces)

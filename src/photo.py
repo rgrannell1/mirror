@@ -17,7 +17,7 @@ from src.types import (
     TagfileImageConfiguration,
     TagfileVideoConfiguration,
 )
-from src.utils import deterministic_byte_hash
+from src.utils import deterministic_byte_hash, deterministic_hash_attrs
 from src.video import Video
 
 from .constants import (
@@ -55,6 +55,9 @@ class PhotoVault:
     def list_images(self) -> List["Photo"]:
         """Recursively list all files under a given path."""
 
+        if not self.metadata_path:
+            raise ValueError("metadata path must be set")
+
         images = []
 
         for dirpath, _, filenames in os.walk(self.path):
@@ -70,6 +73,9 @@ class PhotoVault:
 
     def list_videos(self) -> List["Video"]:
         """Recursively list all files under a given path."""
+
+        if not self.metadata_path:
+            raise ValueError("metadata path must be set")
 
         videos = []
 
@@ -288,16 +294,25 @@ class Photo(Media, IMedia):
 
         return data
 
-    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
+    def set_metadata(self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration) -> None:
         """Set metadata on an image as extended-attributes"""
 
         Album(album.fpath).set_xattrs(album.attrs)
 
         exif_attrs = self.get_exif_metadata()
+        new_exif_hash = deterministic_hash_attrs(exif_attrs)
 
         # set exif-derived attributes on the image
-        for attr, value in exif_attrs.items():
-            self.set_xattr_attr(attr, value)
+        if new_exif_hash != db.get_exif_hash(self.path):
+            for attr, value in exif_attrs.items():
+                self.set_xattr_attr(attr, value)
+
+            db.set_exif_hash(self.path, new_exif_hash)
+
+        new_attrs_hash = deterministic_hash_attrs(attrs)
+
+        if new_attrs_hash == db.get_metadata_hash(self.path):
+            return
 
         # set each other attribute
         for attr, value in attrs.items():
@@ -311,6 +326,8 @@ class Photo(Media, IMedia):
                     self.set_xattr_attr(attr, value)
             except Exception as err:
                 raise ValueError(f"failed to set {attr} to {value} on image") from err
+
+        db.set_metadata_hash(self.path, new_attrs_hash)
 
     def encode_thumbnail(self, params: Dict) -> ImageContent:
         """Encode a image as a thumbnail, and remove EXIF data"""

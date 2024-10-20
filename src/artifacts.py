@@ -11,6 +11,7 @@ from src.utils import deterministic_hash
 
 
 class IArtifact(Protocol):
+    """Artifacts expose string content derived from the database"""
     @classmethod
     def content(cls, db: Manifest) -> str:
         pass

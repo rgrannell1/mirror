@@ -24,6 +24,8 @@ IMAGES_TABLE = """
 create table if not exists images (
   fpath              text primary key,
   tags               text,
+  metadata_hash      text,
+  exif_hash          text,
   published          boolean,
   description        text,
   album              text,

@@ -9,7 +9,7 @@ T = TypeVar("T")
 
 
 class IMedia(Protocol):
-    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
+    def set_metadata(self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration) -> None:
         pass
 
 
