@@ -12,6 +12,7 @@ from src.utils import deterministic_hash
 
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
+
     @classmethod
     def content(cls, db: Manifest) -> str:
         pass
@@ -222,8 +223,9 @@ def remove_current_artifacts(manifest_path: str) -> None:
 
 
 def create_artifacts(db: Manifest, manifest_path: str) -> None:
-    publication_id = deterministic_hash(str(math.floor(time.time())))
+    """Create output artifacts"""
 
+    publication_id = deterministic_hash(str(math.floor(time.time())))
     remove_current_artifacts(manifest_path)
 
     # create new albums and images

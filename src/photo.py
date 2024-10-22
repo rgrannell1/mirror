@@ -294,7 +294,9 @@ class Photo(Media, IMedia):
 
         return data
 
-    def set_metadata(self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration) -> None:
+    def set_metadata(
+        self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration
+    ) -> None:
         """Set metadata on an image as extended-attributes"""
 
         Album(album.fpath).set_xattrs(album.attrs)
@@ -354,6 +356,8 @@ class Photo(Media, IMedia):
             )
 
     def encode_image_mosaic(self) -> ImageContent:
+        """Create a small image to use as a data-url while the main image loads"""
+
         img = Image.open(self.path)
         rgb = img.convert("RGB")
 

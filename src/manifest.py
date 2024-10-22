@@ -21,6 +21,7 @@ from .photo import Photo
 from .tables import (
     ENCODED_IMAGE_TABLE,
     IMAGES_TABLE,
+    METADATA_TABLE,
     VIDEOS_ARTIFACT_VIEW,
     IMAGES_ARTIFACT_VIEW,
     VIDEOS_TABLE,
@@ -78,6 +79,7 @@ class Manifest:
         ALBUMS_ARTIFACT_VIEW,
         VIDEOS_ARTIFACT_VIEW,
         IMAGES_ARTIFACT_VIEW,
+        METADATA_TABLE,
     }
 
     def __init__(self, db_path: str, metadata_path: str):
@@ -271,14 +273,14 @@ class Manifest:
 
     def get_exif_hash(self, fpath: str) -> Optional[str]:
         cursor = self.conn.cursor()
-        cursor.execute("select exif_hash from images where fpath = ?", (fpath, ))
+        cursor.execute("select exif_hash from images where fpath = ?", (fpath,))
 
         row = cursor.fetchone()
         return row[0] if row else None
 
     def get_metadata_hash(self, fpath: str) -> Optional[str]:
         cursor = self.conn.cursor()
-        cursor.execute("select metadata_hash from images where fpath = ?", (fpath, ))
+        cursor.execute("select metadata_hash from images where fpath = ?", (fpath,))
 
         row = cursor.fetchone()
         return row[0] if row else None
@@ -293,7 +295,8 @@ class Manifest:
     def set_metadata_hash(self, fpath: str, metadata_hash: str) -> None:
         cursor = self.conn.cursor()
         cursor.execute(
-            "update images set metadata_hash = ? where fpath = ?", (metadata_hash, fpath)
+            "update images set metadata_hash = ? where fpath = ?",
+            (metadata_hash, fpath),
         )
         self.conn.commit()
 
@@ -352,10 +355,10 @@ class Manifest:
         cursor = self.conn.cursor()
         cursor.execute(
             """
-    insert or ignore into encoded_images (fpath, mimetype, role, url)
-      values (?, ?, ?, ?)
+    insert or ignore into encoded_images (fpath, mimetype, role, url, published)
+      values (?, ?, ?, ?, ?)
     """,
-            (fpath, mimetype, role, url),
+            (fpath, mimetype, role, url, "false"),
         )
         self.conn.commit()
 
@@ -369,11 +372,63 @@ class Manifest:
         cursor = self.conn.cursor()
         cursor.execute(
             """
-    insert or ignore into encoded_videos (fpath, mimetype, role, url)
-      values (?, ?, ?, ?)
+    insert or ignore into encoded_videos (fpath, mimetype, role, url, published)
+      values (?, ?, ?, ?, ?)
     """,
-            (video.path, mimetype, role, url),
+            (video.path, mimetype, role, url, "false"),
         )
+        self.conn.commit()
+
+    def set_encoded_video_published(self, fpath: str, role: str) -> None:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+        update encoded_videos
+        set published = true
+        where fpath = ? and role = ?;
+        """,
+            (fpath, role)
+        )
+
+        self.conn.commit()
+
+    def get_encoded_video_status(self, fpath: str, role: str) -> bool:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+        select published from encoded_videos
+        where fpath = ? and role = ?;
+        """,
+            (fpath, role)
+        )
+
+        row = cursor.fetchone()
+        return row[0] if row else False
+
+    def get_encoded_image_status(self, fpath: str, role: str) -> bool:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+        select published from encoded_images
+        where fpath = ? and role = ?;
+        """,
+            (fpath, role)
+        )
+
+        row = cursor.fetchone()
+        return row[0] if row else False
+
+    def set_encoded_image_published(self, fpath: str, role: str) -> None:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+        update encoded_images
+        set published = true
+        where fpath = ? and role = ?;
+        """,
+            (fpath, role)
+        )
+
         self.conn.commit()
 
     def add_album_dates(self, fpath: str, min_date: float, max_date: float) -> None:

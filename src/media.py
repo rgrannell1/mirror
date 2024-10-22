@@ -9,7 +9,9 @@ T = TypeVar("T")
 
 
 class IMedia(Protocol):
-    def set_metadata(self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration) -> None:
+    def set_metadata(
+        self, db: "Manifest", attrs: Dict, album: TagfileAlbumConfiguration
+    ) -> None:
         pass
 
 
@@ -17,9 +19,6 @@ class Media:
     """An abstract class for media (video, images)."""
 
     path: str
-
-    def exists(self) -> bool:
-        return os.path.exists(self.path)
 
     @classmethod
     def is_image(cls, path: str) -> bool:
@@ -83,6 +82,8 @@ class Media:
         """Get the tags of an image"""
 
         tag_attr = self.get_xattr_attr(ATTR_TAG, "")
+        if not tag_attr:
+            return set()
 
         return set(tag.strip() for tag in tag_attr.split(",") if tag.strip())
 
@@ -94,5 +95,4 @@ class Media:
     def is_published(self) -> bool:
         """Is this image publishable?"""
 
-        tags = self.get_xattr_tags()
-        return "Published" in tags
+        return "Published" in self.get_xattr_tags()

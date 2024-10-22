@@ -1,9 +1,17 @@
+METADATA_TABLE = """
+create table if not exists metadata (
+  key   text primary key,
+  value text
+)
+"""
+
 ENCODED_IMAGE_TABLE = """
 create table if not exists encoded_images (
-  fpath    text not null,
-  mimetype text not null,
-  role     text not null,
-  url      text not null,
+  fpath       text not null,
+  mimetype    text not null,
+  role        text not null,
+  url         text not null,
+  published   text not null,
 
   primary key (fpath, mimetype, role)
 )
@@ -15,6 +23,7 @@ create table if not exists encoded_videos (
   mimetype       text not null,
   role           text not null,
   url            text not null,
+  published      text not null,
 
   primary key (fpath, mimetype, role)
 )

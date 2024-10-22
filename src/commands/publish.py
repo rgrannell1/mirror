@@ -21,7 +21,6 @@ from src.photo import PhotoVault, Album, Photo
 from src.storage import Storage
 from src.manifest import Manifest
 from src.log import Log
-from src.utils import deterministic_hash
 from src.video import Video
 
 
@@ -67,6 +66,13 @@ def upload_image(db: Manifest, spaces: Storage, image: Photo, image_idx: int) ->
         if not db.has_encoded_image(image, role):
             encoded = image.encode_image(thumbnail_encoding)
 
+            is_published = db.get_encoded_image_status(image.path, role)
+
+            if is_published:
+                continue
+
+            is_published = db.get_encoded_image_status(image.path, role)
+
             image_in_spaces, image_url = spaces.image_status(
                 encoded, format=thumbnail_format
             )
@@ -78,6 +84,8 @@ def upload_image(db: Manifest, spaces: Storage, image: Photo, image_idx: int) ->
             db.add_encoded_image_url(
                 image.path, image_url, role, format=thumbnail_format
             )
+
+        db.set_encoded_image_published(image.path, role)
 
 
 def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) -> None:
@@ -92,14 +100,21 @@ def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) ->
         width = encoding_params["width"]
         height = encoding_params["height"]
 
-        share_audio = video.get_xattr_share_audio()
+        is_published = db.get_encoded_video_status(video.path, role)
+        needs_thumbnail = db.has_video_thumbnail(video)
+        capture_thumbnail = needs_thumbnail and role == FULL_SIZED_ROLE
+
+        if is_published and not capture_thumbnail:
+            continue
 
         upload_file_name = Storage.video_name(video.path, bitrate, width, height)
         video_in_spaces, video_url = spaces.video_status(upload_file_name)
 
-        needs_thumbnail = db.has_video_thumbnail(video)
+        if video_in_spaces:
+            db.set_encoded_video_published(video.path, role)
 
-        if not video_in_spaces or (needs_thumbnail and role == FULL_SIZED_ROLE):
+        if not video_in_spaces or capture_thumbnail:
+            share_audio = video.get_xattr_share_audio()
             Log.info(f"Uploading video #{image_idx} for {video.path}", clear=True)
             encoded_video_path = video.encode_video(
                 upload_file_name, bitrate, width, height, share_audio
@@ -110,6 +125,7 @@ def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) ->
 
             spaces.upload_file_public(upload_file_name, encoded_video_path)
             db.add_encoded_video_url(video, video_url, role)
+            db.set_encoded_video_published(video.path, role)
 
             if role != FULL_SIZED_ROLE:
                 continue
@@ -123,11 +139,16 @@ def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) ->
                 encoded_video_path, {"format": THUMBNAIL_FORMAT, "lossless": False}
             )
 
+            is_published = db.get_encoded_image_status(video.path, THUMBNAIL_ROLE)
+            if is_published:
+                continue
+
             image_in_spaces, image_url = spaces.image_status(
                 encoded_thumbnail, format=THUMBNAIL_FORMAT
             )
 
             if image_in_spaces:
+                db.set_encoded_video_published(video.path, THUMBNAIL_ROLE)
                 continue
 
             Log.info(f"Uploading thumbnail for video #{image_idx} for {video.path}")
@@ -136,6 +157,8 @@ def upload_video(db: Manifest, spaces: Storage, video: Video, image_idx: int) ->
             db.add_encoded_image_url(
                 video.path, image_url, THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT
             )
+
+            db.set_encoded_video_published(video.path, THUMBNAIL_ROLE)
 
 
 def encode_thumbnail_data_url(db: Manifest, image: Photo, image_idx: int) -> None:
@@ -146,9 +169,11 @@ def encode_thumbnail_data_url(db: Manifest, image: Photo, image_idx: int) -> Non
         data_url = f"data:image/bmp;base64,{encoded_content}"
 
         db.add_encoded_image_url(image.path, data_url, "thumbnail_mosaic", "bmp")
+        db.set_encoded_image_published(image.path, "thumbnail_mosaic")
 
 
 def add_album_dates(db: Manifest, dir: str, images: List[Photo]) -> None:
+    """Add the start / end dates to the album metadata"""
     album = Album(dir)
 
     try:
@@ -180,6 +205,8 @@ def copy_metadata_file(metadata_path: str, manifest_path: str) -> None:
 
 
 def publish_images(db: Manifest, spaces: Storage) -> None:
+    """Publish images to object storage"""
+
     image_idx = 1
 
     for image in db.list_publishable_images():
@@ -193,6 +220,8 @@ def publish_images(db: Manifest, spaces: Storage) -> None:
 
 
 def publish_videos(db: Manifest, spaces: Storage) -> None:
+    """Publish videos to object storage"""
+
     video_idx = 1
 
     for video in db.list_publishable_videos():

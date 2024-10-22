@@ -11,7 +11,7 @@ class bcolors:
 
 
 class Colour:
-    """Construct ANSI colours"""
+    """Construct ANSI colour strings for terminal output."""
 
     @classmethod
     def blue(cls, text: str) -> str:
