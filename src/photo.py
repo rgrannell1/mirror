@@ -6,7 +6,6 @@ import os
 from typing import List
 from PIL import Image
 
-import imagehash
 from model import IModel
 
 
@@ -82,8 +81,3 @@ class Photo:
     @classmethod
     def is_a(cls, fpath: str) -> bool:
         return os.path.isfile(fpath) and fpath.endswith(cls.IMAGE_EXTENSIONS)
-
-    def id(self) -> str:
-        """Get a perceptual hash of an image"""
-
-        return str(imagehash.phash(Image.open(self.fpath)))

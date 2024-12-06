@@ -26,6 +26,10 @@ class MediaUploader:
     db: IDatabase
 
     DATA_URL_ROLE = "thumbnail_data_url"
+    THUMBNAIL_ROLE = "video_thumbnail_webp"
+    THUMBNAIL_FORMAT = "webp"
+    FULL_ENCODING_FORMAT = "webp"
+    VIDEO_FORMAT = "webm"
 
     IMAGE_ENCODINGS = [
         ("thumbnail_lossy", {"format": "webp", "quality": 85, "method": 6}),
@@ -149,9 +153,9 @@ class MediaUploader:
 
     def publish_encoding(self, fpath: str, role: str, params: dict) -> str:
         """Encode and publish a video encoding"""
-        format = "webm"
+
         width, height, bitrate = params["width"], params["height"], params["bitrate"]
-        uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, format)
+        uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, self.VIDEO_FORMAT)
 
         encoded_path = VideoEncoder.encode(
             fpath=fpath,
@@ -167,18 +171,18 @@ class MediaUploader:
 
         uploaded_video_url = self.cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
 
-        self.db.add_video_encoding(fpath=fpath, url=uploaded_video_url, role=role, format=format)
+        self.db.add_video_encoding(fpath=fpath, url=uploaded_video_url, role=role, format=self.VIDEO_FORMAT)
         return encoded_path
 
     def publish_thumbnail(self, fpath: str, encoded_path: str):
         """Encode and publish a video thumbnail"""
 
-        encoded_thumbnail = VideoEncoder.encode_thumbnail(encoded_path, {"format": "webp", "quality": 85, "method": 6})
+        encoded_thumbnail = VideoEncoder.encode_thumbnail(encoded_path, {"format": self.THUMBNAIL_FORMAT, "quality": 85, "method": 6})
 
         thumbnail_url = self.cdn.upload_photo(
-            encoded_data=encoded_thumbnail, role="video_thumbnail_webp", format="webp"
+            encoded_data=encoded_thumbnail, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
         )
-        self.db.add_photo_encoding(fpath=fpath, url=thumbnail_url, role="video_thumbnail_webp", format="webp")  # type: ignore
+        self.db.add_photo_encoding(fpath=fpath, url=thumbnail_url, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT)  # type: ignore
 
     def upload(self) -> None:
         """Publish photos and videos to the CDN, and output artifacts"""

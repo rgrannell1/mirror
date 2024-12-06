@@ -18,7 +18,7 @@ from tables import (
     ALBUM_DATA_VIEW,
     ALBUM_CONTENTS_TABLE,
     PHOTO_DATA_VIEW,
-    MEDIA_METADATA_TABLE
+    MEDIA_METADATA_TABLE,
 )
 from video import Video
 
@@ -78,7 +78,7 @@ class SqliteDatabase(IDatabase):
         ALBUM_CONTENTS_TABLE,
         PHOTO_DATA_VIEW,
         VIDEO_DATA_VIEW,
-        MEDIA_METADATA_TABLE
+        MEDIA_METADATA_TABLE,
     }
     conn: sqlite3.Connection
 
@@ -223,19 +223,15 @@ class SqliteDatabase(IDatabase):
             relation = None
             qid = answer.questionId
 
-            if qid == "q01":
-                relation = "county"
-            elif qid == "q02":
-                relation = "summary"
-            elif qid == "q03":
-                relation = "title"
-            elif qid == "q04":
-                relation = "permalink"
-            else:
+            relation = answer.relation()
+            if not relation:
                 raise Exception(f"Unknown questionId: {qid}")
 
-            self.conn.execute("""
+            self.conn.execute(
+                """
             insert or replace into media_metadata_table (src, src_type, relation, target)
                               values (?, ?, ?, ?)
-            """, (answer.contentId, "album", relation, answer.answer))
+            """,
+                (answer.contentId, "album", relation, answer.answer),
+            )
         self.conn.commit()

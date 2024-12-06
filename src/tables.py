@@ -82,17 +82,19 @@ cover_photos AS (
     GROUP BY dpath
 )
 SELECT
-    (SELECT target FROM media_metadata_table
-     WHERE src = media.dpath AND relation = 'permalink') AS id,
-    (SELECT target FROM media_metadata_table
-     WHERE src = media.dpath AND relation = 'title') AS name,
-    media.dpath,
-    COALESCE(photo_count.photos, 0) AS photos_count,
-    COALESCE(video_count.videos, 0) AS videos_count,
-    COALESCE(date_range.min_date, NULL) AS min_date,
-    COALESCE(date_range.max_date, NULL) AS max_date,
-    COALESCE(thumbnail_lossy.url, NULL) AS thumbnail_url,
-    COALESCE(thumbnail_data.url, NULL) AS thumbnail_mosaic_url,
+    (
+      select target from media_metadata_table
+      where src = media.dpath and relation = 'permalink') as id,
+    (
+      select target from media_metadata_table
+      where src = media.dpath and relation = 'title') as name,
+      media.dpath,
+      coalesce(photo_count.photos, 0) as photos_count,
+      coalesce(video_count.videos, 0) as videos_count,
+      coalesce(date_range.min_date, null) as min_date,
+      coalesce(date_range.max_date, null) as max_date,
+      coalesce(thumbnail_lossy.url, null) as thumbnail_url,
+      coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
     (SELECT target FROM media_metadata_table
      WHERE src = media.dpath AND relation = 'county') AS flags,
     (SELECT target FROM media_metadata_table
@@ -116,8 +118,10 @@ LEFT JOIN (
     FROM videos
     GROUP BY dpath
 ) video_count ON media.dpath = video_count.dpath
-LEFT JOIN date_range ON media.dpath = date_range.dpath
-LEFT JOIN cover_photos ON media.dpath = cover_photos.dpath
+LEFT JOIN date_range
+  ON media.dpath = date_range.dpath
+LEFT JOIN cover_photos
+  ON media.dpath = cover_photos.dpath
 LEFT JOIN encoded_photos thumbnail_lossy
     ON cover_photos.cover = thumbnail_lossy.fpath
     AND thumbnail_lossy.role = 'thumbnail_lossy'
