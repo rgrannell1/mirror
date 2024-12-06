@@ -1,87 +1,138 @@
-import math
-import os
-import re
-import sys
+"""Mirror produces artifacts - files derived from the database. This file describes the artifacts
+that are output, and checks they meet the expected constraints"""
+
+from datetime import datetime
 import json
-import time
-from typing import List, Protocol
-import markdown
-from src.manifest import Manifest
-from src.utils import deterministic_hash
+import os
+from typing import Any, List, Optional, Protocol
+
+from album import AlbumModel
+from config import DATA_URL, PHOTOS_URL
+from database import IDatabase
+from linnaeus import ILinnaeusDatabase
+from photo import PhotoModel
+from utils import deterministic_hash_str
+from video import VideoModel
 
 
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
 
-    @classmethod
-    def content(cls, db: Manifest) -> str:
+    def content(db: IDatabase, self) -> str:
+        """Return the content of the artifact"""
         pass
 
-
-class ImagesArtifacts(IArtifact):
-    """Generate an artifact describing the images in the database."""
-
-    HEADERS = [
-        "fpath",
-        "id",
-        "album_id",
-        "tags",
-        "description",
-        "date_time",
-        "f_number",
-        "focal_length",
-        "model",
-        "iso",
-        "blur",
-        "shutter_speed",
-        "width",
-        "height",
-        "thumbnail_url",
-        "thumbnail_data_url",
-        "image_url",
-        "rating",
-        "subject",
-    ]
+    @classmethod
+    def short_cdn_url(self, url: Optional[str]) -> str:
+        return url.replace(PHOTOS_URL, "") if url else ""
 
     @classmethod
-    def content(cls, db: Manifest) -> str:
-        cursor = db.conn.cursor()
-        cursor.execute("select * from images_artifact")
+    def short_data_url(self, url: Optional[str]) -> str:
+        return url.replace(DATA_URL, "") if url else ""
 
-        rows = [cls.HEADERS]
 
-        for row in cursor.fetchall():
-            fpath, album_permalink, tags, tags_v2, description, *rest = row
+class MediaArtifact(IArtifact):
+    """Build artifact describing secondary information about media in the database"""
 
-            if not album_permalink:
-                raise ValueError(
-                    f"did not find a permalink for album '{fpath}'. Please update {fpath}/tags.md"
-                )
+    def content(db: IDatabase, self) -> str:
+        return "[]"
 
-            joined_tags = {
-                tag.strip()
-                for tag in re.split(r"\s*,\s*", tags if tags else "")
-                + re.split(r"\s*,\s*", tags_v2 if tags_v2 else "")
-                if tag
+
+class EnvArtifact(IArtifact):
+    """Build artifact describing build information"""
+
+    publication_id: str
+
+    def __init__(self, publication_id: str):
+        self.publication_id = publication_id
+
+    def content(self, _: IDatabase) -> str:
+        return json.dumps(
+            {
+                "photos_url": PHOTOS_URL,
+                "data_url": "data:image/bmp;base64,",
+                "publication_id": self.publication_id,
             }
+        )
 
-            rows.append(
-                [
-                    fpath,
-                    deterministic_hash(fpath),
-                    album_permalink,
-                    ",".join(joined_tags),
-                    markdown.markdown(description),
-                ]
-                + rest
-            )
+
+class AlbumsArtifact(IArtifact):
+    """Build artifact describing albums in the database"""
+
+    HEADERS = [
+        "id",
+        "album_name",
+        "dpath",
+        "photos_count",
+        "videos_count",
+        "min_date",
+        "max_date",
+        "thumbnail_url",
+        "thumbnail_mosaic_url",
+        "flags",
+        "description",
+    ]
+
+    def validate(self, album: AlbumModel) -> None:
+        pass
+
+    def process(self, album: AlbumModel) -> List[Any]:
+        self.validate(album)
+
+        return [
+            album.id,
+            album.name,
+            album.photos_count,
+            album.videos_count,
+            album.min_date,
+            album.max_date,
+            AlbumsArtifact.short_cdn_url(album.thumbnail_url),
+            AlbumsArtifact.short_data_url(album.thumbnail_mosaic_url),
+            album.flags,
+        ]
+
+    def content(self, db: IDatabase):
+        rows: List[List[Any]] = [self.HEADERS]
+
+        for album in db.list_album_data():
+            self.validate(album)
+            rows.append(self.process(album))
 
         return json.dumps(rows)
 
 
-class VideoArtifacts(IArtifact):
+class PhotosArtifact(IArtifact):
+    """Build artifact describing images in the database"""
+
+    HEADERS = ["id", "album_id", "tags", "thumbnail_url", "thumbnail_mosaic_url", "full_image"]
+
+    def validate(self, photo: PhotoModel) -> None:
+        pass
+
+    def process(self, photo: PhotoModel) -> List[Any]:
+        return [
+            deterministic_hash_str(photo.fpath),
+            photo.album_id,
+            photo.tags,
+            PhotosArtifact.short_cdn_url(photo.thumbnail_url),
+            PhotosArtifact.short_data_url(photo.thumbnail_mosaic_url),
+            PhotosArtifact.short_cdn_url(photo.full_image),
+        ]
+
+    def content(self, db: IDatabase) -> str:
+        rows: List[List[Any]] = [self.HEADERS]
+
+        for photo in db.list_photo_data():
+            self.validate(photo)
+            rows.append(self.process(photo))
+
+        return json.dumps(rows)
+
+
+class VideosArtifact(IArtifact):
+    """Build artifact describing videos in the database"""
+
     HEADERS = [
-        "fpath",
         "id",
         "album_id",
         "tags",
@@ -93,157 +144,70 @@ class VideoArtifacts(IArtifact):
         "poster_url",
     ]
 
-    @classmethod
-    def content(cls, db: Manifest) -> str:
-        cursor = db.conn.cursor()
-        cursor.execute("select * from videos_artifact")
-        rows = [cls.HEADERS]
+    def validate(self, video: VideoModel) -> None:
+        pass
 
-        for row in cursor.fetchall():
-            fpath, album_permalink, *rest = row
+    def process(self, video: VideoModel) -> List[Any]:
+        return [
+            deterministic_hash_str(video.fpath),
+            video.album_id,
+            video.tags,
+            video.description,
+            VideosArtifact.short_cdn_url(video.video_url_unscaled),
+            VideosArtifact.short_cdn_url(video.video_url_1080p),
+            VideosArtifact.short_cdn_url(video.video_url_720p),
+            VideosArtifact.short_cdn_url(video.video_url_480p),
+            VideosArtifact.short_cdn_url(video.poster_url),
+        ]
 
-            if not album_permalink:
-                raise ValueError(
-                    f"did not find a permalink for image '{fpath}'. Please update {fpath}/tags.md"
-                )
+    def content(self, db: IDatabase) -> str:
+        rows: List[List[Any]] = [self.HEADERS]
 
-            rows.append(
-                [
-                    fpath,
-                    deterministic_hash(fpath),
-                    album_permalink,
-                ]
-                + rest
-            )
-
-        return json.dumps(rows)
-
-
-class AlbumArtifacts(IArtifact):
-    """Generate an artifact describing the albums in the database."""
-
-    HEADERS = [
-        "id",
-        "album_name",
-        "min_date",
-        "max_date",
-        "description",
-        "image_count",
-        "thumbnail_url",
-        "thumbnail_mosaic_url",
-        "flags",
-    ]
-
-    @classmethod
-    def content(cls, db: Manifest) -> str:
-        cursor = db.conn.cursor()
-        cursor.execute("select * from albums_artifact")
-
-        messages = []
-        rows = [cls.HEADERS]
-
-        for row in cursor.fetchall():
-            if not row[0]:
-                messages.append(
-                    f"did not find a permalink for album '{row[1]}'. Please update {row[0]}/tags.md"
-                )
-                continue
-
-            if not row[6]:
-                messages.append(
-                    f"did not find a cover image for album '{row[1]}'. Please update {row[0]}/tags.md"
-                )
-                continue
-
-            permalink, album_name, min_date, max_date, description, *rest = row
-
-            rows.append(
-                [
-                    permalink,
-                    album_name,
-                    min_date,
-                    max_date,
-                    markdown.markdown(description),
-                ]
-                + rest
-            )
-
-        if messages:
-            print("\n".join(messages), file=sys.stderr)
+        for video in db.list_video_data():
+            self.validate(video)
+            rows.append(self.process(video))
 
         return json.dumps(rows)
 
 
-class MetadataArtifacts(IArtifact):
-    @staticmethod
-    def get_subsumed(db: Manifest, is_a: str) -> List[str]:
-        cursor = db.conn.cursor()
-        cursor.execute(
-            """
-    select distinct(source) from photo_relations
-      where relation = 'is-a' and target = ?
-      order by source;
-    """,
-            (is_a,),
-        )
+class ArtifactBuilder:
+    """Build artifacts from the database, i.e publish
+    the database to a directory"""
 
-        children = set()
+    def __init__(self, db: IDatabase, output_dir: str):
+        self.db = db
+        self.output_dir = output_dir
 
-        for row in cursor.fetchall():
-            sources = row[0].split(",")
-            for source in sources:
-                children.add(source)
+    def remove_artifacts(self, dpath: str) -> None:
+        # clear existing albums and images
+        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "photos", "videos"))]
 
-        return sorted(list(children))
+        for file in removeable:
+            os.remove(f"{dpath}/{file}")
 
-    @staticmethod
-    def content(db: Manifest) -> str:
-        return json.dumps(
-            {
-                "Bird": {"children": MetadataArtifacts.get_subsumed(db, "Bird")},
-                "Plane": {"children": MetadataArtifacts.get_subsumed(db, "Plane")},
-                "Helicopter": {
-                    "children": MetadataArtifacts.get_subsumed(db, "Helicopter")
-                },
-                "Mammal": {"children": MetadataArtifacts.get_subsumed(db, "Mammal")},
-            }
-        )
+    def publication_id(self) -> str:
+        """Generate a unique publication id"""
 
+        return deterministic_hash_str(str(datetime.now()))
 
-def remove_current_artifacts(manifest_path: str) -> None:
-    # clear existing albums and images
-    removeable = [
-        file
-        for file in os.listdir(manifest_path)
-        if file.startswith(("albums", "images", "videos"))
-    ]
+    def build(self) -> str:
+        pid = self.publication_id()
+        self.remove_artifacts(self.output_dir)
 
-    for file in removeable:
-        os.remove(f"{manifest_path}/{file}")
+        albums = AlbumsArtifact()
+        with open(f"{self.output_dir}/albums.{pid}.json", "w") as conn:
+            conn.write(albums.content(self.db))
 
+        photos = PhotosArtifact()
+        with open(f"{self.output_dir}/photos.{pid}.json", "w") as conn:
+            conn.write(photos.content(self.db))
 
-def create_artifacts(db: Manifest, manifest_path: str) -> None:
-    """Create output artifacts"""
+        env = EnvArtifact(publication_id=pid)
+        with open(f"{self.output_dir}/env.json", "w") as conn:
+            conn.write(env.content(self.db))
 
-    publication_id = deterministic_hash(str(math.floor(time.time())))
-    remove_current_artifacts(manifest_path)
+        videos = VideosArtifact()
+        with open(f"{self.output_dir}/videos.{pid}.json", "w") as conn:
+            conn.write(videos.content(self.db))
 
-    # create new albums and images
-    with open(f"{manifest_path}/albums.{publication_id}.json", "w") as conn:
-        albums = AlbumArtifacts.content(db)
-        conn.write(albums)
-
-    with open(f"{manifest_path}/images.{publication_id}.json", "w") as conn:
-        images = ImagesArtifacts.content(db)
-        conn.write(images)
-
-    with open(f"{manifest_path}/videos.{publication_id}.json", "w") as conn:
-        images = VideoArtifacts.content(db)
-        conn.write(images)
-
-    with open(f"{manifest_path}/env.json", "w") as conn:
-        conn.write(json.dumps({"publication_id": publication_id}))
-
-    with open(f"{manifest_path}/metadata.json", "w") as conn:
-        md = MetadataArtifacts.content(db)
-        conn.write(md)
+        return pid

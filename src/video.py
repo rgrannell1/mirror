@@ -1,142 +1,75 @@
-import io
+"""A class for interacting with videos"""
+
+from dataclasses import dataclass
 import os
-import cv2
-import ffmpeg
-from src.album import Album
-from src.constants import ATTR_SHARE_AUDIO, ATTR_TAG, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
-from src.media import IMedia, Media
-from PIL import Image, ImageOps
+from typing import List
 
-from typing import Dict, Optional, Tuple
-from src.types import ImageContent, TagfileAlbumConfiguration
-from src.utils import deterministic_byte_hash
+from model import IModel
 
 
-class Video(Media, IMedia):
-    """A video file."""
+@dataclass
+class EncodedVideoModel(IModel):
+    fpath: str
+    mimetype: str
+    role: str
+    url: str
 
-    def __init__(self, path: str, metadata_path: str):
-        if not isinstance(path, str):
-            raise ValueError("path must be a string")
+    @classmethod
+    def from_row(cls, row: List) -> "EncodedVideoModel":
+        (fpath, mimetype, role, url) = row
 
-        self.path = path
+        return EncodedVideoModel(fpath=fpath, mimetype=mimetype, role=role, url=url)
 
-    def get_xattr_share_audio(self) -> bool:
-        """Should the audio also be shared?"""
 
-        return True if self.get_xattr_attr(ATTR_SHARE_AUDIO) == "true" else False
+@dataclass
+class VideoModel(IModel):
+    fpath: str
+    album_id: str
+    tags: List[str]
+    description: str
+    video_url_unscaled: str
+    video_url_1080p: str
+    video_url_720p: str
+    video_url_480p: str
+    poster_url: str
 
-    def get_resolution(self) -> Tuple[Optional[int], Optional[int]]:
-        "Returns resolution of the video, if it's possible to determine?"
+    @classmethod
+    def from_row(cls, row: List) -> "VideoModel":
+        (
+            fpath,
+            album_id,
+            tags,
+            description,
+            video_url_unscaled,
+            video_url_1080p,
+            video_url_720p,
+            video_url_480p,
+            poster_url,
+        ) = row
 
-        probe = ffmpeg.probe(self.path)
-        video_streams = [
-            stream for stream in probe["streams"] if stream["codec_type"] == "video"
-        ]
+        return VideoModel(
+            fpath=fpath,
+            album_id=album_id,
+            tags=tags,
+            description=description,
+            video_url_unscaled=video_url_unscaled,
+            video_url_1080p=video_url_1080p,
+            video_url_720p=video_url_720p,
+            video_url_480p=video_url_480p,
+            poster_url=poster_url,
+        )
 
-        if video_streams:
-            width = int(video_streams[0]["width"])
-            height = int(video_streams[0]["height"])
 
-            return width, height
+class Video:
+    """Represents a video file"""
 
-        return None, None
+    fpath: str
 
-    def set_metadata(self, attrs: Dict, album: TagfileAlbumConfiguration) -> None:
-        """set metadata as xattrs on the video"""
+    VIDEO_EXTENSIONS = (".mp4", ".MP4")
 
-        Album(album.fpath).set_xattrs(album.attrs)
+    def __init__(self, fpath: str):
+        self.fpath = fpath
 
-        for attr, value in attrs.items():
-            # skip attributes without a defined value
-            if value is None:
-                continue
-
-            try:
-                if isinstance(value, list):
-                    self.set_xattr_attr(attr, ", ".join(value))
-                elif isinstance(value, bool):
-                    self.set_xattr_attr(attr, "true" if value else "false")
-                else:
-                    self.set_xattr_attr(attr, value)
-            except Exception as err:
-                raise ValueError(f"failed to set {attr} to {value} on image") from err
-
-    def fetch_thumbnail(self, fpath: str, params: Dict) -> ImageContent:
-        video = cv2.VideoCapture(fpath)
-        ret, frame = video.read()
-        if not ret:
-            raise ValueError(f"Failed to read frame from {fpath}")
-
-        img_bytes = cv2.imencode(".webp", frame)[1].tobytes()
-
-        img = Image.open(io.BytesIO(img_bytes))
-        thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
-
-        data = list(thumb.getdata())
-        no_exif = Image.new(thumb.mode, thumb.size)
-        no_exif.putdata(data)
-
-        with io.BytesIO() as output:
-            # return the image hash and contents
-
-            no_exif.save(output, **params)
-            contents = output.getvalue()
-
-            return ImageContent(
-                hash=deterministic_byte_hash(contents), content=contents
-            )
-
-    def encode_video(
-        self,
-        upload_file_name: str,
-        video_bitrate: str,
-        width: Optional[int],
-        height: Optional[int],
-        share_audio: bool = False,
-    ) -> Optional[str]:
-        """Encode the video"""
-
-        actual_width, actual_height = self.get_resolution()
-        if (
-            actual_width
-            and actual_height
-            and width
-            and height
-            and (actual_width < width or actual_height < height)
-        ):
-            return None
-
-        VIDEO_CODEC = "libx264"
-
-        input_args: Dict = {}
-        kwargs = {
-            "vcodec": VIDEO_CODEC,
-            "video_bitrate": video_bitrate,
-            "strict": "-2",
-            "movflags": "+faststart",
-            "preset": "slow",
-            "format": "mp4",
-            "loglevel": "error",
-        }
-
-        if share_audio:
-            kwargs["acodec"] = "aac"
-        else:
-            input_args["an"] = None
-
-        if width and height:
-            kwargs["vf"] = f"scale={width}:{height}"
-
-        fpath = f"/tmp/mirror/{upload_file_name}"
-
-        os.makedirs(os.path.dirname(fpath), exist_ok=True)
-
-        try:
-            os.remove(fpath)
-        except FileNotFoundError:
-            pass
-
-        (ffmpeg.input(self.path, **input_args).output(fpath, **kwargs).run())
-
-        return fpath
+    @classmethod
+    def is_a(cls, fpath: str) -> bool:
+        return os.path.isfile(fpath) and fpath.endswith(cls.VIDEO_EXTENSIONS)

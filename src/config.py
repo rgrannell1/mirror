@@ -1,9 +1,6 @@
-"""Environment variables"""
+"""Configuration used by the project."""
 
 import os
-from typing import Dict, Optional
-import yaml
-from dataclasses import dataclass
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,29 +12,9 @@ SPACES_BUCKET = os.getenv("SPACES_BUCKET")
 SPACES_ACCESS_KEY_ID = os.getenv("SPACES_ACCESS_KEY_ID")
 SPACES_SECRET_KEY = os.getenv("SPACES_SECRET_KEY")
 
+PHOTOS_URL = "https://photos-cdn.rgrannell.xyz"
+DATA_URL = "data:image/bmp;base64,"
 
-@dataclass
-class MirrorConfig:
-    """Load XDG configuration from a file."""
-
-    manifest: Optional[str]
-    metadata: Optional[str]
-    directory: Optional[str]
-
-    @classmethod
-    def exists(cls) -> bool:
-        config_path = os.path.expanduser("/home/rg/.config/mirror/config.yaml")
-        return os.path.exists(config_path)
-
-    @classmethod
-    def read(cls, args: Dict) -> "MirrorConfig":
-        config_path = os.path.expanduser("/home/rg/.config/mirror/config.yaml")
-
-        with open(config_path, "r") as file:
-            content = yaml.load(file, Loader=yaml.FullLoader)
-
-        return MirrorConfig(
-            manifest=content.get("manifest", args.get("<manifest>")),
-            metadata=content.get("metadata", args.get("--metadata")),
-            directory=content.get("directory", args.get("<dir>")),
-        )
+PHOTO_DIRECTORY = "/home/rg/Drive/Media"
+DATABASE_PATH = "/home/rg/media.db"
+OUTPUT_DIRECTORY = "/home/rg/Code/websites/photos.rgrannell.xyz/manifest"

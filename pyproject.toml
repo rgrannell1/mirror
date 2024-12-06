@@ -1,9 +1,54 @@
-[tool.autopep8]
-max_line_length = 140
-in-place = true
-recursive = true
-aggressive = 3
+[project]
+name = "vermiel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "boto3",
+  "botocore",
+  "dateparser",
+  "docopt",
+  "ffmpeg-python",
+  "jsonschema",
+  "imagehash",
+  "numpy",
+  "opencv-python",
+  "Pillow",
+  "python-dotenv",
+  "PyYAML",
+  "sqlean.py"
+]
 
-[tool.yapf]
-based_on_style = "pep8"
-indent_width = 2
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 120
+indent-width = 4

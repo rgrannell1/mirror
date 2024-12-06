@@ -1,23 +1,21 @@
+"""Various utility functions."""
+
 import hashlib
-from typing import Dict
 
 
-def deterministic_hash(data: str) -> str:
-    return hashlib.md5(data.encode()).hexdigest()[:10]
+def deterministic_hash(data: bytes) -> str:
+    """Returns a deterministic hash of the data."""
 
-
-def deterministic_byte_hash(data: bytes) -> str:
     return hashlib.md5(data).hexdigest()[:10]
 
 
-def deterministic_hash_attrs(data: Dict) -> str:
-    items = sorted(list(data.items()), key=lambda pair: pair[0])
-    hasheable = []
+def deterministic_hash_str(data: str) -> str:
+    """Returns a deterministic hash of a data string"""
 
-    for key, value in items:
-        if isinstance(value, list):
-            hasheable.append(f"{key}={''.join(value)}")
-        else:
-            hasheable.append(f"{key}={str(value)}")
+    return deterministic_byte_hash(data.encode())
 
-    return deterministic_hash("".join(hasheable))
+
+def deterministic_byte_hash(data: bytes) -> str:
+    """Returns a deterministic hash of data bytes"""
+
+    return hashlib.md5(data).hexdigest()[:10]

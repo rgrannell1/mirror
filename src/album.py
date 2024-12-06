@@ -1,85 +1,84 @@
-"""Album for a photo-album""" ""
+"""Photo albums"""
 
-from typing import Optional
 from dataclasses import dataclass
-from functools import lru_cache
-import xattr
-
-from .constants import (
-    ATTR_ALBUM_TITLE,
-    ATTR_ALBUM_DESCRIPTION,
-    ATTR_ALBUM_COVER,
-    ATTR_ALBUM_GEOLOCATION,
-    ATTR_ALBUM_PERMALINK,
-)
-from typing import Dict, TypeVar
-
-
-@dataclass
-class AlbumMetadata:
-    """A dataclass representing metadata for an album"""
-
-    fpath: str
-    title: str
-    permalink: str
-    cover: str
-    description: str = ""
-    geolocation: str = ""
-
-
-T = TypeVar("T")
+import os
+from typing import Iterator, List
+from media import IMedia
+from model import IModel
+from photo import Photo
+from video import Video
 
 
 class Album:
-    """A photo-album"""
+    """A class representing a photo album. This corresponds to a folder with a `Published`
+    directory underneath"""
 
-    path: str
+    def __init__(self, dpath: str):
+        self.dpath = dpath
 
-    def __init__(self, path: str):
-        self.path = path
+    def published_path(self) -> str:
+        """Get the directory of published media"""
+        return os.path.join(self.dpath, "Published")
 
-    @lru_cache(maxsize=None)
-    def list_xattrs(self) -> set:
-        """List all extended-attributes on the album"""
+    def published(self) -> bool:
+        """Is there any published media?"""
+        return os.path.isdir(self.published_path())
 
-        return {attr for attr in xattr.listxattr(self.path)}
+    def media(self) -> Iterator[IMedia]:
+        """Yield all media from the photo-album"""
 
-    @lru_cache(maxsize=None)
-    def has_xattr(self, attr: str) -> bool:
-        """Check if an extended-attribute exists on the album"""
+        if not self.published():
+            return
 
-        return attr in self.list_xattrs()
+        for fname in os.listdir(self.published_path()):
+            fpath = os.path.join(self.published_path(), fname)
 
-    @lru_cache(maxsize=None)
-    def get_xattr(self, attr: str, default: Optional[T] = None) -> str | Optional[T]:
-        """Get an extended-attribute from the album"""
+            if Photo.is_a(fpath):
+                yield Photo(fpath)
+            elif Video.is_a(fpath):
+                yield Video(fpath)
 
-        if default is not None and not self.has_xattr(attr):
-            return default
 
-        return xattr.getxattr(self.path, attr).decode("utf-8")
+@dataclass
+class AlbumModel(IModel):
+    id: str
+    name: str
+    dpath: str
+    photos_count: int
+    videos_count: int
+    min_date: str
+    max_date: str
+    thumbnail_url: str
+    thumbnail_mosaic_url: str
+    flags: List[str]
+    description: str
 
-    def set_xattrs(self, attrs: Dict[str, str]) -> None:
-        """Set metadata on the album as extended-attributes"""
+    @classmethod
+    def from_row(cls, row) -> "AlbumModel":
+        (
+            id,
+            name,
+            dpath,
+            photos_count,
+            videos_count,
+            min_date,
+            max_date,
+            thumbnail_url,
+            thumbnail_mosaic_url,
+            flags,
+            description,
+        ) = row
 
-        for attr, value in attrs.items():
-            xattr.setxattr(self.path, attr.encode(), value.encode())
-
-    def get_metadata(self) -> Optional[AlbumMetadata]:
-        """Get metadata from an image as extended-attributes"""
-
-        # No metadata is set on the album; ignore it.
-        if not self.has_xattr(ATTR_ALBUM_TITLE):
-            return None
-
-        cover = self.get_xattr(ATTR_ALBUM_COVER)
-        permalink = self.get_xattr(ATTR_ALBUM_PERMALINK, "")
-
-        return AlbumMetadata(
-            fpath=self.path,
-            title=self.get_xattr(ATTR_ALBUM_TITLE),
-            permalink=permalink,
-            description=self.get_xattr(ATTR_ALBUM_DESCRIPTION, ""),
-            cover=cover,
-            geolocation=self.get_xattr(ATTR_ALBUM_GEOLOCATION, ""),
+        return AlbumModel(
+            id=id,
+            name=name,
+            dpath=dpath,
+            photos_count=photos_count,
+            videos_count=videos_count,
+            min_date=min_date,
+            max_date=max_date,
+            thumbnail_url=thumbnail_url,
+            thumbnail_mosaic_url=thumbnail_mosaic_url,
+            flags=flags.split(","),
+            description=description,
         )

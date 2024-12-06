@@ -10,3 +10,6 @@ env/
 # Local Netlify folder
 .netlify
 .ruff_cache/
+.python-version
+test_artifacts/
+*.egg-info.
