@@ -149,6 +149,7 @@ class MediaUploader:
                 print(err, file=sys.stderr)
 
     def is_silent(self, fpath: str) -> bool:
+        """is a video silent?"""
         return "+silent" not in fpath
 
     def publish_encoding(self, fpath: str, role: str, params: dict) -> str:
@@ -177,12 +178,16 @@ class MediaUploader:
     def publish_thumbnail(self, fpath: str, encoded_path: str):
         """Encode and publish a video thumbnail"""
 
-        encoded_thumbnail = VideoEncoder.encode_thumbnail(encoded_path, {"format": self.THUMBNAIL_FORMAT, "quality": 85, "method": 6})
+        encoded_thumbnail = VideoEncoder.encode_thumbnail(
+            encoded_path, {"format": self.THUMBNAIL_FORMAT, "quality": 85, "method": 6}
+        )
 
         thumbnail_url = self.cdn.upload_photo(
             encoded_data=encoded_thumbnail, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
         )
-        self.db.add_photo_encoding(fpath=fpath, url=thumbnail_url, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT)  # type: ignore
+        self.db.add_photo_encoding(
+            fpath=fpath, url=thumbnail_url, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
+        )  # type: ignore
 
     def upload(self) -> None:
         """Publish photos and videos to the CDN, and output artifacts"""

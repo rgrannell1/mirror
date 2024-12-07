@@ -66,13 +66,25 @@ class CDN:
     def url(self, key: str) -> str:
         return f"{PHOTOS_URL}/{key}"
 
+    def has_object(self, name: str) -> bool:
+        try:
+            self.storage_client.head_object(Bucket=SPACES_BUCKET, Key=name)
+            return True
+        except self.storage_client.exceptions.ClientError as err:
+            if err.response["Error"]["Code"] == "404":
+                return False
+            else:
+                raise
+
     def upload_photo(self, encoded_data: PhotoContent, role: str, format: str = "webp") -> str:
         """Upload an image to the CDN bucket. Return a CDN link"""
-
         prefix = deterministic_hash_str(encoded_data.hash() + role)
 
         name = f"{prefix}.{format}"
-        self.upload(name, encoded_data.content)
+
+        # why re-upload existing images if the media tables are dropped?
+        if not self.has_object(name):
+            self.upload(name, encoded_data.content)
 
         return self.url(name)
 
@@ -82,17 +94,18 @@ class CDN:
         if not encoded_path.startswith("/tmp"):
             raise ValueError(f"Refusing to upload unencoded content {name}")
 
-        self.storage_client.upload_file(
-            Filename=encoded_path,
-            Bucket=SPACES_BUCKET,
-            Key=name,
-            ExtraArgs={
-                "ContentDisposition": "inline",
-                "CacheControl": "public, max-age=31536000, immutable",
-                "ContentType": "video/mp4",
-                "ACL": "public-read",
-            },
-        )
+        if not self.has_object(name):
+            self.storage_client.upload_file(
+                Filename=encoded_path,
+                Bucket=SPACES_BUCKET,
+                Key=name,
+                ExtraArgs={
+                    "ContentDisposition": "inline",
+                    "CacheControl": "public, max-age=31536000, immutable",
+                    "ContentType": "video/mp4",
+                    "ACL": "public-read",
+                },
+            )
 
         return self.url(name)
 
