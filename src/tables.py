@@ -138,7 +138,8 @@ create view if not exists photo_data as
     "" as tags,
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
-    coalesce(full_image.url, null) as full_image
+    coalesce(full_image.url, null) as full_image,
+    coalesce(exif.created_at, null) as created_at
   from photos
   left join album_data
     on photos.dpath = album_data.dpath
@@ -148,6 +149,8 @@ create view if not exists photo_data as
     on photos.fpath = thumbnail_data.fpath and thumbnail_data.role = 'thumbnail_data_url'
   left join encoded_photos full_image
     on photos.fpath = full_image.fpath and full_image.role = 'full_image_lossless'
+  left join exif
+    on photos.fpath = exif.fpath
   order by photos.fpath desc;
 """
 
@@ -179,6 +182,8 @@ create view if not exists video_data as
   order by videos.fpath desc;
 """
 
+# Stores semantic data about the media in this database, collected from
+# Linnaues and other sources
 MEDIA_METADATA_TABLE = """
 create table if not exists media_metadata_table (
   src         text not null,

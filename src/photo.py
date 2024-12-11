@@ -47,6 +47,7 @@ class PhotoModel(IModel):
     thumbnail_url: str
     thumbnail_mosaic_url: str
     full_image: str
+    created_at: int
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoModel":
@@ -57,6 +58,7 @@ class PhotoModel(IModel):
             thumbnail_url,
             thumbnail_mosaic_url,
             full_image,
+            created_at
         ) = row
 
         return PhotoModel(
@@ -66,6 +68,7 @@ class PhotoModel(IModel):
             thumbnail_url=thumbnail_url,
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             full_image=full_image,
+            created_at=created_at
         )
 
 

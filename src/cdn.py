@@ -84,6 +84,7 @@ class CDN:
 
         # why re-upload existing images if the media tables are dropped?
         if not self.has_object(name):
+            print(f"Uploading {name} to CDN")
             self.upload(name, encoded_data.content)
 
         return self.url(name)
@@ -95,6 +96,7 @@ class CDN:
             raise ValueError(f"Refusing to upload unencoded content {name}")
 
         if not self.has_object(name):
+            print(f"Uploading {name} to CDN")
             self.storage_client.upload_file(
                 Filename=encoded_path,
                 Bucket=SPACES_BUCKET,
