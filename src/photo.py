@@ -51,15 +51,7 @@ class PhotoModel(IModel):
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoModel":
-        (
-            fpath,
-            album_id,
-            tags,
-            thumbnail_url,
-            thumbnail_mosaic_url,
-            full_image,
-            created_at
-        ) = row
+        (fpath, album_id, tags, thumbnail_url, thumbnail_mosaic_url, full_image, created_at) = row
 
         return PhotoModel(
             fpath=fpath,
@@ -68,7 +60,7 @@ class PhotoModel(IModel):
             thumbnail_url=thumbnail_url,
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             full_image=full_image,
-            created_at=created_at
+            created_at=created_at,
         )
 
 

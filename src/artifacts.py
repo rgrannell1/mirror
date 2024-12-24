@@ -14,6 +14,7 @@ from utils import deterministic_hash_str
 from video import VideoModel
 from flags import Flags
 
+
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
 
@@ -32,6 +33,7 @@ class IArtifact(Protocol):
     @classmethod
     def flags(self, countries: List[str]) -> str:
         return Flags.from_countries(countries)
+
 
 class MediaArtifact(IArtifact):
     """Build artifact describing secondary information about media in the database"""
@@ -95,7 +97,7 @@ class AlbumsArtifact(IArtifact):
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
             AlbumsArtifact.short_data_url(album.thumbnail_mosaic_url),
             AlbumsArtifact.flags(album.flags),
-            album.description
+            album.description,
         ]
 
     def content(self, db: IDatabase):
@@ -180,6 +182,62 @@ class VideosArtifact(IArtifact):
         return json.dumps(rows)
 
 
+class RSSArtifact(IArtifact):
+    """Build artifact describing RSS feed"""
+
+    def image_html(self, photo: PhotoModel) -> str:
+        return f'<img src="{photo.full_image}"/>'
+
+    def video_html(self, video: VideoModel) -> str:
+        return f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>'
+
+    def media(self, db: IDatabase) -> List[dict]:
+        photos = db.list_photo_data()
+        videos = db.list_video_data()
+
+        media: List[dict] = []
+
+        for video in videos:
+            media.append(
+                {
+                    "id": video.poster_url,
+                    "url": video.video_url_unscaled,
+                    "image": video.poster_url,
+                    "content_html": self.video_html(video),
+                    "fpath": video.fpath,
+                }
+            )
+
+        for photo in photos:
+            media.append(
+                {
+                    "id": photo.thumbnail_url,
+                    "url": photo.thumbnail_url,
+                    "image": photo.thumbnail_url,
+                    "content_html": self.image_html(photo),
+                    "fpath": photo.fpath,
+                }
+            )
+
+        return [
+            {key: value for key, value in media_item.items() if key != "fpath"}
+            for media_item in sorted(media, key=lambda media: media["fpath"])
+        ]
+
+    def content(self, db: IDatabase) -> str:
+        return json.dumps(
+            {
+                "version": "https://jsonfeed.org/version/1.1",
+                "title": "photos.rgrannell.xyz",
+                "home_page_url": "https://photos.rgrannell.xyz",
+                "feed_url": "https://photos.rgrannell.xyz/feed.json",
+                "description": "Photos and videos",
+                "language": "en-IE",
+                "items": self.media(db),
+            }
+        )
+
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -221,5 +279,9 @@ class ArtifactBuilder:
         videos = VideosArtifact()
         with open(f"{self.output_dir}/videos.{pid}.json", "w") as conn:
             conn.write(videos.content(self.db))
+
+        rss = RSSArtifact()
+        with open(f"{self.output_dir}/feed.json", "w") as conn:
+            conn.write(rss.content(self.db))
 
         return pid

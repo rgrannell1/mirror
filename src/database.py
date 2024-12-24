@@ -4,6 +4,7 @@ import os
 import sqlite3
 from typing import Iterator, Protocol, Set
 from exif import PhotoExifData
+from phash import PhashData
 from media import IMedia
 from photo import Photo, EncodedPhotoModel, PhotoModel
 from video import EncodedVideoModel, VideoModel
@@ -19,6 +20,7 @@ from tables import (
     ALBUM_CONTENTS_TABLE,
     PHOTO_DATA_VIEW,
     MEDIA_METADATA_TABLE,
+    PHASHES_TABLE,
 )
 from video import Video
 
@@ -46,7 +48,13 @@ class IDatabase(Protocol):
     def has_exif(self, fpath: str) -> bool:
         pass
 
+    def has_phash(self, fpath: str) -> bool:
+        pass
+
     def write_media(self, media: Iterator[IMedia]) -> None:
+        pass
+
+    def write_phash(self, phashes: Iterator[PhashData]) -> None:
         pass
 
     def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
@@ -79,6 +87,7 @@ class SqliteDatabase(IDatabase):
         PHOTO_DATA_VIEW,
         VIDEO_DATA_VIEW,
         MEDIA_METADATA_TABLE,
+        PHASHES_TABLE,
     }
     conn: sqlite3.Connection
 
@@ -105,8 +114,17 @@ class SqliteDatabase(IDatabase):
         )
         self.conn.commit()
 
+    def add_phash(self, phash: PhashData) -> None:
+        self.conn.execute(
+            "insert or ignore into phashes (fpath, phash) values (?, ?)",
+            (phash["fpath"], phash["phash"]),
+        )
+
     def has_exif(self, fpath: str) -> bool:
         return bool(self.conn.execute("select 1 from exif where fpath = ?", (fpath,)).fetchone())
+
+    def has_phash(self, fpath: str) -> bool:
+        return bool(self.conn.execute("select 1 from phashes where fpath = ?", (fpath,)).fetchone())
 
     def add_photo_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
         mimetype = f"image/{format}"
@@ -217,6 +235,10 @@ class SqliteDatabase(IDatabase):
     def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
         for exif in exifs:
             self.add_exif(exif)
+
+    def write_phash(self, phashes: Iterator[PhashData]) -> None:
+        for phash in phashes:
+            self.add_phash(phash)
 
     def write_album_answers(self, answers: Iterator[AlbumAnswerModel]):
         for answer in answers:

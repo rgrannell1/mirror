@@ -7,6 +7,13 @@ create table if not exists photos (
 );
 """
 
+PHASHES_TABLE = """
+create table if not exists phashes (
+  fpath text primary key,
+  phash text
+);
+"""
+
 VIDEOS_TABLE = """
 create table if not exists videos (
   fpath text primary key,
@@ -139,7 +146,8 @@ create view if not exists photo_data as
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
     coalesce(full_image.url, null) as full_image,
-    coalesce(exif.created_at, null) as created_at
+    coalesce(exif.created_at, null) as created_at,
+    coalesce(phashes.phash, null) as phash
   from photos
   left join album_data
     on photos.dpath = album_data.dpath
@@ -151,6 +159,8 @@ create view if not exists photo_data as
     on photos.fpath = full_image.fpath and full_image.role = 'full_image_lossless'
   left join exif
     on photos.fpath = exif.fpath
+  left join phashes
+    on photos.fpath = phashes.fpath
   order by photos.fpath desc;
 """
 

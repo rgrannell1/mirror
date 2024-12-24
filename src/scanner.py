@@ -4,6 +4,7 @@ from typing import Iterator, Protocol
 from database import IDatabase
 from linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel
 from exif import ExifReader, PhotoExifData
+from phash import PHashReader
 from vault import MediaVault
 from media import IMedia
 from photo import Photo
@@ -40,6 +41,15 @@ class MediaScanner(IScanner):
             if not all and not self.db.has_exif(media.fpath):
                 yield ExifReader.exif(media.fpath)  # type: ignore
 
+    def media_phash(self) -> Iterator[str]:
+        for album in MediaVault(self.dpath).albums():
+            for media in album.media():
+                if not Photo.is_a(media.fpath):
+                    continue
+
+                if not self.db.has_phash(media.fpath):
+                    yield PHashReader.phash(media.fpath)
+
     def scan(self) -> None:
         """Scanning should collect information on the photo library from various sources. Each writer is
         responsible for minimising state-change (i.e try not to repeat work) and should account for the
@@ -47,6 +57,7 @@ class MediaScanner(IScanner):
 
         self.db.write_media(self.media())
         self.db.write_exif(self.photo_exif())
+        self.db.write_phash(self.media_phash())
 
 
 class LinnaeusScanner(IScanner):
