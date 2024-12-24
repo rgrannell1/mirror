@@ -21,6 +21,7 @@ from tables import (
     PHOTO_DATA_VIEW,
     MEDIA_METADATA_TABLE,
     PHASHES_TABLE,
+    PHOTO_METADATA_TABLE
 )
 from video import Video
 
@@ -88,6 +89,7 @@ class SqliteDatabase(IDatabase):
         VIDEO_DATA_VIEW,
         MEDIA_METADATA_TABLE,
         PHASHES_TABLE,
+        PHOTO_METADATA_TABLE
     }
     conn: sqlite3.Connection
 
@@ -255,5 +257,31 @@ class SqliteDatabase(IDatabase):
                               values (?, ?, ?, ?)
             """,
                 (answer.contentId, "album", relation, answer.answer),
+            )
+        self.conn.commit()
+
+    def write_photo_answers(self, answers: Iterator[AlbumAnswerModel]):
+        for answer in answers:
+            # bug
+            qid = answer.questionId
+            if qid in {'question_id', '0', '3'}:
+                continue
+
+            relation = None
+            qid = answer.questionId
+
+            relation = answer.relation()
+            if not relation:
+                raise Exception(f"Unknown questionId: {qid}")
+
+            contentId = answer.contentId
+            phash = self.conn.execute("select phash from phashes where fpath = ?", (contentId,)).fetchone()
+
+            if not phash:
+                continue
+
+            self.conn.execute(
+                "insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)",
+                (phash[0], "photo", relation, answer.answer),
             )
         self.conn.commit()

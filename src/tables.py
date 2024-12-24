@@ -204,3 +204,14 @@ create table if not exists media_metadata_table (
   primary key (src, src_type, relation, target)
 );
 """
+
+PHOTO_METADATA_TABLE = """
+create table if not exists photo_metadata_table (
+  phash       text not null,
+  src_type    text not null,
+  relation    text not null,
+  target      text,
+
+  primary key (phash, src_type, relation, target)
+);
+"""

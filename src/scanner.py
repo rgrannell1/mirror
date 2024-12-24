@@ -1,13 +1,15 @@
 """Scan all media in a vault, and index this information in a database"""
 
-from typing import Iterator, Protocol
+from typing import Iterator, Protocol, Set
 from database import IDatabase
-from linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel
+from linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel, PhotoAnswerModel
 from exif import ExifReader, PhotoExifData
-from phash import PHashReader
+from phash import PHashReader, PhashData
 from vault import MediaVault
 from media import IMedia
 from photo import Photo
+
+
 
 
 class IScanner(Protocol):
@@ -71,7 +73,30 @@ class LinnaeusScanner(IScanner):
         for answer in self.linnaeus.list_album_answers():
             yield answer
 
+    def photo_answers(self) -> Iterator[PhotoAnswerModel]:
+        for answer in self.linnaeus.list_photo_answers():
+            if answer.contentId == 'contentId':
+                continue
+            yield answer
+
+    def phashes(self) -> Iterator[PhashData]:
+        """Compute phashes for every """
+
+        distinct_fpaths: Set[str] = set()
+
+        for answer in self.linnaeus.list_photo_answers():
+            fpath = answer.contentId
+
+            if fpath in distinct_fpaths or fpath == 'fpath':
+                continue
+
+            if not self.db.has_phash(fpath):
+                yield PHashReader.phash(fpath)
+
+
     def scan(self) -> None:
         """"""
 
+        self.db.write_phash(self.phashes())
         self.db.write_album_answers(self.album_answers())
+        self.db.write_photo_answers(self.photo_answers())
