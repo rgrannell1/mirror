@@ -1,11 +1,11 @@
 import sys
 from src.ansi import ANSI
-from src.artifacts import ArtifactBuilder
+from src.commands.publisher import ArtifactBuilder
 from src.cdn import CDN
 from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
-from src.uploader import MediaUploader
-from src.scanner import MediaScanner, LinnaeusScanner
+from src.commands.uploader import MediaUploader
+from src.commands.scanner import MediaScanner, LinnaeusScanner
 
 commands = ["mirror scan", "mirror upload", "mirror publish"]
 
