@@ -3,13 +3,13 @@
 import os
 import sqlite3
 from typing import Iterator, Protocol, Set
-from exif import PhotoExifData
-from phash import PhashData
-from media import IMedia
-from photo import Photo, EncodedPhotoModel, PhotoModel
-from video import EncodedVideoModel, VideoModel
-from album import AlbumModel
-from tables import (
+from src.exif import PhotoExifData
+from src.phash import PhashData
+from src.media import IMedia
+from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel
+from src.video import EncodedVideoModel, VideoModel
+from src.album import AlbumModel
+from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
     PHOTOS_TABLE,
@@ -23,9 +23,8 @@ from tables import (
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE
 )
-from video import Video
-
-from linnaeus import AlbumAnswerModel
+from src.video import Video
+from src.linnaeus import AlbumAnswerModel
 
 
 class IDatabase(Protocol):
@@ -44,6 +43,9 @@ class IDatabase(Protocol):
         pass
 
     def list_photo_encodings(self, fpath: str) -> Iterator[EncodedPhotoModel]:
+        pass
+
+    def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
         pass
 
     def has_exif(self, fpath: str) -> bool:
@@ -207,6 +209,21 @@ class SqliteDatabase(IDatabase):
     def list_videos(self) -> Iterator[str]:
         for row in self.conn.execute("select fpath from videos"):
             yield row[0]
+
+    def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
+        query = """
+        select
+            fpath,
+            relation,
+            target
+            from photo_metadata_table
+        left join phashes
+            on phashes.phash = photo_metadata_table.phash
+        where fpath like '%/Published%'
+        """
+
+        for row in self.conn.execute(query):
+            yield PhotoMetadataModel.from_row(row)
 
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
         for fpath in self.list_photos():

@@ -1,15 +1,18 @@
-__pycache__
-.vscode
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.mypy_cache
+.ruff_cache
 .env
-test.jpeg
-test.webp
-repair.py
-graph.png
-results.json
-env/
-# Local Netlify folder
-.netlify
-.ruff_cache/
-.python-version
+env/*
+build/*
 test_artifacts/
-*.egg-info.
+vermiel.egg-info/
+test.md

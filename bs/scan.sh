@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python3 src/cli.py scan
+rs activate
+
+uv run cli.py scan

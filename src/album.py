@@ -3,10 +3,10 @@
 from dataclasses import dataclass
 import os
 from typing import Iterator, List
-from media import IMedia
-from model import IModel
-from photo import Photo
-from video import Video
+from src.media import IMedia
+from src.model import IModel
+from src.photo import Photo
+from src.video import Video
 
 
 class Album:

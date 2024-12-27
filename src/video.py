@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import os
 from typing import List
 
-from model import IModel
+from src.model import IModel
 
 
 @dataclass

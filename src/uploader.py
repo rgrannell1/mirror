@@ -3,11 +3,11 @@
 import base64
 import sys
 from typing import Any, List, Optional, Tuple, cast, TypedDict
-from cdn import CDN
-from database import IDatabase
-from encoder import PhotoEncoder, VideoEncoder
-from exceptions import InvalidVideoDimensionsException
-from photo import PhotoContent
+from src.cdn import CDN
+from src.database import IDatabase
+from src.encoder import PhotoEncoder, VideoEncoder
+from src.exceptions import InvalidVideoDimensionsException
+from src.photo import PhotoContent
 
 
 class VideoEncodingConfig(TypedDict):
@@ -170,6 +170,7 @@ class MediaUploader:
         if not encoded_path:
             raise Exception("Failed to encode video")
 
+        print(fpath)
         uploaded_video_url = self.cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
 
         self.db.add_video_encoding(fpath=fpath, url=uploaded_video_url, role=role, format=self.VIDEO_FORMAT)

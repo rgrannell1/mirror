@@ -6,13 +6,13 @@ import json
 import os
 from typing import Any, List, Optional, Protocol
 
-from album import AlbumModel
-from config import DATA_URL, PHOTOS_URL
-from database import IDatabase
-from photo import PhotoModel
-from utils import deterministic_hash_str
-from video import VideoModel
-from flags import Flags
+from src.album import AlbumModel
+from src.config import DATA_URL, PHOTOS_URL
+from src.database import IDatabase
+from src.photo import PhotoModel
+from src.utils import deterministic_hash_str
+from src.video import VideoModel
+from src.flags import Flags
 
 
 class IArtifact(Protocol):
@@ -238,6 +238,21 @@ class RSSArtifact(IArtifact):
         )
 
 
+class SemanticArtifact(IArtifact):
+    """Build artifact describing semantic information in the database"""
+
+    def content(self, db: IDatabase) -> str:
+        media = []
+
+        for row in db.list_photo_metadata():
+            media.append({
+                "fpath": row.fpath,
+                "relation": row.relation,
+                "target": row.target
+            })
+
+        return json.dumps(media)
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -248,7 +263,7 @@ class ArtifactBuilder:
 
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
-        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos"))]
+        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic"))]
 
         for file in removeable:
             os.remove(f"{dpath}/{file}")
@@ -283,5 +298,9 @@ class ArtifactBuilder:
         rss = RSSArtifact()
         with open(f"{self.output_dir}/feed.json", "w") as conn:
             conn.write(rss.content(self.db))
+
+        semantic = SemanticArtifact()
+        with open(f"{self.output_dir}/semantic.{pid}.json", "w") as conn:
+            conn.write(semantic.content(self.db))
 
         return pid

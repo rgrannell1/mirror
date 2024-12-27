@@ -3,16 +3,16 @@
 import boto3  # type: ignore
 import boto3.session  # type: ignore
 import botocore  # type: ignore
-from config import (
+from src.config import (
     SPACES_REGION,
     SPACES_ENDPOINT_URL,
     SPACES_BUCKET,
     SPACES_ACCESS_KEY_ID,
     SPACES_SECRET_KEY,
 )
-from photo import PhotoContent
-from config import PHOTOS_URL
-from utils import deterministic_hash_str
+from src.photo import PhotoContent
+from src.config import PHOTOS_URL
+from src.utils import deterministic_hash_str
 
 
 class CDN:

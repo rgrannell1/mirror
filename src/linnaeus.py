@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import sqlite3
 from typing import Iterator, List, Optional, Protocol
-from model import IModel
+from src.model import IModel
 
 
 @dataclass

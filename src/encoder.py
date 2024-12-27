@@ -2,10 +2,10 @@
 
 import io
 import os
-from constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
+from src.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
 import cv2
 import ffmpeg
-from exceptions import (
+from src.exceptions import (
     InvalidVideoDimensionsException,
     VideoReadException,
     VideoResolutionLookupException,
@@ -13,7 +13,7 @@ from exceptions import (
 from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
-from photo import PhotoContent
+from src.photo import PhotoContent
 
 
 class PhotoEncoder:

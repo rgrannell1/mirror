@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python3 src/cli.py upload
+rs activate
+
+uv run cli.py upload

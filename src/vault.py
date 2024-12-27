@@ -3,7 +3,7 @@
 import os
 from typing import Iterator
 
-from album import Album
+from src.album import Album
 
 
 class MediaVault:

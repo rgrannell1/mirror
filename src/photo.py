@@ -4,9 +4,8 @@ from dataclasses import dataclass
 import hashlib
 import os
 from typing import List
-from PIL import Image
 
-from model import IModel
+from src.model import IModel
 
 
 class PhotoContent:
@@ -65,6 +64,20 @@ class PhotoModel(IModel):
             phash=phash
         )
 
+
+@dataclass
+class PhotoMetadataModel(IModel):
+    """Photo metadata database model"""
+
+    fpath: str
+    relation: str
+    target: str
+
+    @classmethod
+    def from_row(cls, row: List) -> "PhotoMetadataModel":
+        (fpath, relation, target) = row
+
+        return PhotoMetadataModel(fpath=fpath, relation=relation, target=target)
 
 class Photo:
     """A class representing a photo"""

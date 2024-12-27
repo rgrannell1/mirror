@@ -4,7 +4,7 @@ from functools import lru_cache
 from typing import Dict, NotRequired, Required, TypedDict
 import warnings
 
-from constants import EXIF_ATTR_ASSOCIATIONS
+from src.constants import EXIF_ATTR_ASSOCIATIONS
 from PIL import Image, ExifTags
 
 

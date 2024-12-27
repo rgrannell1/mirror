@@ -1,18 +1,20 @@
 """Scan all media in a vault, and index this information in a database"""
 
 from typing import Iterator, Protocol, Set
-from database import IDatabase
-from linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel, PhotoAnswerModel
-from exif import ExifReader, PhotoExifData
-from phash import PHashReader, PhashData
-from vault import MediaVault
-from media import IMedia
-from photo import Photo
+from src.database import IDatabase
+from src.linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel, PhotoAnswerModel
+from src.exif import ExifReader, PhotoExifData
+from src.phash import PHashReader, PhashData
+from src.vault import MediaVault
+from src.media import IMedia
+from src.photo import Photo
 
 
 
 
 class IScanner(Protocol):
+    """Scan information from some source into mirror's database"""
+
     def scan(self) -> None:
         pass
 
@@ -44,6 +46,8 @@ class MediaScanner(IScanner):
                 yield ExifReader.exif(media.fpath)  # type: ignore
 
     def media_phash(self) -> Iterator[str]:
+        """Return phashes for all photos not already stored in the database"""
+
         for album in MediaVault(self.dpath).albums():
             for media in album.media():
                 if not Photo.is_a(media.fpath):
@@ -70,17 +74,21 @@ class LinnaeusScanner(IScanner):
         self.linnaeus = SqliteLinnaeusDatabase("/home/rg/Code/websites/linneaus.local/.linny.db")
 
     def album_answers(self) -> Iterator[AlbumAnswerModel]:
+        """Get all album answers from Linnaeus"""
+
         for answer in self.linnaeus.list_album_answers():
             yield answer
 
     def photo_answers(self) -> Iterator[PhotoAnswerModel]:
+        """Get all photo answers from Linnaeus"""
+
         for answer in self.linnaeus.list_photo_answers():
-            if answer.contentId == 'contentId':
+            if answer.contentId == 'contentId': # bug
                 continue
             yield answer
 
     def phashes(self) -> Iterator[PhashData]:
-        """Compute phashes for every """
+        """Compute phashes for every photo referenced by Linnaeus"""
 
         distinct_fpaths: Set[str] = set()
 
@@ -95,7 +103,7 @@ class LinnaeusScanner(IScanner):
 
 
     def scan(self) -> None:
-        """"""
+        """Read resouces from Linnaeus and write them to the mirror database"""
 
         self.db.write_phash(self.phashes())
         self.db.write_album_answers(self.album_answers())
