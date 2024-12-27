@@ -10,8 +10,6 @@ from src.media import IMedia
 from src.photo import Photo
 
 
-
-
 class IScanner(Protocol):
     """Scan information from some source into mirror's database"""
 
@@ -83,7 +81,7 @@ class LinnaeusScanner(IScanner):
         """Get all photo answers from Linnaeus"""
 
         for answer in self.linnaeus.list_photo_answers():
-            if answer.contentId == 'contentId': # bug
+            if answer.contentId == "contentId":  # bug
                 continue
             yield answer
 
@@ -95,12 +93,11 @@ class LinnaeusScanner(IScanner):
         for answer in self.linnaeus.list_photo_answers():
             fpath = answer.contentId
 
-            if fpath in distinct_fpaths or fpath == 'fpath':
+            if fpath in distinct_fpaths or fpath == "fpath":
                 continue
 
             if not self.db.has_phash(fpath):
                 yield PHashReader.phash(fpath)
-
 
     def scan(self) -> None:
         """Read resouces from Linnaeus and write them to the mirror database"""

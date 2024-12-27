@@ -245,13 +245,10 @@ class SemanticArtifact(IArtifact):
         media = []
 
         for row in db.list_photo_metadata():
-            media.append({
-                "fpath": row.fpath,
-                "relation": row.relation,
-                "target": row.target
-            })
+            media.append({"fpath": row.fpath, "relation": row.relation, "target": row.target})
 
         return json.dumps(media)
+
 
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish

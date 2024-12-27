@@ -21,7 +21,7 @@ from src.tables import (
     PHOTO_DATA_VIEW,
     MEDIA_METADATA_TABLE,
     PHASHES_TABLE,
-    PHOTO_METADATA_TABLE
+    PHOTO_METADATA_TABLE,
 )
 from src.video import Video
 from src.linnaeus import AlbumAnswerModel
@@ -91,7 +91,7 @@ class SqliteDatabase(IDatabase):
         VIDEO_DATA_VIEW,
         MEDIA_METADATA_TABLE,
         PHASHES_TABLE,
-        PHOTO_METADATA_TABLE
+        PHOTO_METADATA_TABLE,
     }
     conn: sqlite3.Connection
 
@@ -281,7 +281,7 @@ class SqliteDatabase(IDatabase):
         for answer in answers:
             # bug
             qid = answer.questionId
-            if qid in {'question_id', '0', '3'}:
+            if qid in {"question_id", "0", "3"}:
                 continue
 
             relation = None

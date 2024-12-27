@@ -40,8 +40,11 @@ class AlbumAnswerModel(IModel):
 
         return None
 
+
 @dataclass
 class PhotoAnswerModel(IModel):
+    """Represents an answer refering to some photo in the database"""
+
     contentId: str
     questionId: str
     answerId: Optional[str]
@@ -97,6 +100,7 @@ class PhotoAnswerModel(IModel):
             return "water_type"
 
         return None
+
 
 class ILinnaeusDatabase(Protocol):
     """Interact with a linnaeus database"""

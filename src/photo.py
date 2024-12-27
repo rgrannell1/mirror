@@ -61,7 +61,7 @@ class PhotoModel(IModel):
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             full_image=full_image,
             created_at=created_at,
-            phash=phash
+            phash=phash,
         )
 
 
@@ -78,6 +78,7 @@ class PhotoMetadataModel(IModel):
         (fpath, relation, target) = row
 
         return PhotoMetadataModel(fpath=fpath, relation=relation, target=target)
+
 
 class Photo:
     """A class representing a photo"""
