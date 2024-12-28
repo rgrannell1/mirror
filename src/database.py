@@ -63,6 +63,9 @@ class IDatabase(Protocol):
     def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
         pass
 
+    def list_exif(self) -> Iterator[PhotoExifData]:
+        pass
+
     def list_photos(self) -> Iterator[str]:
         pass
 
@@ -105,15 +108,15 @@ class SqliteDatabase(IDatabase):
         self.conn.execute(
             "insert or ignore into exif (fpath, created_at, f_stop, focal_length, model, exposure_time, iso, width, height) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
-                exif["fpath"],
-                exif.get("created_at"),
-                exif.get("f_stop"),
-                exif.get("focal_length"),
-                exif.get("model"),
-                exif.get("exposure_time"),
-                exif.get("iso"),
-                exif.get("width"),
-                exif.get("height"),
+                exif.fpath,
+                exif.created_at,
+                exif.f_stop,
+                exif.focal_length,
+                exif.model,
+                exif.exposure_time,
+                exif.iso,
+                exif.width,
+                exif.height,
             ),
         )
         self.conn.commit()
@@ -179,6 +182,10 @@ class SqliteDatabase(IDatabase):
     def list_photo_data(self) -> Iterator[PhotoModel]:
         for row in self.conn.execute("select * from photo_data"):
             yield PhotoModel.from_row(row)
+
+    def list_exif(self) -> Iterator[PhotoExifData]:
+        for row in self.conn.execute("select * from exif"):
+            yield PhotoExifData.from_row(row)
 
     def list_video_data(self) -> Iterator[VideoModel]:
         for row in self.conn.execute("select * from video_data"):

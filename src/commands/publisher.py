@@ -9,6 +9,7 @@ from typing import Any, List, Optional, Protocol
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
 from src.database import IDatabase
+from src.exif import PhotoExifData
 from src.photo import PhotoModel
 from src.utils import deterministic_hash_str
 from src.video import VideoModel
@@ -115,11 +116,8 @@ class PhotosArtifact(IArtifact):
 
     HEADERS = ["id", "album_id", "tags", "thumbnail_url", "thumbnail_mosaic_url", "full_image", "created_at"]
 
-    def validate(self, photo: PhotoModel) -> None:
-        pass
-
     def process(self, photo: PhotoModel) -> List[Any]:
-        created_at = datetime.strptime(photo.created_at, "%Y:%m:%d %H:%M:%S")
+        created_at = datetime.strptime(str(photo.created_at), "%Y:%m:%d %H:%M:%S")
 
         return [
             deterministic_hash_str(photo.fpath),
@@ -135,7 +133,6 @@ class PhotosArtifact(IArtifact):
         rows: List[List[Any]] = [self.HEADERS]
 
         for photo in db.list_photo_data():
-            self.validate(photo)
             rows.append(self.process(photo))
 
         return json.dumps(rows)
@@ -156,9 +153,6 @@ class VideosArtifact(IArtifact):
         "poster_url",
     ]
 
-    def validate(self, video: VideoModel) -> None:
-        pass
-
     def process(self, video: VideoModel) -> List[Any]:
         return [
             deterministic_hash_str(video.fpath),
@@ -176,7 +170,6 @@ class VideosArtifact(IArtifact):
         rows: List[List[Any]] = [self.HEADERS]
 
         for video in db.list_video_data():
-            self.validate(video)
             rows.append(self.process(video))
 
         return json.dumps(rows)
@@ -250,6 +243,36 @@ class SemanticArtifact(IArtifact):
         return json.dumps(media)
 
 
+class ExifArtifact(IArtifact):
+    """Build artifact describing exif information in the database"""
+
+    HEADERS = ["id", "created_at", "f_stop", "focal_length", "model", "exposure_time", "iso", "width", "height"]
+
+    def process(self, exif: PhotoExifData) -> List[Any]:
+        parts = exif.created_at.split(' ') if exif.created_at else ''
+        date = parts[0].replace(':', '/')
+        created_at = f"{date} {parts[1]}"
+
+        return [
+            deterministic_hash_str(exif.fpath),
+            created_at,
+            exif.f_stop,
+            exif.focal_length,
+            exif.model,
+            exif.exposure_time,
+            exif.iso,
+            exif.width,
+            exif.height,
+        ]
+
+    def content(self, db: IDatabase) -> str:
+        rows: List[List[Any]] = [self.HEADERS]
+
+        for exif in db.list_exif():
+            rows.append(self.process(exif))
+
+        return json.dumps(rows)
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -260,7 +283,7 @@ class ArtifactBuilder:
 
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
-        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic"))]
+        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif"))]
 
         for file in removeable:
             os.remove(f"{dpath}/{file}")
@@ -299,5 +322,9 @@ class ArtifactBuilder:
         semantic = SemanticArtifact()
         with open(f"{self.output_dir}/semantic.{pid}.json", "w") as conn:
             conn.write(semantic.content(self.db))
+
+        exif = ExifArtifact()
+        with open(f"{self.output_dir}/exif.{pid}.json", "w") as conn:
+            conn.write(exif.content(self.db))
 
         return pid

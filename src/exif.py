@@ -1,25 +1,46 @@
 """Retrieve EXIF information from photo files"""
 
+from dataclasses import dataclass
 from functools import lru_cache
-from typing import Dict, NotRequired, Required, TypedDict
+from typing import Dict, List, NotRequired, Optional,  TypedDict
 import warnings
 
 from src.constants import EXIF_ATTR_ASSOCIATIONS
 from PIL import Image, ExifTags
 
+from src.model import IModel
 
-class PhotoExifData(TypedDict):
+@dataclass
+class PhotoExifData(IModel):
     """Exif data for a photo"""
 
-    fpath: Required[str]
-    created_at: NotRequired[str]
-    f_stop: NotRequired[str]
-    focal_length: NotRequired[str]
-    model: NotRequired[str]
-    exposure_time: NotRequired[str]
-    iso: NotRequired[str]
-    width: NotRequired[str]
-    height: NotRequired[str]
+    fpath: str
+    created_at: Optional[str]
+    f_stop: Optional[str]
+    focal_length: Optional[str]
+    model: Optional[str]
+    exposure_time: Optional[str]
+    iso: Optional[str]
+    width: Optional[str]
+    height: Optional[str]
+
+    @classmethod
+    def from_row(cls, row: List) -> "PhotoExifData":
+        """Create a PhotoExifData object from a database row"""
+
+        (fpath, created_at, f_stop, focal_length, model, exposure_time, iso, width, height) = row
+
+        return PhotoExifData(
+            fpath=fpath,
+            created_at=created_at,
+            f_stop=f_stop,
+            focal_length=focal_length,
+            model=model,
+            exposure_time=exposure_time,
+            iso=iso,
+            width=width,
+            height=height,
+        )
 
 
 class ExifReader:
