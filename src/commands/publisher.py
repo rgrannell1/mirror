@@ -238,7 +238,11 @@ class SemanticArtifact(IArtifact):
         media = []
 
         for row in db.list_photo_metadata():
-            media.append({"fpath": row.fpath, "relation": row.relation, "target": row.target})
+            media.append([
+                deterministic_hash_str(row.fpath),
+                row.relation,
+                row.target
+            ])
 
         return json.dumps(media)
 
