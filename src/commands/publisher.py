@@ -1,10 +1,13 @@
 """Mirror produces artifacts - files derived from the database. This file describes the artifacts
 that are output, and checks they meet the expected constraints"""
 
-from datetime import datetime
+from time import ctime
+from feedgen.feed import FeedGenerator
+from datetime import datetime, timezone
 import json
 import os
 from typing import Any, List, Optional, Protocol
+from dateutil import tz
 
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
@@ -174,9 +177,8 @@ class VideosArtifact(IArtifact):
 
         return json.dumps(rows)
 
-
-class RSSArtifact(IArtifact):
-    """Build artifact describing RSS feed"""
+class AtomArtifact:
+    """Build artifact describing Atom feed with pagination"""
 
     def image_html(self, photo: PhotoModel) -> str:
         return f'<img src="{photo.full_image}"/>'
@@ -194,10 +196,10 @@ class RSSArtifact(IArtifact):
             media.append(
                 {
                     "id": video.poster_url,
+                    "created_at": datetime.fromtimestamp(os.path.getmtime(video.fpath), tz=timezone.utc),
                     "url": video.video_url_unscaled,
                     "image": video.poster_url,
                     "content_html": self.video_html(video),
-                    "fpath": video.fpath,
                 }
             )
 
@@ -205,30 +207,100 @@ class RSSArtifact(IArtifact):
             media.append(
                 {
                     "id": photo.thumbnail_url,
+                    "created_at": datetime.strptime(photo.created_at, '%Y:%m:%d %H:%M:%S').replace(tzinfo=timezone.utc), # TODO
                     "url": photo.thumbnail_url,
                     "image": photo.thumbnail_url,
                     "content_html": self.image_html(photo),
-                    "fpath": photo.fpath,
                 }
             )
 
-        return [
-            {key: value for key, value in media_item.items() if key != "fpath"}
-            for media_item in sorted(media, key=lambda media: media["fpath"])
-        ]
+        return sorted(media, key=lambda item: item["created_at"])
 
-    def content(self, db: IDatabase) -> str:
-        return json.dumps(
-            {
-                "version": "https://jsonfeed.org/version/1.1",
-                "title": "photos.rgrannell.xyz",
-                "home_page_url": "https://photos.rgrannell.xyz",
-                "feed_url": "https://photos.rgrannell.xyz/feed.json",
-                "description": "Photos and videos",
-                "language": "en-IE",
-                "items": self.media(db),
-            }
-        )
+    def paginate(self, items: List[dict], page_size: int) -> List[List[dict]]:
+        """Split items into pages of given size."""
+        return [items[idx:idx + page_size] for idx in range(0, len(items), page_size)]
+
+    def subpage_filename(self, items: List[dict]) -> str:
+        """Generate a stable filename for a page based on hashed IDs."""
+
+        ids = ",".join(item["id"] for item in items)
+        hash_suffix = deterministic_hash_str(ids)[:8]
+        return f"atom-page-{hash_suffix}.xml"
+
+    def page_url(self, page):
+        base_url = "https://photos.rgrannell.xyz"
+        next_file_url = os.path.join('/manifest/atom', self.subpage_filename(page))
+        return f"{base_url}{next_file_url}"
+
+    def atom_page(self, page, next_page, output_dir):
+        fg = FeedGenerator()
+        fg.id(f"/{self.subpage_filename(page)}")
+
+        fg.title("Media Feed")
+        fg.author({"name": "R* Grannell"})
+        fg.link(href=self.page_url(page), rel="self")
+
+        if next_page:
+            fg.link(href=self.page_url(next_page), rel="next")
+
+        max_time = None
+        for item in page:
+            title = "Video" if "<video>" in item["content_html"] else "Photo"
+
+            if not max_time or item["created_at"] > max_time:
+                max_time = item["created_at"]
+
+            entry = fg.add_entry()
+            entry.id(item["id"])
+            entry.title(title)
+            entry.link(href=item["url"])
+            entry.content(item["content_html"], type="html")
+
+        fg.updated(max_time)
+
+        file_path = os.path.join(output_dir, 'atom', self.subpage_filename(page))
+        fg.atom_file(file_path)
+
+    def atom_feed(self, media: List[dict], output_dir: str):
+        page_size = 20
+        pages = self.paginate(media, page_size)
+
+        atom_dir = os.path.join(output_dir, 'atom')
+
+        for idx, page in enumerate(pages[1:]):
+            next_page = pages[idx + 1] if idx + 1 < len(pages) else None
+
+            self.atom_page(page, next_page, output_dir)
+
+        index_path = os.path.join(atom_dir, "atom-index.xml")
+        index = FeedGenerator()
+
+        base_url = "https://photos.rgrannell.xyz"
+
+        index.title("Photos.rgrannell.xyz")
+        index.id(f"{base_url}/atom-index.xml")
+
+        index.subtitle('A feed of my videos and images!')
+        index.author({"name": "R* Grannell"})
+        index.link(href=f"{base_url}/atom-index.xml", rel="self")
+        index.link(href=self.page_url(pages[0]), rel="next")
+
+        max_time = None
+        for item in page:
+            title = "Video" if "<video>" in item["content_html"] else "Photo"
+
+            if not max_time or item["created_at"] > max_time:
+                max_time = item["created_at"]
+
+            entry = index.add_entry()
+            entry.id(item["id"])
+            entry.title(title)
+            entry.link(href=item["url"])
+            entry.content(item["content_html"], type="html")
+
+
+        index.updated(max_time)
+        index.atom_file(index_path)
 
 
 class SemanticArtifact(IArtifact):
@@ -295,7 +367,7 @@ class ArtifactBuilder:
     def publication_id(self) -> str:
         """Generate a unique publication id"""
 
-        return deterministic_hash_str(str(datetime.now()))
+        return deterministic_hash_str(str(datetime.now(tz.UTC)))
 
     def build(self) -> str:
         pid = self.publication_id()
@@ -319,9 +391,8 @@ class ArtifactBuilder:
         with open(f"{self.output_dir}/videos.{pid}.json", "w") as conn:
             conn.write(videos.content(self.db))
 
-        rss = RSSArtifact()
-        with open(f"{self.output_dir}/feed.json", "w") as conn:
-            conn.write(rss.content(self.db))
+        atom = AtomArtifact()
+        atom.atom_feed(atom.media(self.db), self.output_dir)
 
         semantic = SemanticArtifact()
         with open(f"{self.output_dir}/semantic.{pid}.json", "w") as conn:
