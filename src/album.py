@@ -69,6 +69,9 @@ class AlbumModel(IModel):
             description,
         ) = row
 
+        if not flags:
+            raise ValueError(f"Flags are empty for album {name} ({id}, {dpath})")
+
         return AlbumModel(
             id=id,
             name=name,
