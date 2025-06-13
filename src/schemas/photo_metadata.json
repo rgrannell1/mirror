@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2023-02/schema",
+  "type": "array",
+  "description": "A list of information about each photo in the gallery. Programs that can output this format can provide data to Mirror",
+  "items": {
+    "type": "object",
+    "required": ["thumbnail_url", "album"],
+    "properties": {
+      "thumbnail_url": { "$ref": "#/$defs/thumbnail_url" },
+      "album": { "$ref": "#/$defs/album" },
+      "genre": { "$ref": "#/$defs/genre" },
+      "places": { "$ref": "#/$defs/places" },
+      "rating": { "$ref": "#/$defs/rating" },
+      "subjects": { "$ref": "#/$defs/subjects" },
+      "description": { "$ref": "#/$defs/description" }
+    },
+    "additionalProperties": false
+  },
+  "$defs": {
+    "thumbnail_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the thumbnail image. Immutable, used as a unique identifier."
+    },
+    "album": {
+      "type": "string",
+      "description": "Name of the album. Immutable, provided as metadata to input systems."
+    },
+    "genre": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What category does this photo belong to? "
+    },
+    "places": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of places this photo was taken. This includes the country, city, type of location, and specific instance of location."
+    },
+    "rating": {
+      "type": "string",
+      "enum": ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
+      "description": "Rating of the photo, represented by stars."
+    },
+    "subjects": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What things are in this photo?"
+    },
+    "description": {
+      "type": "string",
+      "description": "Additional information to include about the photo, displayed in the UI."
+    }
+  }
+}

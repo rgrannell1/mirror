@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "fpath": {
+      "type": "string",
+      "description": "File-path of the album's Published folder. Immutable, used as a unique identifier."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short summary of the album, used in the UI to provide context."
+    },
+    "country": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Countries where the album is located. This is used to filter albums by country."
+    },
+    "permalink": {
+      "type": "string",
+      "pattern": "^[\\p{L}\\-]+$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the album, used in the UI to display the album name."
+    }
+  },
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["fpath", "country", "permalink", "title"],
+    "properties": {
+      "fpath": { "$ref": "#/$defs/fpath" },
+      "summary": { "$ref": "#/$defs/summary" },
+      "country": { "$ref": "#/$defs/country" },
+      "permalink": { "$ref": "#/$defs/permalink" },
+      "title": { "$ref": "#/$defs/title" }
+    },
+    "additionalProperties": false
+  }
+}

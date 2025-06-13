@@ -20,7 +20,9 @@ class Flags:
         "Tenerife": "🇪🇸",
         "Norway": "🇳🇴",
         "Sweden": "🇸🇪",
-        "Italy": "🇮🇹"
+        "Italy": "🇮🇹",
+        "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+        "Slovenia": "🇸🇮"
     }
 
     @classmethod
