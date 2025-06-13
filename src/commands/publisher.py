@@ -180,6 +180,8 @@ class VideosArtifact(IArtifact):
 class AtomArtifact:
     """Build artifact describing Atom feed with pagination"""
 
+    BASE_URL = "https://photos.rgrannell.xyz"
+
     def image_html(self, photo: PhotoModel) -> str:
         return f'<img src="{photo.full_image}"/>'
 
@@ -218,25 +220,30 @@ class AtomArtifact:
 
     def paginate(self, items: List[dict], page_size: int) -> List[List[dict]]:
         """Split items into pages of given size."""
+
         return [items[idx:idx + page_size] for idx in range(0, len(items), page_size)]
 
     def subpage_filename(self, items: List[dict]) -> str:
         """Generate a stable filename for a page based on hashed IDs."""
 
-        ids = ",".join(item["id"] for item in items)
-        hash_suffix = deterministic_hash_str(ids)[:8]
-        return f"atom-page-{hash_suffix}.xml"
+        try:
+            ids = ",".join(item["id"] for item in items)
+            hash_suffix = deterministic_hash_str(ids)[:8]
+            return f"atom-page-{hash_suffix}.xml"
+        except Exception as e:
+            raise ValueError(f"Error generating filename for items: {items}") from e
 
-    def page_url(self, page):
-        base_url = "https://photos.rgrannell.xyz"
+    def page_url(self, page) -> str:
+        """Get the URL for a particular page"""
+
         next_file_url = os.path.join('/manifest/atom', self.subpage_filename(page))
-        return f"{base_url}{next_file_url}"
+        return f"{self.BASE_URL}{next_file_url}"
 
     def atom_page(self, page, next_page, output_dir):
         fg = FeedGenerator()
         fg.id(f"/{self.subpage_filename(page)}")
 
-        fg.title("Media Feed")
+        fg.title("Photos.rgrannell.xyz")
         fg.author({"name": "R* Grannell"})
         fg.link(href=self.page_url(page), rel="self")
 
@@ -275,14 +282,12 @@ class AtomArtifact:
         index_path = os.path.join(atom_dir, "atom-index.xml")
         index = FeedGenerator()
 
-        base_url = "https://photos.rgrannell.xyz"
-
         index.title("Photos.rgrannell.xyz")
-        index.id(f"{base_url}/atom-index.xml")
+        index.id(f"{self.BASE_URL}/atom-index.xml")
 
         index.subtitle('A feed of my videos and images!')
         index.author({"name": "R* Grannell"})
-        index.link(href=f"{base_url}/atom-index.xml", rel="self")
+        index.link(href=f"{self.BASE_URL}/atom-index.xml", rel="self")
         index.link(href=self.page_url(pages[0]), rel="next")
 
         max_time = None
