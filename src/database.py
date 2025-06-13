@@ -4,6 +4,7 @@ import os
 import sqlite3
 from typing import Iterator, Protocol, Set
 from src.exif import PhotoExifData
+from src.model import AlbumMetadataModel
 from src.phash import PhashData
 from src.media import IMedia
 from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel
@@ -31,52 +32,52 @@ class IDatabase(Protocol):
     """To save time, information about albums is stored in a database."""
 
     def list_album_data(self) -> Iterator[AlbumModel]:
-        pass
+        raise NotImplementedError
 
     def list_photo_data(self) -> Iterator[PhotoModel]:
-        pass
+        raise NotImplementedError
 
     def list_video_data(self) -> Iterator[VideoModel]:
-        pass
+        raise NotImplementedError
 
     def list_video_encodings(self, fpath: str) -> Iterator[EncodedVideoModel]:
-        pass
+        raise NotImplementedError
 
     def list_photo_encodings(self, fpath: str) -> Iterator[EncodedPhotoModel]:
-        pass
+        raise NotImplementedError
 
     def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
-        pass
+        raise NotImplementedError
 
     def has_exif(self, fpath: str) -> bool:
-        pass
+        raise NotImplementedError
 
     def has_phash(self, fpath: str) -> bool:
-        pass
+        raise NotImplementedError
 
     def write_media(self, media: Iterator[IMedia]) -> None:
-        pass
+        raise NotImplementedError
 
     def write_phash(self, phashes: Iterator[PhashData]) -> None:
-        pass
+        raise NotImplementedError
 
     def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
-        pass
+        raise NotImplementedError
 
     def list_exif(self) -> Iterator[PhotoExifData]:
-        pass
+        raise NotImplementedError
 
     def list_photos(self) -> Iterator[str]:
-        pass
+        raise NotImplementedError
 
     def list_videos(self) -> Iterator[str]:
-        pass
+        raise NotImplementedError
 
     def add_photo_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        pass
+        raise NotImplementedError
 
     def add_video_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        pass
+        raise NotImplementedError
 
 
 class SqliteDatabase(IDatabase):
@@ -182,6 +183,10 @@ class SqliteDatabase(IDatabase):
     def list_photo_data(self) -> Iterator[PhotoModel]:
         for row in self.conn.execute("select * from photo_data"):
             yield PhotoModel.from_row(row)
+
+    def list_album_metadata(self) -> Iterator[AlbumMetadataModel]:
+        for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):
+            yield AlbumMetadataModel.from_row(row)
 
     def list_exif(self) -> Iterator[PhotoExifData]:
         for row in self.conn.execute("select * from exif"):
