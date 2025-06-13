@@ -31,52 +31,52 @@ class IDatabase(Protocol):
     """To save time, information about albums is stored in a database."""
 
     def list_album_data(self) -> Iterator[AlbumModel]:
-        raise NotImplementedError
+        ...
 
     def list_photo_data(self) -> Iterator[PhotoModel]:
-        raise NotImplementedError
+        ...
 
     def list_video_data(self) -> Iterator[VideoModel]:
-        raise NotImplementedError
+        ...
 
     def list_video_encodings(self, fpath: str) -> Iterator[EncodedVideoModel]:
-        raise NotImplementedError
+        ...
 
     def list_photo_encodings(self, fpath: str) -> Iterator[EncodedPhotoModel]:
-        raise NotImplementedError
+        ...
 
     def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
-        raise NotImplementedError
+        ...
 
     def has_exif(self, fpath: str) -> bool:
-        raise NotImplementedError
+        ...
 
     def has_phash(self, fpath: str) -> bool:
-        raise NotImplementedError
+        ...
 
     def write_media(self, media: Iterator[IMedia]) -> None:
-        raise NotImplementedError
+        ...
 
     def write_phash(self, phashes: Iterator[PhashData]) -> None:
-        raise NotImplementedError
+        ...
 
     def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
-        raise NotImplementedError
+        ...
 
     def list_exif(self) -> Iterator[PhotoExifData]:
-        raise NotImplementedError
+        ...
 
     def list_photos(self) -> Iterator[str]:
-        raise NotImplementedError
+        ...
 
     def list_videos(self) -> Iterator[str]:
-        raise NotImplementedError
+        ...
 
     def add_photo_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        raise NotImplementedError
+        ...
 
     def add_video_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        raise NotImplementedError
+        ...
 
 
 class SqliteDatabase(IDatabase):
@@ -124,7 +124,7 @@ class SqliteDatabase(IDatabase):
     def add_phash(self, phash: PhashData) -> None:
         self.conn.execute(
             "insert or ignore into phashes (fpath, phash) values (?, ?)",
-            (phash["fpath"], phash["phash"]),
+            (phash["fpath"], phash.get("phash")),
         )
 
     def has_exif(self, fpath: str) -> bool:

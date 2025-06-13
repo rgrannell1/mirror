@@ -1,21 +1,22 @@
 """A file for dealing with metadata for albums and photos"""
 
-from typing import Protocol
+from typing import Iterator, Protocol
 
-# Implement readers and writers
+from src.album import AlbumMetadataModel
+from src.photo import PhotoMetadataModel
 
-
+# Protocols defining how metadata can be communicated to/from other locations
 class IAlbumMetadataReader(Protocol):
-    pass
+    def list_album_metadata(self) -> Iterator[AlbumMetadataModel]: ...
 
 
 class IAlbumMetadataWriter(Protocol):
-    pass
+    def write_album_metadata(self) -> None: ...
 
 
 class IPhotoMetadataReader(Protocol):
-    pass
+    def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]: ...
 
 
 class IPhotoMetadataWriter(Protocol):
-    pass
+    def write_photo_metadata(self) -> None: ...

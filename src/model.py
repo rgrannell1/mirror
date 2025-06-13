@@ -10,4 +10,4 @@ class IModel(Protocol, Generic[T]):
 
     @classmethod
     def from_row(cls: Type[T], row: List) -> T:
-        pass
+        ...
