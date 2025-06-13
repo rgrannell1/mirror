@@ -1,12 +1,14 @@
 """Photo albums"""
 
 from dataclasses import dataclass
+from functools import lru_cache
 import os
 from typing import Any, Iterator, List
 from src.media import IMedia
 from src.model import IModel
 from src.photo import Photo
 from src.video import Video
+import json
 
 
 class Album:
@@ -102,3 +104,9 @@ class AlbumMetadataModel(IModel):
             relation=row[2],
             target=row[3],
         )
+
+    @classmethod
+    @lru_cache
+    def schema(cls) -> dict[str, Any]:
+        with open("/home/rg/Code/mirror/src/schemas/album_metadata.json", "r") as f:
+            return json.load(f)

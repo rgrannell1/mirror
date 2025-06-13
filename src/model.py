@@ -9,5 +9,4 @@ class IModel(Protocol, Generic[T]):
     database row. Implementations represent some chunk of data"""
 
     @classmethod
-    def from_row(cls: Type[T], row: List) -> T:
-        ...
+    def from_row(cls: Type[T], row: List) -> T: ...

@@ -6,6 +6,7 @@ from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
 from src.commands.scanner import MediaScanner, LinnaeusScanner
+from src.metadata import JSONAlbumMetadataWriter
 
 commands = ["mirror scan", "mirror upload", "mirror publish"]
 
@@ -21,7 +22,7 @@ Publish the generated artifacts
     {ANSI.green("mirror publish")}
 
 ---------------------------------------------
-{ANSI.grey(' • '.join(commands))}"""
+{ANSI.grey(" • ".join(commands))}"""
 
 
 class Mirror:
@@ -43,6 +44,19 @@ class Mirror:
         builder = ArtifactBuilder(db, OUTPUT_DIRECTORY)
         builder.build()
 
+    def read_metadata(self) -> None:
+        """Read album or photo semantic information from stdin"""
+        # TODO validate against the schema
+        ...
+
+    def write_metadata(self) -> None:
+        """Output album or photo semantic information to stdout"""
+
+        db = SqliteDatabase(DATABASE_PATH)
+        writer = JSONAlbumMetadataWriter()
+
+        writer.write_album_metadata(db)
+
 
 def main() -> None:
     args = sys.argv[1:]
@@ -60,6 +74,8 @@ def main() -> None:
         mirror.upload()
     elif command == "publish":
         mirror.publish()
+    elif command == "write_metadata":
+        mirror.write_metadata()
 
 
 if __name__ == "__main__":

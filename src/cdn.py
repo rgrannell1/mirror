@@ -115,4 +115,4 @@ class CDN:
     def video_name(cls, fpath: str, bitrate: str, width: str, height: str, format: str = "mp4") -> str:
         """Return the name of the video in the CDN bucket"""
 
-        return f"{deterministic_hash_str(f"{fpath}{bitrate}{width}{height}")}.{format}"
+        return f"{deterministic_hash_str(f'{fpath}{bitrate}{width}{height}')}.{format}"
