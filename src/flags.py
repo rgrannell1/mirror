@@ -22,7 +22,7 @@ class Flags:
         "Sweden": "🇸🇪",
         "Italy": "🇮🇹",
         "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
-        "Slovenia": "🇸🇮"
+        "Slovenia": "🇸🇮",
     }
 
     @classmethod

@@ -4,12 +4,11 @@ import os
 import sqlite3
 from typing import Iterator, Protocol, Set
 from src.exif import PhotoExifData
-from src.model import AlbumMetadataModel
 from src.phash import PhashData
 from src.media import IMedia
 from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel
 from src.video import EncodedVideoModel, VideoModel
-from src.album import AlbumModel
+from src.album import AlbumModel, AlbumMetadataModel
 from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,

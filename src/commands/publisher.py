@@ -177,6 +177,7 @@ class VideosArtifact(IArtifact):
 
         return json.dumps(rows)
 
+
 class AtomArtifact:
     """Build artifact describing Atom feed with pagination"""
 
@@ -209,7 +210,9 @@ class AtomArtifact:
             media.append(
                 {
                     "id": photo.thumbnail_url,
-                    "created_at": datetime.strptime(photo.created_at, '%Y:%m:%d %H:%M:%S').replace(tzinfo=timezone.utc), # TODO
+                    "created_at": datetime.strptime(photo.created_at, "%Y:%m:%d %H:%M:%S").replace(
+                        tzinfo=timezone.utc
+                    ),  # TODO
                     "url": photo.thumbnail_url,
                     "image": photo.thumbnail_url,
                     "content_html": self.image_html(photo),
@@ -221,7 +224,7 @@ class AtomArtifact:
     def paginate(self, items: List[dict], page_size: int) -> List[List[dict]]:
         """Split items into pages of given size."""
 
-        return [items[idx:idx + page_size] for idx in range(0, len(items), page_size)]
+        return [items[idx : idx + page_size] for idx in range(0, len(items), page_size)]
 
     def subpage_filename(self, items: List[dict]) -> str:
         """Generate a stable filename for a page based on hashed IDs."""
@@ -236,7 +239,7 @@ class AtomArtifact:
     def page_url(self, page) -> str:
         """Get the URL for a particular page"""
 
-        next_file_url = os.path.join('/manifest/atom', self.subpage_filename(page))
+        next_file_url = os.path.join("/manifest/atom", self.subpage_filename(page))
         return f"{self.BASE_URL}{next_file_url}"
 
     def atom_page(self, page, next_page, output_dir):
@@ -265,14 +268,14 @@ class AtomArtifact:
 
         fg.updated(max_time)
 
-        file_path = os.path.join(output_dir, 'atom', self.subpage_filename(page))
+        file_path = os.path.join(output_dir, "atom", self.subpage_filename(page))
         fg.atom_file(file_path)
 
     def atom_feed(self, media: List[dict], output_dir: str):
         page_size = 20
         pages = self.paginate(media, page_size)
 
-        atom_dir = os.path.join(output_dir, 'atom')
+        atom_dir = os.path.join(output_dir, "atom")
 
         for idx, page in enumerate(pages[1:]):
             next_page = pages[idx + 1] if idx + 1 < len(pages) else None
@@ -285,7 +288,7 @@ class AtomArtifact:
         index.title("Photos.rgrannell.xyz")
         index.id(f"{self.BASE_URL}/atom-index.xml")
 
-        index.subtitle('A feed of my videos and images!')
+        index.subtitle("A feed of my videos and images!")
         index.author({"name": "R* Grannell"})
         index.link(href=f"{self.BASE_URL}/atom-index.xml", rel="self")
         index.link(href=self.page_url(pages[0]), rel="next")
@@ -303,7 +306,6 @@ class AtomArtifact:
             entry.link(href=item["url"])
             entry.content(item["content_html"], type="html")
 
-
         index.updated(max_time)
         index.atom_file(index_path)
 
@@ -315,11 +317,7 @@ class SemanticArtifact(IArtifact):
         media = []
 
         for row in db.list_photo_metadata():
-            media.append([
-                deterministic_hash_str(row.fpath),
-                row.relation,
-                row.target
-            ])
+            media.append([deterministic_hash_str(row.fpath), row.relation, row.target])
 
         return json.dumps(media)
 
@@ -330,8 +328,8 @@ class ExifArtifact(IArtifact):
     HEADERS = ["id", "created_at", "f_stop", "focal_length", "model", "exposure_time", "iso", "width", "height"]
 
     def process(self, exif: PhotoExifData) -> List[Any]:
-        parts = exif.created_at.split(' ') if exif.created_at else ''
-        date = parts[0].replace(':', '/')
+        parts = exif.created_at.split(" ") if exif.created_at else ""
+        date = parts[0].replace(":", "/")
         created_at = f"{date} {parts[1]}"
 
         return [
@@ -354,6 +352,7 @@ class ExifArtifact(IArtifact):
 
         return json.dumps(rows)
 
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -364,7 +363,9 @@ class ArtifactBuilder:
 
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
-        removeable = [file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif"))]
+        removeable = [
+            file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif"))
+        ]
 
         for file in removeable:
             os.remove(f"{dpath}/{file}")

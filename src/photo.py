@@ -65,6 +65,20 @@ class PhotoModel(IModel):
         )
 
 
+class Photo:
+    """A class representing a photo"""
+
+    fpath: str
+    IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
+
+    def __init__(self, fpath: str):
+        self.fpath = fpath
+
+    @classmethod
+    def is_a(cls, fpath: str) -> bool:
+        return os.path.isfile(fpath) and fpath.endswith(cls.IMAGE_EXTENSIONS)
+
+
 @dataclass
 class PhotoMetadataModel(IModel):
     """Photo metadata database model"""
@@ -78,17 +92,3 @@ class PhotoMetadataModel(IModel):
         (fpath, relation, target) = row
 
         return PhotoMetadataModel(fpath=fpath, relation=relation, target=target)
-
-
-class Photo:
-    """A class representing a photo"""
-
-    fpath: str
-    IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
-
-    def __init__(self, fpath: str):
-        self.fpath = fpath
-
-    @classmethod
-    def is_a(cls, fpath: str) -> bool:
-        return os.path.isfile(fpath) and fpath.endswith(cls.IMAGE_EXTENSIONS)

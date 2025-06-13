@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 import os
-from typing import Iterator, List
+from typing import Any, Iterator, List
 from src.media import IMedia
 from src.model import IModel
 from src.photo import Photo
@@ -84,4 +84,21 @@ class AlbumModel(IModel):
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             flags=flags.split(","),
             description=description,
+        )
+
+
+@dataclass
+class AlbumMetadataModel(IModel):
+    src: str
+    src_type: str
+    relation: str
+    target: str | None
+
+    @classmethod
+    def from_row(cls, row: List[Any]) -> "AlbumMetadataModel":
+        return cls(
+            src=row[0],
+            src_type=row[1],
+            relation=row[2],
+            target=row[3],
         )
