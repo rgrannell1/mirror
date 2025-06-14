@@ -1,6 +1,7 @@
 """A file for dealing with metadata for albums and photos"""
 
 import json
+import re
 from jsonschema import validate
 
 from collections import defaultdict
@@ -71,8 +72,8 @@ class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
                 continue
 
             by_album[album_fpath]["fpath"] = album_fpath
-            if relation == "county":
-                by_album[album_fpath]["country"] = target.split(r"[ ]*,[ ]*") if target else []
+            if relation in {"county", "country"}:
+                by_album[album_fpath]["country"] = re.split(r"\s*,\s*", target) if target else []
             else:
                 by_album[album_fpath][relation] = target
 
