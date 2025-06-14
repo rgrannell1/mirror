@@ -18,24 +18,21 @@
     },
     "permalink": {
       "type": "string",
-      "pattern": "^[\\p{L}\\-]+$"
+      "pattern": "[\\w-]*"
     },
     "title": {
       "type": "string",
       "description": "Title of the album, used in the UI to display the album name."
     }
   },
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": ["fpath", "country", "permalink", "title"],
-    "properties": {
-      "fpath": { "$ref": "#/$defs/fpath" },
-      "summary": { "$ref": "#/$defs/summary" },
-      "country": { "$ref": "#/$defs/country" },
-      "permalink": { "$ref": "#/$defs/permalink" },
-      "title": { "$ref": "#/$defs/title" }
-    },
-    "additionalProperties": false
-  }
+  "type": "object",
+  "required": ["fpath", "country", "permalink", "title"],
+  "properties": {
+    "fpath": { "$ref": "#/$defs/fpath" },
+    "summary": { "$ref": "#/$defs/summary" },
+    "country": { "$ref": "#/$defs/country" },
+    "permalink": { "$ref": "#/$defs/permalink" },
+    "title": { "$ref": "#/$defs/title" }
+  },
+  "additionalProperties": false
 }

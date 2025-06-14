@@ -6,7 +6,7 @@ from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
 from src.commands.scanner import MediaScanner, LinnaeusScanner
-from src.metadata import JSONAlbumMetadataWriter
+from src.metadata import JSONAlbumMetadataReader, JSONAlbumMetadataWriter
 
 commands = ["mirror scan", "mirror upload", "mirror publish"]
 
@@ -49,6 +49,13 @@ class Mirror:
         # TODO validate against the schema
         ...
 
+        db = SqliteDatabase(DATABASE_PATH)
+        reader = JSONAlbumMetadataReader('/dev/stdin')
+
+        for item in reader.list_album_metadata(db):
+            # update the existing table, wiping all previous information
+            print(item)
+
     def write_metadata(self) -> None:
         """Output album or photo semantic information to stdout"""
 
@@ -76,7 +83,12 @@ def main() -> None:
         mirror.publish()
     elif command == "write_metadata":
         mirror.write_metadata()
-
+    elif command == "read_metadata":
+        mirror.read_metadata()
+    else:
+        print(f"Unknown command: {command}", file=sys.stderr)
+        print(doc, file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

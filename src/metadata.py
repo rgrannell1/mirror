@@ -82,7 +82,29 @@ class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
 
 
 class JSONAlbumMetadataReader(IAlbumMetadataReader):
+    fpath: str
+
+    def __init__(self, fpath: str):
+        self.fpath = fpath
+
     def list_album_metadata(self, db: IDatabase) -> Iterator[AlbumMetadataModel]:
         """Read album metadata from a JSON file"""
 
-        ...
+        with open(self.fpath, "r", encoding="utf-8") as conn:
+            data = json.load(conn)
+
+            for item in data:
+                validate(item, AlbumMetadataModel.schema())
+
+                src = item.get("fpath")
+                for key, val in item.items():
+                    if key == "fpath":
+                        continue
+
+                    yield AlbumMetadataModel(
+                        src=src,
+                        src_type=key,
+                        # sign
+                        relation='county' if key == 'country' else key,
+                        target=','.join(val) if isinstance(val, list) else val
+                    )
