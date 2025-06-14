@@ -24,7 +24,6 @@ from src.tables import (
     PHOTO_METADATA_TABLE,
 )
 from src.video import Video
-from src.linnaeus import AlbumAnswerModel
 
 
 class IDatabase(Protocol):
@@ -63,6 +62,16 @@ class IDatabase(Protocol):
     def add_photo_encoding(self, fpath: str, url: str, role: str, format: str) -> None: ...
 
     def add_video_encoding(self, fpath: str, url: str, role: str, format: str) -> None: ...
+
+    def add_exif(self, exif: PhotoExifData) -> None: ...
+    def add_phash(self, phash: PhashData) -> None: ...
+    def add_photo(self, fpath: str) -> None: ...
+    def add_video(self, fpath: str) -> None: ...
+    def remove_deleted_files(self, fpaths: Set[str]) -> None: ...
+    def remove_exif(self, fpath: str) -> None: ...
+    def remove_photo(self, fpath: str) -> None: ...
+    def remove_video(self, fpath: str) -> None: ...
+    def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]) -> None: ...
 
 
 class SqliteDatabase(IDatabase):
@@ -256,46 +265,17 @@ class SqliteDatabase(IDatabase):
         for phash in phashes:
             self.add_phash(phash)
 
-    def write_album_answers(self, answers: Iterator[AlbumAnswerModel]):
-        for answer in answers:
-            relation = None
-            qid = answer.questionId
+    def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]):
 
-            relation = answer.relation()
-            if not relation:
-                raise Exception(f"Unknown questionId: {qid}")
+        # TODO not ideal, move to dedicated function
+        self.conn.execute("delete from media_metadata_table where src_type = 'album'")
 
+        for item in metadata:
             self.conn.execute(
                 """
             insert or replace into media_metadata_table (src, src_type, relation, target)
                               values (?, ?, ?, ?)
             """,
-                (answer.contentId, "album", relation, answer.answer),
-            )
-        self.conn.commit()
-
-    def write_photo_answers(self, answers: Iterator[AlbumAnswerModel]):
-        for answer in answers:
-            # bug
-            qid = answer.questionId
-            if qid in {"question_id", "0", "3"}:
-                continue
-
-            relation = None
-            qid = answer.questionId
-
-            relation = answer.relation()
-            if not relation:
-                raise Exception(f"Unknown questionId: {qid}")
-
-            contentId = answer.contentId
-            phash = self.conn.execute("select phash from phashes where fpath = ?", (contentId,)).fetchone()
-
-            if not phash:
-                continue
-
-            self.conn.execute(
-                "insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)",
-                (phash[0], "photo", relation, answer.answer),
+                (item.src, "album", item.relation, item.target),
             )
         self.conn.commit()

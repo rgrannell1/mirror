@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from src.ansi import ANSI
 from src.commands.publisher import ArtifactBuilder
@@ -14,12 +16,16 @@ doc = f"""
 {ANSI.bold("mirror")} 🪞
 ---------------------------------------------
 
-Index photos and videos & metadata sources
+Index photos and videos
     {ANSI.green("mirror scan")}
 Encode and upload photos and videos to a CDN
     {ANSI.green("mirror upload")}
-Publish the generated artifacts
+Publish the album artifacts
     {ANSI.green("mirror publish")}
+Read album or photo metadata from stdin
+    {ANSI.green("mirror read_metadata")}
+Write album or photo metadata to stdout
+    {ANSI.green("mirror write_metadata")}
 
 ---------------------------------------------
 {ANSI.grey(" • ".join(commands))}"""
@@ -46,15 +52,11 @@ class Mirror:
 
     def read_metadata(self) -> None:
         """Read album or photo semantic information from stdin"""
-        # TODO validate against the schema
-        ...
 
         db = SqliteDatabase(DATABASE_PATH)
-        reader = JSONAlbumMetadataReader('/dev/stdin')
+        reader = JSONAlbumMetadataReader("/dev/stdin")
 
-        for item in reader.list_album_metadata(db):
-            # update the existing table, wiping all previous information
-            print(item)
+        db.write_album_metadata(reader.list_album_metadata(db))
 
     def write_metadata(self) -> None:
         """Output album or photo semantic information to stdout"""
@@ -89,6 +91,7 @@ def main() -> None:
         print(f"Unknown command: {command}", file=sys.stderr)
         print(doc, file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

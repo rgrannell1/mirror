@@ -105,6 +105,6 @@ class JSONAlbumMetadataReader(IAlbumMetadataReader):
                         src=src,
                         src_type=key,
                         # sign
-                        relation='county' if key == 'country' else key,
-                        target=','.join(val) if isinstance(val, list) else val
+                        relation="county" if key == "country" else key,
+                        target=",".join(val) if isinstance(val, list) else val,
                     )

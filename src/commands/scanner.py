@@ -2,7 +2,7 @@
 
 from typing import Iterator, Protocol, Set
 from src.database import IDatabase
-from src.linnaeus import SqliteLinnaeusDatabase, AlbumAnswerModel, PhotoAnswerModel
+from src.linnaeus import SqliteLinnaeusDatabase, PhotoAnswerModel
 from src.exif import ExifReader, PhotoExifData
 from src.phash import PHashReader, PhashData
 from src.vault import MediaVault
@@ -71,12 +71,6 @@ class LinnaeusScanner(IScanner):
         self.db = db
         self.linnaeus = SqliteLinnaeusDatabase("/home/rg/Code/websites/linneaus.local/.linny.db")
 
-    def album_answers(self) -> Iterator[AlbumAnswerModel]:
-        """Get all album answers from Linnaeus"""
-
-        for answer in self.linnaeus.list_album_answers():
-            yield answer
-
     def photo_answers(self) -> Iterator[PhotoAnswerModel]:
         """Get all photo answers from Linnaeus"""
 
@@ -103,5 +97,3 @@ class LinnaeusScanner(IScanner):
         """Read resouces from Linnaeus and write them to the mirror database"""
 
         self.db.write_phash(self.phashes())
-        self.db.write_album_answers(self.album_answers())
-        self.db.write_photo_answers(self.photo_answers())
