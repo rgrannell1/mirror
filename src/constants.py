@@ -1,5 +1,10 @@
 """Constant values used throughout the application."""
 
+from typing import cast
+
+from src.types import VideoEncoding, VideoEncodingConfig
+
+
 MOSAIC_WIDTH = 2
 MOSAIC_HEIGHT = 2
 THUMBNAIL_WIDTH = 400
@@ -18,3 +23,60 @@ EXIF_ATTR_ASSOCIATIONS = {
     "ExifImageWidth": "width",
     "ExifImageHeight": "height",
 }
+
+# How should we encode our photos? Current uses
+# - thumbnail: a lossy thumbnail for fast loading
+# - full_image_lossless: a lossless webp image for high quality
+# - full_image_png: a png image so I can share images to Signal and other non-webp apps
+IMAGE_ENCODINGS = [
+    ("thumbnail_lossy", {"format": "webp", "quality": 85, "method": 6}),
+    ("full_image_lossless", {"format": "webp", "lossless": True}),
+    ("full_image_png", {"format": "png", "quality": 100, "method": 6}),
+]
+
+VIDEO_ENCODINGS: list[VideoEncoding] = [
+    (
+        "video_libx264_unscaled",
+        cast(
+            VideoEncodingConfig,
+            {
+                "bitrate": "30M",
+                "width": None,
+                "height": None,
+            },
+        ),
+    ),
+    (
+        "video_libx264_1080p",
+        cast(
+            VideoEncodingConfig,
+            {
+                "bitrate": "5000k",
+                "width": 1920,
+                "height": 1080,
+            },
+        ),
+    ),
+    (
+        "video_libx264_720p",
+        cast(
+            VideoEncodingConfig,
+            {
+                "bitrate": "2500k",
+                "width": 1280,
+                "height": 720,
+            },
+        ),
+    ),
+    (
+        "video_libx264_480p",
+        cast(
+            VideoEncodingConfig,
+            {
+                "bitrate": "1000k",
+                "width": 854,
+                "height": 480,
+            },
+        ),
+    ),
+]

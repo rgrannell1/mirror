@@ -18,7 +18,7 @@ from src.photo import PhotoContent
 
 class PhotoEncoder:
     @classmethod
-    def encode(self, fpath: str, params: Dict) -> PhotoContent:
+    def encode(cls, fpath: str, params: Dict) -> PhotoContent:
         """Encode an image as Webp, and remove EXIF data"""
 
         img = Image.open(fpath)
@@ -38,7 +38,7 @@ class PhotoEncoder:
             return PhotoContent(contents)
 
     @classmethod
-    def encode_image_mosaic(self, fpath: str) -> PhotoContent:
+    def encode_image_mosaic(cls, fpath: str) -> PhotoContent:
         """Create a small image to use as a data-url while the main image loads"""
 
         img = Image.open(fpath)
@@ -61,7 +61,7 @@ class PhotoEncoder:
             return PhotoContent(output.getvalue())
 
     @classmethod
-    def encode_thumbnail(self, fpath: str, params: Dict) -> PhotoContent:
+    def encode_thumbnail(cls, fpath: str, params: Dict) -> PhotoContent:
         """Encode a image as a thumbnail, and remove EXIF data"""
 
         img = Image.open(fpath)
@@ -137,7 +137,7 @@ class VideoEncoder:
         return output_fpath
 
     @classmethod
-    def resolution(self, fpath: str) -> Tuple[int, int]:
+    def resolution(cls, fpath: str) -> Tuple[int, int]:
         """Encode a video"""
         "Returns resolution of the video, if it's possible to determine?"
 
@@ -153,7 +153,7 @@ class VideoEncoder:
         raise VideoResolutionLookupException(f"Failed to determine resolution of {fpath}")
 
     @classmethod
-    def encode_thumbnail(self, fpath: str, params: Dict):
+    def encode_thumbnail(cls, fpath: str, params: Dict):
         """Return a thumbnail for the video"""
         loaded = cv2.VideoCapture(fpath)
         ret, frame = loaded.read()

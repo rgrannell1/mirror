@@ -266,7 +266,6 @@ class SqliteDatabase(IDatabase):
             self.add_phash(phash)
 
     def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]):
-
         # TODO not ideal, move to dedicated function
         self.conn.execute("delete from media_metadata_table where src_type = 'album'")
 

@@ -2,21 +2,13 @@
 
 import base64
 import sys
-from typing import Any, List, Optional, Tuple, cast, TypedDict
+from typing import Any
 from src.cdn import CDN
+from src.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from src.database import IDatabase
 from src.encoder import PhotoEncoder, VideoEncoder
 from src.exceptions import InvalidVideoDimensionsException
 from src.photo import PhotoContent
-
-
-class VideoEncodingConfig(TypedDict):
-    bitrate: str
-    width: Optional[int]
-    height: Optional[int]
-
-
-VideoEncoding = Tuple[str, VideoEncodingConfig]
 
 
 class MediaUploader:
@@ -31,57 +23,8 @@ class MediaUploader:
     FULL_ENCODING_FORMAT = "webp"
     VIDEO_FORMAT = "webm"
 
-    IMAGE_ENCODINGS = [
-        ("thumbnail_lossy", {"format": "webp", "quality": 85, "method": 6}),
-        ("full_image_lossless", {"format": "webp", "lossless": True}),
-    ]
-
-    VIDEO_ENCODINGS: List[VideoEncoding] = [
-        (
-            "video_libx264_unscaled",
-            cast(
-                VideoEncodingConfig,
-                {
-                    "bitrate": "30M",
-                    "width": None,
-                    "height": None,
-                },
-            ),
-        ),
-        (
-            "video_libx264_1080p",
-            cast(
-                VideoEncodingConfig,
-                {
-                    "bitrate": "5000k",
-                    "width": 1920,
-                    "height": 1080,
-                },
-            ),
-        ),
-        (
-            "video_libx264_720p",
-            cast(
-                VideoEncodingConfig,
-                {
-                    "bitrate": "2500k",
-                    "width": 1280,
-                    "height": 720,
-                },
-            ),
-        ),
-        (
-            "video_libx264_480p",
-            cast(
-                VideoEncodingConfig,
-                {
-                    "bitrate": "1000k",
-                    "width": 854,
-                    "height": 480,
-                },
-            ),
-        ),
-    ]
+    IMAGE_ENCODINGS = IMAGE_ENCODINGS
+    VIDEO_ENCODINGS = VIDEO_ENCODINGS
 
     def __init__(self, db: IDatabase, cdn: Any):
         self.db = db

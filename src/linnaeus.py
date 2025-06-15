@@ -68,8 +68,7 @@ class PhotoAnswerModel(IModel):
 class ILinnaeusDatabase(Protocol):
     """Interact with a linnaeus database"""
 
-    def list_photo_answers(self) -> Iterator[PhotoAnswerModel]:
-        ...
+    def list_photo_answers(self) -> Iterator[PhotoAnswerModel]: ...
 
 
 class SqliteLinnaeusDatabase(ILinnaeusDatabase):
