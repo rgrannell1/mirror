@@ -15,18 +15,26 @@ from typing import TypedDict, Optional
 
 # Protocols defining how metadata can be communicated to/from other locations
 class IAlbumMetadataReader(Protocol):
+    """Interface for listing out album metadata"""
+
     def list_album_metadata(self, db: IDatabase) -> Iterator[AlbumMetadataModel]: ...
 
 
 class IAlbumMetadataWriter(Protocol):
+    """Interface for storing album metadata"""
+
     def write_album_metadata(self, db: IDatabase) -> None: ...
 
 
 class IPhotoMetadataReader(Protocol):
+    """Interface for listing out photo metadata"""
+
     def list_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataModel]: ...
 
 
 class IPhotoMetadataWriter(Protocol):
+    """Interface for storing photo metadata"""
+
     def write_photo_metadata(self, db: IDatabase) -> None: ...
 
 

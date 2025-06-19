@@ -1,3 +1,5 @@
+"""Compute and compare perceptual hashes of images."""
+
 from typing import NotRequired, Required, TypedDict
 from PIL import Image
 import imagehash

@@ -1,6 +1,0 @@
-.git/
-bs/
-.vscode
-__pycache__
-test.py
-.env

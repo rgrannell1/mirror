@@ -5,6 +5,7 @@ import hashlib
 import os
 from typing import List
 
+from src.constants import SUPPORTED_IMAGE_EXTENSIONS
 from src.model import IModel
 
 
@@ -69,7 +70,7 @@ class Photo:
     """A class representing a photo"""
 
     fpath: str
-    IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
+    IMAGE_EXTENSIONS = SUPPORTED_IMAGE_EXTENSIONS
 
     def __init__(self, fpath: str):
         self.fpath = fpath

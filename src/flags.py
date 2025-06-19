@@ -4,6 +4,8 @@ from typing import List
 
 
 class Flags:
+    """This is not a class containing territorial claims, just place - unicode-flag mappings"""
+
     TABLE = {
         "Ireland": "🇮🇪",
         "Germany": "🇩🇪",

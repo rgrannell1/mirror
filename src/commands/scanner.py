@@ -43,7 +43,7 @@ class MediaScanner(IScanner):
             if not all and not self.db.has_exif(media.fpath):
                 yield ExifReader.exif(media.fpath)  # type: ignore
 
-    def media_phash(self) -> Iterator[str]:
+    def media_phash(self) -> Iterator[PhashData]:
         """Return phashes for all photos not already stored in the database"""
 
         for album in MediaVault(self.dpath).albums():

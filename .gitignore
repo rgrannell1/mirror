@@ -16,3 +16,6 @@ build/*
 test_artifacts/
 vermiel.egg-info/
 test.md
+albums.json
+main.py
+table.md

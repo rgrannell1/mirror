@@ -1,7 +1,6 @@
 """Mirror produces artifacts - files derived from the database. This file describes the artifacts
 that are output, and checks they meet the expected constraints"""
 
-from time import ctime
 from feedgen.feed import FeedGenerator
 from datetime import datetime, timezone
 import json
@@ -22,27 +21,27 @@ from src.flags import Flags
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
 
-    def content(db: IDatabase, self) -> str:
+    def content(self, db: IDatabase) -> str:
         """Return the content of the artifact"""
         pass
 
     @classmethod
-    def short_cdn_url(self, url: Optional[str]) -> str:
+    def short_cdn_url(cls, url: Optional[str]) -> str:
         return url.replace(PHOTOS_URL, "") if url else ""
 
     @classmethod
-    def short_data_url(self, url: Optional[str]) -> str:
+    def short_data_url(cls, url: Optional[str]) -> str:
         return url.replace(DATA_URL, "") if url else ""
 
     @classmethod
-    def flags(self, countries: List[str]) -> str:
+    def flags(cls, countries: List[str]) -> str:
         return Flags.from_countries(countries)
 
 
 class MediaArtifact(IArtifact):
     """Build artifact describing secondary information about media in the database"""
 
-    def content(db: IDatabase, self) -> str:
+    def content(self, db: IDatabase) -> str:
         return "[]"
 
 
@@ -54,7 +53,7 @@ class EnvArtifact(IArtifact):
     def __init__(self, publication_id: str):
         self.publication_id = publication_id
 
-    def content(self, _: IDatabase) -> str:
+    def content(self, db: IDatabase) -> str:
         return json.dumps(
             {
                 "photos_url": PHOTOS_URL,
@@ -210,7 +209,7 @@ class AtomArtifact:
             media.append(
                 {
                     "id": photo.thumbnail_url,
-                    "created_at": datetime.strptime(photo.created_at, "%Y:%m:%d %H:%M:%S").replace(
+                    "created_at": datetime.strptime(str(photo.created_at), "%Y:%m:%d %H:%M:%S").replace(
                         tzinfo=timezone.utc
                     ),  # TODO
                     "url": photo.thumbnail_url,
@@ -294,6 +293,7 @@ class AtomArtifact:
         index.link(href=self.page_url(pages[0]), rel="next")
 
         max_time = None
+        # TODO! A bug!
         for item in page:
             title = "Video" if "<video>" in item["content_html"] else "Photo"
 

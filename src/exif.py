@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Dict, List, NotRequired, Optional, TypedDict
+from typing import Dict, List, Optional
 import warnings
 
 from src.constants import EXIF_ATTR_ASSOCIATIONS

@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema describing album metadata that can be imported by Mirror",
   "$defs": {
     "fpath": {
       "type": "string",

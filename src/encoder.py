@@ -41,6 +41,8 @@ class PhotoEncoder:
     def encode_image_mosaic(cls, fpath: str) -> PhotoContent:
         """Create a small image to use as a data-url while the main image loads"""
 
+        # TODO: this really shouldn't be an image, just a few colours in a low-bit colour palette
+
         img = Image.open(fpath)
         rgb = img.convert("RGB")
 

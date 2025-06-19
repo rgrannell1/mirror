@@ -145,6 +145,7 @@ create view if not exists photo_data as
     "" as tags,
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
+    coalesce(full_image_png.url, null) as png_url,
     coalesce(full_image.url, null) as full_image,
     coalesce(exif.created_at, null) as created_at,
     coalesce(phashes.phash, null) as phash
@@ -157,6 +158,8 @@ create view if not exists photo_data as
     on photos.fpath = thumbnail_data.fpath and thumbnail_data.role = 'thumbnail_data_url'
   left join encoded_photos full_image
     on photos.fpath = full_image.fpath and full_image.role = 'full_image_lossless'
+  left join encoded_photos full_image_png
+    on photos.fpath = full_image_png.fpath and full_image_png.role = 'full_image_png'
   left join exif
     on photos.fpath = exif.fpath
   left join phashes

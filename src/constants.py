@@ -24,6 +24,8 @@ EXIF_ATTR_ASSOCIATIONS = {
     "ExifImageHeight": "height",
 }
 
+SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
+
 # How should we encode our photos? Current uses
 # - thumbnail: a lossy thumbnail for fast loading
 # - full_image_lossless: a lossless webp image for high quality

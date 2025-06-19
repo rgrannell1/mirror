@@ -10,7 +10,7 @@ from src.commands.uploader import MediaUploader
 from src.commands.scanner import MediaScanner, LinnaeusScanner
 from src.metadata import JSONAlbumMetadataReader, JSONAlbumMetadataWriter
 
-commands = ["mirror scan", "mirror upload", "mirror publish"]
+commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 
 doc = f"""
 {ANSI.bold("mirror")} 🪞
