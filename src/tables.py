@@ -208,6 +208,8 @@ create table if not exists media_metadata_table (
 );
 """
 
+# target:
+#
 PHOTO_METADATA_TABLE = """
 create table if not exists photo_metadata_table (
   phash       text not null,
@@ -217,4 +219,77 @@ create table if not exists photo_metadata_table (
 
   primary key (phash, src_type, relation, target)
 );
+"""
+
+# shape photo metadata into a columnar format
+PHOTO_METADATA_VIEW = """
+create view if not exists photo_metadata_view as
+  select * from (with aggregated as (
+    select
+      phash,
+      coalesce(group_concat(case when relation = 'style' then target end, ', '), '') as genre,
+      coalesce(group_concat(case when relation = 'rating' then target end, ', '), '') as rating,
+      coalesce(group_concat(case when relation = 'location' then target end, ', '), '') as places,
+      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '') as description,
+      coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects
+    from
+      photo_metadata_table
+    where
+      relation in ('style', 'rating', 'location', 'summary', 'subject')
+    group by
+      phash
+  )
+
+  select * from aggregated
+
+  union all
+
+  select
+    p.phash,
+    '' as genre,
+    '' as rating,
+    '' as places,
+    '' as description,
+    '' as subjects
+  from
+    phashes p
+  left join aggregated a on p.phash = a.phash
+  where
+    a.phash is null);
+"""
+
+PHOTO_METADATA_SUMMARY = """
+create view if not exists photo_metadata_summary as
+    with photo_information as (
+      select
+          phashes.fpath,
+          genre,
+          rating,
+          places,
+          description,
+          subjects
+      from
+          photo_metadata_view as pv
+      left join phashes on
+          pv.phash = phashes.phash
+    )
+    select
+      photo_information.fpath as fpath,
+      encoded_photos.url as url,
+      album_data.name as name,
+      genre,
+      rating,
+      places,
+      photo_information.description as description,
+      subjects
+    from
+      photo_information
+    inner join album_contents on
+      photo_information.fpath = album_contents.fpath
+    inner join album_data on
+      album_data.dpath = album_contents.dpath
+    inner join encoded_photos on
+      photo_information.fpath = encoded_photos.fpath
+      and role = 'thumbnail_lossy'
+    order by name;
 """

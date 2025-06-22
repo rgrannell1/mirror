@@ -93,3 +93,32 @@ class PhotoMetadataModel(IModel):
         (fpath, relation, target) = row
 
         return PhotoMetadataModel(fpath=fpath, relation=relation, target=target)
+
+
+@dataclass
+class PhotoMetadataSummaryModel(IModel):
+    """Photo metadata summary database model"""
+
+    fpath: str
+    url: str
+    name: str
+    genre: list[str]
+    rating: str | None
+    places: list[str]
+    description: str | None
+    subjects: list[str]
+
+    @classmethod
+    def from_row(cls, row: List) -> "PhotoMetadataSummaryModel":
+        (fpath, url, name, genre, rating, places, description, subjects) = row
+
+        return PhotoMetadataSummaryModel(
+            fpath=fpath,
+            url=url,
+            name=name,
+            genre=genre.split(",") if genre else [],
+            rating=rating,
+            places=places.split(",") if places else [],
+            description=description,
+            subjects=subjects.split(",") if subjects else [],
+        )

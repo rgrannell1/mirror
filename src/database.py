@@ -6,12 +6,14 @@ from typing import Iterator, Protocol, Set
 from src.exif import PhotoExifData
 from src.phash import PhashData
 from src.media import IMedia
-from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel
+from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
 from src.video import EncodedVideoModel, VideoModel
 from src.album import AlbumModel, AlbumMetadataModel
 from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
+    PHOTO_METADATA_SUMMARY,
+    PHOTO_METADATA_VIEW,
     PHOTOS_TABLE,
     EXIF_TABLE,
     VIDEO_DATA_VIEW,
@@ -55,6 +57,7 @@ class IDatabase(Protocol):
     def remove_photo(self, fpath: str) -> None: ...
     def remove_video(self, fpath: str) -> None: ...
     def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]) -> None: ...
+    def list_photo_metadata_summary(self) -> Iterator[PhotoMetadataSummaryModel]: ...
 
 
 class SqliteDatabase(IDatabase):
@@ -73,6 +76,8 @@ class SqliteDatabase(IDatabase):
         MEDIA_METADATA_TABLE,
         PHASHES_TABLE,
         PHOTO_METADATA_TABLE,
+        PHOTO_METADATA_VIEW,
+        PHOTO_METADATA_SUMMARY
     }
     conn: sqlite3.Connection
 
@@ -261,3 +266,7 @@ class SqliteDatabase(IDatabase):
                 (item.src, "album", item.relation, item.target),
             )
         self.conn.commit()
+
+    def list_photo_metadata_summary(self) -> Iterator[PhotoMetadataSummaryModel]:
+        for row in self.conn.execute("select * from photo_metadata_summary"):
+            yield PhotoMetadataSummaryModel.from_row(row)

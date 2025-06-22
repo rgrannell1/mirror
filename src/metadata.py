@@ -9,7 +9,7 @@ from typing import Iterator, Protocol
 
 from src.album import AlbumMetadataModel
 from src.database import IDatabase
-from src.photo import PhotoMetadataModel
+from src.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from typing import TypedDict, Optional
 
 
@@ -117,3 +117,39 @@ class JSONAlbumMetadataReader(IAlbumMetadataReader):
                         relation="county" if key == "country" else key,
                         target=",".join(val) if isinstance(val, list) else val,
                     )
+
+
+class MarkdownTablePhotoMetadataWriter:
+    def write_photo_metadata(self, db: IDatabase) -> None:
+        headers = [
+            'embedding',
+            'name',
+            'genre',
+            'rating',
+            'places',
+            'description',
+            'subjects',
+        ]
+
+        rows = []
+
+        for summary in db.list_photo_metadata_summary():
+            rows.append([
+                f"![]({ summary.url })",
+                summary.name,
+                ",".join(summary.genre),
+                summary.rating or "",
+                ",".join(summary.places),
+                summary.description or "",
+                ",".join(summary.subjects),
+            ])
+
+        print("| " + " | ".join(headers) + " |")
+        print("| " + " | ".join(["---"] * len(headers)) + " |")
+
+        for row in rows:
+            print("| " + " | ".join(row) + " |")
+
+
+class MarkdownTablePhotoMetadataReader:
+    def read_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataSummaryModel]: ...
