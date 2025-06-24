@@ -157,6 +157,10 @@ class EncodedPhotosTable:
         ):
             yield EncodedPhotoModel.from_row(row)
 
+    def delete(self, fpath: str) -> None:
+        self.conn.execute("delete from encoded_photos where fpath = ?", (fpath,))
+        self.conn.commit()
+
 
 class EncodedVideosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
@@ -236,17 +240,11 @@ class PhotoMetadataTable:
             return self.add(phash, "photo", "rating", rating)
 
     def add_summary(self, phash: str, metadata: PhotoMetadataSummaryModel) -> None:
-        genre = metadata.genre or []
-        places = metadata.places or []
-        subjects = metadata.subjects or []
-        description = metadata.description or ""
-        rating = metadata.rating or ""
-
-        self.add_genre(phash, genre)
-        self.add_place(phash, places)
-        self.add_subject(phash, subjects)
-        self.add_description(phash, description)
-        self.add_rating(phash, rating)
+        self.add_genre(phash, metadata.genre or [])
+        self.add_place(phash, metadata.places or [])
+        self.add_subject(phash, metadata.subjects or [])
+        self.add_description(phash, metadata.description or "")
+        self.add_rating(phash, metadata.rating or "")
 
 
 class SqliteDatabase:
@@ -298,12 +296,6 @@ class SqliteDatabase:
 
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    def add_exif(self, exif: PhotoExifData) -> None:
-        return self.exif_table().add(exif)
-
-    def add_video_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        self.encoded_videos_table().add(fpath, url, role, format)
-
     def list_photo_data(self) -> Iterator[PhotoModel]:
         for row in self.conn.execute("select * from photo_data"):
             yield PhotoModel.from_row(row)
@@ -313,9 +305,6 @@ class SqliteDatabase:
         for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):
             yield AlbumMetadataModel.from_row(row)
 
-    def list_exif(self) -> Iterator[PhotoExifData]:
-        yield from self.exif_table().list()
-
     def list_video_data(self) -> Iterator[VideoModel]:
         for row in self.conn.execute("select * from video_data"):
             yield VideoModel.from_row(row)
@@ -324,30 +313,25 @@ class SqliteDatabase:
         for row in self.conn.execute("select * from album_data"):
             yield AlbumModel.from_row(row)
 
-    def list_photos(self) -> Iterator[str]:
-        yield from self.photos_table().list()
-
-    def list_photo_encodings(self, fpath: str) -> Iterator[EncodedPhotoModel]:
-        yield from self.encoded_photos_table().list_for_file(fpath)
-
-    def list_video_encodings(self, fpath: str) -> Iterator[EncodedVideoModel]:
-        yield from self.encoded_videos_table().list_for_file(fpath)
-
-    def list_videos(self) -> Iterator[str]:
-        yield from self.videos_table().list()
-
-    def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
-        yield from self.photo_metadata_table().list()
-
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
-        for fpath in self.list_photos():
+        for fpath in self.photos_table().list():
             if fpath not in fpaths:
                 self.photos_table().delete(fpath)
                 self.exif_table().delete(fpath)
 
-        for fpath in self.list_videos():
+        for fpath in self.videos_table().list():
             if fpath not in fpaths:
                 self.videos_table().delete(fpath)
+
+        for row in self.conn.execute("""
+            select *
+            from encoded_photos
+            left join phashes on encoded_photos.fpath = phashes.fpath
+            where encoded_photos.role = 'thumbnail_data_url'
+            and phashes.fpath is null;
+        """):
+            fpath = row[0]
+            self.encoded_photos_table().delete(fpath)
 
     def write_media(self, media: Iterator[IMedia]) -> None:
         present_fpaths = set()
