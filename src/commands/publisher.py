@@ -10,7 +10,7 @@ from dateutil import tz
 
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
-from src.database import IDatabase
+from src.database import SqliteDatabase
 from src.exif import PhotoExifData
 from src.photo import PhotoModel
 from src.utils import deterministic_hash_str
@@ -21,7 +21,7 @@ from src.flags import Flags
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         """Return the content of the artifact"""
         pass
 
@@ -41,7 +41,7 @@ class IArtifact(Protocol):
 class MediaArtifact(IArtifact):
     """Build artifact describing secondary information about media in the database"""
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         return "[]"
 
 
@@ -53,7 +53,7 @@ class EnvArtifact(IArtifact):
     def __init__(self, publication_id: str):
         self.publication_id = publication_id
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         return json.dumps(
             {
                 "photos_url": PHOTOS_URL,
@@ -103,7 +103,7 @@ class AlbumsArtifact(IArtifact):
             album.description,
         ]
 
-    def content(self, db: IDatabase):
+    def content(self, db: SqliteDatabase):
         rows: List[List[Any]] = [self.HEADERS]
 
         for album in db.list_album_data():
@@ -131,7 +131,7 @@ class PhotosArtifact(IArtifact):
             int(created_at.timestamp() * 1000),
         ]
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
         for photo in db.list_photo_data():
@@ -168,7 +168,7 @@ class VideosArtifact(IArtifact):
             VideosArtifact.short_cdn_url(video.poster_url),
         ]
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
         for video in db.list_video_data():
@@ -188,7 +188,7 @@ class AtomArtifact:
     def video_html(self, video: VideoModel) -> str:
         return f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>'
 
-    def media(self, db: IDatabase) -> List[dict]:
+    def media(self, db: SqliteDatabase) -> List[dict]:
         photos = db.list_photo_data()
         videos = db.list_video_data()
 
@@ -313,7 +313,7 @@ class AtomArtifact:
 class SemanticArtifact(IArtifact):
     """Build artifact describing semantic information in the database"""
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         media = []
 
         for row in db.list_photo_metadata():
@@ -344,7 +344,7 @@ class ExifArtifact(IArtifact):
             exif.height,
         ]
 
-    def content(self, db: IDatabase) -> str:
+    def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
         for exif in db.list_exif():
@@ -357,7 +357,7 @@ class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
 
-    def __init__(self, db: IDatabase, output_dir: str):
+    def __init__(self, db: SqliteDatabase, output_dir: str):
         self.db = db
         self.output_dir = output_dir
 

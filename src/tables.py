@@ -245,6 +245,7 @@ create view if not exists photo_metadata_view as
     a.phash is null);
 """
 
+# TODO: dedupe by `phashes.phash`
 PHOTO_METADATA_SUMMARY = """
 create view if not exists photo_metadata_summary as
     with photo_information as (

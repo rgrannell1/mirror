@@ -10,7 +10,7 @@ from collections import defaultdict
 from typing import Iterator, Protocol
 
 from src.album import AlbumMetadataModel
-from src.database import IDatabase
+from src.database import SqliteDatabase
 from src.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from typing import TypedDict, Optional
 
@@ -19,29 +19,29 @@ from typing import TypedDict, Optional
 class IAlbumMetadataReader(Protocol):
     """Interface for listing out album metadata"""
 
-    def list_album_metadata(self, db: IDatabase) -> Iterator[AlbumMetadataModel]: ...
+    def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]: ...
 
 
 class IAlbumMetadataWriter(Protocol):
     """Interface for storing album metadata"""
 
-    def write_album_metadata(self, db: IDatabase) -> None: ...
+    def write_album_metadata(self, db: SqliteDatabase) -> None: ...
 
 
 class IPhotoMetadataReader(Protocol):
     """Interface for listing out photo metadata"""
 
-    def list_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataModel]: ...
+    def list_photo_metadata(self, db: SqliteDatabase) -> Iterator[PhotoMetadataModel]: ...
 
 
 class IPhotoMetadataWriter(Protocol):
     """Interface for storing photo metadata"""
 
-    def write_photo_metadata(self, db: IDatabase) -> None: ...
+    def write_photo_metadata(self, db: SqliteDatabase) -> None: ...
 
 
 class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
-    def _contentful_published_albums(self, db: IDatabase) -> set[str]:
+    def _contentful_published_albums(self, db: SqliteDatabase) -> set[str]:
         """Retrieve a set of album paths that have content in the database"""
 
         albums = set()
@@ -52,7 +52,7 @@ class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
 
         return albums
 
-    def write_album_metadata(self, db: IDatabase) -> None:
+    def write_album_metadata(self, db: SqliteDatabase) -> None:
         """Write album metadata to a CSV file"""
 
         class AlbumFieldsDict(TypedDict):
@@ -98,7 +98,7 @@ class JSONAlbumMetadataReader(IAlbumMetadataReader):
     def __init__(self, fpath: str):
         self.fpath = fpath
 
-    def list_album_metadata(self, db: IDatabase) -> Iterator[AlbumMetadataModel]:
+    def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
         """Read album metadata from a JSON file"""
 
         with open(self.fpath, "r", encoding="utf-8") as conn:
@@ -122,29 +122,31 @@ class JSONAlbumMetadataReader(IAlbumMetadataReader):
 
 
 class MarkdownTablePhotoMetadataWriter:
-    def write_photo_metadata(self, db: IDatabase) -> None:
+    def write_photo_metadata(self, db: SqliteDatabase) -> None:
         headers = [
-            'embedding',
-            'name',
-            'genre',
-            'rating',
-            'places',
-            'description',
-            'subjects',
+            "embedding",
+            "name",
+            "genre",
+            "rating",
+            "places",
+            "description",
+            "subjects",
         ]
 
         rows = []
 
         for summary in db.list_photo_metadata_summary():
-            rows.append([
-                f"![]({ summary.url })",
-                summary.name,
-                ",".join(summary.genre),
-                summary.rating or "",
-                ",".join(summary.places),
-                summary.description or "",
-                ",".join(summary.subjects),
-            ])
+            rows.append(
+                [
+                    f"![]({summary.url})",
+                    summary.name,
+                    ",".join(summary.genre),
+                    summary.rating or "",
+                    ",".join(summary.places),
+                    summary.description or "",
+                    ",".join(summary.subjects),
+                ]
+            )
 
         print("| " + " | ".join(headers) + " |")
         print("| " + " | ".join(["---"] * len(headers)) + " |")
@@ -159,13 +161,13 @@ class MarkdownTablePhotoMetadataReader:
     def __init__(self, fpath: str):
         self.fpath = fpath
 
-    def read_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataSummaryModel]:
+    def read_photo_metadata(self, db: SqliteDatabase) -> Iterator[PhotoMetadataSummaryModel]:
         """Read photo metadata from a Markdown table"""
 
-        reader = csv.reader(sys.stdin, delimiter='|')
+        reader = csv.reader(sys.stdin, delimiter="|")
         headers = next(reader)[1:-1]
 
-        if headers[0].strip() != 'embedding':
+        if headers[0].strip() != "embedding":
             raise ValueError("Invalid header in Markdown table")
 
         next(reader)
@@ -175,7 +177,7 @@ class MarkdownTablePhotoMetadataReader:
                 continue
             row = [cell.strip() for cell in row]
 
-            _, embedding, title,genre, rating, places, description, subjects, _ = row
+            _, embedding, title, genre, rating, places, description, subjects, _ = row
 
             url = embedding[4:-1]
 

@@ -1,13 +1,13 @@
 """Scan all media in a vault, and index this information in a database"""
 
-from typing import Iterator, Protocol, Set
-from src.database import IDatabase
-from src.linnaeus import SqliteLinnaeusDatabase, PhotoAnswerModel
+from typing import Iterator, Protocol
+from src.database import SqliteDatabase
 from src.exif import ExifReader, PhotoExifData
 from src.phash import PHashReader, PhashData
 from src.vault import MediaVault
 from src.media import IMedia
 from src.photo import Photo
+from src.video import Video
 
 
 class IScanner(Protocol):
@@ -22,36 +22,40 @@ class MediaScanner(IScanner):
     and syncing it into a database.
     """
 
-    def __init__(self, dpath: str, db: IDatabase):
+    def __init__(self, dpath: str, db: SqliteDatabase):
         self.dpath = dpath
         self.db = db
 
-    def media(self) -> Iterator[IMedia]:
+    def _list_current_media(self) -> Iterator[IMedia]:
         """Return all media in the directory"""
 
         for album in MediaVault(self.dpath).albums():
             for media in album.media():
                 yield media
 
-    def photo_exif(self, all=False) -> Iterator[PhotoExifData]:
+    def _unsaved_exifs(self) -> Iterator[PhotoExifData]:
         """Return exif data for all photos not in the database"""
 
-        for media in self.media():
+        exif_table = self.db.exif_table()
+
+        for media in self._list_current_media():
             if not Photo.is_a(media.fpath):
                 continue
 
-            if not all and not self.db.has_exif(media.fpath):
+            if not exif_table.has(media.fpath):
                 yield ExifReader.exif(media.fpath)  # type: ignore
 
-    def media_phash(self) -> Iterator[PhashData]:
+    def _unsaved_phashes(self) -> Iterator[PhashData]:
         """Return phashes for all photos not already stored in the database"""
+
+        phash_table = self.db.phashes_table()
 
         for album in MediaVault(self.dpath).albums():
             for media in album.media():
                 if not Photo.is_a(media.fpath):
                     continue
 
-                if not self.db.has_phash(media.fpath):
+                if not phash_table.has(media.fpath):
                     yield PHashReader.phash(media.fpath)
 
     def scan(self) -> None:
@@ -59,41 +63,22 @@ class MediaScanner(IScanner):
         responsible for minimising state-change (i.e try not to repeat work) and should account for the
         possiblity files are deleted."""
 
-        self.db.write_media(self.media())
-        self.db.write_exif(self.photo_exif())
-        self.db.write_phash(self.media_phash())
+        phash_table = self.db.phashes_table()
+        exif_table = self.db.exif_table()
+        photos_table = self.db.photos_table()
+        videos_table = self.db.videos_table()
 
+        current_fpaths = set()
 
-class LinnaeusScanner(IScanner):
-    """The linneaeus scanner pulls information from the Linnaeus database and syncs it into the mirror database"""
+        for entry in self._list_current_media():
+            if isinstance(entry, Photo):
+                photos_table.add(entry.fpath)
+                current_fpaths.add(entry.fpath)
+            elif isinstance(entry, Video):
+                videos_table.add(entry.fpath)
+                current_fpaths.add(entry.fpath)
 
-    def __init__(self, db: IDatabase):
-        self.db = db
-        self.linnaeus = SqliteLinnaeusDatabase("/home/rg/Code/websites/linneaus.local/.linny.db")
+        self.db.remove_deleted_files(current_fpaths)
 
-    def photo_answers(self) -> Iterator[PhotoAnswerModel]:
-        """Get all photo answers from Linnaeus"""
-
-        for answer in self.linnaeus.list_photo_answers():
-            if answer.contentId == "contentId":  # bug
-                continue
-            yield answer
-
-    def phashes(self) -> Iterator[PhashData]:
-        """Compute phashes for every photo referenced by Linnaeus"""
-
-        distinct_fpaths: Set[str] = set()
-
-        for answer in self.linnaeus.list_photo_answers():
-            fpath = answer.contentId
-
-            if fpath in distinct_fpaths or fpath == "fpath":
-                continue
-
-            if not self.db.has_phash(fpath):
-                yield PHashReader.phash(fpath)
-
-    def scan(self) -> None:
-        """Read resouces from Linnaeus and write them to the mirror database"""
-
-        self.db.write_phash(self.phashes())
+        exif_table.add_many(self._unsaved_exifs())
+        phash_table.add_many(self._unsaved_phashes())

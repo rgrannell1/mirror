@@ -5,7 +5,7 @@ import sys
 from typing import Any
 from src.cdn import CDN
 from src.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
-from src.database import IDatabase
+from src.database import SqliteDatabase
 from src.encoder import PhotoEncoder, VideoEncoder
 from src.exceptions import InvalidVideoDimensionsException
 from src.photo import PhotoContent
@@ -15,7 +15,7 @@ class MediaUploader:
     """Publish photos and videos to a CDN. This class assumes anything in the database
     is published, but the database can be manually trimmed"""
 
-    db: IDatabase
+    db: SqliteDatabase
 
     DATA_URL_ROLE = "thumbnail_data_url"
     THUMBNAIL_ROLE = "video_thumbnail_webp"
@@ -26,7 +26,7 @@ class MediaUploader:
     IMAGE_ENCODINGS = IMAGE_ENCODINGS
     VIDEO_ENCODINGS = VIDEO_ENCODINGS
 
-    def __init__(self, db: IDatabase, cdn: Any):
+    def __init__(self, db: SqliteDatabase, cdn: Any):
         self.db = db
         self.cdn = cdn
 
@@ -42,7 +42,9 @@ class MediaUploader:
     def add_data_url(self, fpath: str) -> None:
         """Add a data-url to the database"""
 
-        encodings = list(self.db.list_photo_encodings(fpath))
+        encoded_photos_table = self.db.encoded_photos_table()
+
+        encodings = list(encoded_photos_table.list_for_file(fpath))
         published_roles = {enc.role for enc in encodings}
 
         # generate and store a data-url, if required
@@ -57,7 +59,9 @@ class MediaUploader:
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
 
-        encodings = list(self.db.list_photo_encodings(fpath))
+        encoded_photos_table = self.db.encoded_photos_table()
+
+        encodings = list(encoded_photos_table.list_for_file(fpath))
         published_roles = {enc.role for enc in encodings}
 
         for role, params in self.IMAGE_ENCODINGS:
@@ -74,7 +78,9 @@ class MediaUploader:
     def publish_video_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given video"""
 
-        encodings = list(self.db.list_video_encodings(fpath))
+        encoded_videos_table = self.db.encoded_videos_table()
+
+        encodings = list(encoded_videos_table.list_for_file(fpath))
         published_roles = {enc.role for enc in encodings}
 
         for role, params in self.VIDEO_ENCODINGS:
@@ -82,7 +88,7 @@ class MediaUploader:
                 continue
 
             try:
-                encoded_path = self.publish_encoding(fpath, role, params)
+                encoded_path = self.publish_encoding(fpath, role, params)  # type: ignore
 
                 if role == "video_libx264_unscaled":
                     self.publish_thumbnail(fpath, encoded_path)

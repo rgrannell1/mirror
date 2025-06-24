@@ -7,8 +7,13 @@ from src.cdn import CDN
 from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
-from src.commands.scanner import MediaScanner, LinnaeusScanner
-from src.metadata import JSONAlbumMetadataReader, JSONAlbumMetadataWriter, MarkdownTablePhotoMetadataReader, MarkdownTablePhotoMetadataWriter
+from src.commands.scanner import MediaScanner
+from src.metadata import (
+    JSONAlbumMetadataReader,
+    JSONAlbumMetadataWriter,
+    MarkdownTablePhotoMetadataReader,
+    MarkdownTablePhotoMetadataWriter,
+)
 
 commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 
@@ -36,7 +41,6 @@ class Mirror:
         db = SqliteDatabase(DATABASE_PATH)
 
         MediaScanner(dpath, db).scan()
-        LinnaeusScanner(db).scan()
 
     def upload(self) -> None:
         db = SqliteDatabase(DATABASE_PATH)
@@ -55,11 +59,11 @@ class Mirror:
 
         db = SqliteDatabase(DATABASE_PATH)
 
-        if content not in ['photo', 'album']:
+        if content not in ["photo", "album"]:
             print(f"Unknown content type: {content}", file=sys.stderr)
             return
 
-        if content == 'photo':
+        if content == "photo":
             md_reader = MarkdownTablePhotoMetadataReader("/dev/stdin")
 
             db.write_photo_metadata(md_reader.read_photo_metadata(db))
@@ -73,11 +77,11 @@ class Mirror:
 
         db = SqliteDatabase(DATABASE_PATH)
 
-        if content not in ['photo', 'album']:
+        if content not in ["photo", "album"]:
             print(f"Unknown content type: {content}", file=sys.stderr)
             return
 
-        if content == 'photo':
+        if content == "photo":
             photo_writer = MarkdownTablePhotoMetadataWriter()
             photo_writer.write_photo_metadata(db)
         else:
