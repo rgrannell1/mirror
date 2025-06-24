@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 import warnings
 
 from src.constants import EXIF_ATTR_ASSOCIATIONS
@@ -26,7 +26,7 @@ class PhotoExifData(IModel):
     height: Optional[str]
 
     @classmethod
-    def from_row(cls, row: List) -> "PhotoExifData":
+    def from_row(cls, row: list) -> "PhotoExifData":
         """Create a PhotoExifData object from a database row"""
 
         (fpath, created_at, f_stop, focal_length, model, exposure_time, iso, width, height) = row

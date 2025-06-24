@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 import os
 from typing import Any, Iterator, List
+from src.config import ALBUM_METADATA_FILE
 from src.media import IMedia
 from src.model import IModel
 from src.photo import Photo
@@ -97,7 +98,7 @@ class AlbumMetadataModel(IModel):
     target: str | None
 
     @classmethod
-    def from_row(cls, row: List[Any]) -> "AlbumMetadataModel":
+    def from_row(cls, row: list) -> "AlbumMetadataModel":
         return cls(
             src=row[0],
             src_type=row[1],
@@ -108,5 +109,5 @@ class AlbumMetadataModel(IModel):
     @classmethod
     @lru_cache
     def schema(cls) -> dict[str, Any]:
-        with open("/home/rg/Code/mirror/src/schemas/album_metadata.json", "r") as f:
+        with open(ALBUM_METADATA_FILE, "r") as f:
             return json.load(f)

@@ -97,7 +97,8 @@ class PhotoMetadataModel(IModel):
 
 @dataclass
 class PhotoMetadataSummaryModel(IModel):
-    """Photo metadata summary database model"""
+    """Photo metadata summary database model. Provided by tools which give semantic information about
+    metadata"""
 
     url: str
     name: str

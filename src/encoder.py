@@ -2,7 +2,7 @@
 
 import io
 import os
-from src.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
+from src.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
 import cv2
 import ffmpeg
 from src.exceptions import (
@@ -42,7 +42,6 @@ class PhotoEncoder:
         """Create a small image to use as a data-url while the main image loads"""
 
         # TODO: this really shouldn't be an image, just a few colours in a low-bit colour palette
-
         img = Image.open(fpath)
         rgb = img.convert("RGB")
 
@@ -162,8 +161,7 @@ class VideoEncoder:
         if not ret:
             raise VideoReadException(f"Failed to read frame from {fpath}")
 
-        THUMBNAIL_FORMAT = ".webp"
-        img_bytes = cv2.imencode(THUMBNAIL_FORMAT, frame)[1].tobytes()
+        img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
 
         img = Image.open(io.BytesIO(img_bytes))
         thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))

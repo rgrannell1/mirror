@@ -26,7 +26,7 @@ EXIF_ATTR_ASSOCIATIONS = {
 
 SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 
-# How should we encode our photos? Current uses
+# How should we encode our photos? Currently uses
 # - thumbnail: a lossy thumbnail for fast loading
 # - full_image_lossless: a lossless webp image for high quality
 # - full_image_png: a png image so I can share images to Signal and other non-webp apps
@@ -36,6 +36,8 @@ IMAGE_ENCODINGS = [
     ("full_image_png", {"format": "png", "quality": 100, "method": 6}),
 ]
 
+# How should we encode our videos? Currently uses unscaled + various
+# scaling of libx264 encoding
 VIDEO_ENCODINGS: list[VideoEncoding] = [
     (
         "video_libx264_unscaled",
@@ -82,3 +84,6 @@ VIDEO_ENCODINGS: list[VideoEncoding] = [
         ),
     ),
 ]
+
+VIDEO_THUMBNAIL_FORMAT = ".webp"
+VIDEO_CONTENT_TYPE = "video/mp4"

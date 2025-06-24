@@ -301,35 +301,8 @@ class SqliteDatabase:
     def add_exif(self, exif: PhotoExifData) -> None:
         return self.exif_table().add(exif)
 
-    def add_phash(self, phash: PhashData) -> None:
-        return self.phashes_table().add(phash)
-
-    def has_exif(self, fpath: str) -> bool:
-        return self.exif_table().has(fpath)
-
-    def has_phash(self, fpath: str) -> bool:
-        return self.phashes_table().has(fpath)
-
-    def add_photo_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
-        self.encoded_photos_table().add(fpath, url, role, format)
-
     def add_video_encoding(self, fpath: str, url: str, role: str, format: str) -> None:
         self.encoded_videos_table().add(fpath, url, role, format)
-
-    def add_photo(self, fpath: str) -> None:
-        self.photos_table().add(fpath)
-
-    def add_video(self, fpath: str) -> None:
-        self.videos_table().add(fpath)
-
-    def remove_exif(self, fpath: str) -> None:
-        self.exif_table().delete(fpath)
-
-    def remove_photo(self, fpath: str) -> None:
-        self.photos_table().delete(fpath)
-
-    def remove_video(self, fpath: str) -> None:
-        self.videos_table().delete(fpath)
 
     def list_photo_data(self) -> Iterator[PhotoModel]:
         for row in self.conn.execute("select * from photo_data"):
@@ -366,22 +339,15 @@ class SqliteDatabase:
     def list_photo_metadata(self) -> Iterator[PhotoMetadataModel]:
         yield from self.photo_metadata_table().list()
 
-    def write_exif(self, exifs: Iterator[PhotoExifData]) -> None:
-        ExifTable(self.conn).add_many(exifs)
-
-    def write_phash(self, phashes: Iterator[PhashData]) -> None:
-        PhashesTable(self.conn).add_many(phashes)
-
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
-        # TODO set up cascades?
         for fpath in self.list_photos():
             if fpath not in fpaths:
-                self.remove_photo(fpath)
-                self.remove_exif(fpath)
+                self.photos_table().delete(fpath)
+                self.exif_table().delete(fpath)
 
         for fpath in self.list_videos():
             if fpath not in fpaths:
-                self.remove_video(fpath)
+                self.videos_table().delete(fpath)
 
     def write_media(self, media: Iterator[IMedia]) -> None:
         present_fpaths = set()
@@ -391,10 +357,10 @@ class SqliteDatabase:
 
         for entry in media:
             if isinstance(entry, Photo):
-                self.add_photo(entry.fpath)
+                self.photos_table().add(entry.fpath)
                 present_fpaths.add(entry.fpath)
             elif isinstance(entry, Video):
-                self.add_video(entry.fpath)
+                self.videos_table().add(entry.fpath)
                 present_fpaths.add(entry.fpath)
 
         self.remove_deleted_files(present_fpaths)

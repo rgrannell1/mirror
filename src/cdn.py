@@ -10,6 +10,7 @@ from src.config import (
     SPACES_ACCESS_KEY_ID,
     SPACES_SECRET_KEY,
 )
+from src.constants import VIDEO_CONTENT_TYPE
 from src.photo import PhotoContent
 from src.config import PHOTOS_URL
 from src.utils import deterministic_hash_str
@@ -67,6 +68,8 @@ class CDN:
         return f"{PHOTOS_URL}/{key}"
 
     def has_object(self, name: str) -> bool:
+        """Does the object already exist in the bucket?"""
+
         try:
             self.storage_client.head_object(Bucket=SPACES_BUCKET, Key=name)
             return True
@@ -82,7 +85,6 @@ class CDN:
 
         name = f"{prefix}.{format}"
 
-        # why re-upload existing images if the media tables are dropped?
         if not self.has_object(name):
             print(f"Uploading {name} to CDN")
             self.upload(name, encoded_data.content)
@@ -104,7 +106,7 @@ class CDN:
                 ExtraArgs={
                     "ContentDisposition": "inline",
                     "CacheControl": "public, max-age=31536000, immutable",
-                    "ContentType": "video/mp4",
+                    "ContentType": VIDEO_CONTENT_TYPE,
                     "ACL": "public-read",
                 },
             )
@@ -113,6 +115,7 @@ class CDN:
 
     @classmethod
     def video_name(cls, fpath: str, bitrate: str, width: str, height: str, format: str = "mp4") -> str:
-        """Return the name of the video in the CDN bucket"""
+        """Return the name of the video in the CDN bucket. It's a deterministic function of
+        video parameters"""
 
         return f"{deterministic_hash_str(f'{fpath}{bitrate}{width}{height}')}.{format}"

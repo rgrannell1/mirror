@@ -54,7 +54,7 @@ class MediaUploader:
             encoded_content = base64.b64encode(encoded.content).decode("ascii")
             data_url = f"data:image/bmp;base64,{encoded_content}"
 
-            self.db.add_photo_encoding(fpath, data_url, self.DATA_URL_ROLE, "bmp")
+            self.db.encoded_photos_table().add(fpath, data_url, self.DATA_URL_ROLE, "bmp")
 
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
@@ -73,7 +73,7 @@ class MediaUploader:
                 role=role,
                 format=params["format"],  # type: ignore
             )
-            self.db.add_photo_encoding(fpath=fpath, url=uploaded_url, role=role, format=params["format"])  # type: ignore
+            self.db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
 
     def publish_video_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given video"""
@@ -135,9 +135,9 @@ class MediaUploader:
         thumbnail_url = self.cdn.upload_photo(
             encoded_data=encoded_thumbnail, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
         )
-        self.db.add_photo_encoding(
-            fpath=fpath, url=thumbnail_url, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
-        )  # type: ignore
+        self.db.encoded_photos_table().add(
+            fpath=fpath, url=self.THUMBNAIL_ROLE, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
+        )
 
     def upload(self) -> None:
         """Publish photos and videos to the CDN, and output artifacts"""
