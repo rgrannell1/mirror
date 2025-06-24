@@ -21,7 +21,6 @@ from src.tables import (
     ALBUM_DATA_VIEW,
     ALBUM_CONTENTS_TABLE,
     PHOTO_DATA_VIEW,
-    MEDIA_METADATA_TABLE,
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE,
 )
@@ -73,7 +72,6 @@ class SqliteDatabase(IDatabase):
         ALBUM_CONTENTS_TABLE,
         PHOTO_DATA_VIEW,
         VIDEO_DATA_VIEW,
-        MEDIA_METADATA_TABLE,
         PHASHES_TABLE,
         PHOTO_METADATA_TABLE,
         PHOTO_METADATA_VIEW,
@@ -167,6 +165,7 @@ class SqliteDatabase(IDatabase):
             yield PhotoModel.from_row(row)
 
     def list_album_metadata(self) -> Iterator[AlbumMetadataModel]:
+        # TODO: deprecate this table!
         for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):
             yield AlbumMetadataModel.from_row(row)
 
@@ -255,6 +254,7 @@ class SqliteDatabase(IDatabase):
 
     def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]):
         # TODO not ideal, move to dedicated function
+        # TODO deprecate this table!
         self.conn.execute("delete from media_metadata_table where src_type = 'album'")
 
         for item in metadata:
@@ -276,45 +276,55 @@ class SqliteDatabase(IDatabase):
             description = md.description or ""
             rating = md.rating or ""
 
-            (fpath, ) = next(self.conn.execute("""
-            select fpath from encoded_photos where url = ?
-            """, (md.url, )))
+            try:
+                # TODO factor these out
+                (fpath, ) = next(self.conn.execute("""
+                select fpath from encoded_photos where url = ?
+                """, (md.url, )))
+
+                # look up the phash
+                (phash, ) = next(self.conn.execute("""
+                select phash from phashes where fpath = ?
+                """, (fpath, )))
+            except StopIteration:
+                # if the photo is not in the database, skip it
+                print(f"Photo {md.url} not found in database, skipping metadata write.")
+                continue
+
 
             for gen in genre:
                 if not gen.strip():
                     continue
 
                 self.conn.execute("""
-                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
-                , (fpath, "photo", "style", gen))
+                    insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (phash, "photo", "style", gen))
 
             for place in places:
                 if not place.strip():
                     continue
 
                 self.conn.execute("""
-                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
-                , (fpath, "photo", "location", place))
+                    insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (phash, "photo", "location", place))
 
             for subject in subjects:
                 if not subject.strip():
                     continue
 
                 self.conn.execute("""
-                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
-                , (fpath, "photo", "subject", subject))
+                    insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (phash, "photo", "subject", subject))
 
             if description.strip():
                 self.conn.execute("""
-                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
-                , (fpath, "photo", "summary", description))
+                    insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (phash, "photo", "summary", description))
 
             if rating.strip():
-                if 'Bath' in fpath:
-                    print(fpath, rating)
                 self.conn.execute("""
-                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
-                , (fpath, "photo", "rating", rating))
+                    insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (phash, "photo", "rating", rating))
 
             # commit the changes
             self.conn.commit()

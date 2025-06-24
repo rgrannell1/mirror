@@ -195,19 +195,6 @@ create view if not exists video_data as
   order by videos.fpath desc;
 """
 
-# Stores semantic data about the media in this database, collected from
-# Linnaues and other sources
-MEDIA_METADATA_TABLE = """
-create table if not exists media_metadata_table (
-  src         text not null,
-  src_type    text not null,
-  relation    text not null,
-  target      text,
-
-  primary key (src, src_type, relation, target)
-);
-"""
-
 # target:
 #
 PHOTO_METADATA_TABLE = """
