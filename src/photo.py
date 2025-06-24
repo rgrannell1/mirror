@@ -99,7 +99,6 @@ class PhotoMetadataModel(IModel):
 class PhotoMetadataSummaryModel(IModel):
     """Photo metadata summary database model"""
 
-    fpath: str
     url: str
     name: str
     genre: list[str]
@@ -110,10 +109,9 @@ class PhotoMetadataSummaryModel(IModel):
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoMetadataSummaryModel":
-        (fpath, url, name, genre, rating, places, description, subjects) = row
+        (_, url, name, genre, rating, places, description, subjects) = row
 
         return PhotoMetadataSummaryModel(
-            fpath=fpath,
             url=url,
             name=name,
             genre=genre.split(",") if genre else [],

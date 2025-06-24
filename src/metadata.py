@@ -2,6 +2,8 @@
 
 import json
 import re
+import sys
+import csv
 from jsonschema import validate
 
 from collections import defaultdict
@@ -152,4 +154,37 @@ class MarkdownTablePhotoMetadataWriter:
 
 
 class MarkdownTablePhotoMetadataReader:
-    def read_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataSummaryModel]: ...
+    fpath: str
+
+    def __init__(self, fpath: str):
+        self.fpath = fpath
+
+    def read_photo_metadata(self, db: IDatabase) -> Iterator[PhotoMetadataSummaryModel]:
+        """Read photo metadata from a Markdown table"""
+
+        reader = csv.reader(sys.stdin, delimiter='|')
+        headers = next(reader)[1:-1]
+
+        if headers[0].strip() != 'embedding':
+            raise ValueError("Invalid header in Markdown table")
+
+        next(reader)
+
+        for row in reader:
+            if len(row) < 7:
+                continue
+            row = [cell.strip() for cell in row]
+
+            _, embedding, title,genre, rating, places, description, subjects, _ = row
+
+            url = embedding[4:-1]
+
+            yield PhotoMetadataSummaryModel(
+                url=url,
+                name=title,
+                genre=re.split(r"\s*,\s*", genre) if genre else [],
+                rating=rating if rating else None,
+                places=re.split(r"\s*,\s*", places) if places else [],
+                description=description or "",
+                subjects=re.split(r"\s*,\s*", subjects) if subjects else [],
+            )

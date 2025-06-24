@@ -8,7 +8,7 @@ from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
 from src.commands.scanner import MediaScanner, LinnaeusScanner
-from src.metadata import JSONAlbumMetadataReader, JSONAlbumMetadataWriter
+from src.metadata import JSONAlbumMetadataReader, JSONAlbumMetadataWriter, MarkdownTablePhotoMetadataReader, MarkdownTablePhotoMetadataWriter
 
 commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 
@@ -50,21 +50,39 @@ class Mirror:
         builder = ArtifactBuilder(db, OUTPUT_DIRECTORY)
         builder.build()
 
-    def read_metadata(self) -> None:
+    def read_metadata(self, content: str) -> None:
         """Read album or photo semantic information from stdin"""
 
         db = SqliteDatabase(DATABASE_PATH)
-        reader = JSONAlbumMetadataReader("/dev/stdin")
 
-        db.write_album_metadata(reader.list_album_metadata(db))
+        if content not in ['photo', 'album']:
+            print(f"Unknown content type: {content}", file=sys.stderr)
+            return
 
-    def write_metadata(self) -> None:
+        if content == 'photo':
+            md_reader = MarkdownTablePhotoMetadataReader("/dev/stdin")
+
+            db.write_photo_metadata(md_reader.read_photo_metadata(db))
+        else:
+            json_reader = JSONAlbumMetadataReader("/dev/stdin")
+
+            db.write_album_metadata(json_reader.list_album_metadata(db))
+
+    def write_metadata(self, content: str) -> None:
         """Output album or photo semantic information to stdout"""
 
         db = SqliteDatabase(DATABASE_PATH)
-        writer = JSONAlbumMetadataWriter()
 
-        writer.write_album_metadata(db)
+        if content not in ['photo', 'album']:
+            print(f"Unknown content type: {content}", file=sys.stderr)
+            return
+
+        if content == 'photo':
+            photo_writer = MarkdownTablePhotoMetadataWriter()
+            photo_writer.write_photo_metadata(db)
+        else:
+            album_writer = JSONAlbumMetadataWriter()
+            album_writer.write_album_metadata(db)
 
 
 def main() -> None:
@@ -84,9 +102,9 @@ def main() -> None:
     elif command == "publish":
         mirror.publish()
     elif command == "write_metadata":
-        mirror.write_metadata()
+        mirror.write_metadata(args[1])
     elif command == "read_metadata":
-        mirror.read_metadata()
+        mirror.read_metadata(args[1])
     else:
         print(f"Unknown command: {command}", file=sys.stderr)
         print(doc, file=sys.stderr)

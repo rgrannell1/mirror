@@ -267,6 +267,58 @@ class SqliteDatabase(IDatabase):
             )
         self.conn.commit()
 
+    def write_photo_metadata(self, metadata: Iterator[PhotoMetadataSummaryModel]) -> None:
+
+        for md in metadata:
+            genre = md.genre or []
+            places = md.places or []
+            subjects = md.subjects or []
+            description = md.description or ""
+            rating = md.rating or ""
+
+            (fpath, ) = next(self.conn.execute("""
+            select fpath from encoded_photos where url = ?
+            """, (md.url, )))
+
+            for gen in genre:
+                if not gen.strip():
+                    continue
+
+                self.conn.execute("""
+                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (fpath, "photo", "style", gen))
+
+            for place in places:
+                if not place.strip():
+                    continue
+
+                self.conn.execute("""
+                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (fpath, "photo", "location", place))
+
+            for subject in subjects:
+                if not subject.strip():
+                    continue
+
+                self.conn.execute("""
+                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (fpath, "photo", "subject", subject))
+
+            if description.strip():
+                self.conn.execute("""
+                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (fpath, "photo", "summary", description))
+
+            if rating.strip():
+                if 'Bath' in fpath:
+                    print(fpath, rating)
+                self.conn.execute("""
+                    insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)"""
+                , (fpath, "photo", "rating", rating))
+
+            # commit the changes
+            self.conn.commit()
+
     def list_photo_metadata_summary(self) -> Iterator[PhotoMetadataSummaryModel]:
         for row in self.conn.execute("select * from photo_metadata_summary"):
             yield PhotoMetadataSummaryModel.from_row(row)
