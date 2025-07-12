@@ -17,7 +17,8 @@ DATA_URL = "data:image/bmp;base64,"
 # TODO overly hard-coded
 PHOTOS_URL = "https://photos-cdn.rgrannell.xyz"
 
-PHOTO_DIRECTORY = "/home/rg/Drive/Media"
-DATABASE_PATH = "/home/rg/media.db"
-OUTPUT_DIRECTORY = "/home/rg/Code/websites/photos.rgrannell.xyz/manifest"
-ALBUM_METADATA_FILE = "home/rg/Code/mirror/src/schemas/album_metadata.json"
+HOME = os.getenv("HOME")
+PHOTO_DIRECTORY = f"{HOME}/Drive/Media"
+DATABASE_PATH = f"{HOME}/media.db"
+OUTPUT_DIRECTORY = f"{HOME}/Code/websites/photos.rgrannell.xyz/manifest"
+ALBUM_METADATA_FILE = f"{HOME}/Code/mirror/src/schemas/album_metadata.json"

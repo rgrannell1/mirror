@@ -2,18 +2,15 @@
 
 import sys
 from src.ansi import ANSI
+from src.commands import write_metadata
 from src.commands.publisher import ArtifactBuilder
 from src.cdn import CDN
+from src.commands.read_metadata import read_metadata
+from src.commands.write_metadata import write_metadata
 from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
 from src.commands.scanner import MediaScanner
-from src.metadata import (
-    JSONAlbumMetadataReader,
-    JSONAlbumMetadataWriter,
-    MarkdownTablePhotoMetadataReader,
-    MarkdownTablePhotoMetadataWriter,
-)
 
 commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 
@@ -58,35 +55,13 @@ class Mirror:
         """Read album or photo semantic information from stdin"""
 
         db = SqliteDatabase(DATABASE_PATH)
-
-        if content not in ["photo", "album"]:
-            print(f"Unknown content type: {content}", file=sys.stderr)
-            return
-
-        if content == "photo":
-            md_reader = MarkdownTablePhotoMetadataReader("/dev/stdin")
-
-            db.write_photo_metadata(md_reader.read_photo_metadata(db))
-        else:
-            json_reader = JSONAlbumMetadataReader("/dev/stdin")
-
-            db.write_album_metadata(json_reader.list_album_metadata(db))
+        read_metadata(db, content)
 
     def write_metadata(self, content: str) -> None:
         """Output album or photo semantic information to stdout"""
 
         db = SqliteDatabase(DATABASE_PATH)
-
-        if content not in ["photo", "album"]:
-            print(f"Unknown content type: {content}", file=sys.stderr)
-            return
-
-        if content == "photo":
-            photo_writer = MarkdownTablePhotoMetadataWriter()
-            photo_writer.write_photo_metadata(db)
-        else:
-            album_writer = JSONAlbumMetadataWriter()
-            album_writer.write_album_metadata(db)
+        write_metadata(db, content)
 
 
 def main() -> None:
