@@ -68,6 +68,12 @@ class PhashesTable:
 
         return None
 
+    def fpaths_from_phash(self, phash: str) -> List[str]:
+        fpaths = []
+        for row in self.conn.execute("select fpath from phashes where phash = ?", (phash,)):
+            fpaths.append(row[0])
+        return fpaths
+
     def add_many(self, phashes: Iterator[PhashData]) -> None:
         for phash in phashes:
             self.add(phash)
