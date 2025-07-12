@@ -105,4 +105,36 @@ class AnswersBirdsReader(ThingsReader):
             yield phash, thing
 
 
-# TODO add other things
+class AnswersPlaneReader(ThingsReader):
+    """Construct answers into information about planes in photos"""
+
+    def read(self, db: SqliteDatabase) -> Iterator[tuple[str, dict]]:
+        phashes = db.phashes_table()
+        relations = list(db.photo_metadata_table().list())
+
+        photos: dict[str, dict] = {}
+
+        for row in relations:
+            if row.relation == "vehicle" and row.target == "Plane":
+                if row.fpath not in photos:
+                    photos[row.fpath] = {
+                        "id": "unknown",
+                        "type": "plane",
+                    }
+
+        for row in relations:
+            if row.relation == "plane_model":
+                if row.fpath not in photos:
+                    photos[row.fpath] = {
+                        "type": "plane"
+                    }
+
+                photos[row.fpath]["id"] = urllib.parse.quote(row.target)
+
+        for fpath, thing in photos.items():
+            phash = phashes.phash_from_fpath(fpath)
+
+            if phash is None:
+                continue
+
+            yield phash, thing
