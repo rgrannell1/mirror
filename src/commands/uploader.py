@@ -122,7 +122,8 @@ class MediaUploader:
         print(fpath)
         uploaded_video_url = self.cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
 
-        self.db.add_video_encoding(fpath=fpath, url=uploaded_video_url, role=role, format=self.VIDEO_FORMAT)
+        self.db.encoded_videos_table().add(fpath, uploaded_video_url, role, self.VIDEO_FORMAT)
+
         return encoded_path
 
     def publish_thumbnail(self, fpath: str, encoded_path: str):
@@ -136,15 +137,15 @@ class MediaUploader:
             encoded_data=encoded_thumbnail, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
         )
         self.db.encoded_photos_table().add(
-            fpath=fpath, url=self.THUMBNAIL_ROLE, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
+            fpath=fpath, url=thumbnail_url, role=self.THUMBNAIL_ROLE, format=self.THUMBNAIL_FORMAT
         )
 
     def upload(self) -> None:
         """Publish photos and videos to the CDN, and output artifacts"""
 
-        for fpath in self.db.list_photos():
+        for fpath in self.db.photos_table().list():
             self.add_data_url(fpath)
             self.publish_photo_encodings(fpath)
 
-        for fpath in self.db.list_videos():
+        for fpath in self.db.videos_table().list():
             self.publish_video_encodings(fpath)

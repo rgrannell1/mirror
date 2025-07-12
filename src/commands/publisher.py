@@ -316,7 +316,7 @@ class SemanticArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         media = []
 
-        for row in db.list_photo_metadata():
+        for row in db.photo_metadata_table().list():
             media.append([deterministic_hash_str(row.fpath), row.relation, row.target])
 
         return json.dumps(media)
@@ -347,7 +347,7 @@ class ExifArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
-        for exif in db.list_exif():
+        for exif in db.exif_table().list():
             rows.append(self.process(exif))
 
         return json.dumps(rows)

@@ -155,7 +155,7 @@ class MarkdownTablePhotoMetadataWriter:
             print("| " + " | ".join(row) + " |")
 
 
-class MarkdownTablePhotoMetadataReader:
+class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
     fpath: str
 
     def __init__(self, fpath: str):

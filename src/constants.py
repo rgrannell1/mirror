@@ -2,7 +2,7 @@
 
 from typing import cast
 
-from src.types import VideoEncoding, VideoEncodingConfig
+from src.mirror_types import VideoEncoding, VideoEncodingConfig
 
 
 MOSAIC_WIDTH = 2
@@ -87,3 +87,4 @@ VIDEO_ENCODINGS: list[VideoEncoding] = [
 
 VIDEO_THUMBNAIL_FORMAT = ".webp"
 VIDEO_CONTENT_TYPE = "video/mp4"
+ARN_PREFIX = "arn:ró:"
