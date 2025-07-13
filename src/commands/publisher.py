@@ -7,6 +7,7 @@ import json
 import os
 from typing import Any, List, Optional, Protocol
 from dateutil import tz
+import markdown
 
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
@@ -89,6 +90,8 @@ class AlbumsArtifact(IArtifact):
         min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
         max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
 
+        description = markdown.markdown(album.description) if album.description else ""
+
         return [
             album.id,
             album.name,
@@ -100,7 +103,7 @@ class AlbumsArtifact(IArtifact):
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
             AlbumsArtifact.short_data_url(album.thumbnail_mosaic_url),
             AlbumsArtifact.flags(album.flags),
-            album.description,
+            description,
         ]
 
     def content(self, db: SqliteDatabase):
@@ -316,8 +319,31 @@ class SemanticArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         media = []
 
+        # better the other way around
+        allowed_relations = {
+        'bird_binomial',
+        'summary',
+        'style',
+        'location',
+        'mammal_binomial',
+        'subject',
+        'rating',
+        'living_conditions',
+        'wildlife',
+        'plane_model',
+        'vehicle'
+        }
+
+
         for row in db.photo_metadata_table().list():
-            media.append([deterministic_hash_str(row.fpath), row.relation, row.target])
+            if row.relation not in allowed_relations:
+                continue
+
+            target = row.target
+            if row.relation == "summary":
+                target = markdown.markdown(row.target)
+
+            media.append([deterministic_hash_str(row.fpath), row.relation, target])
 
         return json.dumps(media)
 

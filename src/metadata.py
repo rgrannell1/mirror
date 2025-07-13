@@ -136,15 +136,18 @@ class MarkdownTablePhotoMetadataWriter:
         rows = []
 
         for summary in db.list_photo_metadata_summary():
+            subjects = list({sub for sub in summary.subjects}) or []
+            places = list({sub for sub in summary.places}) or []
+
             rows.append(
                 [
                     f"![]({summary.url})",
                     summary.name,
                     ",".join(summary.genre),
                     summary.rating or "",
-                    ",".join(summary.places),
+                    ",".join(places),
                     summary.description or "",
-                    ",".join(summary.subjects),
+                    ",".join(subjects),
                 ]
             )
 
