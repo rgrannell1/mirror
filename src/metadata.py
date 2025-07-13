@@ -40,7 +40,7 @@ class IPhotoMetadataWriter(Protocol):
     def write_photo_metadata(self, db: SqliteDatabase) -> None: ...
 
 
-class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
+class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
     def _contentful_published_albums(self, db: SqliteDatabase) -> set[str]:
         """Retrieve a set of album paths that have content in the database"""
 
@@ -53,10 +53,15 @@ class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
         return albums
 
     def write_album_metadata(self, db: SqliteDatabase) -> None:
-        """Write album metadata to a CSV file"""
-
+        headers = [
+            "embedding",
+            "title",
+            "permalink",
+            "country",
+            "summary",
+        ]
         class AlbumFieldsDict(TypedDict):
-            fpath: Optional[str]
+            embedding: Optional[str]
             summary: Optional[str]
             country: list[str]
             permalink: Optional[str]
@@ -64,61 +69,106 @@ class JSONAlbumMetadataWriter(IAlbumMetadataWriter):
 
         by_album: dict[str, AlbumFieldsDict] = defaultdict(
             lambda: {
-                "fpath": None,
+                "embedding": None,
                 "summary": "",
                 "country": [],
                 "permalink": "",
                 "title": "",
             }
         )
+
+        album_data_table = db.album_data_table()
         published_albums = self._contentful_published_albums(db)
 
         for data in db.list_album_metadata():
-            album_fpath = data.src
+            dpath = data.src
             relation = data.relation
             target = data.target
 
-            if album_fpath not in published_albums:
+            # skip non-published albums
+            if dpath not in published_albums:
                 continue
 
-            by_album[album_fpath]["fpath"] = album_fpath
-            if relation in {"county", "country"}:
-                by_album[album_fpath]["country"] = re.split(r"\s*,\s*", target) if target else []
-            else:
-                by_album[album_fpath][relation] = target
+            album_data = album_data_table.get_album_data_by_dpath(dpath)
+            # not ideal, as it requires manually nominating a cover file first
+            if not album_data:
+                continue
 
+            url = album_data.thumbnail_url
+
+            by_album[dpath]["embedding"] = url
+            if relation in {"county", "country"}:
+                by_album[dpath]["country"] = re.split(r"\s*,\s*", target) if target else []
+            else:
+                by_album[dpath][relation] = target
+
+        # sort albums by file-path
         sorted_albums = sorted(by_album.items(), key=lambda pair: pair[0])
 
-        print(json.dumps([pair[1] for pair in sorted_albums], indent=2, ensure_ascii=False))
+        # Print as markdown table
+        print("| " + " | ".join(headers) + " |")
+        print("| " + " | ".join(["---"] * len(headers)) + " |")
+
+        for embedding, album_data in sorted_albums:
+            row = [
+                f"![]({album_data["embedding"]})",
+                album_data["title"] or "",
+                album_data["permalink"] or "",
+                ",".join(album_data["country"]) if album_data["country"] else "",
+                album_data["summary"] or "",
+            ]
+            print("| " + " | ".join(row) + " |")
 
 
-class JSONAlbumMetadataReader(IAlbumMetadataReader):
+class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
     fpath: str
 
     def __init__(self, fpath: str):
         self.fpath = fpath
 
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
-        """Read album metadata from a JSON file"""
+        reader = csv.reader(sys.stdin, delimiter="|")
+        headers = next(reader)[1:-1]
 
-        with open(self.fpath, "r", encoding="utf-8") as conn:
-            data = json.load(conn)
+        if headers[0].strip() != "embedding":
+            raise ValueError("Invalid header in Markdown table")
 
-            for item in data:
-                validate(item, AlbumMetadataModel.schema())
+        next(reader)
 
-                src = item.get("fpath")
-                for key, val in item.items():
-                    if key == "fpath":
-                        continue
+        album_data = db.album_data_table()
 
-                    yield AlbumMetadataModel(
-                        src=src,
-                        src_type=key,
-                        # sign
-                        relation="county" if key == "country" else key,
-                        target=",".join(val) if isinstance(val, list) else val,
-                    )
+        for row in reader:
+            if len(row) < 5:
+                continue
+            row = [cell.strip() for cell in row]
+            _, embedding, title, permalink, country, summary, _ = row
+
+            thumbnail_url = embedding[4:-1]
+            dpath = album_data.album_dpath_from_thumbnail_url(thumbnail_url)
+
+            item = {
+                "fpath": dpath,
+                "title": title,
+                "permalink": permalink,
+                "country": re.split(r"\s*,\s*", country) if country else [],
+                "summary": summary or "",
+            }
+
+            validate(item, AlbumMetadataModel.schema())
+            src = item.get("fpath")
+            for key, val in item.items():
+                if key == "fpath":
+                    continue
+
+                xs = AlbumMetadataModel(
+                    src=src,
+                    src_type='photo',
+                    # sign
+                    relation="county" if key == "country" else key,
+                    target=",".join(val) if isinstance(val, list) else val,
+                )
+                print(xs)
+                yield xs
 
 
 class MarkdownTablePhotoMetadataWriter:

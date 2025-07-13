@@ -1,5 +1,5 @@
 import sys
-from src.metadata import JSONAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
+from src.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
 
 
 def write_metadata(db, content: str) -> None:
@@ -13,5 +13,5 @@ def write_metadata(db, content: str) -> None:
         photo_writer = MarkdownTablePhotoMetadataWriter()
         photo_writer.write_photo_metadata(db)
     else:
-        album_writer = JSONAlbumMetadataWriter()
+        album_writer = MarkdownAlbumMetadataWriter()
         album_writer.write_album_metadata(db)

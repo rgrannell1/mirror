@@ -1,6 +1,5 @@
-
 import sys
-from src.metadata import JSONAlbumMetadataReader, MarkdownTablePhotoMetadataReader
+from src.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
 
 
 def read_metadata(db, content: str) -> None:
@@ -15,6 +14,6 @@ def read_metadata(db, content: str) -> None:
 
         db.write_photo_metadata(md_reader.read_photo_metadata(db))
     else:
-        json_reader = JSONAlbumMetadataReader("/dev/stdin")
+        md_reader = MarkdownAlbumMetadataReader("/dev/stdin")
 
-        db.write_album_metadata(json_reader.list_album_metadata(db))
+        db.write_album_metadata(md_reader.list_album_metadata(db))

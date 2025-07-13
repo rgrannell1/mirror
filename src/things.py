@@ -61,5 +61,4 @@ class Things:
 
 
 class ThingsReader(Protocol):
-    def read(self, db: SqliteDatabase) -> Iterator[tuple[str, dict]]:
-        ...
+    def read(self, db: SqliteDatabase) -> Iterator[tuple[str, dict]]: ...

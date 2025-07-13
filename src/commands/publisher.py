@@ -321,19 +321,18 @@ class SemanticArtifact(IArtifact):
 
         # better the other way around
         allowed_relations = {
-        'bird_binomial',
-        'summary',
-        'style',
-        'location',
-        'mammal_binomial',
-        'subject',
-        'rating',
-        'living_conditions',
-        'wildlife',
-        'plane_model',
-        'vehicle'
+            "bird_binomial",
+            "summary",
+            "style",
+            "location",
+            "mammal_binomial",
+            "subject",
+            "rating",
+            "living_conditions",
+            "wildlife",
+            "plane_model",
+            "vehicle",
         }
-
 
         for row in db.photo_metadata_table().list():
             if row.relation not in allowed_relations:

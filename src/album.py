@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from functools import lru_cache
 import os
-from typing import Any, Iterator, List
+from typing import Any, Iterator, List, Optional
 from src.config import ALBUM_METADATA_FILE
 from src.media import IMedia
 from src.model import IModel
@@ -111,3 +111,36 @@ class AlbumMetadataModel(IModel):
     def schema(cls) -> dict[str, Any]:
         with open(ALBUM_METADATA_FILE, "r") as f:
             return json.load(f)
+
+
+@dataclass
+class AlbumDataModel(IModel):
+    """Represents the data in the `album_data` view"""
+    id: str
+    name: str
+    dpath: str
+    photos_count: int
+    videos_count: int
+    min_date: str
+    max_date: str
+    thumbnail_url: str
+    thumbnail_mosaic_url: str
+    # country, but as ever misnamed
+    flags: str
+    description: Optional[str]
+
+    @classmethod
+    def from_row(cls, row: list) -> "AlbumDataModel":
+        return cls(
+            id=row[0],
+            name=row[1],
+            dpath=row[2],
+            photos_count=row[3],
+            videos_count=row[4],
+            min_date=row[5],
+            max_date=row[6],
+            thumbnail_url=row[7],
+            thumbnail_mosaic_url=row[8],
+            flags=row[9],
+            description=row[10],
+        )

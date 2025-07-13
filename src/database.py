@@ -2,13 +2,13 @@
 
 import os
 import sqlite3
-from typing import Iterator, List, Set
+from typing import Iterator, List, Optional, Set
 from src.exif import PhotoExifData
 from src.phash import PhashData
 from src.media import IMedia
 from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
 from src.video import EncodedVideoModel, VideoModel
-from src.album import AlbumModel, AlbumMetadataModel
+from src.album import AlbumDataModel, AlbumModel, AlbumMetadataModel
 from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
@@ -253,6 +253,32 @@ class PhotoMetadataTable:
         self.add_rating(phash, metadata.rating or "")
 
 
+class AlbumDataTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+
+    def list(self) -> Iterator[AlbumDataModel]:
+        query = "select * from album_data"
+
+        for row in self.conn.execute(query):
+            yield AlbumDataModel.from_row(row)
+
+    def get_album_data_by_dpath(self, dpath: str) -> Optional[AlbumDataModel]:
+        query = "select * from album_data where dpath = ?"
+
+        for row in self.conn.execute(query, (dpath,)):
+            return AlbumDataModel.from_row(row)
+
+        return None
+
+    def album_dpath_from_thumbnail_url(self, thumbnail_url: str) -> Optional[str]:
+        query = "select dpath from album_data where thumbnail_url = ?"
+
+        for row in self.conn.execute(query, (thumbnail_url,)):
+            return row[0]
+
+        return None
+
 class SqliteDatabase:
     """A SQLite database to store information about albums."""
 
@@ -299,6 +325,9 @@ class SqliteDatabase:
 
     def photo_metadata_table(self):
         return PhotoMetadataTable(self.conn)
+
+    def album_data_table(self):
+        return AlbumDataTable(self.conn)
 
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
