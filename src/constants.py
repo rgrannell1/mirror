@@ -87,4 +87,4 @@ VIDEO_ENCODINGS: list[VideoEncoding] = [
 
 VIDEO_THUMBNAIL_FORMAT = ".webp"
 VIDEO_CONTENT_TYPE = "video/mp4"
-ARN_PREFIX = "arn:ró:"
+URN_PREFIX = "urn:ró:"

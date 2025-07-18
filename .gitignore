@@ -19,3 +19,6 @@ test.md
 albums.json
 main.py
 table.md
+albums.md
+.vscode/settings.json
+uv.lock

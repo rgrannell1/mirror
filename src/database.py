@@ -252,6 +252,21 @@ class PhotoMetadataTable:
         self.add_description(phash, metadata.description or "")
         self.add_rating(phash, metadata.rating or "")
 
+    def list_by_relation(self, relation: str) -> Iterator[PhotoMetadataModel]:
+        query = """
+        select
+            fpath,
+            relation,
+            target
+            from photo_metadata_table
+        left join phashes
+            on phashes.phash = photo_metadata_table.phash
+        where relation = ?
+        """
+
+        for row in self.conn.execute(query, (relation,)):
+            yield PhotoMetadataModel.from_row(row)
+
 
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:

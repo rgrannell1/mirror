@@ -13,7 +13,8 @@ from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
 from src.database import SqliteDatabase
 from src.exif import PhotoExifData
-from src.photo import PhotoModel
+from src.photo import PhotoMetadataModel, PhotoModel
+from src.things import Things
 from src.utils import deterministic_hash_str
 from src.video import VideoModel
 from src.flags import Flags
@@ -109,6 +110,7 @@ class AlbumsArtifact(IArtifact):
     def content(self, db: SqliteDatabase):
         rows: List[List[Any]] = [self.HEADERS]
 
+        # todo point to table directly
         for album in db.list_album_data():
             self.validate(album)
             rows.append(self.process(album))
@@ -378,6 +380,88 @@ class ExifArtifact(IArtifact):
         return json.dumps(rows)
 
 
+class StatsArtifact(IArtifact):
+    """Build artifact giving semantic facts for the albums page"""
+
+    def process(self):
+        ...
+
+    def count_birds(self, subjects: List[PhotoMetadataModel]) -> int:
+        unique_birds = set()
+        for subject in subjects:
+            value = subject.target
+
+            if not Things.is_urn(value):
+                continue
+
+            parsed = Things.from_urn(value)
+            if value.startswith("urn:ró:bird:"):
+                unique_birds.add(parsed["id"])
+
+        return len(unique_birds)
+
+    def count_mammals(self, subjects: List[PhotoMetadataModel]) -> int:
+        unique_mammals = set()
+        for subject in subjects:
+            value = subject.target
+
+            if not Things.is_urn(value):
+                continue
+
+            parsed = Things.from_urn(value)
+            if value.startswith("urn:ró:mammal:"):
+                unique_mammals.add(parsed["id"])
+
+        return len(unique_mammals)
+
+    def count_unesco_sites(self, places: List[PhotoMetadataModel]) -> int:
+        unique_sites = set()
+        for place in places:
+            value = place.target
+
+            if not Things.is_urn(value):
+                continue
+
+            parsed = Things.from_urn(value)
+            if value.startswith("urn:ró:unesco:"):
+                unique_sites.add(parsed["id"])
+
+        return len(unique_sites)
+
+    def content(self, db: SqliteDatabase) -> str:
+        album_table = db.album_data_table()
+
+        albums = list(album_table.list())
+        countries = {flag for album in albums for flag in album.flags.split(',')}
+        min_date = None
+        max_date = None
+
+        # calculate album date-ranges
+        TIME_FORMAT = "%Y:%m:%d %H:%M:%S"
+        for album in albums:
+            if min_date is None or max_date is None:
+                min_date = datetime.strptime(album.min_date, TIME_FORMAT)
+                max_date = datetime.strptime(album.max_date, TIME_FORMAT)
+
+            min_date = min(min_date, datetime.strptime(album.min_date, TIME_FORMAT))
+            max_date = max(max_date, datetime.strptime(album.max_date, TIME_FORMAT))
+
+        if not min_date or not max_date:
+            raise ValueError("No albums found or albums have no dates")
+
+        subjects = list(db.photo_metadata_table().list_by_relation("subject"))
+        places = list(db.photo_metadata_table().list_by_relation("location"))
+
+        return json.dumps({
+            "photos": sum(album.photos_count for album in albums),
+            "albums": len(albums),
+            "years": max_date.year - min_date.year,
+            "countries": len(countries),
+            "bird_species": self.count_birds(subjects),
+            "mammal_species": self.count_mammals(subjects),
+            "unesco_sites": self.count_unesco_sites(places),
+        })
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -389,7 +473,7 @@ class ArtifactBuilder:
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
         removeable = [
-            file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif"))
+            file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats"))
         ]
 
         for file in removeable:
@@ -432,5 +516,9 @@ class ArtifactBuilder:
         exif = ExifArtifact()
         with open(f"{self.output_dir}/exif.{pid}.json", "w") as conn:
             conn.write(exif.content(self.db))
+
+        stats = StatsArtifact()
+        with open(f"{self.output_dir}/stats.{pid}.json", "w") as conn:
+            conn.write(stats.content(self.db))
 
         return pid
