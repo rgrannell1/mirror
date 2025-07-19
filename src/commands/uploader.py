@@ -18,6 +18,7 @@ class MediaUploader:
     db: SqliteDatabase
 
     DATA_URL_ROLE = "thumbnail_data_url"
+    MOSAIC_ROLE = "thumbnail_mosaic"
     THUMBNAIL_ROLE = "video_thumbnail_webp"
     THUMBNAIL_FORMAT = "webp"
     FULL_ENCODING_FORMAT = "webp"
@@ -47,6 +48,12 @@ class MediaUploader:
         encodings = list(encoded_photos_table.list_for_file(fpath))
         published_roles = {enc.role for enc in encodings}
 
+        if self.MOSAIC_ROLE not in published_roles:
+            v2 = PhotoEncoder.encode_image_colours(fpath)
+            v2_content = f"{''.join(v2)}"
+
+            encoded_photos_table.add(fpath, v2_content, self.MOSAIC_ROLE, "custom")
+
         # generate and store a data-url, if required
         if self.DATA_URL_ROLE not in published_roles:
             encoded = PhotoEncoder.encode_image_mosaic(fpath)
@@ -54,7 +61,8 @@ class MediaUploader:
             encoded_content = base64.b64encode(encoded.content).decode("ascii")
             data_url = f"data:image/bmp;base64,{encoded_content}"
 
-            self.db.encoded_photos_table().add(fpath, data_url, self.DATA_URL_ROLE, "bmp")
+            encoded_photos_table.add(fpath, data_url, self.DATA_URL_ROLE, "bmp")
+
 
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
@@ -73,7 +81,7 @@ class MediaUploader:
                 role=role,
                 format=params["format"],  # type: ignore
             )
-            self.db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
+            encoded_photos_table.add(fpath, uploaded_url, role, params["format"])
 
     def publish_video_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given video"""
@@ -146,6 +154,7 @@ class MediaUploader:
         for fpath in self.db.photos_table().list():
             self.add_data_url(fpath)
             self.publish_photo_encodings(fpath)
+
 
         for fpath in self.db.videos_table().list():
             self.publish_video_encodings(fpath)

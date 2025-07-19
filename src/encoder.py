@@ -62,6 +62,35 @@ class PhotoEncoder:
             return PhotoContent(output.getvalue())
 
     @classmethod
+    def encode_image_colours(cls, fpath: str) -> list[str]:
+        """Create a list of colours in the image, to use as a data-url while the main image loads"""
+
+        img = Image.open(fpath)
+        rgb = img.convert("RGB")
+
+        # reduce the dimensions of the image to the thumbnail size
+        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+
+        # remove EXIF data from the image by cloning
+        data = list(thumb.getdata())
+        no_exif = Image.new(thumb.mode, thumb.size)
+        no_exif.putdata(data)
+
+        # resize down to a tiny mosaic data-url that can be used to
+        # "progressively render" a photo.
+        smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
+
+        colours = smaller.getcolors(THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT)
+        if not colours:
+            return []
+
+        # get the colours in the image
+        return [
+            '#{:02X}{:02X}{:02X}'.format(col[1][0], col[1][1], col[1][2]) for col in
+            colours
+        ]
+
+    @classmethod
     def encode_thumbnail(cls, fpath: str, params: Dict) -> PhotoContent:
         """Encode a image as a thumbnail, and remove EXIF data"""
 

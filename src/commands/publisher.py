@@ -77,7 +77,7 @@ class AlbumsArtifact(IArtifact):
         "min_date",
         "max_date",
         "thumbnail_url",
-        "thumbnail_mosaic_url",
+        "mosaic",
         "flags",
         "description",
     ]
@@ -102,8 +102,9 @@ class AlbumsArtifact(IArtifact):
             int(min_date.timestamp() * 1000),
             int(max_date.timestamp() * 1000),
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
-            AlbumsArtifact.short_data_url(album.thumbnail_mosaic_url),
+            album.mosaic_colours,
             AlbumsArtifact.flags(album.flags),
+            "",
             description,
         ]
 
@@ -121,7 +122,7 @@ class AlbumsArtifact(IArtifact):
 class PhotosArtifact(IArtifact):
     """Build artifact describing images in the database"""
 
-    HEADERS = ["id", "album_id", "tags", "thumbnail_url", "thumbnail_mosaic_url", "full_image", "created_at"]
+    HEADERS = ["id", "album_id", "thumbnail_url", "mosaic_colours", "full_image", "created_at"]
 
     def process(self, photo: PhotoModel) -> List[Any]:
         created_at = datetime.strptime(str(photo.created_at), "%Y:%m:%d %H:%M:%S")
@@ -129,9 +130,8 @@ class PhotosArtifact(IArtifact):
         return [
             deterministic_hash_str(photo.fpath),
             photo.album_id,
-            photo.tags,
             PhotosArtifact.short_cdn_url(photo.thumbnail_url),
-            PhotosArtifact.short_data_url(photo.thumbnail_mosaic_url),
+            photo.mosaic_colours,
             PhotosArtifact.short_cdn_url(photo.full_image),
             int(created_at.timestamp() * 1000),
         ]

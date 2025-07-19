@@ -46,13 +46,14 @@ class PhotoModel(IModel):
     tags: List[str]
     thumbnail_url: str
     thumbnail_mosaic_url: str
+    mosaic_colours: str
     full_image: str
     created_at: int
     phash: str
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoModel":
-        (fpath, album_id, tags, thumbnail_url, thumbnail_mosaic_url, full_image, created_at, phash) = row
+        (fpath, album_id, tags, thumbnail_url, thumbnail_mosaic_url, mosaic_colours, _, full_image, created_at, phash) = row
 
         return PhotoModel(
             fpath=fpath,
@@ -60,6 +61,7 @@ class PhotoModel(IModel):
             tags=tags.split(","),
             thumbnail_url=thumbnail_url,
             thumbnail_mosaic_url=thumbnail_mosaic_url,
+            mosaic_colours=mosaic_colours,
             full_image=full_image,
             created_at=created_at,
             phash=phash,

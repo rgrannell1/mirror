@@ -102,6 +102,7 @@ SELECT
       coalesce(date_range.max_date, null) as max_date,
       coalesce(thumbnail_lossy.url, null) as thumbnail_url,
       coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
+      coalesce(mosaic_colours.url, null) as mosaic_colours,
     (SELECT target FROM media_metadata_table
      WHERE src = media.dpath AND relation = 'county') AS flags,
     (SELECT target FROM media_metadata_table
@@ -134,7 +135,10 @@ LEFT JOIN encoded_photos thumbnail_lossy
     AND thumbnail_lossy.role = 'thumbnail_lossy'
 LEFT JOIN encoded_photos thumbnail_data
     ON cover_photos.cover = thumbnail_data.fpath
-    AND thumbnail_data.role = 'thumbnail_data_url';
+    AND thumbnail_data.role = 'thumbnail_data_url'
+LEFT JOIN encoded_photos mosaic_colours
+    ON cover_photos.cover = mosaic_colours.fpath
+    AND mosaic_colours.role = 'thumbnail_mosaic';
 """
 
 PHOTO_DATA_VIEW = """
@@ -145,6 +149,7 @@ create view if not exists photo_data as
     "" as tags,
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
+    coalesce(mosaic_colours.url, null) as mosaic_colours,
     coalesce(full_image_png.url, null) as png_url,
     coalesce(full_image.url, null) as full_image,
     coalesce(exif.created_at, null) as created_at,
@@ -160,6 +165,8 @@ create view if not exists photo_data as
     on photos.fpath = full_image.fpath and full_image.role = 'full_image_lossless'
   left join encoded_photos full_image_png
     on photos.fpath = full_image_png.fpath and full_image_png.role = 'full_image_png'
+  left join encoded_photos mosaic_colours
+    on photos.fpath = mosaic_colours.fpath and mosaic_colours.role = 'thumbnail_mosaic'
   left join exif
     on photos.fpath = exif.fpath
   left join phashes

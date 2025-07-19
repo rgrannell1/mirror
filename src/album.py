@@ -52,7 +52,9 @@ class AlbumModel(IModel):
     min_date: str
     max_date: str
     thumbnail_url: str
+    # deprecated
     thumbnail_mosaic_url: str
+    mosaic_colours: str
     flags: List[str]
     description: str
 
@@ -68,6 +70,7 @@ class AlbumModel(IModel):
             max_date,
             thumbnail_url,
             thumbnail_mosaic_url,
+            mosaic_colours,
             flags,
             description,
         ) = row
@@ -85,6 +88,7 @@ class AlbumModel(IModel):
             max_date=max_date,
             thumbnail_url=thumbnail_url,
             thumbnail_mosaic_url=thumbnail_mosaic_url,
+            mosaic_colours=mosaic_colours,
             flags=flags.split(","),
             description=description,
         )
