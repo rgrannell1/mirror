@@ -85,10 +85,7 @@ class PhotoEncoder:
             return []
 
         # get the colours in the image
-        return [
-            '#{:02X}{:02X}{:02X}'.format(col[1][0], col[1][1], col[1][2]) for col in
-            colours
-        ]
+        return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
 
     @classmethod
     def encode_thumbnail(cls, fpath: str, params: Dict) -> PhotoContent:

@@ -383,8 +383,7 @@ class ExifArtifact(IArtifact):
 class StatsArtifact(IArtifact):
     """Build artifact giving semantic facts for the albums page"""
 
-    def process(self):
-        ...
+    def process(self): ...
 
     def count_birds(self, subjects: List[PhotoMetadataModel]) -> int:
         unique_birds = set()
@@ -432,7 +431,7 @@ class StatsArtifact(IArtifact):
         album_table = db.album_data_table()
 
         albums = list(album_table.list())
-        countries = {flag for album in albums for flag in album.flags.split(',')}
+        countries = {flag for album in albums for flag in album.flags.split(",")}
         min_date = None
         max_date = None
 
@@ -452,15 +451,18 @@ class StatsArtifact(IArtifact):
         subjects = list(db.photo_metadata_table().list_by_relation("subject"))
         places = list(db.photo_metadata_table().list_by_relation("location"))
 
-        return json.dumps({
-            "photos": sum(album.photos_count for album in albums),
-            "albums": len(albums),
-            "years": max_date.year - min_date.year,
-            "countries": len(countries),
-            "bird_species": self.count_birds(subjects),
-            "mammal_species": self.count_mammals(subjects),
-            "unesco_sites": self.count_unesco_sites(places),
-        })
+        return json.dumps(
+            {
+                "photos": sum(album.photos_count for album in albums),
+                "albums": len(albums),
+                "years": max_date.year - min_date.year,
+                "countries": len(countries),
+                "bird_species": self.count_birds(subjects),
+                "mammal_species": self.count_mammals(subjects),
+                "unesco_sites": self.count_unesco_sites(places),
+            }
+        )
+
 
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
@@ -473,7 +475,9 @@ class ArtifactBuilder:
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
         removeable = [
-            file for file in os.listdir(dpath) if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats"))
+            file
+            for file in os.listdir(dpath)
+            if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats"))
         ]
 
         for file in removeable:

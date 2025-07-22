@@ -63,7 +63,6 @@ class MediaUploader:
 
             encoded_photos_table.add(fpath, data_url, self.DATA_URL_ROLE, "bmp")
 
-
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
 
@@ -154,7 +153,6 @@ class MediaUploader:
         for fpath in self.db.photos_table().list():
             self.add_data_url(fpath)
             self.publish_photo_encodings(fpath)
-
 
         for fpath in self.db.videos_table().list():
             self.publish_video_encodings(fpath)

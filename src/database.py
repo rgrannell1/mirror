@@ -1,5 +1,6 @@
 """A SQLite database to store information about albums."""
 
+import json
 import os
 import sqlite3
 from typing import Iterator, List, Optional, Set
@@ -12,6 +13,7 @@ from src.album import AlbumDataModel, AlbumModel, AlbumMetadataModel
 from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
+    GEONAME_TABLE,
     PHOTO_METADATA_SUMMARY,
     PHOTO_METADATA_VIEW,
     PHOTOS_TABLE,
@@ -25,6 +27,7 @@ from src.tables import (
     PHOTO_METADATA_TABLE,
 )
 from src.video import Video
+import string
 
 
 class PhotosTable:
@@ -267,6 +270,41 @@ class PhotoMetadataTable:
         for row in self.conn.execute(query, (relation,)):
             yield PhotoMetadataModel.from_row(row)
 
+    def list_by_target_type(self, type: str) -> Iterator[PhotoMetadataModel]:
+        # yes, this is SQL injection.
+
+        if not all(c in string.ascii_letters for c in type):
+            raise ValueError("type must contain only ASCII letters")
+
+        query = f"""
+        select
+            fpath,
+            relation,
+            target
+            from photo_metadata_table
+        left join phashes
+            on phashes.phash = photo_metadata_table.phash
+        where target like "urn:ró:{type}:%"
+        """
+
+        for row in self.conn.execute(query):
+            yield PhotoMetadataModel.from_row(row)
+
+
+class GeonameTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+
+    def add(self, id: str, data: dict) -> None:
+        self.conn.execute(
+            "insert or replace into geonames (id, data) values (?, ?)",
+            (id, json.dumps(data)),
+        )
+        self.conn.commit()
+
+    def has(self, id: str) -> bool:
+        return bool(self.conn.execute("select 1 from geonames where id = ?", (id,)).fetchone())
+
 
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
@@ -294,6 +332,7 @@ class AlbumDataTable:
 
         return None
 
+
 class SqliteDatabase:
     """A SQLite database to store information about albums."""
 
@@ -311,6 +350,7 @@ class SqliteDatabase:
         PHOTO_METADATA_TABLE,
         PHOTO_METADATA_VIEW,
         PHOTO_METADATA_SUMMARY,
+        GEONAME_TABLE,
     }
     conn: sqlite3.Connection
 
@@ -343,6 +383,9 @@ class SqliteDatabase:
 
     def album_data_table(self):
         return AlbumDataTable(self.conn)
+
+    def geoname_table(self):
+        return GeonameTable(self.conn)
 
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

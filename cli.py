@@ -10,7 +10,7 @@ from src.commands.write_metadata import write_metadata
 from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from src.database import SqliteDatabase
 from src.commands.uploader import MediaUploader
-from src.commands.scanner import MediaScanner
+from src.commands.scanner import GeonamesScanner, MediaScanner
 
 commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 
@@ -38,6 +38,7 @@ class Mirror:
         db = SqliteDatabase(DATABASE_PATH)
 
         MediaScanner(dpath, db).scan()
+        GeonamesScanner(db).scan()
 
     def upload(self) -> None:
         db = SqliteDatabase(DATABASE_PATH)

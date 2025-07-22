@@ -17,7 +17,9 @@ dependencies = [
   "Pillow",
   "python-dotenv",
   "PyYAML",
-  "sqlean.py"
+  "sqlean.py",
+  "requests",
+  "xmltodict"
 ]
 
 [tool.ruff]

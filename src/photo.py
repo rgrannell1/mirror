@@ -6,7 +6,7 @@ import os
 from typing import List
 
 from src.constants import SUPPORTED_IMAGE_EXTENSIONS
-from src.model import IModel
+from src.mirror_types import IModel
 
 
 class PhotoContent:
@@ -53,7 +53,18 @@ class PhotoModel(IModel):
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoModel":
-        (fpath, album_id, tags, thumbnail_url, thumbnail_mosaic_url, mosaic_colours, _, full_image, created_at, phash) = row
+        (
+            fpath,
+            album_id,
+            tags,
+            thumbnail_url,
+            thumbnail_mosaic_url,
+            mosaic_colours,
+            _,
+            full_image,
+            created_at,
+            phash,
+        ) = row
 
         return PhotoModel(
             fpath=fpath,

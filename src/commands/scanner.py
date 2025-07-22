@@ -1,6 +1,7 @@
 """Scan all media in a vault, and index this information in a database"""
 
 from typing import Iterator, Protocol
+from src.config import GEONAMES_USERNAME
 from src.database import SqliteDatabase
 from src.exif import ExifReader, PhotoExifData
 from src.phash import PHashReader, PhashData
@@ -8,6 +9,9 @@ from src.vault import MediaVault
 from src.media import IMedia
 from src.photo import Photo
 from src.video import Video
+
+from src.data.geoname import Geoname
+from src.things import Things
 
 
 class IScanner(Protocol):
@@ -82,3 +86,33 @@ class MediaScanner(IScanner):
 
         exif_table.add_many(self._unsaved_exifs())
         phash_table.add_many(self._unsaved_phashes())
+
+
+class GeonamesScanner(IScanner):
+    """The API-scanner reads external data sources and updates the database with this information."""
+
+    def __init__(self, db: SqliteDatabase):
+        self.db = db
+
+    def scan(self) -> None:
+        """Scan the database for geonames and update them"""
+
+        if not GEONAMES_USERNAME:
+            raise ValueError("GEONAMES_USERNAME missing")
+
+        geoname_table = self.db.geoname_table()
+        photo_metadata_table = self.db.photo_metadata_table()
+
+        geoname_client = Geoname(GEONAMES_USERNAME)
+        geonames = set(md.target for md in photo_metadata_table.list_by_target_type("geoname"))
+
+        for geoname in geonames:
+            thing = Things.from_urn(geoname)
+            id = thing["id"]
+
+            if geoname_table.has(id):
+                continue
+
+            res = geoname_client.get_by_id(id)
+            if res:
+                geoname_table.add(id, res)

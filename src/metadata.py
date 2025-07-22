@@ -60,6 +60,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
             "country",
             "summary",
         ]
+
         class AlbumFieldsDict(TypedDict):
             embedding: Optional[str]
             summary: Optional[str]
@@ -162,7 +163,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
                 xs = AlbumMetadataModel(
                     src=src,
-                    src_type='photo',
+                    src_type="photo",
                     # sign
                     relation="county" if key == "country" else key,
                     target=",".join(val) if isinstance(val, list) else val,

@@ -6,7 +6,7 @@ import os
 from typing import Any, Iterator, List, Optional
 from src.config import ALBUM_METADATA_FILE
 from src.media import IMedia
-from src.model import IModel
+from src.mirror_types import IModel
 from src.photo import Photo
 from src.video import Video
 import json
@@ -120,6 +120,7 @@ class AlbumMetadataModel(IModel):
 @dataclass
 class AlbumDataModel(IModel):
     """Represents the data in the `album_data` view"""
+
     id: str
     name: str
     dpath: str

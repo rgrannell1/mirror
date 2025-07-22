@@ -8,7 +8,7 @@ import warnings
 from src.constants import EXIF_ATTR_ASSOCIATIONS
 from PIL import Image, ExifTags
 
-from src.model import IModel
+from src.mirror_types import IModel
 
 
 @dataclass

@@ -22,3 +22,5 @@ PHOTO_DIRECTORY = f"{HOME}/Drive/Media"
 DATABASE_PATH = f"{HOME}/media.db"
 OUTPUT_DIRECTORY = f"{HOME}/Code/websites/photos.rgrannell.xyz/manifest"
 ALBUM_METADATA_FILE = f"{HOME}/Code/mirror/src/schemas/album_metadata.json"
+
+GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")

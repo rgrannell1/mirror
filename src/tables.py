@@ -288,3 +288,10 @@ create view if not exists photo_metadata_summary as
       and role = 'thumbnail_lossy'
     order by name;
 """
+
+GEONAME_TABLE = """
+create table if not exists geonames (
+  id      text not null primary key,
+  data    text not null
+);
+"""
