@@ -4,6 +4,7 @@ import json
 import os
 import sqlite3
 from typing import Iterator, List, Optional, Set
+from src.data.geoname import GeonameModel
 from src.exif import PhotoExifData
 from src.phash import PhashData
 from src.media import IMedia
@@ -305,6 +306,11 @@ class GeonameTable:
     def has(self, id: str) -> bool:
         return bool(self.conn.execute("select 1 from geonames where id = ?", (id,)).fetchone())
 
+    def list(self) -> Iterator[GeonameModel]:
+        query = "select id, data from geonames"
+
+        for row in self.conn.execute(query):
+            yield GeonameModel.from_row(row)
 
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
