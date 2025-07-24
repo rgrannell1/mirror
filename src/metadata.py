@@ -1,6 +1,5 @@
 """A file for dealing with metadata for albums and photos"""
 
-import json
 import re
 import sys
 import csv
@@ -112,7 +111,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         for embedding, album_data in sorted_albums:
             row = [
-                f"![]({album_data["embedding"]})",
+                f"![]({album_data['embedding']})",
                 album_data["title"] or "",
                 album_data["permalink"] or "",
                 ",".join(album_data["country"]) if album_data["country"] else "",
@@ -161,15 +160,13 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
                 if key == "fpath":
                     continue
 
-                xs = AlbumMetadataModel(
+                yield AlbumMetadataModel(
                     src=src,
                     src_type="photo",
                     # sign
                     relation="county" if key == "country" else key,
                     target=",".join(val) if isinstance(val, list) else val,
                 )
-                print(xs)
-                yield xs
 
 
 class MarkdownTablePhotoMetadataWriter:

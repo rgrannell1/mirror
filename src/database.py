@@ -312,6 +312,7 @@ class GeonameTable:
         for row in self.conn.execute(query):
             yield GeonameModel.from_row(row)
 
+
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn

@@ -1,9 +1,10 @@
-
 import json
 import requests
 import xmltodict
 from dataclasses import dataclass
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Iterator, List
+
+from src.data.types import SemanticTriple
 
 
 class Geoname:
@@ -15,8 +16,6 @@ class Geoname:
         xpars = xmltodict.parse(res.text)
 
         return xpars["geoname"] if "geoname" in xpars else None
-
-
 
 
 @dataclass
@@ -38,7 +37,7 @@ class GeonameModel:
     admin_code1: Dict[str, str]
     admin_name1: str
     ascii_name: str
-    alternate_names: str | None
+    alternate_name: list
     elevation: int | None
     srtm3: int | None
     astergdem: int | None
@@ -53,27 +52,70 @@ class GeonameModel:
         parsed = json.loads(data)
 
         return cls(
-            toponym_name=parsed.get("toponymName"),
-            name=parsed.get("name"),
+            toponym_name=parsed["toponymName"],
+            name=parsed["name"],
             lat=float(parsed["lat"]) if parsed.get("lat") is not None else None,
             lng=float(parsed["lng"]) if parsed.get("lng") is not None else None,
             geoname_id=int(parsed["geonameId"]),
-            country_code=parsed.get("countryCode"),
-            country_name=parsed.get("countryName"),
-            fcl=parsed.get("fcl"),
-            fcode=parsed.get("fcode"),
-            fcl_name=parsed.get("fclName"),
-            fcode_name=parsed.get("fcodeName"),
+            country_code=parsed["countryCode"],
+            country_name=parsed["countryName"],
+            fcl=parsed["fcl"],
+            fcode=parsed["fcode"],
+            fcl_name=parsed["fclName"],
+            fcode_name=parsed["fcodeName"],
             population=int(parsed["population"]) if parsed.get("population") is not None else None,
-            admin_code1=parsed.get("adminCode1"),
-            admin_name1=parsed.get("adminName1"),
-            ascii_name=parsed.get("asciiName"),
-            alternate_names=parsed.get("alternateNames"),
+            admin_code1=parsed["adminCode1"],
+            admin_name1=parsed["adminName1"],
+            ascii_name=parsed["asciiName"],
+            alternate_name=parsed.get("alternateName", []),
             elevation=int(parsed["elevation"]) if parsed.get("elevation") is not None else None,
             srtm3=int(parsed["srtm3"]) if parsed.get("srtm3") is not None else None,
             astergdem=int(parsed["astergdem"]) if parsed.get("astergdem") is not None else None,
-            continent_code=parsed.get("continentCode"),
-            admin_code2=parsed.get("adminCode2"),
-            admin_name2=parsed.get("adminName2"),
-            timezone=parsed.get("timezone"),
+            continent_code=parsed["continentCode"],
+            admin_code2=parsed["adminCode2"],
+            admin_name2=parsed["adminName2"],
+            timezone=parsed["timezone"],
         )
+
+
+class GeonameMetadataReader:
+    """Read location information from cached geonames results"""
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        geoname_table = db.geoname_table()
+
+        for model in geoname_table.list():
+            yield from self.to_relations(model)
+
+    def to_relations(self, model: GeonameModel) -> Iterator[SemanticTriple]:
+        """Convert a GeonameModel to PhotoMetadataModel relations"""
+
+        fields = [
+            ("name", model.toponym_name),
+            ("latitude", str(model.lat)),
+            ("longitude", str(model.lng)),
+            ("country", model.country_name),
+            ("fcode", model.fcode),
+            ("fcode_name", model.fcode_name),
+        ]
+
+        for relation, target in fields:
+            yield SemanticTriple(
+                source=f"urn:ró:geoname:{model.geoname_id}",
+                relation=relation,
+                target=target,
+            )
+
+        for alt in model.alternate_name:
+            if isinstance(alt, str):
+                continue
+
+            lang = alt.get("@lang", "unknown")
+            text = alt.get("#text", "")
+
+            if lang == 'link' and 'wikipedia.org' in text:
+                yield SemanticTriple(
+                    source=f"urn:ró:geoname:{model.geoname_id}",
+                    relation="wikipedia",
+                    target=text,
+                )

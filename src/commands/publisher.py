@@ -11,6 +11,7 @@ import markdown
 
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
+from src.data.geoname import GeonameMetadataReader
 from src.database import SqliteDatabase
 from src.exif import PhotoExifData
 from src.photo import PhotoMetadataModel, PhotoModel
@@ -22,6 +23,8 @@ from src.flags import Flags
 
 class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
+
+    NAME: str
 
     def content(self, db: SqliteDatabase) -> str:
         """Return the content of the artifact"""
@@ -43,12 +46,16 @@ class IArtifact(Protocol):
 class MediaArtifact(IArtifact):
     """Build artifact describing secondary information about media in the database"""
 
+    NAME = "media"
+
     def content(self, db: SqliteDatabase) -> str:
         return "[]"
 
 
 class EnvArtifact(IArtifact):
     """Build artifact describing build information"""
+
+    NAME = "env"
 
     publication_id: str
 
@@ -67,6 +74,8 @@ class EnvArtifact(IArtifact):
 
 class AlbumsArtifact(IArtifact):
     """Build artifact describing albums in the database"""
+
+    NAME = "albums"
 
     HEADERS = [
         "id",
@@ -122,6 +131,8 @@ class AlbumsArtifact(IArtifact):
 class PhotosArtifact(IArtifact):
     """Build artifact describing images in the database"""
 
+    NAME = "images"
+
     HEADERS = ["id", "album_id", "thumbnail_url", "mosaic_colours", "full_image", "created_at"]
 
     def process(self, photo: PhotoModel) -> List[Any]:
@@ -147,6 +158,8 @@ class PhotosArtifact(IArtifact):
 
 class VideosArtifact(IArtifact):
     """Build artifact describing videos in the database"""
+
+    NAME = "videos"
 
     HEADERS = [
         "id",
@@ -318,6 +331,8 @@ class AtomArtifact:
 class SemanticArtifact(IArtifact):
     """Build artifact describing semantic information in the database"""
 
+    NAME = "semantic"
+
     def content(self, db: SqliteDatabase) -> str:
         media = []
 
@@ -352,6 +367,8 @@ class SemanticArtifact(IArtifact):
 class ExifArtifact(IArtifact):
     """Build artifact describing exif information in the database"""
 
+    NAME = "exif"
+
     HEADERS = ["id", "created_at", "f_stop", "focal_length", "model", "exposure_time", "iso", "width", "height"]
 
     def process(self, exif: PhotoExifData) -> List[Any]:
@@ -382,6 +399,8 @@ class ExifArtifact(IArtifact):
 
 class StatsArtifact(IArtifact):
     """Build artifact giving semantic facts for the albums page"""
+
+    NAME = "stats"
 
     def process(self): ...
 
@@ -464,6 +483,20 @@ class StatsArtifact(IArtifact):
         )
 
 
+class TriplesArtifact(IArtifact):
+    """Build artifact describing semantic triples in the database"""
+
+    NAME = "triples"
+
+    def content(self, db: SqliteDatabase) -> str:
+        triples = []
+
+        geoname_reader = GeonameMetadataReader()
+        for triple in geoname_reader.read(db):
+            triples.append([triple.source, triple.relation, triple.target])
+
+        return json.dumps(triples)
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -477,7 +510,7 @@ class ArtifactBuilder:
         removeable = [
             file
             for file in os.listdir(dpath)
-            if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats"))
+            if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats", "triples"))
         ]
 
         for file in removeable:
@@ -494,35 +527,22 @@ class ArtifactBuilder:
 
         print(f"{self.output_dir}/albums.{pid}.json")
 
-        albums = AlbumsArtifact()
-        with open(f"{self.output_dir}/albums.{pid}.json", "w") as conn:
-            conn.write(albums.content(self.db))
-
-        photos = PhotosArtifact()
-        with open(f"{self.output_dir}/images.{pid}.json", "w") as conn:
-            conn.write(photos.content(self.db))
-
         env = EnvArtifact(publication_id=pid)
         with open(f"{self.output_dir}/env.json", "w") as conn:
             conn.write(env.content(self.db))
 
-        videos = VideosArtifact()
-        with open(f"{self.output_dir}/videos.{pid}.json", "w") as conn:
-            conn.write(videos.content(self.db))
-
+        # atom feeds
         atom = AtomArtifact()
         atom.atom_feed(atom.media(self.db), self.output_dir)
 
-        semantic = SemanticArtifact()
-        with open(f"{self.output_dir}/semantic.{pid}.json", "w") as conn:
-            conn.write(semantic.content(self.db))
+        mirror_artifacts = [AlbumsArtifact, PhotosArtifact, VideosArtifact, SemanticArtifact, ExifArtifact, StatsArtifact, TriplesArtifact]
 
-        exif = ExifArtifact()
-        with open(f"{self.output_dir}/exif.{pid}.json", "w") as conn:
-            conn.write(exif.content(self.db))
+        # write each artifact to a `publication-id` output file
+        for klass in mirror_artifacts:
+            artifact = klass()
+            content = artifact.content(self.db)
 
-        stats = StatsArtifact()
-        with open(f"{self.output_dir}/stats.{pid}.json", "w") as conn:
-            conn.write(stats.content(self.db))
+            with open(f"{self.output_dir}/{artifact.NAME}.{pid}.json", "w") as conn:
+                conn.write(content)
 
         return pid
