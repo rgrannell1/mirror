@@ -2,6 +2,9 @@
 
 from typing import Iterator, Protocol
 from src.config import GEONAMES_USERNAME
+from src.constants import KnownRelations
+from src.data.types import SemanticTriple
+from src.data.wikidata import Wikidata
 from src.database import SqliteDatabase
 from src.exif import ExifReader, PhotoExifData
 from src.phash import PHashReader, PhashData
@@ -10,7 +13,7 @@ from src.media import IMedia
 from src.photo import Photo
 from src.video import Video
 
-from src.data.geoname import Geoname
+from src.data.geoname import Geoname, GeonameMetadataReader
 from src.things import Things
 
 
@@ -116,3 +119,31 @@ class GeonamesScanner(IScanner):
             res = geoname_client.get_by_id(id)
             if res:
                 geoname_table.add(id, res)
+
+
+class WikidataScanner(IScanner):
+    def __init__(self, db: SqliteDatabase):
+        self.db = db
+
+    def read_geonames_wikidata_ids(self) -> Iterator[SemanticTriple]:
+        for triple in GeonameMetadataReader().read(self.db):
+            if triple.relation == KnownRelations.WIKIDATA:
+                yield triple
+
+    def scan(self) -> None:
+        ...
+
+        wikidata_client = Wikidata()
+        wikidata_table = self.db.wikidata_table()
+
+        for triple in self.read_geonames_wikidata_ids():
+            qid = triple.target
+
+            res = wikidata_client.get_by_id(qid)
+            if not res:
+                continue
+
+            if wikidata_table.has(qid):
+                continue
+
+            wikidata_table.add(qid, res)

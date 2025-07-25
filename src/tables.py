@@ -295,3 +295,10 @@ create table if not exists geonames (
   data    text not null
 );
 """
+
+WIKIDATA_TABLE = """
+create table if not exists wikidata (
+  id      text not null primary key,
+  data    text not null
+);
+"""

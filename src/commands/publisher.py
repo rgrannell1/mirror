@@ -497,6 +497,7 @@ class TriplesArtifact(IArtifact):
 
         return json.dumps(triples)
 
+
 class ArtifactBuilder:
     """Build artifacts from the database, i.e publish
     the database to a directory"""
@@ -535,7 +536,15 @@ class ArtifactBuilder:
         atom = AtomArtifact()
         atom.atom_feed(atom.media(self.db), self.output_dir)
 
-        mirror_artifacts = [AlbumsArtifact, PhotosArtifact, VideosArtifact, SemanticArtifact, ExifArtifact, StatsArtifact, TriplesArtifact]
+        mirror_artifacts = [
+            AlbumsArtifact,
+            PhotosArtifact,
+            VideosArtifact,
+            SemanticArtifact,
+            ExifArtifact,
+            StatsArtifact,
+            TriplesArtifact,
+        ]
 
         # write each artifact to a `publication-id` output file
         for klass in mirror_artifacts:

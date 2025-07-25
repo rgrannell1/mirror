@@ -26,6 +26,7 @@ from src.tables import (
     PHOTO_DATA_VIEW,
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE,
+    WIKIDATA_TABLE
 )
 from src.video import Video
 import string
@@ -313,6 +314,21 @@ class GeonameTable:
             yield GeonameModel.from_row(row)
 
 
+class WikidataTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+
+    def add(self, id: str, data: dict) -> None:
+        self.conn.execute(
+            "insert or replace into wikidata (id, data) values (?, ?)",
+            (id, json.dumps(data)),
+        )
+        self.conn.commit()
+
+    def has(self, id: str) -> bool:
+        return bool(self.conn.execute("select 1 from wikidata where id = ?", (id,)).fetchone())
+
+
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -355,6 +371,7 @@ class SqliteDatabase:
         VIDEO_DATA_VIEW,
         PHASHES_TABLE,
         PHOTO_METADATA_TABLE,
+        WIKIDATA_TABLE,
         PHOTO_METADATA_VIEW,
         PHOTO_METADATA_SUMMARY,
         GEONAME_TABLE,
@@ -393,6 +410,9 @@ class SqliteDatabase:
 
     def geoname_table(self):
         return GeonameTable(self.conn)
+
+    def wikidata_table(self):
+        return WikidataTable(self.conn)
 
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

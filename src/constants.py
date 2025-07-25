@@ -88,3 +88,16 @@ VIDEO_ENCODINGS: list[VideoEncoding] = [
 VIDEO_THUMBNAIL_FORMAT = ".webp"
 VIDEO_CONTENT_TYPE = "video/mp4"
 URN_PREFIX = "urn:ró:"
+
+class KnownRelations:
+    COUNTRY = "country"
+    FCODE = "fcode"
+    FCODE_NAME = "fcode_name"
+    LATITUDE = "latitude"
+    LONGITUDE = "longitude"
+    NAME = "name"
+    WIKIDATA = "wikidata"
+    WIKIPEDIA = "wikipedia"
+
+class KnownTypes:
+    GEONAME = "geoname"

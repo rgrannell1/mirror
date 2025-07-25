@@ -4,6 +4,7 @@ import xmltodict
 from dataclasses import dataclass
 from typing import Any, Dict, Iterator, List
 
+from src.constants import URN_PREFIX, KnownRelations, KnownTypes
 from src.data.types import SemanticTriple
 
 
@@ -91,17 +92,17 @@ class GeonameMetadataReader:
         """Convert a GeonameModel to PhotoMetadataModel relations"""
 
         fields = [
-            ("name", model.toponym_name),
-            ("latitude", str(model.lat)),
-            ("longitude", str(model.lng)),
-            ("country", model.country_name),
-            ("fcode", model.fcode),
-            ("fcode_name", model.fcode_name),
+            (KnownRelations.NAME, model.toponym_name),
+            (KnownRelations.LATITUDE, str(model.lat)),
+            (KnownRelations.LONGITUDE, str(model.lng)),
+            (KnownRelations.COUNTRY, model.country_name),
+            (KnownRelations.FCODE, model.fcode),
+            (KnownRelations.FCODE_NAME, model.fcode_name),
         ]
 
         for relation, target in fields:
             yield SemanticTriple(
-                source=f"urn:ró:geoname:{model.geoname_id}",
+                source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
                 relation=relation,
                 target=target,
             )
@@ -115,7 +116,13 @@ class GeonameMetadataReader:
 
             if lang == 'link' and 'wikipedia.org' in text:
                 yield SemanticTriple(
-                    source=f"urn:ró:geoname:{model.geoname_id}",
-                    relation="wikipedia",
+                    source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
+                    relation=KnownRelations.WIKIPEDIA,
+                    target=text,
+                )
+            elif lang == 'wkdt':
+                yield SemanticTriple(
+                    source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
+                    relation=KnownRelations.WIKIDATA,
                     target=text,
                 )
