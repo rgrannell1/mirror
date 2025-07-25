@@ -328,6 +328,11 @@ class WikidataTable:
     def has(self, id: str) -> bool:
         return bool(self.conn.execute("select 1 from wikidata where id = ?", (id,)).fetchone())
 
+    def list(self) -> Iterator[dict]:
+        query = "select id, data from wikidata"
+
+        for id, data in self.conn.execute(query):
+            yield {"id": id, "data": json.loads(data)}
 
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:

@@ -130,8 +130,35 @@ class WikidataScanner(IScanner):
             if triple.relation == KnownRelations.WIKIDATA:
                 yield triple
 
+    def read_binomials(self) -> Iterator[str]:
+        """Read distinct species binomials from the photo metadata table."""
+
+        photo_metadata_table = self.db.photo_metadata_table()
+        binomials = set()
+
+        for photo_md in photo_metadata_table.list():
+            target = photo_md.target
+            if not Things.is_urn(target):
+                continue
+
+            parsed = Things.from_urn(target)
+            if parsed["type"] not in {"mammal", "bird", "reptile", "amphibian", "fish"}:
+                continue
+
+            id = parsed["id"]
+            if not id in binomials:
+                yield id.replace('-', ' ').capitalize()
+                binomials.add(id)
+
+    def read_stored_binomials(self) -> Iterator[str]:
+        """Read distinct species binomials from the wikidata table."""
+
+        wikidata_table = self.db.wikidata_table()
+        for datum in wikidata_table.list():
+            ...
+
     def scan(self) -> None:
-        ...
+        """Read or infer wikidata IDs from our database, and collect wikidata properties"""
 
         wikidata_client = Wikidata()
         wikidata_table = self.db.wikidata_table()
@@ -139,11 +166,14 @@ class WikidataScanner(IScanner):
         for triple in self.read_geonames_wikidata_ids():
             qid = triple.target
 
+            if wikidata_table.has(qid):
+                continue
+
             res = wikidata_client.get_by_id(qid)
             if not res:
                 continue
 
-            if wikidata_table.has(qid):
-                continue
-
             wikidata_table.add(qid, res)
+
+        for binomial in self.read_binomials():
+            print(binomial)
