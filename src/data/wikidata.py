@@ -4,7 +4,7 @@ import Levenshtein
 from attr import dataclass
 import requests
 
-from src.constants import KnownRelations, KnownWikiProperties
+from src.constants import URN_PREFIX, KnownRelations, KnownTypes, KnownWikiProperties
 from src.data.binomials import binomial_to_urn
 from src.data.types import SemanticTriple
 
@@ -82,6 +82,18 @@ class WikidataModel:
 
         return aliases[0]["value"] if aliases else None
 
+    def find_wikipedia_link(self) -> str | None:
+        data = self.data
+        if not data or "sitelinks" not in data:
+            return None
+
+        sitelinks = data["sitelinks"]
+        if "enwiki" in sitelinks:
+            title = sitelinks["enwiki"]["title"]
+            return f"https://en.wikipedia.org/wiki/{title.replace(' ', '_')}"
+
+        return None
+
     @classmethod
     def from_row(cls, row: list[Any]) -> "WikidataModel":
         (id, data) = row
@@ -120,7 +132,7 @@ class WikidataMetadataReader:
 
         return to_pascal_case(label)
 
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    def read_binomial_common_names(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         binomials_table = db.binomials_wikidata_id_table()
         wikidata_table = db.wikidata_table()
 
@@ -139,10 +151,44 @@ class WikidataMetadataReader:
 
             common_name = self.binomial_to_common_name(binomial, label, alias)
 
+            urn = binomial_to_urn(db, binomial)
+            if not urn:
+                continue
+
             yield SemanticTriple(
-                source=binomial_to_urn(db, binomial),
+                source=urn,
                 relation=KnownRelations.NAME,
                 target=common_name,
             )
 
-        return None
+    def read_wikipedia_urls(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        wikidata_table = db.wikidata_table()
+
+        qids_to_urls = {}
+
+        for data in wikidata_table.list():
+            url = data.find_wikipedia_link()
+            if not url:
+                continue
+
+            qids_to_urls[data.qid] = url
+
+        binomials_table = db.binomials_wikidata_id_table()
+        for qid, url in qids_to_urls.items():
+            binomial = binomials_table.get_binomial(qid)
+            if not binomial:
+                continue
+
+            urn = binomial_to_urn(db, binomial)
+            if not urn:
+                continue
+
+            yield SemanticTriple(
+                source=urn,
+                relation=KnownRelations.WIKIPEDIA,
+                target=url,
+            )
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        yield from self.read_binomial_common_names(db)
+        yield from self.read_wikipedia_urls(db)

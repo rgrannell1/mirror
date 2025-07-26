@@ -102,7 +102,7 @@ class GeonameMetadataReader:
 
         for relation, target in fields:
             yield SemanticTriple(
-                source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
+                source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
                 relation=relation,
                 target=target,
             )
@@ -116,13 +116,13 @@ class GeonameMetadataReader:
 
             if lang == "link" and "wikipedia.org" in text:
                 yield SemanticTriple(
-                    source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
+                    source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
                     relation=KnownRelations.WIKIPEDIA,
                     target=text,
                 )
             elif lang == "wkdt":
                 yield SemanticTriple(
-                    source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
+                    source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
                     relation=KnownRelations.WIKIDATA,
                     target=text,
                 )

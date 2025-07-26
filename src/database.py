@@ -368,6 +368,15 @@ class BinomialsWikidataIdTable:
 
         return None
 
+    def get_binomial(self, qid: str) -> Optional[str]:
+        """Given a WikiData ID, get the binomial"""
+        query = "select binomial from binomials_wikidata_id where qid = ?"
+
+        for row in self.conn.execute(query, (qid,)):
+            return row[0]
+
+        return None
+
     def list(self) -> Iterator[tuple[str, str]]:
         query = "select binomial, qid from binomials_wikidata_id"
 
