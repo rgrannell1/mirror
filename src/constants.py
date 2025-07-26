@@ -99,10 +99,12 @@ class KnownRelations:
     NAME = "name"
     WIKIDATA = "wikidata"
     WIKIPEDIA = "wikipedia"
+    BIRDWATCH_URL = "birdwatch_url"
 
 
 class KnownTypes:
     GEONAME = "geoname"
+    BIRD = "bird"
 
 
 class KnownWikiProperties:

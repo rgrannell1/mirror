@@ -16,7 +16,6 @@ from typing import Iterator, Protocol
 import urllib.parse
 
 from src.constants import URN_PREFIX
-from src.database import SqliteDatabase
 
 
 class Things:
@@ -66,4 +65,4 @@ class Things:
 
 
 class ThingsReader(Protocol):
-    def read(self, db: SqliteDatabase) -> Iterator[tuple[str, dict]]: ...
+    def read(self, db: "SqliteDatabase") -> Iterator[tuple[str, dict]]: ...

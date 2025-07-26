@@ -11,6 +11,7 @@ import markdown
 
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
+from src.data.birdwatch import BirdwatchUrlReader
 from src.data.geoname import GeonameMetadataReader
 from src.data.wikidata import WikidataMetadataReader
 from src.database import SqliteDatabase
@@ -498,7 +499,10 @@ class TriplesArtifact(IArtifact):
 
         wikidata_reader = WikidataMetadataReader()
         for triple in wikidata_reader.read(db):
-            print(triple)
+            triples.append([triple.source, triple.relation, triple.target])
+
+        birdwatch_url_reader = BirdwatchUrlReader()
+        for triple in birdwatch_url_reader.read(db):
             triples.append([triple.source, triple.relation, triple.target])
 
         return json.dumps(triples)

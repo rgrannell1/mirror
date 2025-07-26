@@ -5,11 +5,13 @@ from attr import dataclass
 import requests
 
 from src.constants import KnownRelations, KnownWikiProperties
+from src.data.binomials import binomial_to_urn
 from src.data.types import SemanticTriple
 
 
 def to_pascal_case(s):
-    return ' '.join(word.capitalize() for word in s.replace('_', ' ').replace('-', ' ').split())
+    return " ".join(word.capitalize() for word in s.replace("_", " ").replace("-", " ").split())
+
 
 class WikidataClient:
     SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
@@ -57,7 +59,7 @@ class WikidataModel:
         if not data:
             return None
 
-        return data.get('labels', {}).get('en', {}).get('value')
+        return data.get("labels", {}).get("en", {}).get("value")
 
     def find_description(self) -> str | None:
         data = self.data
@@ -118,7 +120,6 @@ class WikidataMetadataReader:
 
         return to_pascal_case(label)
 
-
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         binomials_table = db.binomials_wikidata_id_table()
         wikidata_table = db.wikidata_table()
@@ -138,9 +139,8 @@ class WikidataMetadataReader:
 
             common_name = self.binomial_to_common_name(binomial, label, alias)
 
-            # TODO should this be a URN source instead?
             yield SemanticTriple(
-                source=binomial,
+                source=binomial_to_urn(db, binomial),
                 relation=KnownRelations.NAME,
                 target=common_name,
             )
