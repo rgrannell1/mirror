@@ -8,7 +8,7 @@ from src.constants import URN_PREFIX, KnownRelations, KnownTypes
 from src.data.types import SemanticTriple
 
 
-class Geoname:
+class GeonameClient:
     def __init__(self, username: str):
         self.username = username
 

@@ -3,8 +3,9 @@
 from typing import Iterator, Protocol
 from src.config import GEONAMES_USERNAME
 from src.constants import KnownRelations
+from src.data.binomials import list_photo_binomials
 from src.data.types import SemanticTriple
-from src.data.wikidata import Wikidata
+from src.data.wikidata import WikidataClient
 from src.database import SqliteDatabase
 from src.exif import ExifReader, PhotoExifData
 from src.phash import PHashReader, PhashData
@@ -13,7 +14,7 @@ from src.media import IMedia
 from src.photo import Photo
 from src.video import Video
 
-from src.data.geoname import Geoname, GeonameMetadataReader
+from src.data.geoname import GeonameClient, GeonameMetadataReader
 from src.things import Things
 
 
@@ -106,7 +107,7 @@ class GeonamesScanner(IScanner):
         geoname_table = self.db.geoname_table()
         photo_metadata_table = self.db.photo_metadata_table()
 
-        geoname_client = Geoname(GEONAMES_USERNAME)
+        geoname_client = GeonameClient(GEONAMES_USERNAME)
         geonames = set(md.target for md in photo_metadata_table.list_by_target_type("geoname"))
 
         for geoname in geonames:
@@ -130,39 +131,12 @@ class WikidataScanner(IScanner):
             if triple.relation == KnownRelations.WIKIDATA:
                 yield triple
 
-    def read_binomials(self) -> Iterator[str]:
-        """Read distinct species binomials from the photo metadata table."""
-
-        photo_metadata_table = self.db.photo_metadata_table()
-        binomials = set()
-
-        for photo_md in photo_metadata_table.list():
-            target = photo_md.target
-            if not Things.is_urn(target):
-                continue
-
-            parsed = Things.from_urn(target)
-            if parsed["type"] not in {"mammal", "bird", "reptile", "amphibian", "fish"}:
-                continue
-
-            id = parsed["id"]
-            if not id in binomials:
-                yield id.replace('-', ' ').capitalize()
-                binomials.add(id)
-
-    def read_stored_binomials(self) -> Iterator[str]:
-        """Read distinct species binomials from the wikidata table."""
-
-        wikidata_table = self.db.wikidata_table()
-        for datum in wikidata_table.list():
-            ...
-
-    def scan(self) -> None:
-        """Read or infer wikidata IDs from our database, and collect wikidata properties"""
-
-        wikidata_client = Wikidata()
+    def add_geonames_wikidata(self):
+        wikidata_client = WikidataClient()
         wikidata_table = self.db.wikidata_table()
 
+        # List wikidata IDs from geonames metadata,
+        # and ensure we've got a wikidata entry for each of them
         for triple in self.read_geonames_wikidata_ids():
             qid = triple.target
 
@@ -171,9 +145,41 @@ class WikidataScanner(IScanner):
 
             res = wikidata_client.get_by_id(qid)
             if not res:
-                continue
+                wikidata_table.add(qid, None)
 
             wikidata_table.add(qid, res)
 
-        for binomial in self.read_binomials():
-            print(binomial)
+    def add_binomials_wikidata(self):
+        """Look up binomials in WikiData."""
+
+        wikidata_client = WikidataClient()
+        wikidata_table = self.db.wikidata_table()
+        binomials_wikidata_table = self.db.binomials_wikidata_id_table()
+
+        # subtract the set of stored binomials from the ones in our photos
+        unsaved_binomials = set(list_photo_binomials(self.db))
+
+        for binomial, qid in binomials_wikidata_table.list():
+            if binomial in unsaved_binomials:
+                unsaved_binomials.remove(binomial)
+
+        # look each up, and store a binomial -> QID mapping and
+        # QID to Wikidata mapping
+        for binomial in unsaved_binomials:
+            res = wikidata_client.get_by_binomial(binomial)
+            if not res:
+                binomials_wikidata_table.add(binomial, None)
+                continue
+
+            qid = res['id']
+
+            binomials_wikidata_table.add(binomial, qid)
+            wikidata_table.add(qid, res)
+
+    def scan(self) -> None:
+        """Read or infer wikidata IDs from our database, and collect wikidata properties"""
+
+        self.add_geonames_wikidata()
+        self.add_binomials_wikidata()
+
+        print('done')

@@ -5,6 +5,7 @@ import os
 import sqlite3
 from typing import Iterator, List, Optional, Set
 from src.data.geoname import GeonameModel
+from src.data.wikidata import WikidataModel
 from src.exif import PhotoExifData
 from src.phash import PhashData
 from src.media import IMedia
@@ -26,7 +27,8 @@ from src.tables import (
     PHOTO_DATA_VIEW,
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE,
-    WIKIDATA_TABLE
+    WIKIDATA_TABLE,
+    BINOMIALS_WIKIDATA_ID_TABLE
 )
 from src.video import Video
 import string
@@ -318,21 +320,51 @@ class WikidataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
 
-    def add(self, id: str, data: dict) -> None:
+    def add(self, id: str, data: dict | None) -> None:
         self.conn.execute(
             "insert or replace into wikidata (id, data) values (?, ?)",
-            (id, json.dumps(data)),
+            (id, json.dumps(data) if data else None),
         )
         self.conn.commit()
 
     def has(self, id: str) -> bool:
         return bool(self.conn.execute("select 1 from wikidata where id = ?", (id,)).fetchone())
 
-    def list(self) -> Iterator[dict]:
+    def list(self) -> Iterator[WikidataModel]:
         query = "select id, data from wikidata"
 
-        for id, data in self.conn.execute(query):
-            yield {"id": id, "data": json.loads(data)}
+        for row in self.conn.execute(query):
+            yield WikidataModel.from_row(row)
+
+
+class BinomialsWikidataIdTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+
+    def add(self, binomial: str, qid: Optional[str]) -> None:
+        self.conn.execute(
+            "insert or replace into binomials_wikidata_id (binomial, qid) values (?, ?)",
+            (binomial, qid),
+        )
+        self.conn.commit()
+
+    def has(self, binomial: str) -> bool:
+        return bool(self.conn.execute("select 1 from binomials_wikidata_id where binomial = ?", (binomial,)).fetchone())
+
+    def get_qid(self, binomial: str) -> Optional[str]:
+        """Given a binomial, get the WikiData ID"""
+        query = "select qid from binomials_wikidata_id where binomial = ?"
+
+        for row in self.conn.execute(query, (binomial,)):
+            return row[0]
+
+        return None
+
+    def list(self) -> Iterator[tuple[str, str]]:
+        query = "select binomial, qid from binomials_wikidata_id"
+
+        for row in self.conn.execute(query):
+            yield row
 
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
@@ -380,6 +412,7 @@ class SqliteDatabase:
         PHOTO_METADATA_VIEW,
         PHOTO_METADATA_SUMMARY,
         GEONAME_TABLE,
+        BINOMIALS_WIKIDATA_ID_TABLE
     }
     conn: sqlite3.Connection
 
@@ -418,6 +451,9 @@ class SqliteDatabase:
 
     def wikidata_table(self):
         return WikidataTable(self.conn)
+
+    def binomials_wikidata_id_table(self):
+        return BinomialsWikidataIdTable(self.conn)
 
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

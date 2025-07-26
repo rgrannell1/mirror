@@ -12,6 +12,7 @@ import markdown
 from src.album import AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
 from src.data.geoname import GeonameMetadataReader
+from src.data.wikidata import WikidataMetadataReader
 from src.database import SqliteDatabase
 from src.exif import PhotoExifData
 from src.photo import PhotoMetadataModel, PhotoModel
@@ -493,6 +494,10 @@ class TriplesArtifact(IArtifact):
 
         geoname_reader = GeonameMetadataReader()
         for triple in geoname_reader.read(db):
+            triples.append([triple.source, triple.relation, triple.target])
+
+        wikidata_reader = WikidataMetadataReader()
+        for triple in wikidata_reader.read(db):
             triples.append([triple.source, triple.relation, triple.target])
 
         return json.dumps(triples)

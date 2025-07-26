@@ -1,0 +1,5 @@
+{
+  "configurations": [
+  {"name":"Python Debugger: Current File with Arguments","type":"debugpy","request":"launch","program":"/home/rg/Code/mirror/cli.py","console":"integratedTerminal","args":"scan"}
+  ]
+}

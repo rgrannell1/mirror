@@ -101,3 +101,8 @@ class KnownRelations:
 
 class KnownTypes:
     GEONAME = "geoname"
+
+class KnownWikiProperties:
+    TAXON_NAME = "P225"
+
+BINOMIAL_TYPE = {"mammal", "bird", "reptile", "amphibian", "fish"}

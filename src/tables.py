@@ -296,6 +296,13 @@ create table if not exists geonames (
 );
 """
 
+BINOMIALS_WIKIDATA_ID_TABLE = """
+create table if not exists binomials_wikidata_id (
+  binomial text not null primary key,
+  qid     text
+);
+"""
+
 WIKIDATA_TABLE = """
 create table if not exists wikidata (
   id      text not null primary key,
