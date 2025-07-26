@@ -171,7 +171,7 @@ class WikidataScanner(IScanner):
                 binomials_wikidata_table.add(binomial, None)
                 continue
 
-            qid = res['id']
+            qid = res["id"]
 
             binomials_wikidata_table.add(binomial, qid)
             wikidata_table.add(qid, res)
@@ -182,4 +182,4 @@ class WikidataScanner(IScanner):
         self.add_geonames_wikidata()
         self.add_binomials_wikidata()
 
-        print('done')
+        print("done")

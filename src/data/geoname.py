@@ -114,13 +114,13 @@ class GeonameMetadataReader:
             lang = alt.get("@lang", "unknown")
             text = alt.get("#text", "")
 
-            if lang == 'link' and 'wikipedia.org' in text:
+            if lang == "link" and "wikipedia.org" in text:
                 yield SemanticTriple(
                     source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
                     relation=KnownRelations.WIKIPEDIA,
                     target=text,
                 )
-            elif lang == 'wkdt':
+            elif lang == "wkdt":
                 yield SemanticTriple(
                     source=f"{URN_PREFIX}:{KnownTypes.GEONAME}:{model.geoname_id}",
                     relation=KnownRelations.WIKIDATA,

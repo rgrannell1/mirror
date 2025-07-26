@@ -28,7 +28,7 @@ from src.tables import (
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE,
     WIKIDATA_TABLE,
-    BINOMIALS_WIKIDATA_ID_TABLE
+    BINOMIALS_WIKIDATA_ID_TABLE,
 )
 from src.video import Video
 import string
@@ -366,6 +366,7 @@ class BinomialsWikidataIdTable:
         for row in self.conn.execute(query):
             yield row
 
+
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -412,7 +413,7 @@ class SqliteDatabase:
         PHOTO_METADATA_VIEW,
         PHOTO_METADATA_SUMMARY,
         GEONAME_TABLE,
-        BINOMIALS_WIKIDATA_ID_TABLE
+        BINOMIALS_WIKIDATA_ID_TABLE,
     }
     conn: sqlite3.Connection
 

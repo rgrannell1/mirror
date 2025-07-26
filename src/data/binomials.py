@@ -1,5 +1,3 @@
-
-
 from typing import Iterator
 from src.constants import BINOMIAL_TYPE
 from src.things import Things
@@ -22,11 +20,11 @@ def list_photo_binomials(db) -> Iterator[str]:
 
         id = parsed["id"]
         if not id in binomials:
-            yield id.replace('-', ' ').capitalize()
+            yield id.replace("-", " ").capitalize()
             binomials.add(id)
 
 
-def find_common_name(db) -> Iterator[str]: # type: ignore
+def find_common_name(db) -> Iterator[str]:  # type: ignore
     """Read distinct common names from the photo metadata table."""
 
     wikidata_table = db.wikidata_table()

@@ -6,6 +6,7 @@ import requests
 from src.constants import KnownWikiProperties
 from src.data.types import SemanticTriple
 
+
 class WikidataClient:
     SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
     API_ENDPOINT = "https://www.wikidata.org/w/api.php"
@@ -41,6 +42,7 @@ class WikidataClient:
         qid = bindings[0]["item"]["value"].split("/")[-1]
         return self.get_by_id(qid)
 
+
 @dataclass
 class WikidataModel:
     name: str | None
@@ -50,22 +52,22 @@ class WikidataModel:
 
     @classmethod
     def find_alias(cls, data: dict | None) -> str | None:
-        if not data or 'aliases' not in data:
+        if not data or "aliases" not in data:
             return None
 
-        if 'en' in data['aliases']:
-            en_alias = data['aliases']['en']
-            return en_alias[0]['value']
+        if "en" in data["aliases"]:
+            en_alias = data["aliases"]["en"]
+            return en_alias[0]["value"]
 
         return None
 
     @classmethod
     def find_description(cls, data: dict | None) -> str | None:
-        if not data or 'descriptions' not in data:
+        if not data or "descriptions" not in data:
             return None
 
-        if 'en' in data['descriptions']:
-            return data['descriptions']['en']['value']
+        if "en" in data["descriptions"]:
+            return data["descriptions"]["en"]["value"]
         return None
 
     @classmethod
@@ -76,18 +78,13 @@ class WikidataModel:
         alias = cls.find_alias(parsed)
         description = cls.find_description(parsed)
 
-        return cls(
-            qid=id,
-            name=alias,
-            description=description,
-            claims={}
-        )
+        return cls(qid=id, name=alias, description=description, claims={})
 
 
 class WikidataMetadataReader:
     """Read
-      * wikidata location information from cached geonames results
-      * taxon information from Wikidata
+    * wikidata location information from cached geonames results
+    * taxon information from Wikidata
     """
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:

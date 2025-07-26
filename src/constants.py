@@ -89,6 +89,7 @@ VIDEO_THUMBNAIL_FORMAT = ".webp"
 VIDEO_CONTENT_TYPE = "video/mp4"
 URN_PREFIX = "urn:ró:"
 
+
 class KnownRelations:
     COUNTRY = "country"
     FCODE = "fcode"
@@ -99,10 +100,13 @@ class KnownRelations:
     WIKIDATA = "wikidata"
     WIKIPEDIA = "wikipedia"
 
+
 class KnownTypes:
     GEONAME = "geoname"
 
+
 class KnownWikiProperties:
     TAXON_NAME = "P225"
+
 
 BINOMIAL_TYPE = {"mammal", "bird", "reptile", "amphibian", "fish"}
