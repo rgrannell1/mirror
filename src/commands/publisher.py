@@ -498,6 +498,7 @@ class TriplesArtifact(IArtifact):
 
         wikidata_reader = WikidataMetadataReader()
         for triple in wikidata_reader.read(db):
+            print(triple)
             triples.append([triple.source, triple.relation, triple.target])
 
         return json.dumps(triples)

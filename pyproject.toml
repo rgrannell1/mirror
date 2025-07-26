@@ -19,7 +19,8 @@ dependencies = [
   "PyYAML",
   "sqlean.py",
   "requests",
-  "xmltodict"
+  "xmltodict",
+  "levenshtein"
 ]
 
 [tool.ruff]

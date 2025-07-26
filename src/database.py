@@ -330,6 +330,14 @@ class WikidataTable:
     def has(self, id: str) -> bool:
         return bool(self.conn.execute("select 1 from wikidata where id = ?", (id,)).fetchone())
 
+    def get_by_id(self, id: str) -> Optional[WikidataModel]:
+        query = "select id, data from wikidata where id = ?"
+
+        for row in self.conn.execute(query, (id,)):
+            return WikidataModel.from_row(row)
+
+        return None
+
     def list(self) -> Iterator[WikidataModel]:
         query = "select id, data from wikidata"
 
