@@ -115,7 +115,6 @@ class AlbumsArtifact(IArtifact):
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
             album.mosaic_colours,
             AlbumsArtifact.flags(album.flags),
-            "",
             description,
         ]
 
@@ -125,6 +124,11 @@ class AlbumsArtifact(IArtifact):
         # todo point to table directly
         for album in db.list_album_data():
             self.validate(album)
+            processed = self.process(album)
+
+            if len(self.HEADERS) != len(processed):
+                raise ValueError(f"Processed album data does not match headers:\n{self.HEADERS}\n{processed}")
+
             rows.append(self.process(album))
 
         return json.dumps(rows)
