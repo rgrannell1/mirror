@@ -20,7 +20,6 @@ from src.photo import PhotoMetadataModel, PhotoModel
 from src.things import Things
 from src.utils import deterministic_hash_str
 from src.video import VideoModel
-from src.flags import Flags
 
 
 class IArtifact(Protocol):
@@ -39,10 +38,6 @@ class IArtifact(Protocol):
     @classmethod
     def short_data_url(cls, url: Optional[str]) -> str:
         return url.replace(DATA_URL, "") if url else ""
-
-    @classmethod
-    def flags(cls, countries: List[str]) -> str:
-        return Flags.from_countries(countries)
 
 
 class MediaArtifact(IArtifact):
@@ -114,7 +109,7 @@ class AlbumsArtifact(IArtifact):
             int(max_date.timestamp() * 1000),
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
             album.mosaic_colours,
-            AlbumsArtifact.flags(album.flags),
+            album.flags, # TODO MISNAMED
             description,
         ]
 
