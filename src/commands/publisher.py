@@ -453,6 +453,7 @@ class StatsArtifact(IArtifact):
 
         albums = list(album_table.list())
         countries = {flag for album in albums for flag in album.flags.split(",")}
+
         min_date = None
         max_date = None
 

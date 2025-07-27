@@ -117,6 +117,7 @@ class AlbumMetadataModel(IModel):
             return json.load(f)
 
 
+
 @dataclass
 class AlbumDataModel(IModel):
     """Represents the data in the `album_data` view"""
@@ -129,13 +130,14 @@ class AlbumDataModel(IModel):
     min_date: str
     max_date: str
     thumbnail_url: str
-    thumbnail_mosaic_url: str
+
     # country, but as ever misnamed
     flags: str
     description: Optional[str]
 
     @classmethod
     def from_row(cls, row: list) -> "AlbumDataModel":
+        breakpoint()
         return cls(
             id=row[0],
             name=row[1],
@@ -145,7 +147,6 @@ class AlbumDataModel(IModel):
             min_date=row[5],
             max_date=row[6],
             thumbnail_url=row[7],
-            thumbnail_mosaic_url=row[8],
-            flags=row[9],
-            description=row[10],
+            flags=row[10],
+            description=row[11],
         )
