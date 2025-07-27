@@ -137,7 +137,6 @@ class AlbumDataModel(IModel):
 
     @classmethod
     def from_row(cls, row: list) -> "AlbumDataModel":
-        breakpoint()
         return cls(
             id=row[0],
             name=row[1],
