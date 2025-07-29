@@ -80,6 +80,15 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         album_data_table = db.album_data_table()
         published_albums = self._contentful_published_albums(db)
 
+        for dpath in published_albums:
+            by_album[dpath] = {
+                "embedding": None,
+                "summary": "",
+                "country": [],
+                "permalink": "",
+                "title": "",
+            }
+
         albums = list(db.media_metadata_table().list_albums())
 
         for data in sorted(albums, key=lambda album: album.src):
@@ -92,6 +101,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
                 continue
 
             album_data = album_data_table.get_album_data_by_dpath(dpath)
+
             # not ideal, as it requires manually nominating a cover file first
             if not album_data:
                 continue

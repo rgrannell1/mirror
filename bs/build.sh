@@ -1,5 +1,2 @@
 #!/bin/bash
-
-rs activate
-
-pyinstaller cli.py
+uv pip install -e .

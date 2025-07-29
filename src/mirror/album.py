@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from functools import lru_cache
 import os
-from typing import Any, Iterator, List, Optional
+from typing import Any, Iterator, List
 from mirror.config import ALBUM_METADATA_FILE
 from mirror.media import IMedia
 from mirror.mirror_types import IModel
