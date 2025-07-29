@@ -51,15 +51,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         return albums
 
-    def write_album_metadata(self, db: SqliteDatabase) -> None:
-        headers = [
-            "embedding",
-            "title",
-            "permalink",
-            "country",
-            "summary",
-        ]
-
+    def foo(self, db):
         class AlbumFieldsDict(TypedDict):
             embedding: Optional[str]
             summary: Optional[str]
@@ -81,14 +73,20 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         published_albums = self._contentful_published_albums(db)
 
         for dpath in published_albums:
+            # find an embedding as a minimum
+
+            album_data = db.album_data_table().get_album_data_by_dpath(dpath)
+
             by_album[dpath] = {
-                "embedding": None,
+                "embedding": album_data.thumbnail_url if album_data else None,
                 "summary": "",
                 "country": [],
                 "permalink": "",
                 "title": "",
             }
 
+        # For every album with metadata saved from the albums metadata file,
+        # map this data into a dpath -> dict structure
         albums = list(db.media_metadata_table().list_albums())
 
         for data in sorted(albums, key=lambda album: album.src):
@@ -101,7 +99,6 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
                 continue
 
             album_data = album_data_table.get_album_data_by_dpath(dpath)
-
             # not ideal, as it requires manually nominating a cover file first
             if not album_data:
                 continue
@@ -113,6 +110,19 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
                 by_album[dpath]["country"] = re.split(r"\s*,\s*", target) if target else []
             else:
                 by_album[dpath][relation] = target
+
+        return by_album
+
+    def write_album_metadata(self, db: SqliteDatabase) -> None:
+        headers = [
+            "embedding",
+            "title",
+            "permalink",
+            "country",
+            "summary",
+        ]
+
+        by_album = self.foo(db)
 
         # sort albums by file-path
         sorted_albums = sorted(by_album.items(), key=lambda pair: pair[0])

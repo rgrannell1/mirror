@@ -18,7 +18,5 @@ vermiel.egg-info/
 test.md
 albums.json
 main.py
-photos.md
-albums.md
 .vscode/settings.json
 uv.lock
