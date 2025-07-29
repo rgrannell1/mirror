@@ -2,4 +2,4 @@
 
 rs activate
 
-uv run cli.py publish
+uv run mirror publish

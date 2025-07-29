@@ -42,6 +42,7 @@ class Album:
                 yield Video(fpath)
 
 
+# DEPRECATE ME
 @dataclass
 class AlbumModel(IModel):
     id: str
@@ -118,7 +119,7 @@ class AlbumMetadataModel(IModel):
 
 
 @dataclass
-class AlbumDataModel(IModel):
+class AlbumDataModel:
     """Represents the data in the `album_data` view"""
 
     id: str
@@ -129,22 +130,43 @@ class AlbumDataModel(IModel):
     min_date: str
     max_date: str
     thumbnail_url: str
-
-    # country, but as ever misnamed
-    flags: str
-    description: Optional[str]
+    # deprecated
+    thumbnail_mosaic_url: str
+    mosaic_colours: str
+    flags: List[str]
+    description: str
 
     @classmethod
-    def from_row(cls, row: list) -> "AlbumDataModel":
-        return cls(
-            id=row[0],
-            name=row[1],
-            dpath=row[2],
-            photos_count=row[3],
-            videos_count=row[4],
-            min_date=row[5],
-            max_date=row[6],
-            thumbnail_url=row[7],
-            flags=row[10],
-            description=row[11],
+    def from_row(cls, row) -> "AlbumModel":
+        (
+            id,
+            name,
+            dpath,
+            photos_count,
+            videos_count,
+            min_date,
+            max_date,
+            thumbnail_url,
+            thumbnail_mosaic_url,
+            mosaic_colours,
+            flags,
+            description,
+        ) = row
+
+        if not flags:
+            raise ValueError(f"Flags are empty for album {name} ({id}, {dpath})")
+
+        return AlbumModel(
+            id=id,
+            name=name,
+            dpath=dpath,
+            photos_count=photos_count,
+            videos_count=videos_count,
+            min_date=min_date,
+            max_date=max_date,
+            thumbnail_url=thumbnail_url,
+            thumbnail_mosaic_url=thumbnail_mosaic_url,
+            mosaic_colours=mosaic_colours,
+            flags=flags.split(","),
+            description=description,
         )

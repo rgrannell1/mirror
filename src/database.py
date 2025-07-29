@@ -12,6 +12,8 @@ from src.media import IMedia
 from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
 from src.video import EncodedVideoModel, VideoModel
 from src.album import AlbumDataModel, AlbumModel, AlbumMetadataModel
+
+# TODO split into subtables creations
 from src.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
@@ -37,6 +39,7 @@ import string
 class PhotosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(PHOTOS_TABLE)
 
     def add(self, fpath: str) -> None:
         dpath = os.path.dirname(fpath)
@@ -58,9 +61,35 @@ class PhotosTable:
             yield row[0]
 
 
+class PhotoDataTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(PHOTO_DATA_VIEW)
+
+    def list(self) -> Iterator[PhotoModel]:
+        for row in self.conn.execute("select * from photo_data"):
+            yield PhotoModel.from_row(row)
+
+    def get_by_fpath(self, fpath: str) -> Optional[PhotoModel]:
+        for row in self.conn.execute("select * from photo_data where fpath = ?", (fpath,)):
+            return PhotoModel.from_row(row)
+        return None
+
+
+class VideoDataTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(VIDEO_DATA_VIEW)
+
+    def list(self) -> Iterator[VideoModel]:
+        for row in self.conn.execute("select * from video_data"):
+            yield VideoModel.from_row(row)
+
+
 class PhashesTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(PHASHES_TABLE)
 
     def add(self, phash: PhashData) -> None:
         self.conn.execute(
@@ -92,6 +121,7 @@ class PhashesTable:
 class VideosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(VIDEOS_TABLE)
 
     def add(self, fpath: str) -> None:
         dpath = os.path.dirname(fpath)
@@ -110,6 +140,7 @@ class VideosTable:
 class ExifTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(EXIF_TABLE)
 
     def has(self, fpath: str) -> bool:
         return bool(self.conn.execute("select 1 from exif where fpath = ?", (fpath,)).fetchone())
@@ -147,6 +178,7 @@ class ExifTable:
 class EncodedPhotosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(ENCODED_PHOTOS_TABLE)
 
     def add(self, fpath: str, url: str, role: str, format: str) -> None:
         mimetype = f"image/{format}"
@@ -178,6 +210,7 @@ class EncodedPhotosTable:
 class EncodedVideosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(ENCODED_VIDEO_TABLE)
 
     def add(self, fpath: str, url: str, role: str, format: str) -> None:
         mimetype = f"video/{format}"
@@ -199,6 +232,7 @@ class EncodedVideosTable:
 class PhotoMetadataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(PHOTO_METADATA_TABLE)
 
     def list(self) -> Iterator[PhotoMetadataModel]:
         query = """
@@ -295,9 +329,20 @@ class PhotoMetadataTable:
             yield PhotoMetadataModel.from_row(row)
 
 
+class PhotoMetadataSummaryTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(PHOTO_METADATA_SUMMARY)
+
+    def list(self) -> Iterator[PhotoMetadataSummaryModel]:
+        for row in self.conn.execute("select * from photo_metadata_summary"):
+            yield PhotoMetadataSummaryModel.from_row(row)
+
+
 class GeonameTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(GEONAME_TABLE)
 
     def add(self, id: str, data: dict) -> None:
         self.conn.execute(
@@ -319,6 +364,7 @@ class GeonameTable:
 class WikidataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(WIKIDATA_TABLE)
 
     def add(self, id: str, data: dict | None) -> None:
         self.conn.execute(
@@ -348,6 +394,7 @@ class WikidataTable:
 class BinomialsWikidataIdTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(BINOMIALS_WIKIDATA_ID_TABLE)
 
     def add(self, binomial: str, qid: Optional[str]) -> None:
         self.conn.execute(
@@ -387,6 +434,7 @@ class BinomialsWikidataIdTable:
 class AlbumDataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
+        self.conn.execute(ALBUM_DATA_VIEW)
 
     def list(self) -> Iterator[AlbumDataModel]:
         query = "select * from album_data"
@@ -411,37 +459,32 @@ class AlbumDataTable:
         return None
 
 
+class MediaMetadataTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        # define the table
+
+    def list_albums(self) -> Iterator[AlbumMetadataModel]:
+        for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):
+            yield AlbumMetadataModel.from_row(row)
+
+
 class SqliteDatabase:
     """A SQLite database to store information about albums."""
 
-    TABLES = {
-        PHOTOS_TABLE,
-        EXIF_TABLE,
-        VIDEOS_TABLE,
-        ALBUM_DATA_VIEW,
-        ENCODED_PHOTOS_TABLE,
-        ENCODED_VIDEO_TABLE,
-        ALBUM_CONTENTS_TABLE,
-        PHOTO_DATA_VIEW,
-        VIDEO_DATA_VIEW,
-        PHASHES_TABLE,
-        PHOTO_METADATA_TABLE,
-        WIKIDATA_TABLE,
-        PHOTO_METADATA_VIEW,
-        PHOTO_METADATA_SUMMARY,
-        GEONAME_TABLE,
-        BINOMIALS_WIKIDATA_ID_TABLE,
-    }
     conn: sqlite3.Connection
 
     def __init__(self, fpath: str) -> None:
         self.conn = sqlite3.connect(fpath)
 
-        for table in self.TABLES:
-            self.conn.execute(table)
-
     def photos_table(self):
         return PhotosTable(self.conn)
+
+    def photo_data_table(self):
+        return PhotoDataTable(self.conn)
+
+    def video_data_table(self):
+        return VideoDataTable(self.conn)
 
     def phashes_table(self):
         return PhashesTable(self.conn)
@@ -458,9 +501,6 @@ class SqliteDatabase:
     def encoded_videos_table(self):
         return EncodedVideosTable(self.conn)
 
-    def photo_metadata_table(self):
-        return PhotoMetadataTable(self.conn)
-
     def album_data_table(self):
         return AlbumDataTable(self.conn)
 
@@ -473,25 +513,17 @@ class SqliteDatabase:
     def binomials_wikidata_id_table(self):
         return BinomialsWikidataIdTable(self.conn)
 
+    def media_metadata_table(self):
+        return MediaMetadataTable(self.conn)
+
+    def photo_metadata_table(self):
+        return PhotoMetadataTable(self.conn)
+
+    def photo_metadata_summary_table(self):
+        return PhotoMetadataSummaryTable(self.conn)
+
     # TODO everything after this should be moved from this class
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    def list_photo_data(self) -> Iterator[PhotoModel]:
-        for row in self.conn.execute("select * from photo_data"):
-            yield PhotoModel.from_row(row)
-
-    def list_album_metadata(self) -> Iterator[AlbumMetadataModel]:
-        # TODO: deprecate this table!
-        for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):
-            yield AlbumMetadataModel.from_row(row)
-
-    def list_video_data(self) -> Iterator[VideoModel]:
-        for row in self.conn.execute("select * from video_data"):
-            yield VideoModel.from_row(row)
-
-    def list_album_data(self) -> Iterator[AlbumModel]:
-        for row in self.conn.execute("select * from album_data"):
-            yield AlbumModel.from_row(row)
-
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
         for fpath in self.photos_table().list():
             if fpath not in fpaths:
@@ -554,7 +586,3 @@ class SqliteDatabase:
                 continue
 
             self.photo_metadata_table().add_summary(phash, md)
-
-    def list_photo_metadata_summary(self) -> Iterator[PhotoMetadataSummaryModel]:
-        for row in self.conn.execute("select * from photo_metadata_summary"):
-            yield PhotoMetadataSummaryModel.from_row(row)

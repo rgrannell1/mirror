@@ -10,17 +10,17 @@ dependencies = [
   "dateparser",
   "docopt",
   "ffmpeg-python",
-  "jsonschema",
   "imagehash",
+  "jsonschema",
+  "levenshtein",
   "numpy",
   "opencv-python",
   "Pillow",
   "python-dotenv",
   "PyYAML",
-  "sqlean.py",
   "requests",
-  "xmltodict",
-  "levenshtein"
+  "sqlean.py",
+  "xmltodict"
 ]
 
 [tool.ruff]

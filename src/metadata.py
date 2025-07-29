@@ -45,7 +45,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         albums = set()
 
-        for data in db.list_album_data():
+        for data in db.album_data_table().list():
             if data.photos_count > 0 or data.videos_count > 0:
                 albums.add(data.dpath)
 
@@ -80,7 +80,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         album_data_table = db.album_data_table()
         published_albums = self._contentful_published_albums(db)
 
-        for data in db.list_album_metadata():
+        for data in db.media_metadata_table().list_albums():
             dpath = data.src
             relation = data.relation
             target = data.target
@@ -183,7 +183,7 @@ class MarkdownTablePhotoMetadataWriter:
 
         rows = []
 
-        for summary in db.list_photo_metadata_summary():
+        for summary in db.photo_metadata_summary_table().list():
             subjects = list({sub for sub in summary.subjects}) or []
             places = list({sub for sub in summary.places}) or []
 

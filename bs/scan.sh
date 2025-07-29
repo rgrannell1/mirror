@@ -2,4 +2,4 @@
 
 rs activate
 
-uv run cli.py scan
+uv run mirror scan

@@ -9,7 +9,7 @@ from typing import Any, List, Optional, Protocol
 from dateutil import tz
 import markdown
 
-from src.album import AlbumModel
+from src.album import AlbumDataModel, AlbumModel
 from src.config import DATA_URL, PHOTOS_URL
 from src.data.birdwatch import BirdwatchUrlReader
 from src.data.geoname import GeonameMetadataReader
@@ -88,12 +88,7 @@ class AlbumsArtifact(IArtifact):
         "description",
     ]
 
-    def validate(self, album: AlbumModel) -> None:
-        pass
-
-    def process(self, album: AlbumModel) -> List[Any]:
-        self.validate(album)
-
+    def process(self, album: AlbumDataModel) -> List[Any]:
         min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
         max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
 
@@ -117,8 +112,7 @@ class AlbumsArtifact(IArtifact):
         rows: List[List[Any]] = [self.HEADERS]
 
         # todo point to table directly
-        for album in db.list_album_data():
-            self.validate(album)
+        for album in db.album_data_table().list():
             processed = self.process(album)
 
             if len(self.HEADERS) != len(processed):
@@ -151,7 +145,7 @@ class PhotosArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
-        for photo in db.list_photo_data():
+        for photo in db.photo_data_table().list():
             rows.append(self.process(photo))
 
         return json.dumps(rows)
@@ -190,7 +184,7 @@ class VideosArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         rows: List[List[Any]] = [self.HEADERS]
 
-        for video in db.list_video_data():
+        for video in db.video_data_table().list():
             rows.append(self.process(video))
 
         return json.dumps(rows)
@@ -208,8 +202,8 @@ class AtomArtifact:
         return f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>'
 
     def media(self, db: SqliteDatabase) -> List[dict]:
-        photos = db.list_photo_data()
-        videos = db.list_video_data()
+        photos = db.photo_data_table().list()
+        videos = db.video_data_table().list()
 
         media: List[dict] = []
 

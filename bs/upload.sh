@@ -2,4 +2,4 @@
 
 rs activate
 
-uv run cli.py upload
+uv run mirror upload
