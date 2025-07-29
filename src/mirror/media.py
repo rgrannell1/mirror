@@ -2,8 +2,8 @@
 
 from typing import Protocol
 
-from src.photo import Photo
-from src.video import Video
+from mirror.photo import Photo
+from mirror.video import Video
 
 
 class IMedia(Protocol):

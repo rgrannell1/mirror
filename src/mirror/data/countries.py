@@ -1,6 +1,6 @@
 from typing import Iterator
 
-from src.data.types import SemanticTriple
+from mirror.data.types import SemanticTriple
 
 
 class CountriesReader:

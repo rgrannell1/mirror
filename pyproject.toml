@@ -56,7 +56,11 @@ exclude = [
 line-length = 120
 indent-width = 4
 [project.scripts]
-mirror = "cli:main"
-haystack = "haystack.cli:main"
+mirror = "mirror.cli:main"
+haystack = "mirror.haystack.cli:main"
 [tool.setuptools]
 package-dir = { "" = "src" }
+
+
+[tool.setuptools.packages.find]
+where = ["src"]

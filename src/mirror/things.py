@@ -15,7 +15,7 @@ mapping. It'll output them to the photo-markdown file as URNs
 from typing import Iterator, Protocol
 import urllib.parse
 
-from src.constants import URN_PREFIX
+from mirror.constants import URN_PREFIX
 
 
 class Things:

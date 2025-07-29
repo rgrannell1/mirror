@@ -4,8 +4,8 @@ import xmltodict
 from dataclasses import dataclass
 from typing import Any, Dict, Iterator, List
 
-from src.constants import URN_PREFIX, KnownRelations, KnownTypes
-from src.data.types import SemanticTriple
+from mirror.constants import URN_PREFIX, KnownRelations, KnownTypes
+from mirror.data.types import SemanticTriple
 
 
 class GeonameClient:

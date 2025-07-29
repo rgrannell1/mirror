@@ -2,7 +2,7 @@
 
 from typing import cast
 
-from src.mirror_types import VideoEncoding, VideoEncodingConfig
+from mirror.mirror_types import VideoEncoding, VideoEncodingConfig
 
 
 MOSAIC_WIDTH = 2

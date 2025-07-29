@@ -4,11 +4,11 @@ from dataclasses import dataclass
 from functools import lru_cache
 import os
 from typing import Any, Iterator, List, Optional
-from src.config import ALBUM_METADATA_FILE
-from src.media import IMedia
-from src.mirror_types import IModel
-from src.photo import Photo
-from src.video import Video
+from mirror.config import ALBUM_METADATA_FILE
+from mirror.media import IMedia
+from mirror.mirror_types import IModel
+from mirror.photo import Photo
+from mirror.video import Video
 import json
 
 
@@ -100,9 +100,6 @@ class AlbumDataModel:
             description,
         ) = row
 
-        if not flags:
-            raise ValueError(f"Flags are empty for album {name} ({id}, {dpath})")
-
         return AlbumDataModel(
             id=id,
             name=name,
@@ -114,6 +111,6 @@ class AlbumDataModel:
             thumbnail_url=thumbnail_url,
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             mosaic_colours=mosaic_colours,
-            flags=flags.split(","),
+            flags=flags.split(",") if flags else [],
             description=description,
         )

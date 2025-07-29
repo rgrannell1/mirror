@@ -1,5 +1,5 @@
 import sys
-from src.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
+from mirror.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
 
 
 def read_metadata(db, content: str) -> None:

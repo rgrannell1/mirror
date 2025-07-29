@@ -1,12 +1,12 @@
 import sys
 from typing import Iterator
-from src.ansi import ANSI
-from src.database import SqliteDatabase
-from src.media import IMedia
-from src.phash import PHashReader, PhashData
-from src.photo import Photo
-from src.vault import MediaVault
-from src.video import Video
+from mirror.ansi import ANSI
+from mirror.database import SqliteDatabase
+from mirror.media import IMedia
+from mirror.phash import PHashReader, PhashData
+from mirror.photo import Photo
+from mirror.vault import MediaVault
+from mirror.video import Video
 
 
 commands = ["haystack scan", "hayscan link", "haystack copy"]

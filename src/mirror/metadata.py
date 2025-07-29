@@ -8,9 +8,9 @@ from jsonschema import validate
 from collections import defaultdict
 from typing import Iterator, Protocol
 
-from src.album import AlbumMetadataModel
-from src.database import SqliteDatabase
-from src.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
+from mirror.album import AlbumMetadataModel
+from mirror.database import SqliteDatabase
+from mirror.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from typing import TypedDict, Optional
 
 
@@ -80,7 +80,9 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         album_data_table = db.album_data_table()
         published_albums = self._contentful_published_albums(db)
 
-        for data in db.media_metadata_table().list_albums():
+        albums = list(db.media_metadata_table().list_albums())
+
+        for data in sorted(albums, key=lambda album: album.src):
             dpath = data.src
             relation = data.relation
             target = data.target

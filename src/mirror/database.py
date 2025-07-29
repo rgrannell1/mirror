@@ -4,17 +4,17 @@ import json
 import os
 import sqlite3
 from typing import Iterator, List, Optional, Set
-from src.data.geoname import GeonameModel
-from src.data.wikidata import WikidataModel
-from src.exif import PhotoExifData
-from src.phash import PhashData
-from src.media import IMedia
-from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
-from src.video import EncodedVideoModel, VideoModel
-from src.album import AlbumDataModel, AlbumMetadataModel
+from mirror.data.geoname import GeonameModel
+from mirror.data.wikidata import WikidataModel
+from mirror.exif import PhotoExifData
+from mirror.phash import PhashData
+from mirror.media import IMedia
+from mirror.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
+from mirror.video import EncodedVideoModel, VideoModel
+from mirror.album import AlbumDataModel, AlbumMetadataModel
 
 # TODO split into subtables creations
-from src.tables import (
+from mirror.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
     GEONAME_TABLE,
@@ -32,7 +32,7 @@ from src.tables import (
     WIKIDATA_TABLE,
     BINOMIALS_WIKIDATA_ID_TABLE,
 )
-from src.video import Video
+from mirror.video import Video
 import string
 
 

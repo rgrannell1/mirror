@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 
 import sys
-from src.ansi import ANSI
-from src.commands import write_metadata
-from src.commands.publisher import ArtifactBuilder
-from src.cdn import CDN
-from src.commands.read_metadata import read_metadata
-from src.commands.write_metadata import write_metadata
-from src.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
-from src.database import SqliteDatabase
-from src.commands.uploader import MediaUploader
-from src.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
+from mirror.ansi import ANSI
+from mirror.commands import write_metadata
+from mirror.commands.publisher import ArtifactBuilder
+from mirror.cdn import CDN
+from mirror.commands.read_metadata import read_metadata
+from mirror.commands.write_metadata import write_metadata
+from mirror.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
+from mirror.database import SqliteDatabase
+from mirror.commands.uploader import MediaUploader
+from mirror.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
 
 commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
 

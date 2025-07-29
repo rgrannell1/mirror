@@ -1,21 +1,21 @@
 """Scan all media in a vault, and index this information in a database"""
 
 from typing import Iterator, Protocol
-from src.config import GEONAMES_USERNAME
-from src.constants import KnownRelations
-from src.data.binomials import list_photo_binomials
-from src.data.types import SemanticTriple
-from src.data.wikidata import WikidataClient
-from src.database import SqliteDatabase
-from src.exif import ExifReader, PhotoExifData
-from src.phash import PHashReader, PhashData
-from src.vault import MediaVault
-from src.media import IMedia
-from src.photo import Photo
-from src.video import Video
+from mirror.config import GEONAMES_USERNAME
+from mirror.constants import KnownRelations
+from mirror.data.binomials import list_photo_binomials
+from mirror.data.types import SemanticTriple
+from mirror.data.wikidata import WikidataClient
+from mirror.database import SqliteDatabase
+from mirror.exif import ExifReader, PhotoExifData
+from mirror.phash import PHashReader, PhashData
+from mirror.vault import MediaVault
+from mirror.media import IMedia
+from mirror.photo import Photo
+from mirror.video import Video
 
-from src.data.geoname import GeonameClient, GeonameMetadataReader
-from src.things import Things
+from mirror.data.geoname import GeonameClient, GeonameMetadataReader
+from mirror.things import Things
 
 
 class IScanner(Protocol):

@@ -5,10 +5,10 @@ from functools import lru_cache
 from typing import Dict, Optional
 import warnings
 
-from src.constants import EXIF_ATTR_ASSOCIATIONS
+from mirror.constants import EXIF_ATTR_ASSOCIATIONS
 from PIL import Image, ExifTags
 
-from src.mirror_types import IModel
+from mirror.mirror_types import IModel
 
 
 @dataclass

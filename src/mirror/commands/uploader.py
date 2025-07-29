@@ -3,12 +3,12 @@
 import base64
 import sys
 from typing import Any
-from src.cdn import CDN
-from src.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
-from src.database import SqliteDatabase
-from src.encoder import PhotoEncoder, VideoEncoder
-from src.exceptions import InvalidVideoDimensionsException
-from src.photo import PhotoContent
+from mirror.cdn import CDN
+from mirror.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from mirror.database import SqliteDatabase
+from mirror.encoder import PhotoEncoder, VideoEncoder
+from mirror.exceptions import InvalidVideoDimensionsException
+from mirror.photo import PhotoContent
 
 
 class MediaUploader:

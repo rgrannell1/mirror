@@ -5,8 +5,8 @@ import hashlib
 import os
 from typing import List
 
-from src.constants import SUPPORTED_IMAGE_EXTENSIONS
-from src.mirror_types import IModel
+from mirror.constants import SUPPORTED_IMAGE_EXTENSIONS
+from mirror.mirror_types import IModel
 
 
 class PhotoContent:

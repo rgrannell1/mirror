@@ -9,17 +9,17 @@ from typing import Any, List, Optional, Protocol
 from dateutil import tz
 import markdown
 
-from src.album import AlbumDataModel
-from src.config import DATA_URL, PHOTOS_URL
-from src.data.birdwatch import BirdwatchUrlReader
-from src.data.geoname import GeonameMetadataReader
-from src.data.wikidata import WikidataMetadataReader
-from src.database import SqliteDatabase
-from src.exif import PhotoExifData
-from src.photo import PhotoMetadataModel, PhotoModel
-from src.things import Things
-from src.utils import deterministic_hash_str
-from src.video import VideoModel
+from mirror.album import AlbumDataModel
+from mirror.config import DATA_URL, PHOTOS_URL
+from mirror.data.birdwatch import BirdwatchUrlReader
+from mirror.data.geoname import GeonameMetadataReader
+from mirror.data.wikidata import WikidataMetadataReader
+from mirror.database import SqliteDatabase
+from mirror.exif import PhotoExifData
+from mirror.photo import PhotoMetadataModel, PhotoModel
+from mirror.things import Things
+from mirror.utils import deterministic_hash_str
+from mirror.video import VideoModel
 
 
 class IArtifact(Protocol):

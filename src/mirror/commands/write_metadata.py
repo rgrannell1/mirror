@@ -1,5 +1,5 @@
 import sys
-from src.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
+from mirror.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
 
 
 def write_metadata(db, content: str) -> None:

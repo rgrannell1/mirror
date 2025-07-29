@@ -2,10 +2,10 @@
 
 import io
 import os
-from src.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
+from mirror.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
 import cv2
 import ffmpeg
-from src.exceptions import (
+from mirror.exceptions import (
     InvalidVideoDimensionsException,
     VideoReadException,
     VideoResolutionLookupException,
@@ -13,7 +13,7 @@ from src.exceptions import (
 from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
-from src.photo import PhotoContent
+from mirror.photo import PhotoContent
 
 
 class PhotoEncoder:

@@ -4,9 +4,9 @@ import Levenshtein
 from attr import dataclass
 import requests
 
-from src.constants import URN_PREFIX, KnownRelations, KnownTypes, KnownWikiProperties
-from src.data.binomials import binomial_to_urn
-from src.data.types import SemanticTriple
+from mirror.constants import URN_PREFIX, KnownRelations, KnownTypes, KnownWikiProperties
+from mirror.data.binomials import binomial_to_urn
+from mirror.data.types import SemanticTriple
 
 
 def to_pascal_case(s):

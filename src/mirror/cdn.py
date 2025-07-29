@@ -3,17 +3,17 @@
 import boto3  # type: ignore
 import boto3.session  # type: ignore
 import botocore  # type: ignore
-from src.config import (
+from mirror.config import (
     SPACES_REGION,
     SPACES_ENDPOINT_URL,
     SPACES_BUCKET,
     SPACES_ACCESS_KEY_ID,
     SPACES_SECRET_KEY,
 )
-from src.constants import VIDEO_CONTENT_TYPE
-from src.photo import PhotoContent
-from src.config import PHOTOS_URL
-from src.utils import deterministic_hash_str
+from mirror.constants import VIDEO_CONTENT_TYPE
+from mirror.photo import PhotoContent
+from mirror.config import PHOTOS_URL
+from mirror.utils import deterministic_hash_str
 
 
 class CDN:

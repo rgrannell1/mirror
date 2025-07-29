@@ -1,6 +1,6 @@
 from typing import Iterator
-from src.constants import BINOMIAL_TYPE
-from src.things import Things
+from mirror.constants import BINOMIAL_TYPE
+from mirror.things import Things
 
 
 def list_photo_binomials(db) -> Iterator[str]:
