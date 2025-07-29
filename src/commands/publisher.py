@@ -9,7 +9,7 @@ from typing import Any, List, Optional, Protocol
 from dateutil import tz
 import markdown
 
-from src.album import AlbumDataModel, AlbumModel
+from src.album import AlbumDataModel
 from src.config import DATA_URL, PHOTOS_URL
 from src.data.birdwatch import BirdwatchUrlReader
 from src.data.geoname import GeonameMetadataReader

@@ -42,59 +42,6 @@ class Album:
                 yield Video(fpath)
 
 
-# DEPRECATE ME
-@dataclass
-class AlbumModel(IModel):
-    id: str
-    name: str
-    dpath: str
-    photos_count: int
-    videos_count: int
-    min_date: str
-    max_date: str
-    thumbnail_url: str
-    # deprecated
-    thumbnail_mosaic_url: str
-    mosaic_colours: str
-    flags: List[str]
-    description: str
-
-    @classmethod
-    def from_row(cls, row) -> "AlbumModel":
-        (
-            id,
-            name,
-            dpath,
-            photos_count,
-            videos_count,
-            min_date,
-            max_date,
-            thumbnail_url,
-            thumbnail_mosaic_url,
-            mosaic_colours,
-            flags,
-            description,
-        ) = row
-
-        if not flags:
-            raise ValueError(f"Flags are empty for album {name} ({id}, {dpath})")
-
-        return AlbumModel(
-            id=id,
-            name=name,
-            dpath=dpath,
-            photos_count=photos_count,
-            videos_count=videos_count,
-            min_date=min_date,
-            max_date=max_date,
-            thumbnail_url=thumbnail_url,
-            thumbnail_mosaic_url=thumbnail_mosaic_url,
-            mosaic_colours=mosaic_colours,
-            flags=flags.split(","),
-            description=description,
-        )
-
-
 @dataclass
 class AlbumMetadataModel(IModel):
     src: str
@@ -137,7 +84,7 @@ class AlbumDataModel:
     description: str
 
     @classmethod
-    def from_row(cls, row) -> "AlbumModel":
+    def from_row(cls, row) -> "AlbumDataModel":
         (
             id,
             name,
@@ -156,7 +103,7 @@ class AlbumDataModel:
         if not flags:
             raise ValueError(f"Flags are empty for album {name} ({id}, {dpath})")
 
-        return AlbumModel(
+        return AlbumDataModel(
             id=id,
             name=name,
             dpath=dpath,

@@ -11,7 +11,7 @@ from src.phash import PhashData
 from src.media import IMedia
 from src.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
 from src.video import EncodedVideoModel, VideoModel
-from src.album import AlbumDataModel, AlbumModel, AlbumMetadataModel
+from src.album import AlbumDataModel, AlbumMetadataModel
 
 # TODO split into subtables creations
 from src.tables import (
