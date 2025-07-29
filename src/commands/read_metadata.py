@@ -10,10 +10,30 @@ def read_metadata(db, content: str) -> None:
         return
 
     if content == "photo":
-        md_reader = MarkdownTablePhotoMetadataReader("/dev/stdin")
+        photo_reader = MarkdownTablePhotoMetadataReader("/dev/stdin")
 
-        db.write_photo_metadata(md_reader.read_photo_metadata(db))
+        for md in photo_reader.read_photo_metadata(db):
+            fpath = db.encoded_photos_table().fpath_from_url(md.url)
+            if not fpath:
+                continue
+
+            phash = db.phashes_table().phash_from_fpath(fpath)
+            if not phash:
+                continue
+
+            db.photo_metadata_table().add_summary(phash, md)
+
     else:
-        md_reader = MarkdownAlbumMetadataReader("/dev/stdin")
+        album_reader = MarkdownAlbumMetadataReader("/dev/stdin")
 
-        db.write_album_metadata(md_reader.list_album_metadata(db))
+        db.conn.execute("delete from media_metadata_table where src_type = 'album'")
+
+        for item in album_reader.list_album_metadata(db):
+            db.conn.execute(
+                """
+            insert or replace into media_metadata_table (src, src_type, relation, target)
+                              values (?, ?, ?, ?)
+            """,
+                (item.src, "album", item.relation, item.target),
+            )
+        db.conn.commit()

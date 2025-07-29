@@ -74,6 +74,8 @@ class MediaScanner:
 class Haystack:
     def scan(self, dpaths: list[str]) -> None:
         db = SqliteDatabase(HAYSTACK_DATABASE_PATH)
+
+        return
         MediaScanner(dpaths, db).scan()
 
 

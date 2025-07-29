@@ -522,8 +522,6 @@ class SqliteDatabase:
     def photo_metadata_summary_table(self):
         return PhotoMetadataSummaryTable(self.conn)
 
-    # TODO everything after this should be moved from this class
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
         for fpath in self.photos_table().list():
             if fpath not in fpaths:
@@ -543,46 +541,3 @@ class SqliteDatabase:
         """):
             fpath = row[0]
             self.encoded_photos_table().delete(fpath)
-
-    def write_media(self, media: Iterator[IMedia]) -> None:
-        present_fpaths = set()
-
-        # TODO; find a way to optimise perceptual hashing,
-        # to avoid repeat calculation.
-
-        for entry in media:
-            if isinstance(entry, Photo):
-                self.photos_table().add(entry.fpath)
-                present_fpaths.add(entry.fpath)
-            elif isinstance(entry, Video):
-                self.videos_table().add(entry.fpath)
-                present_fpaths.add(entry.fpath)
-
-        self.remove_deleted_files(present_fpaths)
-
-    def write_album_metadata(self, metadata: Iterator[AlbumMetadataModel]):
-        # TODO deprecate this table!
-        # TODO migrate table to album_metadata_table?
-        self.conn.execute("delete from media_metadata_table where src_type = 'album'")
-
-        for item in metadata:
-            self.conn.execute(
-                """
-            insert or replace into media_metadata_table (src, src_type, relation, target)
-                              values (?, ?, ?, ?)
-            """,
-                (item.src, "album", item.relation, item.target),
-            )
-        self.conn.commit()
-
-    def write_photo_metadata(self, metadata: Iterator[PhotoMetadataSummaryModel]) -> None:
-        for md in metadata:
-            fpath = self.encoded_photos_table().fpath_from_url(md.url)
-            if not fpath:
-                continue
-
-            phash = self.phashes_table().phash_from_fpath(fpath)
-            if not phash:
-                continue
-
-            self.photo_metadata_table().add_summary(phash, md)
