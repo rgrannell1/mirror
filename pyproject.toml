@@ -1,5 +1,5 @@
 [project]
-name = "mirror-py"
+name = "mirror"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -55,3 +55,8 @@ exclude = [
 
 line-length = 120
 indent-width = 4
+[project.scripts]
+mirror = "cli:main"
+haystack = "haystack.cli:main"
+[tool.setuptools]
+package-dir = { "" = "src" }

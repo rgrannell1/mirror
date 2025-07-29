@@ -109,7 +109,7 @@ class AlbumsArtifact(IArtifact):
             int(max_date.timestamp() * 1000),
             AlbumsArtifact.short_cdn_url(album.thumbnail_url),
             album.mosaic_colours,
-            album.flags, # TODO MISNAMED
+            album.flags,  # TODO MISNAMED
             description,
         ]
 

@@ -117,7 +117,6 @@ class AlbumMetadataModel(IModel):
             return json.load(f)
 
 
-
 @dataclass
 class AlbumDataModel(IModel):
     """Represents the data in the `album_data` view"""
