@@ -51,7 +51,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         return albums
 
-    def foo(self, db):
+    def relations_by_album(self, db):
         class AlbumFieldsDict(TypedDict):
             embedding: Optional[str]
             summary: Optional[str]
@@ -122,7 +122,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
             "summary",
         ]
 
-        by_album = self.foo(db)
+        by_album = self.relations_by_album(db)
 
         # sort albums by file-path
         sorted_albums = sorted(by_album.items(), key=lambda pair: pair[0])

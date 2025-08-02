@@ -12,7 +12,7 @@ help migration into the
 mapping. It'll output them to the photo-markdown file as URNs
 """
 
-from typing import Iterator, Protocol
+from typing import Iterator, Optional, Protocol
 import urllib.parse
 
 from mirror.constants import URN_PREFIX
@@ -62,7 +62,3 @@ class Things:
             return f"{base_urn}?{query_string}"
 
         return base_urn
-
-
-class ThingsReader(Protocol):
-    def read(self, db: "SqliteDatabase") -> Iterator[tuple[str, dict]]: ...

@@ -36,7 +36,16 @@ class MediaUploader:
         or a thumbnail"""
 
         if role.startswith("thumbnail"):
+            # deprecate this code path
             return PhotoEncoder.encode_thumbnail(fpath, params)
+        elif params.get('width') and params.get('height'):
+            # allows for more flexible reduced image sizes
+            width = params['width']
+            height = params['height']
+
+            del params['width']
+            del params['height']
+            return PhotoEncoder.encode_thumbnail(fpath, params, width=width, height=height)
 
         return PhotoEncoder.encode(fpath, params)
 

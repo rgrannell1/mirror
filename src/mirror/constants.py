@@ -34,6 +34,15 @@ IMAGE_ENCODINGS = [
     ("thumbnail_lossy", {"format": "webp", "quality": 85, "method": 6}),
     ("full_image_lossless", {"format": "webp", "lossless": True}),
     ("full_image_png", {"format": "png", "quality": 100, "method": 6}),
+    (
+        "mid_image_lossy", {
+        "format": "webp",
+        "quality": 85,
+        "method": 6,
+        # x4 downscaling of GH6 dimensions
+        "width": 1444,
+        "height": 1084,
+}),
 ]
 
 # How should we encode our videos? Currently uses unscaled + various

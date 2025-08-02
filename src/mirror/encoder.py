@@ -14,12 +14,15 @@ from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
 from mirror.photo import PhotoContent
+import warnings
 
 
 class PhotoEncoder:
     @classmethod
     def encode(cls, fpath: str, params: Dict) -> PhotoContent:
         """Encode an image as Webp, and remove EXIF data"""
+
+        # TODO merge with thumbnail encoding
 
         img = Image.open(fpath)
         rgb = img.convert("RGB")
@@ -40,6 +43,8 @@ class PhotoEncoder:
     @classmethod
     def encode_image_mosaic(cls, fpath: str) -> PhotoContent:
         """Create a small image to use as a data-url while the main image loads"""
+
+        warnings.warn("PhotoEncoder.encode_image_mosaic is deprecated.", DeprecationWarning, stacklevel=2)
 
         # TODO: this really shouldn't be an image, just a few colours in a low-bit colour palette
         img = Image.open(fpath)
@@ -88,14 +93,14 @@ class PhotoEncoder:
         return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
 
     @classmethod
-    def encode_thumbnail(cls, fpath: str, params: Dict) -> PhotoContent:
-        """Encode a image as a thumbnail, and remove EXIF data"""
+    def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
+        """Encode a image as a reduced-size image, and remove EXIF data"""
 
         img = Image.open(fpath)
         rgb = img.convert("RGB")
 
         # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+        thumb = ImageOps.fit(rgb, (width, height))
 
         # remove EXIF data from the image by cloning
         data = list(thumb.getdata())
@@ -180,7 +185,7 @@ class VideoEncoder:
         raise VideoResolutionLookupException(f"Failed to determine resolution of {fpath}")
 
     @classmethod
-    def encode_thumbnail(cls, fpath: str, params: Dict):
+    def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
         """Return a thumbnail for the video"""
         loaded = cv2.VideoCapture(fpath)
         ret, frame = loaded.read()
@@ -190,7 +195,7 @@ class VideoEncoder:
         img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
 
         img = Image.open(io.BytesIO(img_bytes))
-        thumb = ImageOps.fit(img, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+        thumb = ImageOps.fit(img, (width, height))
 
         data = list(thumb.getdata())
         no_exif = Image.new(thumb.mode, thumb.size)

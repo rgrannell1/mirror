@@ -397,6 +397,11 @@ class StatsArtifact(IArtifact):
 
     NAME = "stats"
 
+    def validate(self, data: dict) -> None:
+        countries = data["countries"]
+        if countries < 10 or countries > 50:
+            raise ValueError("broken countries count")
+
     def process(self): ...
 
     def count_birds(self, subjects: List[PhotoMetadataModel]) -> int:
@@ -441,17 +446,10 @@ class StatsArtifact(IArtifact):
 
         return len(unique_sites)
 
-    def content(self, db: SqliteDatabase) -> str:
-        album_table = db.album_data_table()
+    def count_countries(self, albums) -> int:
+        return len({flag for album in albums for flag in album.flags})
 
-        albums = list(album_table.list())
-        countries = {
-            flag
-            for album in albums
-            if isinstance(album.flags, str)
-            for flag in album.flags.split(",")
-        }
-
+    def count_years(self, albums: list) -> int:
         min_date = None
         max_date = None
 
@@ -468,20 +466,28 @@ class StatsArtifact(IArtifact):
         if not min_date or not max_date:
             raise ValueError("No albums found or albums have no dates")
 
+        return max_date.year - min_date.year
+
+    def content(self, db: SqliteDatabase) -> str:
+        album_table = db.album_data_table()
+
+        albums = list(album_table.list())
+
         subjects = list(db.photo_metadata_table().list_by_relation("subject"))
         places = list(db.photo_metadata_table().list_by_relation("location"))
 
-        return json.dumps(
-            {
-                "photos": sum(album.photos_count for album in albums),
-                "albums": len(albums),
-                "years": max_date.year - min_date.year,
-                "countries": len(countries),
-                "bird_species": self.count_birds(subjects),
-                "mammal_species": self.count_mammals(subjects),
-                "unesco_sites": self.count_unesco_sites(places),
-            }
-        )
+        data = {
+            "photos": sum(album.photos_count for album in albums),
+            "albums": len(albums),
+            "years": self.count_years(albums),
+            "countries": self.count_countries(albums),
+            "bird_species": self.count_birds(subjects),
+            "mammal_species": self.count_mammals(subjects),
+            "unesco_sites": self.count_unesco_sites(places),
+        }
+
+        self.validate(data)
+        return json.dumps(data)
 
 
 class TriplesArtifact(IArtifact):

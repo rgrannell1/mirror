@@ -8,8 +8,7 @@ from mirror.data.geoname import GeonameModel
 from mirror.data.wikidata import WikidataModel
 from mirror.exif import PhotoExifData
 from mirror.phash import PhashData
-from mirror.media import IMedia
-from mirror.photo import Photo, EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
+from mirror.photo import EncodedPhotoModel, PhotoModel, PhotoMetadataModel, PhotoMetadataSummaryModel
 from mirror.video import EncodedVideoModel, VideoModel
 from mirror.album import AlbumDataModel, AlbumMetadataModel
 
@@ -522,6 +521,7 @@ class SqliteDatabase:
     def photo_metadata_summary_table(self):
         return PhotoMetadataSummaryTable(self.conn)
 
+    # TODO move
     def remove_deleted_files(self, fpaths: Set[str]) -> None:
         for fpath in self.photos_table().list():
             if fpath not in fpaths:
