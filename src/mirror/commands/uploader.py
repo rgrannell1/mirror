@@ -17,7 +17,6 @@ class MediaUploader:
 
     db: SqliteDatabase
 
-    DATA_URL_ROLE = "thumbnail_data_url"
     MOSAIC_ROLE = "thumbnail_mosaic"
     THUMBNAIL_ROLE = "video_thumbnail_webp"
     THUMBNAIL_FORMAT = "webp"
@@ -31,25 +30,7 @@ class MediaUploader:
         self.db = db
         self.cdn = cdn
 
-    def encode_image(self, role, fpath, params) -> PhotoContent:
-        """Encode thumbnails or other images. Encodes either an image
-        or a thumbnail"""
-
-        if role.startswith("thumbnail"):
-            # deprecate this code path
-            return PhotoEncoder.encode_thumbnail(fpath, params)
-        elif params.get('width') and params.get('height'):
-            # allows for more flexible reduced image sizes
-            width = params['width']
-            height = params['height']
-
-            del params['width']
-            del params['height']
-            return PhotoEncoder.encode_thumbnail(fpath, params, width=width, height=height)
-
-        return PhotoEncoder.encode(fpath, params)
-
-    def add_data_url(self, fpath: str) -> None:
+    def add_image_colours(self, fpath: str) -> None:
         """Add a data-url to the database"""
 
         encoded_photos_table = self.db.encoded_photos_table()
@@ -62,15 +43,6 @@ class MediaUploader:
             v2_content = f"{''.join(v2)}"
 
             encoded_photos_table.add(fpath, v2_content, self.MOSAIC_ROLE, "custom")
-
-        # generate and store a data-url, if required
-        if self.DATA_URL_ROLE not in published_roles:
-            encoded = PhotoEncoder.encode_image_mosaic(fpath)
-
-            encoded_content = base64.b64encode(encoded.content).decode("ascii")
-            data_url = f"data:image/bmp;base64,{encoded_content}"
-
-            encoded_photos_table.add(fpath, data_url, self.DATA_URL_ROLE, "bmp")
 
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
@@ -85,7 +57,7 @@ class MediaUploader:
                 continue
 
             uploaded_url = self.cdn.upload_photo(
-                encoded_data=self.encode_image(role, fpath, params),
+                encoded_data=PhotoEncoder.encode(fpath, params),
                 role=role,
                 format=params["format"],  # type: ignore
             )
@@ -160,7 +132,7 @@ class MediaUploader:
         """Publish photos and videos to the CDN, and output artifacts"""
 
         for fpath in self.db.photos_table().list():
-            self.add_data_url(fpath)
+            self.add_image_colours(fpath)
             self.publish_photo_encodings(fpath)
 
         for fpath in self.db.videos_table().list():

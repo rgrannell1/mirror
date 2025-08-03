@@ -14,58 +14,9 @@ from PIL import Image, ImageOps
 
 from typing import Dict, Optional, Tuple
 from mirror.photo import PhotoContent
-import warnings
 
 
 class PhotoEncoder:
-    @classmethod
-    def encode(cls, fpath: str, params: Dict) -> PhotoContent:
-        """Encode an image as Webp, and remove EXIF data"""
-
-        # TODO merge with thumbnail encoding
-
-        img = Image.open(fpath)
-        rgb = img.convert("RGB")
-
-        # remove EXIF data from the image by cloning
-        data = list(rgb.getdata())
-        no_exif = Image.new(rgb.mode, rgb.size)
-        no_exif.putdata(data)
-
-        with io.BytesIO() as output:
-            # return the image hash and contents
-
-            no_exif.save(output, **params)
-            contents = output.getvalue()
-
-            return PhotoContent(contents)
-
-    @classmethod
-    def encode_image_mosaic(cls, fpath: str) -> PhotoContent:
-        """Create a small image to use as a data-url while the main image loads"""
-
-        warnings.warn("PhotoEncoder.encode_image_mosaic is deprecated.", DeprecationWarning, stacklevel=2)
-
-        # TODO: this really shouldn't be an image, just a few colours in a low-bit colour palette
-        img = Image.open(fpath)
-        rgb = img.convert("RGB")
-
-        # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
-
-        # remove EXIF data from the image by cloning
-        data = list(thumb.getdata())
-        no_exif = Image.new(thumb.mode, thumb.size)
-        no_exif.putdata(data)
-
-        # resize down to a tiny mosaic data-url that can be used to
-        # "progressively render" a photo.
-        smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
-
-        with io.BytesIO() as output:
-            smaller.save(output, format="bmp", lossless=True)
-            return PhotoContent(output.getvalue())
-
     @classmethod
     def encode_image_colours(cls, fpath: str) -> list[str]:
         """Create a list of colours in the image, to use as a data-url while the main image loads"""
@@ -93,23 +44,24 @@ class PhotoEncoder:
         return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
 
     @classmethod
-    def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
-        """Encode a image as a reduced-size image, and remove EXIF data"""
+    def encode(cls, fpath: str, params: Dict) -> PhotoContent:
+        """Encode an image as Webp, optionally resizing, and remove EXIF data"""
 
         img = Image.open(fpath)
         rgb = img.convert("RGB")
 
-        # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(rgb, (width, height))
+        # Optionally resize if width and height are in params
+        width = params.pop("width", None)
+        height = params.pop("height", None)
+        if width and height:
+            rgb = ImageOps.fit(rgb, (width, height))
 
         # remove EXIF data from the image by cloning
-        data = list(thumb.getdata())
-        no_exif = Image.new(thumb.mode, thumb.size)
+        data = list(rgb.getdata())
+        no_exif = Image.new(rgb.mode, rgb.size)
         no_exif.putdata(data)
 
         with io.BytesIO() as output:
-            # return the image hash and contents
-
             no_exif.save(output, **params)
             return PhotoContent(output.getvalue())
 

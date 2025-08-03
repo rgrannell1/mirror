@@ -26,6 +26,7 @@ class IArtifact(Protocol):
     """Artifacts expose string content derived from the database"""
 
     NAME: str
+    CLEAN: bool = True
 
     def content(self, db: SqliteDatabase) -> str:
         """Return the content of the artifact"""
@@ -38,15 +39,6 @@ class IArtifact(Protocol):
     @classmethod
     def short_data_url(cls, url: Optional[str]) -> str:
         return url.replace(DATA_URL, "") if url else ""
-
-
-class MediaArtifact(IArtifact):
-    """Build artifact describing secondary information about media in the database"""
-
-    NAME = "media"
-
-    def content(self, db: SqliteDatabase) -> str:
-        return "[]"
 
 
 class EnvArtifact(IArtifact):
@@ -111,7 +103,6 @@ class AlbumsArtifact(IArtifact):
     def content(self, db: SqliteDatabase):
         rows: List[List[Any]] = [self.HEADERS]
 
-        # todo point to table directly
         for album in db.album_data_table().list():
             processed = self.process(album)
 
@@ -193,6 +184,7 @@ class VideosArtifact(IArtifact):
 class AtomArtifact:
     """Build artifact describing Atom feed with pagination"""
 
+    CLEAN = False
     BASE_URL = "https://photos.rgrannell.xyz"
 
     def image_html(self, photo: PhotoModel) -> str:
@@ -332,6 +324,7 @@ class SemanticArtifact(IArtifact):
         media = []
 
         # better the other way around
+        # TODO remove this
         allowed_relations = {
             "bird_binomial",
             "summary",
@@ -361,6 +354,9 @@ class SemanticArtifact(IArtifact):
 
 class ExifArtifact(IArtifact):
     """Build artifact describing exif information in the database"""
+
+    # TODO remap to triple format
+    # remap model to a thingx
 
     NAME = "exif"
 
@@ -523,10 +519,25 @@ class ArtifactBuilder:
 
     def remove_artifacts(self, dpath: str) -> None:
         # clear existing albums and images
+
+        # TODO factor this out
+        mirror_artifacts = [
+            AlbumsArtifact,
+            PhotosArtifact,
+            VideosArtifact,
+            SemanticArtifact,
+            ExifArtifact,
+            StatsArtifact,
+            TriplesArtifact,
+        ]
+
+        removeable_prefixes = {
+            klass.NAME for klass in mirror_artifacts if klass.CLEAN
+        }
         removeable = [
             file
             for file in os.listdir(dpath)
-            if file.startswith(("albums", "images", "videos", "semantic", "exif", "stats", "triples"))
+            if file.startswith(tuple(removeable_prefixes))
         ]
 
         for file in removeable:

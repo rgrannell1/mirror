@@ -48,6 +48,7 @@ class PhotoModel(IModel):
     thumbnail_mosaic_url: str
     mosaic_colours: str
     full_image: str
+    mid_image_lossy_url: str
     created_at: int
     phash: str
 
@@ -62,6 +63,7 @@ class PhotoModel(IModel):
             mosaic_colours,
             _,
             full_image,
+            mid_image_lossy_url,
             created_at,
             phash,
         ) = row
@@ -74,6 +76,7 @@ class PhotoModel(IModel):
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             mosaic_colours=mosaic_colours,
             full_image=full_image,
+            mid_image_lossy_url=mid_image_lossy_url,
             created_at=created_at,
             phash=phash,
         )
