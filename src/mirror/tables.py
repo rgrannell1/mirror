@@ -61,8 +61,8 @@ create table if not exists encoded_videos (
 );
 """
 
-ALBUM_CONTENTS_TABLE = """
-create view if not exists album_contents as
+ALBUM_CONTENTS_VIEW = """
+create view if not exists view_album_contents as
   select fpath, dpath, "photo" as type from photos
   union all
   select fpath, dpath, "video" as type from videos
@@ -70,7 +70,7 @@ create view if not exists album_contents as
 """
 
 ALBUM_DATA_VIEW = """
-CREATE VIEW IF NOT EXISTS album_data AS
+CREATE VIEW IF NOT EXISTS view_album_data AS
 WITH date_range AS (
     SELECT
         photos.dpath,
@@ -142,10 +142,10 @@ LEFT JOIN encoded_photos mosaic_colours
 """
 
 PHOTO_DATA_VIEW = """
-create view if not exists photo_data as
+create view if not exists view_photo_data as
   select
     photos.fpath,
-    album_data.id as album_id,
+    view_album_data.id as album_id,
     "" as tags,
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
@@ -156,8 +156,8 @@ create view if not exists photo_data as
     coalesce(exif.created_at, null) as created_at,
     coalesce(phashes.phash, null) as phash
   from photos
-  left join album_data
-    on photos.dpath = album_data.dpath
+  left join view_album_data
+    on photos.dpath = view_album_data.dpath
   left join encoded_photos thumbnail_lossy
     on photos.fpath = thumbnail_lossy.fpath and thumbnail_lossy.role = 'thumbnail_lossy'
   left join encoded_photos thumbnail_data
@@ -181,10 +181,10 @@ create view if not exists photo_data as
 """
 
 VIDEO_DATA_VIEW = """
-create view if not exists video_data as
+create view if not exists view_video_data as
   select
     videos.fpath,
-    album_data.id as album_id,
+    view_album_data.id as album_id,
     "" as tags,
     "" as description,
     coalesce(video_url_unscaled.url, null) as video_url_unscaled,
@@ -193,8 +193,8 @@ create view if not exists video_data as
     coalesce(video_url_480p.url, null) as video_url_480p,
     coalesce(poster_url.url, null) as poster_url
   from videos
-  left join album_data
-    on videos.dpath = album_data.dpath
+  left join view_album_data
+    on videos.dpath = view_album_data.dpath
   left join encoded_videos video_url_unscaled
     on videos.fpath = video_url_unscaled.fpath and video_url_unscaled.role = 'video_libx264_unscaled'
   left join encoded_videos video_url_1080p
@@ -223,7 +223,7 @@ create table if not exists photo_metadata_table (
 
 # shape photo metadata into a columnar format
 PHOTO_METADATA_VIEW = """
-create view if not exists photo_metadata_view as
+create view if not exists view_photo_metadata as
   select * from (with aggregated as (
     select
       phash,
@@ -260,7 +260,7 @@ create view if not exists photo_metadata_view as
 
 # TODO: dedupe by `phashes.phash`
 PHOTO_METADATA_SUMMARY = """
-create view if not exists photo_metadata_summary as
+create view if not exists view_photo_metadata_summary as
     with photo_information as (
       select
           phashes.fpath,
@@ -270,14 +270,14 @@ create view if not exists photo_metadata_summary as
           description,
           subjects
       from
-          photo_metadata_view as pv
+          view_photo_metadata as pv
       left join phashes on
           pv.phash = phashes.phash
     )
     select
       photo_information.fpath as fpath,
       encoded_photos.url as url,
-      album_data.name as name,
+      view_album_data.name as name,
       genre,
       rating,
       places,
@@ -285,10 +285,10 @@ create view if not exists photo_metadata_summary as
       subjects
     from
       photo_information
-    inner join album_contents on
-      photo_information.fpath = album_contents.fpath
-    inner join album_data on
-      album_data.dpath = album_contents.dpath
+    inner join view_album_contents on
+      photo_information.fpath = view_album_contents.fpath
+    inner join view_album_data on
+      view_album_data.dpath = view_album_contents.dpath
     inner join encoded_photos on
       photo_information.fpath = encoded_photos.fpath
       and role = 'thumbnail_lossy'

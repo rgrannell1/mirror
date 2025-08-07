@@ -24,7 +24,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/aa16339452.webp) | Salthill | salthill-18 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/36895301ee.webp) | Skellig Micheal | skellig-micheal-18 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/cb04915eee.webp) | Glenveagh National Park | glenveagh-24 | Ireland |  |
-| ![](https://photos-cdn.rgrannell.xyz/14393cdd56.webp) | Mallorca | mallorca-18 | Mallorca | There is one photo I unfortunately missed. Hundreds of swifts flew along the streets of La Palma, it was really beautiful but sadly too difficult for me to photograph. |
+| ![](https://photos-cdn.rgrannell.xyz/14393cdd56.webp) | Mallorca | mallorca-18 | Mallorca | There is one photo I unfortunately missed; Hundreds of swifts flew along the streets of La Palma, it was really beautiful but sadly too difficult for me to photograph. |
 | ![](https://photos-cdn.rgrannell.xyz/b817868f27.webp) | Emo Court | emo-court-19 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/d36201a042.webp) | Avoca, Wicklow | avoca-20 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/dae2baa266.webp) | Emo Court | emo-court-20 | Ireland |  |
@@ -32,7 +32,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/2271114e41.webp) | Pheasants, Laois | pheasants-laois-20 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/19be422987.webp) | Ballyfin Nature Hide | ballyfin-nature-hide-dec-21 | Ireland | Midwinter wildlife photography is challenging in Ireland; there just isn't enough light for much of the day. Lighting aside, I got extremely lucky and managed to get a picture of our elusive (but recovering) pine-marten |
 | ![](https://photos-cdn.rgrannell.xyz/068abafc4d.webp) | Ballyfin Nature Hide | ballyfin-nature-hide-21 | Ireland |  |
-| ![](https://photos-cdn.rgrannell.xyz/7b7616283f.webp) | Bull Island, Autumn | bull-island-21 | Ireland |  |
+| ![](https://photos-cdn.rgrannell.xyz/7b7616283f.webp) | Bull Island, Autumn | bull-island-21 | Ireland | Bull Island is one of the better (if windier) places to see wildlife in Dublin City. |
 | ![](https://photos-cdn.rgrannell.xyz/44a80c3ce6.webp) | Howth | howth-21 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/e2878268a0.webp) | Rutting Season, Killarney | rutting-season-21 | Ireland | Killarney is home to the last native red deer in Ireland. In "rutting season", the stags bellow and battle each other for mates. I risked getting close (at some personal risk) to get better photos, until an extremely irritated park ranger caught up to me. But at that point, I had the photos! |
 | ![](https://photos-cdn.rgrannell.xyz/77879c835b.webp) | Chester Zoo | chester-zoo-21 | England | I was lucky enough to see the small-clawed otters at feeding time. They were extremely noisy and pleased by their meals, and I got a few cute videos and pictures |
@@ -93,12 +93,12 @@
 | ![](https://photos-cdn.rgrannell.xyz/22aadba574.webp) | Swifts & Martins | swifts-and-martins-24 | Ireland | I spotted these birds getting a taxi from South Dublin to the centre. The next day, I spent the afternoon squinting at the sun and spinning in circles trying to get the birds in focus. |
 | ![](https://photos-cdn.rgrannell.xyz/4dd7586211.webp) | Tenerife | tenerife-24 | Tenerife | I didn't see the rainforests near Anaga this trip, but the wildlife and flora were still amazing. There's swifts and parrots everywhere, and the forests along Mount Teide are really beautiful (though sadly unphotograpphed this time) |
 | ![](https://photos-cdn.rgrannell.xyz/56954c5d19.webp) | York | york-24 | England | The highlight of my trip to York was renting an extremely slow-moving boat, sailing it with a mild sense of panic, and carefully navigating around the occasional geese that were floating down the river Ouse. |
-| ![](https://photos-cdn.rgrannell.xyz/3dd12452d2.webp) | Anaga Rural Park | anaga-25 | Tenerife |  |
+| ![](https://photos-cdn.rgrannell.xyz/3dd12452d2.webp) | Anaga Rural Park | anaga-25 | Tenerife | Anaga Rural Park is located in Macizo de Anaga, a cool, damp, cloudy mountain range. It's a laurel rainforest (which bears an odd resemblence to the remnants of Killarney's temperate rainforest) with many endemic species. |
 | ![](https://photos-cdn.rgrannell.xyz/835c7ff700.webp) | Bath | bath-25 | England |  |
 | ![](https://photos-cdn.rgrannell.xyz/2196642deb.webp) | Cologne | cologne-25 | Germany | I briefly visited Cologne for a work conference. I didn't get much time for sightseeing, but I did at least see the enormous cathedral |
 | ![](https://photos-cdn.rgrannell.xyz/7d0f0e2d9a.webp) | Conwy | conwy-25 | Wales | Conwy is a compact town with an enormous castle. It's visitable from Dublin with an overnight stay, but barely (ferry's are slow!) |
 | ![](https://photos-cdn.rgrannell.xyz/da867d06fa.webp) | Howth | howth-25 | Ireland | I was lucky enough to spot and (badly) photograph a raven for the first time while hiking up the cliffs overlooking Howth. |
-| ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | la-lagunas-25 | Tenerife |  |
+| ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | la-lagunas-25 | Tenerife | San Cristóbal de La Laguna is a UNESCO world-heritage site due to its early grid-pattern non-fortified colonial town layout |
 | ![](https://photos-cdn.rgrannell.xyz/2a07141c8b.webp) | Phoenix Park | phoenix-park-25 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp) | Puerto de la Cruz | puorto-de-la-cruz-24 | Tenerife |  |
 | ![](https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp) | Slovenia | slovenia-25 | Slovenia | Slovenia is a wonderful, forested country with enormous mountain ranges and beautiful architecture from various eras (a lot of Yugoslav buildings & monuments are still standing in the capital Ljublana). It's also home to the olm, a blind cave-dwelling neotenous salamander (that was surprisingly difficult to photograph). |

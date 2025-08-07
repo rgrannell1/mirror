@@ -1,14 +1,12 @@
 """Publish media to a CDN"""
 
-import base64
 import sys
 from typing import Any
 from mirror.cdn import CDN
-from mirror.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from mirror.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from mirror.database import SqliteDatabase
 from mirror.encoder import PhotoEncoder, VideoEncoder
 from mirror.exceptions import InvalidVideoDimensionsException
-from mirror.photo import PhotoContent
 
 
 class MediaUploader:
@@ -78,7 +76,7 @@ class MediaUploader:
             try:
                 encoded_path = self.publish_encoding(fpath, role, params)  # type: ignore
 
-                if role == "video_libx264_unscaled":
+                if role == FULL_SIZED_VIDEO_ROLE:
                     self.publish_thumbnail(fpath, encoded_path)
             except InvalidVideoDimensionsException as err:
                 print(err, file=sys.stderr)
@@ -107,13 +105,14 @@ class MediaUploader:
         if not encoded_path:
             raise Exception("Failed to encode video")
 
-        print(fpath)
         uploaded_video_url = self.cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
+        print(f'published {fpath} as {uploaded_video_url}')
 
         self.db.encoded_videos_table().add(fpath, uploaded_video_url, role, self.VIDEO_FORMAT)
 
         return encoded_path
 
+    # TODO: merge this
     def publish_thumbnail(self, fpath: str, encoded_path: str):
         """Encode and publish a video thumbnail"""
 

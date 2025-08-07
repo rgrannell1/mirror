@@ -205,6 +205,10 @@ class MarkdownTablePhotoMetadataWriter:
 
         rows = []
 
+        db.album_contents_view()
+        db.photo_metadata_view()
+        db.photo_metadata_table()
+
         for summary in db.photo_metadata_summary_table().list():
             subjects = list({sub for sub in summary.subjects}) or []
             places = list({sub for sub in summary.places}) or []

@@ -24,7 +24,7 @@ from mirror.tables import (
     VIDEO_DATA_VIEW,
     VIDEOS_TABLE,
     ALBUM_DATA_VIEW,
-    ALBUM_CONTENTS_TABLE,
+    ALBUM_CONTENTS_VIEW,
     PHOTO_DATA_VIEW,
     PHASHES_TABLE,
     PHOTO_METADATA_TABLE,
@@ -66,11 +66,11 @@ class PhotoDataTable:
         self.conn.execute(PHOTO_DATA_VIEW)
 
     def list(self) -> Iterator[PhotoModel]:
-        for row in self.conn.execute("select * from photo_data"):
+        for row in self.conn.execute("select * from view_photo_data"):
             yield PhotoModel.from_row(row)
 
     def get_by_fpath(self, fpath: str) -> Optional[PhotoModel]:
-        for row in self.conn.execute("select * from photo_data where fpath = ?", (fpath,)):
+        for row in self.conn.execute("select * from view_photo_data where fpath = ?", (fpath,)):
             return PhotoModel.from_row(row)
         return None
 
@@ -81,7 +81,7 @@ class VideoDataTable:
         self.conn.execute(VIDEO_DATA_VIEW)
 
     def list(self) -> Iterator[VideoModel]:
-        for row in self.conn.execute("select * from video_data"):
+        for row in self.conn.execute("select * from view_video_data"):
             yield VideoModel.from_row(row)
 
 
@@ -228,6 +228,17 @@ class EncodedVideosTable:
             yield EncodedVideoModel.from_row(row)
 
 
+class PhotoMetadataView:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(PHOTO_METADATA_VIEW)
+
+
+class AlbumContentsView:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(ALBUM_CONTENTS_VIEW)
+
 class PhotoMetadataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -334,7 +345,8 @@ class PhotoMetadataSummaryTable:
         self.conn.execute(PHOTO_METADATA_SUMMARY)
 
     def list(self) -> Iterator[PhotoMetadataSummaryModel]:
-        for row in self.conn.execute("select * from photo_metadata_summary"):
+
+        for row in self.conn.execute("select * from view_photo_metadata_summary"):
             yield PhotoMetadataSummaryModel.from_row(row)
 
 
@@ -436,13 +448,13 @@ class AlbumDataTable:
         self.conn.execute(ALBUM_DATA_VIEW)
 
     def list(self) -> Iterator[AlbumDataModel]:
-        query = "select * from album_data"
+        query = "select * from view_album_data"
 
         for row in self.conn.execute(query):
             yield AlbumDataModel.from_row(row)
 
     def get_album_data_by_dpath(self, dpath: str) -> Optional[AlbumDataModel]:
-        query = "select * from album_data where dpath = ?"
+        query = "select * from view_album_data where dpath = ?"
 
         for row in self.conn.execute(query, (dpath,)):
             return AlbumDataModel.from_row(row)
@@ -450,7 +462,7 @@ class AlbumDataTable:
         return None
 
     def album_dpath_from_thumbnail_url(self, thumbnail_url: str) -> Optional[str]:
-        query = "select dpath from album_data where thumbnail_url = ?"
+        query = "select dpath from view_album_data where thumbnail_url = ?"
 
         for row in self.conn.execute(query, (thumbnail_url,)):
             return row[0]
@@ -520,6 +532,12 @@ class SqliteDatabase:
 
     def photo_metadata_summary_table(self):
         return PhotoMetadataSummaryTable(self.conn)
+
+    def photo_metadata_view(self):
+        return PhotoMetadataView(self.conn)
+
+    def album_contents_view(self):
+        return AlbumContentsView(self.conn)
 
     # TODO move
     def remove_deleted_files(self, fpaths: Set[str]) -> None:

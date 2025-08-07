@@ -31,7 +31,15 @@ SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 # - full_image_lossless: a lossless webp image for high quality
 # - full_image_png: a png image so I can share images to Signal and other non-webp apps
 IMAGE_ENCODINGS = [
-    ("thumbnail_lossy", {"format": "webp", "quality": 85, "method": 6}),
+    (
+        "thumbnail_lossy", {
+            "format": "webp",
+            "quality": 85,
+            "method": 6,
+            "width": THUMBNAIL_WIDTH,
+            "height": THUMBNAIL_HEIGHT,
+        }
+    ),
     ("full_image_lossless", {"format": "webp", "lossless": True}),
     ("full_image_png", {"format": "png", "quality": 100, "method": 6}),
     (
@@ -93,6 +101,8 @@ VIDEO_ENCODINGS: list[VideoEncoding] = [
         ),
     ),
 ]
+
+FULL_SIZED_VIDEO_ROLE = "video_libx264_unscaled"
 
 VIDEO_THUMBNAIL_FORMAT = ".webp"
 VIDEO_CONTENT_TYPE = "video/mp4"

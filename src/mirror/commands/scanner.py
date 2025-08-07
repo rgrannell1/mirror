@@ -51,7 +51,9 @@ class MediaScanner(IScanner):
                 continue
 
             if not exif_table.has(media.fpath):
-                yield ExifReader.exif(media.fpath)  # type: ignore
+                data = ExifReader.exif(media.fpath)  # type: ignore
+                if data is not None:
+                    yield data
 
     def _unsaved_phashes(self) -> Iterator[PhashData]:
         """Return phashes for all photos not already stored in the database"""

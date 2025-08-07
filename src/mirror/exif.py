@@ -76,7 +76,7 @@ class ExifReader:
         return output_exif
 
     @classmethod
-    def exif(cls, fpath: str) -> PhotoExifData:
+    def exif(cls, fpath: str) -> PhotoExifData | None:
         """Get interesting EXIF data from a photo."""
 
         data = {}
@@ -91,4 +91,8 @@ class ExifReader:
             else:
                 data[dict_key] = str(exif_data[exif_key])
 
-        return PhotoExifData(**data, fpath=fpath)  # type: ignore
+        try:
+            return PhotoExifData(**data, fpath=fpath)  # type: ignore
+        except:
+            # GoPro image / other no-exif images I'm given
+            return None

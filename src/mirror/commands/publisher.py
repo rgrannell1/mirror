@@ -122,15 +122,13 @@ class PhotosArtifact(IArtifact):
     HEADERS = ["id", "album_id", "thumbnail_url", "mosaic_colours", "full_image", "created_at"]
 
     def process(self, photo: PhotoModel) -> List[Any]:
-        created_at = datetime.strptime(str(photo.created_at), "%Y:%m:%d %H:%M:%S")
-
         return [
             deterministic_hash_str(photo.fpath),
             photo.album_id,
             PhotosArtifact.short_cdn_url(photo.thumbnail_url),
             photo.mosaic_colours,
             PhotosArtifact.short_cdn_url(photo.full_image),
-            int(created_at.timestamp() * 1000),
+            int(photo.get_ctime().timestamp() * 1000),
         ]
 
     def content(self, db: SqliteDatabase) -> str:
@@ -188,7 +186,7 @@ class AtomArtifact:
     BASE_URL = "https://photos.rgrannell.xyz"
 
     def image_html(self, photo: PhotoModel) -> str:
-        return f'<img src="{photo.full_image}"/>'
+        return f'<img src="{photo.mid_image_lossy_url}"/>'
 
     def video_html(self, video: VideoModel) -> str:
         return f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>'
@@ -198,6 +196,9 @@ class AtomArtifact:
         videos = db.video_data_table().list()
 
         media: List[dict] = []
+
+        db.video_data_table()
+        db.album_data_table()
 
         for video in videos:
             media.append(
@@ -214,9 +215,7 @@ class AtomArtifact:
             media.append(
                 {
                     "id": photo.thumbnail_url,
-                    "created_at": datetime.strptime(str(photo.created_at), "%Y:%m:%d %H:%M:%S").replace(
-                        tzinfo=timezone.utc
-                    ),  # TODO
+                    "created_at": photo.get_ctime(),
                     "url": photo.thumbnail_url,
                     "image": photo.thumbnail_url,
                     "content_html": self.image_html(photo),
@@ -251,7 +250,7 @@ class AtomArtifact:
         fg.id(f"/{self.subpage_filename(page)}")
 
         fg.title("Photos.rgrannell.xyz")
-        fg.author({"name": "R* Grannell"})
+        fg.author({"name": "Róisín"})
         fg.link(href=self.page_url(page), rel="self")
 
         if next_page:
@@ -293,7 +292,7 @@ class AtomArtifact:
         index.id(f"{self.BASE_URL}/atom-index.xml")
 
         index.subtitle("A feed of my videos and images!")
-        index.author({"name": "R* Grannell"})
+        index.author({"name": "Róisín"})
         index.link(href=f"{self.BASE_URL}/atom-index.xml", rel="self")
         index.link(href=self.page_url(pages[0]), rel="next")
 
