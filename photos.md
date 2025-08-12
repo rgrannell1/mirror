@@ -279,22 +279,22 @@
 | ![](https://photos-cdn.rgrannell.xyz/e2022eed46.webp) | Cádiz | Cityscape |  | urn:ró:geoname:2520600 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ce3b6c4fd4.webp) | Cádiz | Cityscape |  | urn:ró:geoname:2520600 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c061c00f6.webp) | Cádiz | Cityscape |  | urn:ró:geoname:2520600 |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6b2f2680ec.webp) | Córdoba | Wildlife | ⭐⭐ |  |  | urn:ró:bird:egretta-garzetta?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/680b11281b.webp) | Córdoba | Wildlife | ⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9c52694436.webp) | Córdoba | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:phalacrocorax-carbo?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/dcd12cc976.webp) | Córdoba | Wildlife | ⭐⭐ |  |  | urn:ró:mammal:lutra-lutra?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/314638003e.webp) | Córdoba | Cityscape | ⭐⭐ |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6b2f2680ec.webp) | Córdoba | Wildlife | ⭐⭐ | urn:ró:geoname:2519240 |  | urn:ró:bird:egretta-garzetta?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/680b11281b.webp) | Córdoba | Wildlife | ⭐⭐ | urn:ró:geoname:2519240 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9c52694436.webp) | Córdoba | Wildlife | ⭐⭐⭐ | urn:ró:geoname:2519240 |  | urn:ró:bird:phalacrocorax-carbo?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/dcd12cc976.webp) | Córdoba | Wildlife | ⭐⭐ | urn:ró:geoname:2519240 |  | urn:ró:mammal:lutra-lutra?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/314638003e.webp) | Córdoba | Cityscape | ⭐⭐ | urn:ró:geoname:2519240 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/98f04c4437.webp) | Córdoba | Other | ⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/52c16024d6.webp) | Córdoba | Other | ⭐⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8f4509385b.webp) | Córdoba | Cityscape | ⭐⭐ |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8f4509385b.webp) | Córdoba | Cityscape | ⭐⭐ | urn:ró:geoname:2519240 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7ff19cbcb6.webp) | Córdoba | Cityscape | ⭐⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/cade021d21.webp) | Córdoba | Other | ⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/410738de21.webp) | Córdoba | Other | ⭐⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/763729b5ed.webp) | Córdoba | Other | ⭐⭐⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/969cef27e9.webp) | Córdoba | Other | ⭐⭐ |  urn:ró:unesco:313,urn:ró:geoname:6452905 |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d003e86bd1.webp) | Córdoba | Cityscape | ⭐⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3e4b39ec1d.webp) | Córdoba | Cityscape | ⭐⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f41257a5e9.webp) | Córdoba | Other | ⭐⭐⭐ |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d003e86bd1.webp) | Córdoba | Cityscape | ⭐⭐⭐ | urn:ró:geoname:2519240 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3e4b39ec1d.webp) | Córdoba | Cityscape | ⭐⭐⭐ | urn:ró:geoname:2519240 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f41257a5e9.webp) | Córdoba | Other | ⭐⭐⭐ | urn:ró:geoname:2519240 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/22daa709af.webp) | Córdoba | Cityscape | ⭐⭐ | urn:ró:unesco:313 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/64222339ee.webp) | Córdoba | Other | ⭐⭐ | urn:ró:unesco:313 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/56b92e1a26.webp) | Córdoba | Other | ⭐⭐ | urn:ró:unesco:313 |  |  |
@@ -534,16 +534,16 @@
 | ![](https://photos-cdn.rgrannell.xyz/2ddbca61ca.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a481eb1538.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/394c311d12.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:unesco:272 |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a01eb727a8.webp) | Howth | Wildlife | ⭐⭐ |  |  | urn:ró:mammal:phoca-vitulina?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/376ed6d736.webp) | Howth | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:uria-aalge?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/5b40bbd5a3.webp) | Howth | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:mammal:phoca-vitulina?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/44a80c3ce6.webp) | Howth | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:larus-argentatus?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/1cc34306f4.webp) | Howth | Landscape | ⭐⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/0dc1ef4e14.webp) | Howth | Landscape | ⭐⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a41f461384.webp) | Howth | Wildlife | ⭐⭐ |  |  | urn:ró:bird:corvus-corax?context=wild |
-| ![](https://photos-cdn.rgrannell.xyz/11a3f3305e.webp) | Howth | Landscape | ⭐⭐⭐ |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b3803dfa48.webp) | Howth | Wildlife | ⭐⭐ |  |  | urn:ró:insect:unknown |
-| ![](https://photos-cdn.rgrannell.xyz/da867d06fa.webp) | Howth | Transport | ⭐⭐⭐ |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a01eb727a8.webp) | Howth | Wildlife | ⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:mammal:phoca-vitulina?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/376ed6d736.webp) | Howth | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:bird:uria-aalge?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/5b40bbd5a3.webp) | Howth | Wildlife | ⭐⭐⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:mammal:phoca-vitulina?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/44a80c3ce6.webp) | Howth | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:bird:larus-argentatus?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/1cc34306f4.webp) | Howth | Landscape | ⭐⭐⭐ | urn:ró:geoname:2963722 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0dc1ef4e14.webp) | Howth | Landscape | ⭐⭐⭐ | urn:ró:geoname:2963722 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a41f461384.webp) | Howth | Wildlife | ⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:bird:corvus-corax?context=wild |
+| ![](https://photos-cdn.rgrannell.xyz/11a3f3305e.webp) | Howth | Landscape | ⭐⭐⭐ | urn:ró:geoname:2963722 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b3803dfa48.webp) | Howth | Wildlife | ⭐⭐ | urn:ró:geoname:2963722 |  | urn:ró:insect:unknown |
+| ![](https://photos-cdn.rgrannell.xyz/da867d06fa.webp) | Howth | Transport | ⭐⭐⭐ | urn:ró:geoname:2963722 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/53cb7d59dc.webp) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:geoname:5257493 |  | urn:ró:insect:unknown |
 | ![](https://photos-cdn.rgrannell.xyz/54a095a13b.webp) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:geoname:5257493 |  | urn:ró:bird:grus-virgo?context=captivity |
 | ![](https://photos-cdn.rgrannell.xyz/046f7d0890.webp) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:geoname:5257493 |  | urn:ró:insect:unknown |

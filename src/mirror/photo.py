@@ -50,14 +50,12 @@ class PhotoModel(IModel):
     mosaic_colours: str
     full_image: str
     mid_image_lossy_url: str
-    created_at: int # todo is this type correct? Schema validate
+    created_at: int  # todo is this type correct? Schema validate
     phash: str
 
     def get_ctime(self) -> datetime:
         try:
-            return datetime.strptime(str(self.created_at), "%Y:%m:%d %H:%M:%S").replace(
-                tzinfo=timezone.utc
-            )
+            return datetime.strptime(str(self.created_at), "%Y:%m:%d %H:%M:%S").replace(tzinfo=timezone.utc)
         except Exception:
             return datetime.fromtimestamp(os.path.getctime(self.fpath), tz=timezone.utc)
 

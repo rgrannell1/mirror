@@ -12,7 +12,9 @@ import markdown
 from mirror.album import AlbumDataModel
 from mirror.config import DATA_URL, PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
+from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
+from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
 from mirror.exif import PhotoExifData
@@ -55,7 +57,6 @@ class EnvArtifact(IArtifact):
         return json.dumps(
             {
                 "photos_url": PHOTOS_URL,
-                "data_url": "data:image/bmp;base64,",
                 "publication_id": self.publication_id,
             }
         )
@@ -103,7 +104,7 @@ class AlbumsArtifact(IArtifact):
     def content(self, db: SqliteDatabase):
         rows: List[List[Any]] = [self.HEADERS]
 
-        for album in db.album_data_table().list():
+        for album in db.album_data_view().list():
             processed = self.process(album)
 
             if len(self.HEADERS) != len(processed):
@@ -111,7 +112,7 @@ class AlbumsArtifact(IArtifact):
 
             rows.append(self.process(album))
 
-        return json.dumps(rows)
+        return json.dumps(rows, separators=(",", ":"))
 
 
 class PhotosArtifact(IArtifact):
@@ -137,7 +138,7 @@ class PhotosArtifact(IArtifact):
         for photo in db.photo_data_table().list():
             rows.append(self.process(photo))
 
-        return json.dumps(rows)
+        return json.dumps(rows, separators=(",", ":"))
 
 
 class VideosArtifact(IArtifact):
@@ -176,7 +177,7 @@ class VideosArtifact(IArtifact):
         for video in db.video_data_table().list():
             rows.append(self.process(video))
 
-        return json.dumps(rows)
+        return json.dumps(rows, separators=(",", ":"))
 
 
 class AtomArtifact:
@@ -198,7 +199,7 @@ class AtomArtifact:
         media: List[dict] = []
 
         db.video_data_table()
-        db.album_data_table()
+        db.album_data_view()
 
         for video in videos:
             media.append(
@@ -314,43 +315,6 @@ class AtomArtifact:
         index.atom_file(index_path)
 
 
-class SemanticArtifact(IArtifact):
-    """Build artifact describing semantic information in the database"""
-
-    NAME = "semantic"
-
-    def content(self, db: SqliteDatabase) -> str:
-        media = []
-
-        # better the other way around
-        # TODO remove this
-        allowed_relations = {
-            "bird_binomial",
-            "summary",
-            "style",
-            "location",
-            "mammal_binomial",
-            "subject",
-            "rating",
-            "living_conditions",
-            "wildlife",
-            "plane_model",
-            "vehicle",
-        }
-
-        for row in db.photo_metadata_table().list():
-            if row.relation not in allowed_relations:
-                continue
-
-            target = row.target
-            if row.relation == "summary":
-                target = markdown.markdown(row.target)
-
-            media.append([deterministic_hash_str(row.fpath), row.relation, target])
-
-        return json.dumps(media)
-
-
 class ExifArtifact(IArtifact):
     """Build artifact describing exif information in the database"""
 
@@ -384,7 +348,7 @@ class ExifArtifact(IArtifact):
         for exif in db.exif_table().list():
             rows.append(self.process(exif))
 
-        return json.dumps(rows)
+        return json.dumps(rows, separators=(",", ":"))
 
 
 class StatsArtifact(IArtifact):
@@ -464,7 +428,7 @@ class StatsArtifact(IArtifact):
         return max_date.year - min_date.year
 
     def content(self, db: SqliteDatabase) -> str:
-        album_table = db.album_data_table()
+        album_table = db.album_data_view()
 
         albums = list(album_table.list())
 
@@ -482,7 +446,7 @@ class StatsArtifact(IArtifact):
         }
 
         self.validate(data)
-        return json.dumps(data)
+        return json.dumps(data, separators=(",", ":"))
 
 
 class TriplesArtifact(IArtifact):
@@ -493,19 +457,19 @@ class TriplesArtifact(IArtifact):
     def content(self, db: SqliteDatabase) -> str:
         triples = []
 
-        geoname_reader = GeonameMetadataReader()
-        for triple in geoname_reader.read(db):
-            triples.append([triple.source, triple.relation, triple.target])
+        readers = [
+            GeonameMetadataReader(),
+            WikidataMetadataReader(),
+            BirdwatchUrlReader(),
+            PhotoRelationsReader(),
+            CountriesReader(),
+        ]
 
-        wikidata_reader = WikidataMetadataReader()
-        for triple in wikidata_reader.read(db):
-            triples.append([triple.source, triple.relation, triple.target])
+        for reader in readers:
+            for triple in reader.read(db):
+                triples.append([triple.source, triple.relation, triple.target])
 
-        birdwatch_url_reader = BirdwatchUrlReader()
-        for triple in birdwatch_url_reader.read(db):
-            triples.append([triple.source, triple.relation, triple.target])
-
-        return json.dumps(triples)
+        return json.dumps(triples, separators=(",", ":"))
 
 
 class ArtifactBuilder:
@@ -524,20 +488,13 @@ class ArtifactBuilder:
             AlbumsArtifact,
             PhotosArtifact,
             VideosArtifact,
-            SemanticArtifact,
             ExifArtifact,
             StatsArtifact,
             TriplesArtifact,
         ]
 
-        removeable_prefixes = {
-            klass.NAME for klass in mirror_artifacts if klass.CLEAN
-        }
-        removeable = [
-            file
-            for file in os.listdir(dpath)
-            if file.startswith(tuple(removeable_prefixes))
-        ]
+        removeable_prefixes = {klass.NAME for klass in mirror_artifacts if klass.CLEAN}
+        removeable = [file for file in os.listdir(dpath) if file.startswith(tuple(removeable_prefixes))]
 
         for file in removeable:
             os.remove(f"{dpath}/{file}")
@@ -565,7 +522,6 @@ class ArtifactBuilder:
             AlbumsArtifact,
             PhotosArtifact,
             VideosArtifact,
-            SemanticArtifact,
             ExifArtifact,
             StatsArtifact,
             TriplesArtifact,

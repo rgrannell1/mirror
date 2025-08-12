@@ -45,7 +45,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         albums = set()
 
-        for data in db.album_data_table().list():
+        for data in db.album_data_view().list():
             if data.photos_count > 0 or data.videos_count > 0:
                 albums.add(data.dpath)
 
@@ -157,7 +157,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
         next(reader)
 
-        album_data = db.album_data_table()
+        album_data = db.album_data_view()
 
         for row in reader:
             if len(row) < 5:

@@ -239,6 +239,7 @@ class AlbumContentsView:
         self.conn = conn
         self.conn.execute(ALBUM_CONTENTS_VIEW)
 
+
 class PhotoMetadataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -345,7 +346,6 @@ class PhotoMetadataSummaryTable:
         self.conn.execute(PHOTO_METADATA_SUMMARY)
 
     def list(self) -> Iterator[PhotoMetadataSummaryModel]:
-
         for row in self.conn.execute("select * from view_photo_metadata_summary"):
             yield PhotoMetadataSummaryModel.from_row(row)
 
@@ -442,7 +442,7 @@ class BinomialsWikidataIdTable:
             yield row
 
 
-class AlbumDataTable:
+class AlbumDataView:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
         self.conn.execute(ALBUM_DATA_VIEW)
@@ -512,8 +512,8 @@ class SqliteDatabase:
     def encoded_videos_table(self):
         return EncodedVideosTable(self.conn)
 
-    def album_data_table(self):
-        return AlbumDataTable(self.conn)
+    def album_data_view(self):
+        return AlbumDataView(self.conn)
 
     def geoname_table(self):
         return GeonameTable(self.conn)

@@ -106,7 +106,7 @@ class MediaUploader:
             raise Exception("Failed to encode video")
 
         uploaded_video_url = self.cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
-        print(f'published {fpath} as {uploaded_video_url}')
+        print(f"published {fpath} as {uploaded_video_url}")
 
         self.db.encoded_videos_table().add(fpath, uploaded_video_url, role, self.VIDEO_FORMAT)
 
