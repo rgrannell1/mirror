@@ -1,4 +1,7 @@
+from datetime import datetime
 from typing import Iterator, Optional
+
+import markdown
 from mirror.config import PHOTOS_URL
 from mirror.data.types import SemanticTriple
 from mirror.utils import deterministic_hash_str
@@ -115,3 +118,43 @@ class VideosReader:
                 source,
                 'poster_url',
                 VideosReader.short_cdn_url(video.poster_url),)
+
+
+class AlbumTriples:
+    @classmethod
+    def short_cdn_url(cls, url: Optional[str]) -> str:
+        return url.replace(PHOTOS_URL, "") if url else ""
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        for album in db.album_data_view().list():
+            min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
+            max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
+
+            description = markdown.markdown(album.description) if album.description else ""
+
+            source = f"urn:ró:album:{album.id}"
+            yield SemanticTriple(source, 'name', album.name)
+            yield SemanticTriple(source, 'photos_count', album.photos_count)
+            yield SemanticTriple(source, 'videos_count', album.videos_count)
+            yield SemanticTriple(source, 'min_date', str(int(min_date.timestamp() * 1000)))
+            yield SemanticTriple(source, 'max_date', str(int(max_date.timestamp() * 1000)))
+            yield SemanticTriple(source, 'thumbnail_url', AlbumTriples.short_cdn_url(album.thumbnail_url))
+            yield SemanticTriple(source, 'mosaic', album.mosaic_colours)
+            yield SemanticTriple(source, 'flags', album.flags)
+            yield SemanticTriple(source, 'description', description)
+
+
+class PhotoTriples:
+    @classmethod
+    def short_cdn_url(cls, url: Optional[str]) -> str:
+        return url.replace(PHOTOS_URL, "") if url else ""
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        for photo in db.photo_data_table().list():
+            source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
+
+            yield SemanticTriple(source, 'album_id', photo.album_id)
+            yield SemanticTriple(source, 'thumbnail_url', PhotoTriples.short_cdn_url(photo.thumbnail_url))
+            yield SemanticTriple(source, 'mosaic_colours', photo.mosaic_colours)
+            yield SemanticTriple(source, 'full_image', PhotoTriples.short_cdn_url(photo.full_image))
+            yield SemanticTriple(source, 'created_at', str(int(photo.get_ctime().timestamp() * 1000)))

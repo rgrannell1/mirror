@@ -14,7 +14,7 @@ from mirror.config import DATA_URL, PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
-from mirror.data.mirror import ExifReader, VideosReader
+from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
@@ -55,124 +55,6 @@ class EnvArtifact(IArtifact):
                 "publication_id": self.publication_id,
             }
         )
-
-
-class AlbumsArtifact(IArtifact):
-    """Build artifact describing albums in the database"""
-
-    NAME = "albums"
-
-    HEADERS = [
-        "id",
-        "album_name",
-        "dpath",
-        "photos_count",
-        "videos_count",
-        "min_date",
-        "max_date",
-        "thumbnail_url",
-        "mosaic",
-        "flags",
-        "description",
-    ]
-
-    def process(self, album: AlbumDataModel) -> List[Any]:
-        min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
-        max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
-
-        description = markdown.markdown(album.description) if album.description else ""
-
-        return [
-            album.id,
-            album.name,
-            album.dpath,
-            album.photos_count,
-            album.videos_count,
-            int(min_date.timestamp() * 1000),
-            int(max_date.timestamp() * 1000),
-            AlbumsArtifact.short_cdn_url(album.thumbnail_url),
-            album.mosaic_colours,
-            album.flags,  # TODO MISNAMED
-            description,
-        ]
-
-    def content(self, db: SqliteDatabase):
-        rows: List[List[Any]] = [self.HEADERS]
-
-        for album in db.album_data_view().list():
-            processed = self.process(album)
-
-            if len(self.HEADERS) != len(processed):
-                raise ValueError(f"Processed album data does not match headers:\n{self.HEADERS}\n{processed}")
-
-            rows.append(self.process(album))
-
-        return json.dumps(rows, separators=(",", ":"))
-
-
-class PhotosArtifact(IArtifact):
-    """Build artifact describing images in the database"""
-
-    NAME = "images"
-
-    HEADERS = ["id", "album_id", "thumbnail_url", "mosaic_colours", "full_image", "created_at"]
-
-    def process(self, photo: PhotoModel) -> List[Any]:
-        return [
-            deterministic_hash_str(photo.fpath),
-            photo.album_id,
-            PhotosArtifact.short_cdn_url(photo.thumbnail_url),
-            photo.mosaic_colours,
-            PhotosArtifact.short_cdn_url(photo.full_image),
-            int(photo.get_ctime().timestamp() * 1000),
-        ]
-
-    def content(self, db: SqliteDatabase) -> str:
-        rows: List[List[Any]] = [self.HEADERS]
-
-        for photo in db.photo_data_table().list():
-            rows.append(self.process(photo))
-
-        return json.dumps(rows, separators=(",", ":"))
-
-
-class VideosArtifact(IArtifact):
-    """Build artifact describing videos in the database"""
-
-    NAME = "videos"
-
-    HEADERS = [
-        "id",
-        "album_id",
-        "tags",
-        "description",
-        "video_url_unscaled",
-        "video_url_1080p",
-        "video_url_720p",
-        "video_url_480p",
-        "poster_url",
-    ]
-
-    def process(self, video: VideoModel) -> List[Any]:
-        return [
-            deterministic_hash_str(video.fpath),
-            video.album_id,
-            video.tags,
-            video.description,
-            VideosArtifact.short_cdn_url(video.video_url_unscaled),
-            VideosArtifact.short_cdn_url(video.video_url_1080p),
-            VideosArtifact.short_cdn_url(video.video_url_720p),
-            VideosArtifact.short_cdn_url(video.video_url_480p),
-            VideosArtifact.short_cdn_url(video.poster_url),
-        ]
-
-    def content(self, db: SqliteDatabase) -> str:
-        rows: List[List[Any]] = [self.HEADERS]
-
-        for video in db.video_data_table().list():
-            rows.append(self.process(video))
-
-        return json.dumps(rows, separators=(",", ":"))
 
 
 class AtomArtifact:
@@ -406,7 +288,7 @@ class StatsArtifact(IArtifact):
         }
 
         self.validate(data)
-        return json.dumps(data, separators=(",", ":"))
+        return json.dumps(data, separators=(",", ":"), ensure_ascii=False)
 
 
 class TriplesArtifact(IArtifact):
@@ -422,7 +304,9 @@ class TriplesArtifact(IArtifact):
             PhotoRelationsReader(),
             CountriesReader(),
             ExifReader(),
-            VideosReader()
+            VideosReader(),
+            AlbumTriples(),
+            PhotoTriples()
         ]
 
         for reader in readers:
@@ -431,7 +315,7 @@ class TriplesArtifact(IArtifact):
 
     def content(self, db: SqliteDatabase) -> str:
         triples = list(self.read(db))
-        return json.dumps(triples, separators=(",", ":"))
+        return json.dumps(triples, separators=(",", ":"), ensure_ascii=False)
 
 
 class ArtifactBuilder:
@@ -447,9 +331,6 @@ class ArtifactBuilder:
 
         # TODO factor this out
         mirror_artifacts = [
-            AlbumsArtifact,
-            PhotosArtifact,
-            VideosArtifact,
             StatsArtifact,
             TriplesArtifact,
         ]
@@ -480,9 +361,6 @@ class ArtifactBuilder:
         atom.atom_feed(atom.media(self.db), self.output_dir)
 
         mirror_artifacts = [
-            AlbumsArtifact,
-            PhotosArtifact,
-            VideosArtifact,
             StatsArtifact,
             TriplesArtifact,
         ]
