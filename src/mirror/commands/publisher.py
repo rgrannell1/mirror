@@ -5,7 +5,7 @@ from feedgen.feed import FeedGenerator
 from datetime import datetime, timezone
 import json
 import os
-from typing import Any, List, Optional, Protocol
+from typing import Any, Iterator, List, Optional, Protocol
 from dateutil import tz
 import markdown
 
@@ -14,6 +14,7 @@ from mirror.config import DATA_URL, PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
+from mirror.data.mirror import ExifReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
@@ -454,21 +455,22 @@ class TriplesArtifact(IArtifact):
 
     NAME = "triples"
 
-    def content(self, db: SqliteDatabase) -> str:
-        triples = []
-
+    def read(self, db: SqliteDatabase) -> Iterator[list]:
         readers = [
             GeonameMetadataReader(),
             WikidataMetadataReader(),
             BirdwatchUrlReader(),
             PhotoRelationsReader(),
             CountriesReader(),
+            ExifReader(),
         ]
 
         for reader in readers:
             for triple in reader.read(db):
-                triples.append([triple.source, triple.relation, triple.target])
+                yield [triple.source, triple.relation, triple.target]
 
+    def content(self, db: SqliteDatabase) -> str:
+        triples = list(self.read(db))
         return json.dumps(triples, separators=(",", ":"))
 
 

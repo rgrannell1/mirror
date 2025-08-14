@@ -2,7 +2,7 @@
 
 import sys
 from mirror.ansi import ANSI
-from mirror.commands import write_metadata
+from mirror.commands import write_metadata, write_triples
 from mirror.commands.publisher import ArtifactBuilder
 from mirror.cdn import CDN
 from mirror.commands.read_metadata import read_metadata
@@ -28,6 +28,8 @@ Read album or photo metadata from stdin
     {ANSI.green("mirror read_metadata")}
 Write album or photo metadata to stdout
     {ANSI.green("mirror write_metadata")}
+Write triples
+    {ANSI.green("mirror write_triples")}
 
 ---------------------------------------------
 {ANSI.grey(" • ".join(commands))}"""
@@ -65,6 +67,10 @@ class Mirror:
         db = SqliteDatabase(DATABASE_PATH)
         write_metadata(db, content)
 
+    def write_triples(self) -> None:
+        db = SqliteDatabase(DATABASE_PATH)
+        write_triples(db)
+
 
 def main() -> None:
     args = sys.argv[1:]
@@ -86,6 +92,8 @@ def main() -> None:
         mirror.write_metadata(args[1])
     elif command == "read_metadata":
         mirror.read_metadata(args[1])
+    elif command == "write_triples":
+        mirror.write_triples()
     else:
         print(f"Unknown command: {command}", file=sys.stderr)
         print(doc, file=sys.stderr)
