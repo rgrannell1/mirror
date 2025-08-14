@@ -18,7 +18,6 @@ from mirror.data.mirror import ExifReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
-from mirror.exif import PhotoExifData
 from mirror.photo import PhotoMetadataModel, PhotoModel
 from mirror.things import Things
 from mirror.utils import deterministic_hash_str
@@ -316,41 +315,6 @@ class AtomArtifact:
         index.atom_file(index_path)
 
 
-class ExifArtifact(IArtifact):
-    """Build artifact describing exif information in the database"""
-
-    # TODO remap to triple format
-    # remap model to a thingx
-
-    NAME = "exif"
-
-    HEADERS = ["id", "created_at", "f_stop", "focal_length", "model", "exposure_time", "iso", "width", "height"]
-
-    def process(self, exif: PhotoExifData) -> List[Any]:
-        parts = exif.created_at.split(" ") if exif.created_at else ""
-        date = parts[0].replace(":", "/")
-        created_at = f"{date} {parts[1]}"
-
-        return [
-            deterministic_hash_str(exif.fpath),
-            created_at,
-            exif.f_stop,
-            exif.focal_length,
-            exif.model,
-            exif.exposure_time,
-            exif.iso,
-            exif.width,
-            exif.height,
-        ]
-
-    def content(self, db: SqliteDatabase) -> str:
-        rows: List[List[Any]] = [self.HEADERS]
-
-        for exif in db.exif_table().list():
-            rows.append(self.process(exif))
-
-        return json.dumps(rows, separators=(",", ":"))
-
 
 class StatsArtifact(IArtifact):
     """Build artifact giving semantic facts for the albums page"""
@@ -490,7 +454,6 @@ class ArtifactBuilder:
             AlbumsArtifact,
             PhotosArtifact,
             VideosArtifact,
-            ExifArtifact,
             StatsArtifact,
             TriplesArtifact,
         ]
@@ -524,7 +487,6 @@ class ArtifactBuilder:
             AlbumsArtifact,
             PhotosArtifact,
             VideosArtifact,
-            ExifArtifact,
             StatsArtifact,
             TriplesArtifact,
         ]
