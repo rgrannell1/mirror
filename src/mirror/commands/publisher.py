@@ -14,7 +14,7 @@ from mirror.config import DATA_URL, PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
-from mirror.data.mirror import ExifReader
+from mirror.data.mirror import ExifReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
@@ -37,11 +37,6 @@ class IArtifact(Protocol):
     @classmethod
     def short_cdn_url(cls, url: Optional[str]) -> str:
         return url.replace(PHOTOS_URL, "") if url else ""
-
-    @classmethod
-    def short_data_url(cls, url: Optional[str]) -> str:
-        return url.replace(DATA_URL, "") if url else ""
-
 
 class EnvArtifact(IArtifact):
     """Build artifact describing build information"""
@@ -427,6 +422,7 @@ class TriplesArtifact(IArtifact):
             PhotoRelationsReader(),
             CountriesReader(),
             ExifReader(),
+            VideosReader()
         ]
 
         for reader in readers:

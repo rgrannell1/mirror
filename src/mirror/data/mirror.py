@@ -1,4 +1,5 @@
-from typing import Iterator
+from typing import Iterator, Optional
+from mirror.config import PHOTOS_URL
 from mirror.data.types import SemanticTriple
 from mirror.utils import deterministic_hash_str
 
@@ -69,3 +70,48 @@ class ExifReader:
                 relation="height",
                 target=exif.height,
             )
+
+
+class VideosReader:
+    @classmethod
+    def short_cdn_url(cls, url: Optional[str]) -> str:
+        return url.replace(PHOTOS_URL, "") if url else ""
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        for video in db.video_data_table().list():
+            source = f"urn:ró:video:{deterministic_hash_str(video.fpath)}"
+
+            yield SemanticTriple(
+                source,
+                'album_id',
+                video.album_id,)
+
+            yield SemanticTriple(
+                source,
+                'description',
+                video.description,)
+
+            yield SemanticTriple(
+                source,
+                'video_url_unscaled',
+                VideosReader.short_cdn_url(video.video_url_unscaled),)
+
+            yield SemanticTriple(
+                source,
+                'video_url_1080p',
+                VideosReader.short_cdn_url(video.video_url_1080p),)
+
+            yield SemanticTriple(
+                source,
+                'video_url_720p',
+                VideosReader.short_cdn_url(video.video_url_720p),)
+
+            yield SemanticTriple(
+                source,
+                'video_url_480p',
+                VideosReader.short_cdn_url(video.video_url_480p),)
+
+            yield SemanticTriple(
+                source,
+                'poster_url',
+                VideosReader.short_cdn_url(video.poster_url),)
