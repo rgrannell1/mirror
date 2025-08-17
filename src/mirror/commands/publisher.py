@@ -16,6 +16,7 @@ from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
+from mirror.data.types import SemanticTriple
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
 from mirror.photo import PhotoMetadataModel, PhotoModel
@@ -52,7 +53,7 @@ class EnvArtifact(IArtifact):
         return json.dumps(
             {
                 "photos_url": PHOTOS_URL,
-                "publication_id": self.publication_id,
+                "publication_id": self.publication_id
             }
         )
 
@@ -296,22 +297,28 @@ class TriplesArtifact(IArtifact):
 
     NAME = "triples"
 
+    def simplify(self, value: str) -> str:
+        if not isinstance(value, str):
+            return value
+
+        return value.replace('urn:ró', ':')
+
     def read(self, db: SqliteDatabase) -> Iterator[list]:
         readers = [
+            AlbumTriples(),
+            PhotoTriples(),
+            ExifReader(),
+            VideosReader(),
             GeonameMetadataReader(),
             WikidataMetadataReader(),
             BirdwatchUrlReader(),
             PhotoRelationsReader(),
             CountriesReader(),
-            ExifReader(),
-            VideosReader(),
-            AlbumTriples(),
-            PhotoTriples()
         ]
 
         for reader in readers:
             for triple in reader.read(db):
-                yield [triple.source, triple.relation, triple.target]
+                yield [self.simplify(triple.source), triple.relation, self.simplify(triple.target)]
 
     def content(self, db: SqliteDatabase) -> str:
         triples = list(self.read(db))
@@ -335,7 +342,7 @@ class ArtifactBuilder:
             TriplesArtifact,
         ]
 
-        removeable_prefixes = {klass.NAME for klass in mirror_artifacts if klass.CLEAN}
+        removeable_prefixes = {klass.NAME for klass in mirror_artifacts if klass.CLEAN} | {'tribbles'}
         removeable = [file for file in os.listdir(dpath) if file.startswith(tuple(removeable_prefixes))]
 
         for file in removeable:
