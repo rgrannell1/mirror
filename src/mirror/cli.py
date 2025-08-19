@@ -2,7 +2,8 @@
 
 import sys
 from mirror.ansi import ANSI
-from mirror.commands import write_metadata, write_triples
+from mirror.commands import write_metadata
+from mirror.commands.write_triples import write_neo4j_triples
 from mirror.commands.publisher import ArtifactBuilder
 from mirror.cdn import CDN
 from mirror.commands.read_metadata import read_metadata
@@ -12,7 +13,7 @@ from mirror.database import SqliteDatabase
 from mirror.commands.uploader import MediaUploader
 from mirror.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
 
-commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata"]
+commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata", "mirror write_neo4j_triples"]
 
 doc = f"""
 {ANSI.bold("mirror")} 🪞
@@ -69,7 +70,7 @@ class Mirror:
 
     def write_triples(self) -> None:
         db = SqliteDatabase(DATABASE_PATH)
-        write_triples(db)
+        write_neo4j_triples(db)
 
 
 def main() -> None:

@@ -14,7 +14,7 @@ from mirror.config import DATA_URL, PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
-from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, VideosReader
+from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, PhotosCountryReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.types import SemanticTriple
 from mirror.data.wikidata import WikidataMetadataReader
@@ -297,11 +297,33 @@ class TriplesArtifact(IArtifact):
 
     NAME = "triples"
 
+    def __init__(self):
+        self.state = {
+            # https://en.wikipedia.org/wiki/CURIE, e.g [isbn:0393315703]
+            'curie': {
+                'urn:ró:': '',
+                'https://birdwatchireland.ie/birds/': 'birdwatch',
+                'https://photos-cdn.rgrannell.xyz/': 'photos',
+                'https://en.wikipedia.org/wiki/': 'wiki'
+            }
+        }
+
     def simplify(self, value: str) -> str:
         if not isinstance(value, str):
             return value
 
-        return value.replace('urn:ró', ':')
+        for prefix, curie in self.state['curie'].items():
+            if value.startswith(prefix):
+                return f"[{value.replace(prefix, curie + ':')}]"
+
+        return value
+
+    def process(self, triple: SemanticTriple) -> list:
+        return [
+                self.simplify(triple.source),
+                triple.relation,
+                self.simplify(triple.target)
+        ]
 
     def read(self, db: SqliteDatabase) -> Iterator[list]:
         readers = [
@@ -314,11 +336,17 @@ class TriplesArtifact(IArtifact):
             BirdwatchUrlReader(),
             PhotoRelationsReader(),
             CountriesReader(),
+            PhotosCountryReader()
         ]
+
+        for long, alias in self.state['curie'].items():
+            yield [
+                long, "curie", alias
+            ]
 
         for reader in readers:
             for triple in reader.read(db):
-                yield [self.simplify(triple.source), triple.relation, self.simplify(triple.target)]
+                yield from self.process(triple)
 
     def content(self, db: SqliteDatabase) -> str:
         triples = list(self.read(db))

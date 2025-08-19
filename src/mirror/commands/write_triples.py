@@ -46,7 +46,7 @@ def parse_urn(urn: str) -> Optional[Dict[str, Any]]:
 
 def is_urn(value: str) -> bool:
     """Check if a value is a URN starting with urn:ró:"""
-    return isinstance(value, str) and value.startswith("urn:ró:")
+    return isinstance(value, str) and value.startswith("::")
 
 
 def create_node_query(parsed_urn: dict) -> tuple[str, dict]:
@@ -139,7 +139,7 @@ def create_property_query(source_parsed: dict, relation: str, target_value: str)
     return query.strip(), params
 
 
-def write_triples(db, neo4j_uri="bolt://localhost:7687", neo4j_user="neo4j", neo4j_password="password") -> None:
+def write_neo4j_triples(db, neo4j_uri="bolt://localhost:7687", neo4j_user="neo4j", neo4j_password="password") -> None:
     """Write triples from the database to Neo4j"""
 
     if not NEO4J_AVAILABLE or GraphDatabase is None:
@@ -155,8 +155,8 @@ def write_triples(db, neo4j_uri="bolt://localhost:7687", neo4j_user="neo4j", neo
         with driver.session() as session:
             for source, relation, target in reader.read(db):
                 # Parse source
-                source_parsed = parse_urn(source) if is_urn(source) else None
-                target_parsed = parse_urn(target) if is_urn(target) else None
+                source_parsed = parse_urn(source.replace('::', 'urn:ró:')) if is_urn(source) else None
+                target_parsed = parse_urn(target.replace('::', 'urn:ró:')) if is_urn(target) else None
 
                 # Handle different cases
                 if source_parsed and target_parsed:

@@ -14,16 +14,6 @@ class ExifReader:
         for exif in db.exif_table().list():
             source = f"urn:ró:photo:{deterministic_hash_str(exif.fpath)}"
 
-            parts = exif.created_at.split(" ") if exif.created_at else ""
-            date = parts[0].replace(":", "/")
-            created_at = f"{date} {parts[1]}"
-
-            yield SemanticTriple(
-                source=source,
-                relation="created_at",
-                target=created_at,
-            )
-
             yield SemanticTriple(
                 source=source,
                 relation="f_stop",
@@ -158,3 +148,18 @@ class PhotoTriples:
             yield SemanticTriple(source, 'mosaic_colours', photo.mosaic_colours)
             yield SemanticTriple(source, 'full_image', PhotoTriples.short_cdn_url(photo.full_image))
             yield SemanticTriple(source, 'created_at', str(int(photo.get_ctime().timestamp() * 1000)))
+
+
+class PhotosCountryReader:
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+
+        photos = list(db.photo_data_table().list())
+
+        for album in db.album_data_view().list():
+            if len(album.flags) != 1:
+                continue
+
+            for photo in photos:
+                if photo.album_id == album.id:
+                    source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
+                    yield SemanticTriple(source, 'country', album.flags[0])
