@@ -2,6 +2,7 @@ from typing import Iterator
 
 import markdown
 
+from mirror.constants import URN_PREFIX
 from mirror.data.types import SemanticTriple
 from mirror.utils import deterministic_hash_str
 
@@ -33,4 +34,4 @@ class PhotoRelationsReader:
             if row.relation == "summary":
                 target = markdown.markdown(row.target)
 
-            yield SemanticTriple(photo_id, row.relation, target)
+            yield SemanticTriple(f"{URN_PREFIX}:photo:{photo_id}", row.relation, target)

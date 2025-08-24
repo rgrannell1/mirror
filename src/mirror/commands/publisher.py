@@ -301,7 +301,7 @@ class TriplesArtifact(IArtifact):
         self.state = {
             # https://en.wikipedia.org/wiki/CURIE, e.g [isbn:0393315703]
             'curie': {
-                'urn:ró:': '',
+                'urn:ró:': 'i',
                 'https://birdwatchireland.ie/birds/': 'birdwatch',
                 'https://photos-cdn.rgrannell.xyz/': 'photos',
                 'https://en.wikipedia.org/wiki/': 'wiki'
@@ -319,11 +319,11 @@ class TriplesArtifact(IArtifact):
         return value
 
     def process(self, triple: SemanticTriple) -> list:
-        return [
+        return [[
                 self.simplify(triple.source),
                 triple.relation,
                 self.simplify(triple.target)
-        ]
+        ]]
 
     def read(self, db: SqliteDatabase) -> Iterator[list]:
         readers = [
