@@ -34,4 +34,4 @@ class PhotoRelationsReader:
             if row.relation == "summary":
                 target = markdown.markdown(row.target)
 
-            yield SemanticTriple(f"{URN_PREFIX}:photo:{photo_id}", row.relation, target)
+            yield SemanticTriple(f"{URN_PREFIX}photo:{photo_id}", row.relation, target)

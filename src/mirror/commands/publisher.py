@@ -314,8 +314,12 @@ class TriplesArtifact(IArtifact):
 
         for prefix, curie in self.state['curie'].items():
             if value.startswith(prefix):
-                return f"[{value.replace(prefix, curie + ':')}]"
+                mapped =  f"[{value.replace(prefix, curie + ':')}]"
 
+                if '[i::' in mapped:
+                    raise ValueError(f"Invalid curie generated {value} -> {mapped}")
+
+                return mapped
         return value
 
     def process(self, triple: SemanticTriple) -> list:
