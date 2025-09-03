@@ -145,6 +145,7 @@ class PhotoTriples:
 
             yield SemanticTriple(source, 'album_id', photo.album_id)
             yield SemanticTriple(source, 'thumbnail_url', PhotoTriples.short_cdn_url(photo.thumbnail_url))
+            yield SemanticTriple(source, 'png_url', PhotoTriples.short_cdn_url(photo.png_url))
             yield SemanticTriple(source, 'mosaic_colours', photo.mosaic_colours)
             yield SemanticTriple(source, 'full_image', PhotoTriples.short_cdn_url(photo.full_image))
             yield SemanticTriple(source, 'created_at', str(int(photo.get_ctime().timestamp() * 1000)))

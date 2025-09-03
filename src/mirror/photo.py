@@ -49,6 +49,7 @@ class PhotoModel(IModel):
     thumbnail_mosaic_url: str
     mosaic_colours: str
     full_image: str
+    png_url: str
     mid_image_lossy_url: str
     created_at: int  # todo is this type correct? Schema validate
     phash: str
@@ -68,7 +69,7 @@ class PhotoModel(IModel):
             thumbnail_url,
             thumbnail_mosaic_url,
             mosaic_colours,
-            _,
+            png_url,
             full_image,
             mid_image_lossy_url,
             created_at,
@@ -83,6 +84,7 @@ class PhotoModel(IModel):
             thumbnail_mosaic_url=thumbnail_mosaic_url,
             mosaic_colours=mosaic_colours,
             full_image=full_image,
+            png_url=png_url,
             mid_image_lossy_url=mid_image_lossy_url,
             created_at=created_at,
             phash=phash,
