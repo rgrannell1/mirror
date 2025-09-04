@@ -10,17 +10,12 @@ from mirror.utils import deterministic_hash_str
 class PhotoRelationsReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         allowed_relations = {
-            "bird_binomial",
             "summary",
             "style",
             "location",
-            "mammal_binomial",
             "subject",
             "rating",
-            "living_conditions",
-            "wildlife",
-            "plane_model",
-            "vehicle",
+            "wildlife"
         }
 
         for row in db.photo_metadata_table().list():
