@@ -2,10 +2,13 @@
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from functools import lru_cache
 import hashlib
+import json
 import os
-from typing import List
+from typing import Any, List
 
+from mirror.config import PHOTO_METADATA_FILE
 from mirror.constants import SUPPORTED_IMAGE_EXTENSIONS
 from mirror.mirror_types import IModel
 
@@ -146,3 +149,8 @@ class PhotoMetadataSummaryModel(IModel):
             description=description,
             subjects=subjects.split(",") if subjects else [],
         )
+    @classmethod
+    @lru_cache
+    def schema(cls) -> dict[str, Any]:
+        with open(PHOTO_METADATA_FILE, "r") as f:
+            return json.load(f)

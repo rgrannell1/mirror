@@ -40,6 +40,11 @@ class Mirror:
     def scan(self, dpath: str) -> None:
         db = SqliteDatabase(DATABASE_PATH)
 
+        photo_metadata_table = db.photo_metadata_table()
+        media_metadata_table = db.media_metadata_table()
+        photo_metadata_table.clean()
+        media_metadata_table.clean()
+
         MediaScanner(dpath, db).scan()
         GeonamesScanner(db).scan()
         WikidataScanner(db).scan()

@@ -178,6 +178,10 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
             validate(item, AlbumMetadataModel.schema())
             src = item.get("fpath")
+
+            if not src:
+                continue
+
             for key, val in item.items():
                 if key == "fpath":
                     continue
@@ -258,12 +262,24 @@ class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
 
             url = embedding[4:-1]
 
+            item = {
+                "thumbnail_url": url,
+                "album": title,
+                "genre": re.split(r"\s*,\s*", genre) if genre else [],
+                "places": re.split(r"\s*,\s*", places) if places else [],
+                "rating": rating if rating else None,
+                "subjects": re.split(r"\s*,\s*", subjects) if subjects else [],
+                "description": description or "",
+            }
+
+            validate(item, PhotoMetadataSummaryModel.schema())
+
             yield PhotoMetadataSummaryModel(
                 url=url,
                 name=title,
-                genre=re.split(r"\s*,\s*", genre) if genre else [],
-                rating=rating if rating else None,
-                places=re.split(r"\s*,\s*", places) if places else [],
-                description=description or "",
-                subjects=re.split(r"\s*,\s*", subjects) if subjects else [],
+                genre=item['genre'],
+                rating=item['rating'],
+                places=item['places'],
+                description=item['description'],
+                subjects=item['subjects'],
             )

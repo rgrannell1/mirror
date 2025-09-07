@@ -245,6 +245,10 @@ class PhotoMetadataTable:
         self.conn = conn
         self.conn.execute(PHOTO_METADATA_TABLE)
 
+    def clean(self) -> None:
+        self.conn.execute("delete from photo_metadata_table")
+        self.conn.commit()
+
     def list(self) -> Iterator[PhotoMetadataModel]:
         query = """
         select
@@ -474,6 +478,10 @@ class MediaMetadataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
         # define the table
+
+    def clean(self) -> None:
+        self.conn.execute("delete from media_metadata_table")
+        self.conn.commit()
 
     def list_albums(self) -> Iterator[AlbumMetadataModel]:
         for row in self.conn.execute("select * from media_metadata_table where src_type = 'album'"):

@@ -44,6 +44,8 @@ class Album:
 
 @dataclass
 class AlbumMetadataModel(IModel):
+    """Photo album metadata, based on a file"""
+
     src: str
     src_type: str
     relation: str

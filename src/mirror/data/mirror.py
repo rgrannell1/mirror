@@ -52,17 +52,18 @@ class ExifReader:
                 target=exif.iso,
             )
 
-            yield SemanticTriple(
-                source=source,
-                relation="width",
-                target=exif.width,
-            )
+            if exif.width and exif.height:
+                yield SemanticTriple(
+                    source=source,
+                    relation="width",
+                    target=exif.width,
+                )
 
-            yield SemanticTriple(
-                source=source,
-                relation="height",
-                target=exif.height,
-            )
+                yield SemanticTriple(
+                    source=source,
+                    relation="height",
+                    target=exif.height,
+                )
 
 
 class VideosReader:
