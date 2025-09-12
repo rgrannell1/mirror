@@ -344,7 +344,7 @@ class PhotoMetadataTable:
             yield PhotoMetadataModel.from_row(row)
 
 
-class PhotoMetadataSummaryTable:
+class PhotoMetadataSummaryView:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
         self.conn.execute(PHOTO_METADATA_SUMMARY)
@@ -538,8 +538,8 @@ class SqliteDatabase:
     def photo_metadata_table(self):
         return PhotoMetadataTable(self.conn)
 
-    def photo_metadata_summary_table(self):
-        return PhotoMetadataSummaryTable(self.conn)
+    def photo_metadata_summary_view(self):
+        return PhotoMetadataSummaryView(self.conn)
 
     def photo_metadata_view(self):
         return PhotoMetadataView(self.conn)

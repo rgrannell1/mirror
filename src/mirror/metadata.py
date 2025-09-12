@@ -213,9 +213,12 @@ class MarkdownTablePhotoMetadataWriter:
         db.photo_metadata_view()
         db.photo_metadata_table()
 
-        for summary in db.photo_metadata_summary_table().list():
+        for summary in db.photo_metadata_summary_view().list():
             subjects = list({sub for sub in summary.subjects}) or []
             places = list({sub for sub in summary.places}) or []
+
+            if not summary.name:
+                raise ValueError(f"Photo missing an album name: {summary.url}")
 
             rows.append(
                 [
@@ -231,7 +234,6 @@ class MarkdownTablePhotoMetadataWriter:
 
         print("| " + " | ".join(headers) + " |")
         print("| " + " | ".join(["---"] * len(headers)) + " |")
-
         for row in rows:
             print("| " + " | ".join(row) + " |")
 
