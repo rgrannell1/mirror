@@ -231,11 +231,12 @@ create view if not exists view_photo_metadata as
       coalesce(group_concat(case when relation = 'rating' then target end, ', '), '') as rating,
       coalesce(group_concat(case when relation = 'location' then target end, ', '), '') as places,
       coalesce(group_concat(case when relation = 'summary' then target end, ', '), '') as description,
-      coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects
+      coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects,
+      coalesce(group_concat(case when relation = 'cover' then target end, ', '), '') as covers
     from
       photo_metadata_table
     where
-      relation in ('style', 'rating', 'location', 'summary', 'subject')
+      relation in ('style', 'rating', 'location', 'summary', 'subject', 'cover')
     group by
       phash
   )
@@ -250,7 +251,8 @@ create view if not exists view_photo_metadata as
     '' as rating,
     '' as places,
     '' as description,
-    '' as subjects
+    '' as subjects,
+    '' as covers
   from
     phashes p
   left join aggregated a on p.phash = a.phash
@@ -268,7 +270,8 @@ create view if not exists view_photo_metadata_summary as
           rating,
           places,
           description,
-          subjects
+          subjects,
+          covers
       from
           view_photo_metadata as pv
       left join phashes on
@@ -282,7 +285,8 @@ create view if not exists view_photo_metadata_summary as
       rating,
       places,
       photo_information.description as description,
-      subjects
+      subjects,
+      covers
     from
       photo_information
     inner join view_album_contents on

@@ -78,6 +78,9 @@ class MediaScanner(IScanner):
         photos_table = self.db.photos_table()
         videos_table = self.db.videos_table()
 
+
+        # todo clean tables
+
         current_fpaths = set()
 
         for entry in self._list_current_media():

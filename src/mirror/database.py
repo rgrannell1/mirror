@@ -60,7 +60,7 @@ class PhotosTable:
             yield row[0]
 
 
-class PhotoDataTable:
+class PhotoDataView:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
         self.conn.execute(PHOTO_DATA_VIEW)
@@ -301,12 +301,23 @@ class PhotoMetadataTable:
         if rating.strip():
             return self.add(phash, "photo", "rating", rating)
 
+    def add_covers(self, phash: str, covers: List[str]) -> None:
+        for cover in set(covers):
+            if not cover.strip():
+                continue
+
+            if not cover.startswith("urn:ró:"):
+                raise ValueError("cover must start with 'urn:ró:'")
+
+            self.add(phash, "photo", "cover", cover)
+
     def add_summary(self, phash: str, metadata: PhotoMetadataSummaryModel) -> None:
         self.add_genre(phash, metadata.genre or [])
         self.add_place(phash, metadata.places or [])
         self.add_subject(phash, metadata.subjects or [])
         self.add_description(phash, metadata.description or "")
         self.add_rating(phash, metadata.rating or "")
+        self.add_covers(phash, metadata.covers or [])
 
     def list_by_relation(self, relation: str) -> Iterator[PhotoMetadataModel]:
         query = """
@@ -500,7 +511,7 @@ class SqliteDatabase:
         return PhotosTable(self.conn)
 
     def photo_data_table(self):
-        return PhotoDataTable(self.conn)
+        return PhotoDataView(self.conn)
 
     def video_data_table(self):
         return VideoDataTable(self.conn)

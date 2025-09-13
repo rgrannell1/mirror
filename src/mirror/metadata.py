@@ -205,6 +205,7 @@ class MarkdownTablePhotoMetadataWriter:
             "places",
             "description",
             "subjects",
+            "cover"
         ]
 
         rows = []
@@ -229,6 +230,7 @@ class MarkdownTablePhotoMetadataWriter:
                     ",".join(places),
                     summary.description or "",
                     ",".join(subjects),
+                    ""
                 ]
             )
 
@@ -255,14 +257,27 @@ class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
 
         next(reader)
 
+        unique_urls = set()
+        unique_covers = set()
+
         for row in reader:
-            if len(row) < 7:
+            if len(row) < 8:
                 continue
             row = [cell.strip() for cell in row]
 
-            _, embedding, title, genre, rating, places, description, subjects, _ = row
+            _, embedding, title, genre, rating, places, description, subjects, cover, _ = row
 
             url = embedding[4:-1]
+            if url in unique_urls:
+                raise ValueError(f"Duplicate photo URL in metadata: {url}")
+            unique_urls.add(url)
+
+            covers = re.split(r"\s*,\s*", cover) if cover else []
+            for cov in covers:
+                if cov in unique_covers:
+                    raise ValueError(f"Multiple images claiming to be cover for {cov}")
+                unique_covers.add(cov)
+
 
             item = {
                 "thumbnail_url": url,
@@ -272,6 +287,7 @@ class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
                 "rating": rating if rating else None,
                 "subjects": re.split(r"\s*,\s*", subjects) if subjects else [],
                 "description": description or "",
+                "covers": covers,
             }
 
             validate(item, PhotoMetadataSummaryModel.schema())
@@ -284,4 +300,5 @@ class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
                 places=item['places'],
                 description=item['description'],
                 subjects=item['subjects'],
+                covers=item['covers']
             )

@@ -10,7 +10,8 @@
     "places": { "$ref": "#/$defs/places" },
     "rating": { "$ref": "#/$defs/rating" },
     "subjects": { "$ref": "#/$defs/subjects" },
-    "description": { "$ref": "#/$defs/description" }
+    "description": { "$ref": "#/$defs/description" },
+    "covers": { "$ref": "#/$defs/covers" }
   },
   "additionalProperties": false,
   "$defs": {
@@ -46,6 +47,10 @@
     "description": {
       "type": "string",
       "description": "Additional information to include about the photo, displayed in the UI."
+    },
+    "covers": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
     }
   }
 }

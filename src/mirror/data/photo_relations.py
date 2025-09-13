@@ -15,7 +15,8 @@ class PhotoRelationsReader:
             "location",
             "subject",
             "rating",
-            "wildlife"
+            "wildlife",
+            "cover"
         }
 
         for row in db.photo_metadata_table().list():

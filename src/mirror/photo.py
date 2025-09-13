@@ -135,10 +135,11 @@ class PhotoMetadataSummaryModel(IModel):
     places: list[str]
     description: str | None
     subjects: list[str]
+    covers: list[str]
 
     @classmethod
     def from_row(cls, row: List) -> "PhotoMetadataSummaryModel":
-        (_, url, name, genre, rating, places, description, subjects) = row
+        (_, url, name, genre, rating, places, description, subjects, covers) = row
 
         return PhotoMetadataSummaryModel(
             url=url,
@@ -148,6 +149,7 @@ class PhotoMetadataSummaryModel(IModel):
             places=places.split(",") if places else [],
             description=description,
             subjects=subjects.split(",") if subjects else [],
+            covers=covers.split(",") if covers else [],
         )
     @classmethod
     @lru_cache
