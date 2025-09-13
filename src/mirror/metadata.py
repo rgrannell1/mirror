@@ -69,13 +69,13 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
             }
         )
 
-        album_data_table = db.album_data_table()
+        album_data_table = db.album_data_view()
         published_albums = self._contentful_published_albums(db)
 
         for dpath in published_albums:
             # find an embedding as a minimum
 
-            album_data = db.album_data_table().get_album_data_by_dpath(dpath)
+            album_data = db.album_data_view().get_album_data_by_dpath(dpath)
 
             by_album[dpath] = {
                 "embedding": album_data.thumbnail_url if album_data else None,

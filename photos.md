@@ -1,4 +1,4 @@
-| embedding | name | genre | rating | places | description | subjects | covers |
+| embedding | name | genre | rating | places | description | subjects | cover |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | ![](https://photos-cdn.rgrannell.xyz/d1dbb9392f.webp) | Anaga Rural Park | Landscape | ⭐⭐⭐⭐ | urn:ró:geoname:2521768 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/843158dc99.webp) | Anaga Rural Park | Landscape | ⭐⭐⭐⭐ | urn:ró:geoname:2521768 |  |  |  |
@@ -214,7 +214,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/8949b2c2f6.webp) | Burr Point | Landscape | ⭐⭐ | urn:ró:geoname:3230941 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/06ee6f7f50.webp) | Cherbourg | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1ecb84a833.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:geoname:3025466 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c0c0306a05.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:geoname:3025466 |  |  | urn:ró:country:france |
+| ![](https://photos-cdn.rgrannell.xyz/c0c0306a05.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:geoname:3025466 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/22d58c03d3.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:geoname:3025466 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a8fbc3fe5e.webp) | Cherbourg | Cityscape | ⭐⭐ | urn:ró:geoname:3025466 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/82da0a8478.webp) | Cherbourg | Transport | ⭐⭐⭐⭐ | urn:ró:geoname:3025466 |  | urn:ró:boat:unknown |  |
@@ -258,19 +258,19 @@
 | ![](https://photos-cdn.rgrannell.xyz/107781de2d.webp) | Cliffs of Moher | Wildlife | ⭐ | urn:ró:geoname:2962572 | three chough | urn:ró:bird:pyrrhocorax-pyrrhocorax?context=wild, urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/c8ff18b8f7.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐ | urn:ró:geoname:2962572 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3782de41a2.webp) | Cologne | Transport | ⭐⭐ | urn:ró:geoname:6947520 |  | urn:ró:train:ice |  |
-| ![](https://photos-cdn.rgrannell.xyz/3ecbc00268.webp) | Cologne | Cityscape | ⭐⭐⭐ |  urn:ró:unesco:292,urn:ró:geoname:6947520 |  |  | urn:ró:country:germany |
+| ![](https://photos-cdn.rgrannell.xyz/3ecbc00268.webp) | Cologne | Cityscape | ⭐⭐⭐ | urn:ró:geoname:6947520, urn:ró:unesco:292 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2196642deb.webp) | Cologne | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:2847667 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9df9010671.webp) | Cong | Landscape | ⭐⭐⭐⭐ | urn:ró:geoname:2965239 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f534912f62.webp) | Cong | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:geoname:2965239 |  | urn:ró:mammal:canis-familiaris |  |
 | ![](https://photos-cdn.rgrannell.xyz/acb52749d7.webp) | Cong | Other | ⭐⭐⭐⭐ | urn:ró:geoname:2965239 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b227b915d9.webp) | Conwy | Cityscape | ⭐⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd3e095732.webp) | Conwy | Landscape | ⭐⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e0cf10fd6f.webp) | Conwy | Cityscape | ⭐⭐ | urn:ró:geoname:7296022, urn:ró:unesco:374 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e0cf10fd6f.webp) | Conwy | Cityscape | ⭐⭐ |  urn:ró:unesco:374,urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6544a2026a.webp) | Conwy | Cityscape | ⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e225d1e822.webp) | Conwy | Wildlife | ⭐⭐⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e7811f85ba.webp) | Conwy | Cityscape | ⭐⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/00da6efe73.webp) | Conwy | Cityscape | ⭐⭐ | urn:ró:geoname:7296022 | Smallest House in Great Britain |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7d0f0e2d9a.webp) | Conwy | Cityscape | ⭐⭐⭐ | urn:ró:geoname:7296022, urn:ró:unesco:374 |  |  | urn:ró:country:wales |
+| ![](https://photos-cdn.rgrannell.xyz/7d0f0e2d9a.webp) | Conwy | Cityscape | ⭐⭐⭐ |  urn:ró:unesco:374,urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8d5d34a46a.webp) | Conwy | Landscape | ⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6ad97001dc.webp) | Conwy | Landscape | ⭐⭐⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/09f6cf46b9.webp) | Conwy | Landscape | ⭐⭐ | urn:ró:geoname:7296022 |  |  |  |
@@ -299,7 +299,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/64222339ee.webp) | Córdoba | Other | ⭐⭐ | urn:ró:unesco:313 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/56b92e1a26.webp) | Córdoba | Other | ⭐⭐ | urn:ró:unesco:313 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0f8ade1324.webp) | Córdoba | Other | ⭐⭐ | urn:ró:unesco:313 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9a1c8db6a3.webp) | Córdoba | Other | ⭐⭐⭐⭐⭐ | urn:ró:unesco:313 |  |  | urn:ró:country:spain |
+| ![](https://photos-cdn.rgrannell.xyz/9a1c8db6a3.webp) | Córdoba | Other | ⭐⭐⭐⭐⭐ | urn:ró:unesco:313 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0668452a6d.webp) | Dalkey & Dun Laoghaire | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c8940aea0a.webp) | Dalkey & Dun Laoghaire | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c16ed14e98.webp) | Dalkey & Dun Laoghaire | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:larus-argentatus?context=wild |  |
@@ -384,7 +384,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/80580d31be.webp) | Dún Laoghaire Fireworks | Other | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/26dfb01d76.webp) | Düsseldorf & Amsterdam | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:psittacula-krameri?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/7d1e037d02.webp) | Düsseldorf & Amsterdam | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2d8c3261d3.webp) | Düsseldorf & Amsterdam | Cityscape | ⭐⭐⭐⭐ |  |  |  | urn:ró:country:the-netherlands |
+| ![](https://photos-cdn.rgrannell.xyz/2d8c3261d3.webp) | Düsseldorf & Amsterdam | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f77248a795.webp) | Düsseldorf & Amsterdam | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:phalacrocorax-carbo?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8b6906ad6f.webp) | Düsseldorf & Amsterdam | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:alopochen-aegyptiaca?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/94c7c56d4d.webp) | Düsseldorf & Amsterdam | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
@@ -413,7 +413,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/192f72c197.webp) | Edinburgh | Other | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f3bf93d9fb.webp) | Edinburgh | Other | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6fa6027b4c.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:unesco:728 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f5bdd719d9.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:unesco:728 |  |  | urn:ró:country:scotland |
+| ![](https://photos-cdn.rgrannell.xyz/f5bdd719d9.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:unesco:728 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bf9e25a727.webp) | Emo Court | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e846e828c9.webp) | Emo Court | Landscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0a427a94dc.webp) | Emo Court | Landscape | ⭐⭐⭐ |  |  |  |  |
@@ -461,7 +461,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e902722e84.webp) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ |  |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/f9d67d811a.webp) | Galway Boat Festival | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/84ff0ecffb.webp) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ |  |  | urn:ró:boat:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/6ae1f7ca98.webp) | Galway Docks | Wildlife | ⭐⭐⭐⭐ |  |  |  urn:ró:bird:chroicocephalus-ridibundus,larus-canus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/6ae1f7ca98.webp) | Galway Docks | Wildlife | ⭐⭐⭐⭐ |  |  | larus-canus?context=wild, urn:ró:bird:chroicocephalus-ridibundus |  |
 | ![](https://photos-cdn.rgrannell.xyz/f6a095ae35.webp) | Galway Docks | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1e66f2c52e.webp) | Galway Docks | Cityscape | ⭐⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2d9c85e5dc.webp) | Glenveagh National Park | Wildlife | ⭐⭐⭐ | urn:ró:geoname:3307477 |  | urn:ró:bird:erithacus-rubecula?context=wild |  |
@@ -595,15 +595,22 @@
 | ![](https://photos-cdn.rgrannell.xyz/7e646ad610.webp) | Killarney National Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:geoname:7302925 |  | urn:ró:mammal:ovis-aries?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/b05e8934e7.webp) | Killarney National Park | Wildlife | ⭐⭐⭐ | urn:ró:geoname:7302925 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f3db66b504.webp) | Killarney National Park | Wildlife | ⭐⭐ |  |  | urn:ró:bird:falco-tinnunculus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/7fcc6eac6d.webp) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:geoname:2511401, urn:ró:unesco:929 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9989053085.webp) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:geoname:2511401, urn:ró:unesco:929 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:2511401, urn:ró:unesco:929 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7fcc6eac6d.webp) | La Lagunas | Cityscape | ⭐⭐⭐ |  urn:ró:unesco:929,urn:ró:geoname:2511401 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9989053085.webp) | La Lagunas | Cityscape | ⭐⭐⭐ |  urn:ró:unesco:929,urn:ró:geoname:2511401 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | Cityscape | ⭐⭐⭐⭐ |  urn:ró:unesco:929,urn:ró:geoname:2511401 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a9118931e2.webp) | Lanzarote | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:streptopelia-decaocto?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/5d5b19005d.webp) | Lanzarote | Wildlife | ⭐⭐⭐ |  |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/7d254a35b7.webp) | Lanzarote | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/c2e35fc350.webp) | Lanzarote | Wildlife | ⭐⭐ |  |  | urn:ró:bird:bubulcus-ibis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e1d57017dd.webp) | Lanzarote | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:ramphastos-toco?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/25e3e13de6.webp) | Lanzarote | Wildlife | ⭐⭐⭐ |  |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/318215308a.webp) | Lanzarote | Landscape | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d39152ed07.webp) | Lanzarote | Landscape | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ee0dfa59ca.webp) | Lanzarote | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e60c98495d.webp) | Lanzarote | Landscape | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dd53a067ad.webp) | Lanzarote | Wildlife | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/540623a0df.webp) | Lanzarote | Landscape | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/334044a44e.webp) | Lanzarote | Wildlife | ⭐⭐⭐⭐ |  |  |  | urn:ró:country:lanzarote |
 | ![](https://photos-cdn.rgrannell.xyz/fb8e8d2b58.webp) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ |  |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff50e10e42.webp) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ |  |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2bfc8b944a.webp) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ |  |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
@@ -725,12 +732,12 @@
 | ![](https://photos-cdn.rgrannell.xyz/9b691579ed.webp) | London Zoo | Wildlife | ⭐⭐⭐ |  |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/613e291db2.webp) | London Zoo | Wildlife | ⭐⭐ |  |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/2cdf65d9b1.webp) | London Zoo | Wildlife | ⭐⭐ |  |  | urn:ró:mammal:lycaon-pictus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/968d44f42c.webp) | London Zoo | Wildlife | ⭐⭐⭐⭐ |  |  |  urn:ró:bird:phoenicopterus-roseus,ardea-cinerea?context=unsure |  |
+| ![](https://photos-cdn.rgrannell.xyz/968d44f42c.webp) | London Zoo | Wildlife | ⭐⭐⭐⭐ |  |  | ardea-cinerea?context=unsure, urn:ró:bird:phoenicopterus-roseus |  |
 | ![](https://photos-cdn.rgrannell.xyz/0cb322ac05.webp) | London Zoo | Wildlife | ⭐⭐ |  |  | urn:ró:mammal:canis-familiaris?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/aeae673eff.webp) | London Zoo | Wildlife | ⭐⭐ |  |  | urn:ró:mammal:vulpes-vulpes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c8d2068e99.webp) | London Zoo | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:psittacus-erithacus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/632d8956b1.webp) | Lough Atalia | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:egretta-garzetta?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/8f73351b9e.webp) | Lough Neagh | Landscape | ⭐⭐ | urn:ró:country:northern-ireland |  |  | urn:ró:country:northern-ireland |
+| ![](https://photos-cdn.rgrannell.xyz/8f73351b9e.webp) | Lough Neagh | Landscape | ⭐⭐ | urn:ró:country:northern-ireland |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/afa8d34b4e.webp) | Madison & Chicago | Wildlife | ⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a59aba13d.webp) | Madison & Chicago | Wildlife | ⭐⭐ |  |  | urn:ró:bird:dryobates-pubescens?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b1aac92b1b.webp) | Madison & Chicago | Wildlife | ⭐⭐ |  |  | urn:ró:bird:dryobates-pubescens?context=wild |  |
@@ -750,7 +757,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/ae7517caa0.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:buteo-jamaicensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2737cd6f70.webp) | Madison & Chicago | Cityscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b59e770dbb.webp) | Mallorca | Cityscape | ⭐⭐⭐ |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2ab41a9495.webp) | Mallorca | Cityscape | ⭐⭐⭐⭐ |  |  |  | urn:ró:country:mallorca |
+| ![](https://photos-cdn.rgrannell.xyz/2ab41a9495.webp) | Mallorca | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8aede381ca.webp) | Mallorca | Cityscape | ⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6b58dd967c.webp) | Mallorca | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/14393cdd56.webp) | Mallorca | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
@@ -787,7 +794,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/5979f9dfa8.webp) | Naples & Pompeii | Other | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0f8b49eed2.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:unesco:726 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4155dda167.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:unesco:726 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/10b25d6272.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:unesco:726 |  |  | urn:ró:country:italy |
+| ![](https://photos-cdn.rgrannell.xyz/10b25d6272.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:unesco:726 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9009568f59.webp) | Naples & Pompeii | Other | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c1152caed8.webp) | Naples & Pompeii | Wildlife | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c533af6211.webp) | Naples & Pompeii | Other | ⭐⭐⭐⭐ |  |  |  |  |
@@ -828,13 +835,13 @@
 | ![](https://photos-cdn.rgrannell.xyz/969a55940d.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:sciurus-vulgaris?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f5094ea3f9.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐⭐ | urn:ró:country:norway |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/004c306938.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:norway |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c15c0a6eb9.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐⭐ | urn:ró:country:norway |  |  | urn:ró:country:norway |
+| ![](https://photos-cdn.rgrannell.xyz/c15c0a6eb9.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐⭐ | urn:ró:country:norway |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/22b3643619.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a8e888718d.webp) | Oslo & Stockholm | Cityscape | ⭐⭐ | urn:ró:country:sweden |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff4ffb62c0.webp) | Oslo & Stockholm | Other | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b3a1e06f44.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3edd7d8272.webp) | Oslo & Stockholm | Transport | ⭐⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/75d5f6370c.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:rangifer-tarandus?context=captive | urn:ró:country:sweden |
+| ![](https://photos-cdn.rgrannell.xyz/75d5f6370c.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/91df57a4f7.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2d94d5e01c.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2271114e41.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
@@ -872,7 +879,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/6af5b37d10.webp) | Puerto de la Cruz |  | ⭐⭐⭐⭐ | urn:ró:geoname:7627512 |  | urn:ró:mammal:gorilla-gorilla?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp) | Puerto de la Cruz | Cityscape | ⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0cb4f63dd.webp) | Puerto de la Cruz |  | ⭐⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5a8b7b867e.webp) | Puerto de la Cruz | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:6360634 |  |  | urn:ró:country:tenerife |
+| ![](https://photos-cdn.rgrannell.xyz/5a8b7b867e.webp) | Puerto de la Cruz | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a3750c0515.webp) | Puerto de la Cruz | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8f6b4a5b3d.webp) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0dd5086aff.webp) | Puerto de la Cruz |  | ⭐⭐⭐⭐ | urn:ró:geoname:6360634 |  |  |  |
@@ -893,7 +900,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d077f552d1.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4962ab101f.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0c7712af11.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ee6b39ed10.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐⭐ |  |  |  | urn:ró:country:ireland |
+| ![](https://photos-cdn.rgrannell.xyz/ee6b39ed10.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1abb88d3d6.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bac3054a01.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a6e72bb689.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ |  |  |  |  |
@@ -1047,7 +1054,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/0c20b9911f.webp) | Slovenia | Cityscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/84e064a261.webp) | Slovenia | Transport | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/568b34cadc.webp) | Slovenia | Cityscape | ⭐⭐ |  | Ljubljana Mosque. I was hoping for a better photo, but construction work ruined the view a little... |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp) | Slovenia | Landscape | ⭐⭐⭐⭐⭐ |  |  |  | urn:ró:country:slovenia |
+| ![](https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp) | Slovenia | Landscape | ⭐⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/04634e2015.webp) | Slovenia | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/47efeb8614.webp) | Slovenia |  | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/05f0a6716e.webp) | Sparrowhawk | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:accipiter-nisus?context=wild |  |
@@ -1060,7 +1067,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/b4207fcc1c.webp) | Switzerland | Transport | ⭐⭐⭐ |  |  | urn:ró:train:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/bc3ff7713e.webp) | Switzerland | Cityscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f6ca9d3532.webp) | Switzerland | Transport | ⭐⭐⭐ |  |  | urn:ró:train:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/d5376d376e.webp) | Switzerland | Cityscape | ⭐⭐⭐⭐ |  |  |  | urn:ró:country:switzerland |
+| ![](https://photos-cdn.rgrannell.xyz/d5376d376e.webp) | Switzerland | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e88a42592e.webp) | Tenerife | Wildlife | ⭐⭐ |  |  | urn:ró:bird:bubulcus-ibis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f06df952de.webp) | Tenerife | Wildlife | ⭐⭐ |  |  | urn:ró:bird:passer-hispaniolensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/fdd63d7ae3.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  |  |  |
@@ -1164,7 +1171,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/792bec9b5f.webp) | Wisconsin | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f5cd184d31.webp) | Wisconsin | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eb313af4f6.webp) | Wisconsin | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:spinus-tristis?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/bb27a9d26f.webp) | Wisconsin | Transport | ⭐⭐⭐⭐ | urn:ró:geoname:5254146 |  | urn:ró:boat:unknown | urn:ró:country:united-states-of-america |
+| ![](https://photos-cdn.rgrannell.xyz/bb27a9d26f.webp) | Wisconsin | Transport | ⭐⭐⭐⭐ | urn:ró:geoname:5254146 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/8d77e54c3a.webp) | York | Cityscape | ⭐⭐⭐ | urn:ró:geoname:12105022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/930af3d987.webp) | York | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:12105022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c40f38b997.webp) | York | Landscape | ⭐⭐⭐⭐ | urn:ró:geoname:12105022 |  |  |  |
@@ -1178,5 +1185,5 @@
 | ![](https://photos-cdn.rgrannell.xyz/226e9fae6e.webp) | York | Cityscape | ⭐⭐⭐⭐ | urn:ró:geoname:12105022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/48d184c3c8.webp) | York | Cityscape | ⭐⭐⭐ | urn:ró:geoname:12105022 | york minster |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/97b9dc1806.webp) | York | Transport | ⭐⭐⭐ |  |  | urn:ró:plane:ATR%2072-600 |  |
-| ![](https://photos-cdn.rgrannell.xyz/56954c5d19.webp) | York | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:geoname:12105022 |  |  | urn:ró:country:england |
+| ![](https://photos-cdn.rgrannell.xyz/56954c5d19.webp) | York | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:geoname:12105022 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a920d58e7.webp) | York | Transport | ⭐⭐ | urn:ró:geoname:12105022 | a rented boat in york on the river ous, viewed from the cabin | urn:ró:boat:unknown |  |
