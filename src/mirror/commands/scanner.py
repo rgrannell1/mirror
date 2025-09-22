@@ -38,8 +38,17 @@ class MediaScanner(IScanner):
         """Return all media in the directory"""
 
         for album in MediaVault(self.dpath).albums():
+            covers = list(album.covers())
+
+            if not covers:
+                raise ValueError(f"Album {album.dpath} has no cover photo (a photo with '+cover' in its name)")
+
+            if len(covers) > 1:
+                raise ValueError(f"Album {album.dpath} has multiple cover photos, using the first one")
+
             for media in album.media():
                 yield media
+
 
     def _unsaved_exifs(self) -> Iterator[PhotoExifData]:
         """Return exif data for all photos not in the database"""
@@ -77,9 +86,6 @@ class MediaScanner(IScanner):
         exif_table = self.db.exif_table()
         photos_table = self.db.photos_table()
         videos_table = self.db.videos_table()
-
-
-        # todo clean tables
 
         current_fpaths = set()
 
@@ -183,6 +189,13 @@ class WikidataScanner(IScanner):
 
     def scan(self) -> None:
         """Read or infer wikidata IDs from our database, and collect wikidata properties"""
+
+        # scan
+        # read albums
+        # read photos
+        # if new photos, write photos
+        # if new albums, write albums (but need md for album...)
+        # read other stuff
 
         self.add_geonames_wikidata()
         self.add_binomials_wikidata()

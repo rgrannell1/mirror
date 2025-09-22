@@ -27,6 +27,21 @@ class Album:
         """Is there any published media?"""
         return os.path.isdir(self.published_path())
 
+    def covers(self) -> Iterator[Photo]:
+        """Get the cover photo for this album, if it exists"""
+
+        if self.published():
+            for fname in os.listdir(self.published_path()):
+                if '+cover' in fname:
+                    fpath = os.path.join(self.published_path(), fname)
+
+                    if Photo.is_a(fpath):
+                        yield Photo(fpath)
+                    else:
+                        raise Exception(f"Cover photo {fpath} is not a photo")
+
+        return None
+
     def media(self) -> Iterator[IMedia]:
         """Yield all media from the photo-album"""
 
