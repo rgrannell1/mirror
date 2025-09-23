@@ -30,31 +30,31 @@ SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 # - thumbnail: a lossy thumbnail for fast loading
 # - full_image_lossless: a lossless webp image for high quality
 # - full_image_png: a png image so I can share images to Signal and other non-webp apps
-IMAGE_ENCODINGS = [
-    (
-        "thumbnail_lossy",
-        {
-            "format": "webp",
-            "quality": 85,
-            "method": 6,
-            "width": THUMBNAIL_WIDTH,
-            "height": THUMBNAIL_HEIGHT,
-        },
-    ),
-    ("full_image_lossless", {"format": "webp", "lossless": True}),
-    ("full_image_png", {"format": "png", "quality": 100, "method": 6}),
-    (
-        "mid_image_lossy",
-        {
-            "format": "webp",
-            "quality": 85,
-            "method": 6,
-            # x4 downscaling of GH6 dimensions
-            "width": 1444,
-            "height": 1084,
-        },
-    ),
-]
+IMAGE_ENCODINGS = {
+    "thumbnail_lossy": {
+        "format": "webp",
+        "quality": 85,
+        "method": 6,
+        "width": THUMBNAIL_WIDTH,
+        "height": THUMBNAIL_HEIGHT,
+    },
+    "full_image_lossless": {
+        "format": "webp",
+        "lossless": True,
+    },
+    "full_image_png": {
+        "format": "png",
+        "quality": 100,
+        "method": 6,
+    },
+    "mid_image_lossy": {
+        "format": "webp",
+        "quality": 85,
+        "method": 6,
+        "width": 1444,
+        "height": 1084,
+    },
+}
 
 # How should we encode our videos? Currently uses unscaled + various
 # scaling of libx264 encoding

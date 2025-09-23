@@ -21,7 +21,6 @@ class MediaUploader:
     FULL_ENCODING_FORMAT = "webp"
     VIDEO_FORMAT = "webm"
 
-    IMAGE_ENCODINGS = IMAGE_ENCODINGS
     VIDEO_ENCODINGS = VIDEO_ENCODINGS
 
     def __init__(self, db: SqliteDatabase, cdn: Any):
@@ -50,12 +49,12 @@ class MediaUploader:
         encodings = list(encoded_photos_table.list_for_file(fpath))
         published_roles = {enc.role for enc in encodings}
 
-        for role, params in self.IMAGE_ENCODINGS:
+        for role, params in IMAGE_ENCODINGS.items():
             if role in published_roles:
                 continue
 
             uploaded_url = self.cdn.upload_photo(
-                encoded_data=PhotoEncoder.encode(fpath, params),
+                encoded_data=PhotoEncoder.encode(fpath, role, params),
                 role=role,
                 format=params["format"],  # type: ignore
             )

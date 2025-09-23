@@ -44,17 +44,24 @@ class PhotoEncoder:
         return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
 
     @classmethod
-    def encode(cls, fpath: str, params: Dict) -> PhotoContent:
+    def encode(cls, fpath: str, role: str, params: Dict) -> PhotoContent:
         """Encode an image as Webp, optionally resizing, and remove EXIF data"""
 
         img = Image.open(fpath)
         rgb = img.convert("RGB")
 
         # Optionally resize if width and height are in params
-        width = params.pop("width", None)
-        height = params.pop("height", None)
+        width = params.get("width")
+        height = params.get("height")
+
         if width and height:
+            print(f"🪩 | encoding {fpath} {role} @ {width} x {height}")
             rgb = ImageOps.fit(rgb, (width, height))
+        else:
+            if role == "thumbnail_lossy":
+                raise ValueError("thumbnail_lossy role requires width and height")
+
+            print(f"🪩 | encoding {fpath} {role}")
 
         # remove EXIF data from the image by cloning
         data = list(rgb.getdata())
@@ -62,7 +69,9 @@ class PhotoEncoder:
         no_exif.putdata(data)
 
         with io.BytesIO() as output:
-            no_exif.save(output, **params)
+            # Remove width and height from params to avoid side-effects
+            save_params = {key: val for key, val in params.items() if key not in ("width", "height")}
+            no_exif.save(output, **save_params)
             return PhotoContent(output.getvalue())
 
 
