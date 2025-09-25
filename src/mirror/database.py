@@ -12,7 +12,6 @@ from mirror.photo import EncodedPhotoModel, PhotoModel, PhotoMetadataModel, Phot
 from mirror.video import EncodedVideoModel, VideoModel
 from mirror.album import AlbumDataModel, AlbumMetadataModel
 
-# TODO split into subtables creations
 from mirror.tables import (
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,

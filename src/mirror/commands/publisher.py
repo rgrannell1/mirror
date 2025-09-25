@@ -206,8 +206,8 @@ class StatsArtifact(IArtifact):
 
     def process(self): ...
 
-    def count_birds(self, subjects: List[PhotoMetadataModel]) -> int:
-        unique_birds = set()
+    def count_type(self, type: str, subjects: List[PhotoMetadataModel]) -> int:
+        unique_items = set()
         for subject in subjects:
             value = subject.target
 
@@ -215,38 +215,28 @@ class StatsArtifact(IArtifact):
                 continue
 
             parsed = Things.from_urn(value)
-            if value.startswith("urn:ró:bird:"):
-                unique_birds.add(parsed["id"])
+            if value.startswith(f"urn:ró:{type}:"):
+                unique_items.add(parsed["id"])
 
-        return len(unique_birds)
+        return len(unique_items)
+
+    def count_birds(self, subjects: List[PhotoMetadataModel]) -> int:
+        return self.count_type("bird", subjects)
 
     def count_mammals(self, subjects: List[PhotoMetadataModel]) -> int:
-        unique_mammals = set()
-        for subject in subjects:
-            value = subject.target
-
-            if not Things.is_urn(value):
-                continue
-
-            parsed = Things.from_urn(value)
-            if value.startswith("urn:ró:mammal:"):
-                unique_mammals.add(parsed["id"])
-
-        return len(unique_mammals)
+        return self.count_type("mammal", subjects)
 
     def count_unesco_sites(self, places: List[PhotoMetadataModel]) -> int:
-        unique_sites = set()
-        for place in places:
-            value = place.target
+        return self.count_type("unesco", places)
 
-            if not Things.is_urn(value):
-                continue
+    def count_reptiles(self, subjects: List[PhotoMetadataModel]) -> int:
+        return self.count_type("reptile", subjects)
 
-            parsed = Things.from_urn(value)
-            if value.startswith("urn:ró:unesco:"):
-                unique_sites.add(parsed["id"])
+    def count_amphibians(self, subjects: List[PhotoMetadataModel]) -> int:
+        return self.count_type("amphibian", subjects)
 
-        return len(unique_sites)
+    def count_fish(self, subjects: List[PhotoMetadataModel]) -> int:
+        return self.count_type("fish", subjects)
 
     def count_countries(self, albums) -> int:
         return len({flag for album in albums for flag in album.flags})
@@ -285,6 +275,9 @@ class StatsArtifact(IArtifact):
             "countries": self.count_countries(albums),
             "bird_species": self.count_birds(subjects),
             "mammal_species": self.count_mammals(subjects),
+            "reptile_species": self.count_reptiles(subjects),
+            "amphibian_species": self.count_amphibians(subjects),
+            "fish_species": self.count_fish(subjects),
             "unesco_sites": self.count_unesco_sites(places),
         }
 
