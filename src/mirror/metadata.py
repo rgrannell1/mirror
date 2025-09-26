@@ -12,6 +12,7 @@ from mirror.album import AlbumMetadataModel
 from mirror.database import SqliteDatabase
 from mirror.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from typing import TypedDict, Optional
+import json
 
 
 # Protocols defining how metadata can be communicated to/from other locations
@@ -208,28 +209,55 @@ class MarkdownTablePhotoMetadataWriter:
             "cover"
         ]
 
-        rows = []
 
         db.album_contents_view()
         db.photo_metadata_view()
         db.photo_metadata_table()
 
-        for summary in db.photo_metadata_summary_view().list():
-            subjects = list({sub for sub in summary.subjects}) or []
-            places = list({sub for sub in summary.places}) or []
+        merged_data: dict[str, dict] = {}
 
+        for summary in db.photo_metadata_summary_view().list():
             if not summary.name:
                 raise ValueError(f"Photo missing an album name: {summary.url}")
 
+            url = summary.url
+            if url not in merged_data:
+                merged_data[url] = {
+                    "url": url,
+                    "name": summary.name,
+                    "genre": set(),
+                    "rating": summary.rating or "",
+                    "places": set(),
+                    "description": summary.description or "",
+                    "subjects": set(),
+                }
+
+            ref = merged_data[url]
+
+            if summary.genre:
+                ref["genre"].update(summary.genre)
+            if summary.places:
+                ref["places"].update(summary.places)
+            if summary.subjects:
+                ref["subjects"].update(summary.subjects)
+
+            if summary.description and not ref["description"]:
+                ref["description"] = summary.description
+
+            if summary.rating and not ref["rating"]:
+                ref["rating"] = summary.rating
+
+        rows = []
+        for url, data in merged_data.items():
             rows.append(
                 [
-                    f"![]({summary.url})",
-                    summary.name,
-                    ",".join(summary.genre),
-                    summary.rating or "",
-                    ",".join(places),
-                    summary.description or "",
-                    ",".join(subjects),
+                    f"![]({url})",
+                    data["name"],
+                    ",".join(sorted(data["genre"])),
+                    data["rating"],
+                    ",".join(sorted(data["places"])),
+                    data["description"],
+                    ",".join(sorted(data["subjects"])),
                     ""
                 ]
             )
@@ -290,7 +318,11 @@ class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
                 "covers": covers,
             }
 
-            validate(item, PhotoMetadataSummaryModel.schema())
+            try:
+                validate(item, PhotoMetadataSummaryModel.schema())
+            except Exception as err:
+                print(json.dumps(item, indent=2))
+                raise
 
             yield PhotoMetadataSummaryModel(
                 url=url,
