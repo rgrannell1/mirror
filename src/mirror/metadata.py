@@ -169,6 +169,8 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             thumbnail_url = embedding[4:-1]
             dpath = album_data.album_dpath_from_thumbnail_url(thumbnail_url)
 
+            # dpath missing for some URLs
+
             item = {
                 "fpath": dpath,
                 "title": title,
@@ -177,7 +179,12 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
                 "summary": summary or "",
             }
 
-            validate(item, AlbumMetadataModel.schema())
+            try:
+                validate(item, AlbumMetadataModel.schema())
+            except Exception as err:
+                print(json.dumps(item, indent=2))
+                raise
+
             src = item.get("fpath")
 
             if not src:

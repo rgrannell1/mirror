@@ -122,6 +122,10 @@ class KnownRelations:
     WIKIDATA = "wikidata"
     WIKIPEDIA = "wikipedia"
     BIRDWATCH_URL = "birdwatch_url"
+    SHORT_NAME = "short_name"
+    FEATURE = "feature"
+    IN = "in"
+    NEAR = "near"
 
 
 class KnownTypes:
