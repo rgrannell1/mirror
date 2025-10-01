@@ -169,7 +169,12 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             thumbnail_url = embedding[4:-1]
             dpath = album_data.album_dpath_from_thumbnail_url(thumbnail_url)
 
-            # dpath missing for some URLs
+            if permalink == 'lanzarote-17':
+                dpath = '/home/rg/Drive/Media/2017/Lanzarote/Published'
+            elif permalink == 'slieve-bloom-20':
+                dpath = '/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published'
+            elif permalink == 'dublin-zoo-21':
+                dpath = '/home/rg/Drive/Media/2021/Dublin Zoo/Published'
 
             item = {
                 "fpath": dpath,
@@ -275,7 +280,7 @@ class MarkdownTablePhotoMetadataWriter:
             print("| " + " | ".join(row) + " |")
 
 
-class MarkdownTablePhotoMetadataReader(IPhotoMetadataReader):
+class MarkdownTablePhotoMetadataReader:
     fpath: str
 
     def __init__(self, fpath: str):

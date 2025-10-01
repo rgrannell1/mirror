@@ -506,6 +506,16 @@ class SqliteDatabase:
     def __init__(self, fpath: str) -> None:
         self.conn = sqlite3.connect(fpath)
 
+    def delete_views(self)  -> None:
+        self.conn.execute("drop view if exists view_album_contents")
+        self.conn.execute("drop view if exists view_album_data")
+        self.conn.execute("drop view if exists view_photo_data")
+        self.conn.execute("drop view if exists view_video_data")
+        self.conn.execute("drop view if exists view_photo_metadata")
+        self.conn.execute("drop view if exists view_photo_metadata_summary")
+        self.conn.commit()
+
+
     def photos_table(self):
         return PhotosTable(self.conn)
 

@@ -35,7 +35,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/19be422987.webp) | Ballyfin Nature Hide | ballyfin-nature-hide-dec-21 | Ireland | Midwinter wildlife photography is challenging in Ireland; there just isn't enough light for much of the day. Lighting aside, I got extremely lucky and managed to get a picture of our elusive (but recovering) pine-marten |
 | ![](https://photos-cdn.rgrannell.xyz/068abafc4d.webp) | Ballyfin Nature Hide | ballyfin-nature-hide-21 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/7b7616283f.webp) | Bull Island, Autumn | bull-island-21 | Ireland | Bull Island is one of the better (if windier) places to see wildlife in Dublin City. |
-| ![](https://photos-cdn.rgrannell.xyz/bc2f90142a.webp) | Dublin Zoo | dublin-zoo-21 | Ireland |  |
+| ![](https://photos-cdn.rgrannell.xyz/d1ccc87320.webp) | Dublin Zoo | dublin-zoo-21 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/44a80c3ce6.webp) | Howth | howth-21 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/e2878268a0.webp) | Rutting Season, Killarney | rutting-season-21 | Ireland | Killarney is home to the last native red deer in Ireland. In "rutting season", the stags bellow and battle each other for mates. I risked getting close (at some personal risk) to get better photos, until an extremely irritated park ranger caught up to me. But at that point, I had the photos! |
 | ![](https://photos-cdn.rgrannell.xyz/77879c835b.webp) | Chester Zoo | chester-zoo-21 | England | I was lucky enough to see the small-clawed otters at feeding time. They were extremely noisy and pleased by their meals, and I got a few cute videos and pictures |

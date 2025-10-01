@@ -1,3 +1,6 @@
+"""Read place information from places.toml file and convert to semantic triples. This
+information describes locations (but not actually the points that lie within it)
+"""
 import tomllib
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterator, List, Optional
@@ -38,12 +41,9 @@ class PlacesMetadataReader:
     def __init__(self, places_file: str = "places.toml"):
         self.places_file = places_file
 
-    def read(self, workspace_root: Optional[str] = None) -> Iterator[SemanticTriple]:
+    def read(self, db) -> Iterator[SemanticTriple]:
         """Read places from TOML file and yield semantic triples"""
-        if workspace_root:
-            places_path = Path(workspace_root) / self.places_file
-        else:
-            places_path = Path(self.places_file)
+        places_path = Path(self.places_file)
 
         if not places_path.exists():
             return
