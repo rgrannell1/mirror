@@ -588,7 +588,7 @@ features = ["nature reserve"]
 id = "urn:ró:place:80"
 name = "Killarney National Park"
 wikipedia = "https://en.wikipedia.org/wiki/Killarney_National_Park"
-in = ["urn:ró:country:ireland"]
+in = ["urn:ró:country:ireland", "urn:ró:place:104"]
 features = ["national park"]
 
 [[places]]
@@ -794,3 +794,24 @@ name = "Aran Islands"
 wikipedia = "https://en.wikipedia.org/wiki/Aran_Islands"
 in = ["urn:ró:country:ireland"]
 features = ["island", "nature reserve"]
+
+[[places]]
+id = "urn:ró:place:110"
+name = "Laois"
+wikipedia = "https://en.wikipedia.org/wiki/Laois"
+in = ["urn:ró:country:ireland"]
+features = ["county"]
+
+[[places]]
+id = "urn:ró:place:111"
+name = "Roundstone"
+wikipedia = "https://en.wikipedia.org/wiki/Roundstone"
+in = ["urn:ró:country:ireland"]
+features = ["village"]
+
+[[places]]
+id = "urn:ró:place:112"
+name = "Ouchterard"
+wikipedia = "https://en.wikipedia.org/wiki/Oughterard"
+in = ["urn:ró:country:ireland"]
+features = ["town"]
