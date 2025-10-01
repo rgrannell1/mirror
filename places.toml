@@ -349,6 +349,7 @@ name = "Teide National Park"
 wikipedia = "https://en.wikipedia.org/wiki/Teide_National_Park"
 in = ["urn:ró:country:tenerife", "urn:ró:place:45"]
 features = ["national park", "unesco"]
+unesco_id = "urn:ró:unesco:1258"
 
 [[places]]
 id = "urn:ró:place:47"
@@ -527,6 +528,7 @@ name = "Edinburgh"
 wikipedia = "https://en.wikipedia.org/wiki/Edinburgh"
 in = ["urn:ró:country:scotland"]
 features = ["city", "unesco"]
+unesco_id = "urn:ró:unesco:728"
 
 [[places]]
 id = "urn:ró:place:72"
@@ -745,6 +747,7 @@ name = "Skellig Michael"
 wikipedia = "https://en.wikipedia.org/wiki/Skellig_Michael"
 in = ["urn:ró:country:ireland"]
 features = ["island", "unesco"]
+unesco_id = "urn:ró:unesco:757"
 
 [[places]]
 id = "urn:ró:place:103"
@@ -815,3 +818,43 @@ name = "Ouchterard"
 wikipedia = "https://en.wikipedia.org/wiki/Oughterard"
 in = ["urn:ró:country:ireland"]
 features = ["town"]
+
+[[places]]
+id = "urn:ró:place:113"
+name = "Castles and Town Walls of King Edward in Gwynedd"
+wikipedia = "https://en.wikipedia.org/wiki/Castles_and_Town_Walls_of_King_Edward_in_Gwynedd"
+in = ["urn:ró:country:wales"]
+features = ["unesco"]
+unesco_id = "urn:ró:unesco:374"
+
+[[places]]
+id = "urn:ró:place:114"
+name = "Cathedral, Alcázar and Archivo de Indias in Seville"
+wikipedia = "https://en.wikipedia.org/wiki/Cathedral,_Alc%C3%A1zar_and_Archivo_de_Indias_in_Seville"
+in = ["urn:ró:country:spain", "urn:ró:place:27", "urn:ró:place:29"]
+features = ["unesco"]
+unesco_id = "urn:ró:unesco:383"
+
+[[places]]
+id = "urn:ró:place:115"
+name = "Palace of Westminster and Westminster Abbey including Saint Margaret’s Church"
+wikipedia = "https://en.wikipedia.org/wiki/Palace_of_Westminster_and_Westminster_Abbey_including_Saint_Margaret%27s_Church"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["unesco"]
+unesco_id = "urn:ró:unesco:426"
+
+[[places]]
+id = "urn:ró:place:116"
+name = "Brú na Bóinne - Archaeological Ensemble of the Bend of the Boyne"
+wikipedia = "https://en.wikipedia.org/wiki/Br%C3%BA_na_B%C3%B3inne_-_Archaeological_Ensemble_of_the_Bend_of_the_Boyne"
+in = ["urn:ró:country:ireland", "urn:ró:place:75"]
+features = ["unesco"]
+unesco_id = "urn:ró:unesco:659"
+
+[[places]]
+id = "urn:ró:place:117"
+name = " Archaeological Areas of Pompei, Herculaneum and Torre Annunziata"
+wikipedia = "https://en.wikipedia.org/wiki/Archaeological_Areas_of_Pompei,_Herculaneum_and_Torre_Annunziata"
+in = ["urn:ró:country:italy", "urn:ró:place:35"]
+features = ["unesco"]
+unesco_id = "urn:ró:unesco:829"

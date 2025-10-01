@@ -126,6 +126,7 @@ class KnownRelations:
     FEATURE = "feature"
     IN = "in"
     NEAR = "near"
+    UNESCO_ID = "unesco_id"
 
 
 class KnownTypes:
