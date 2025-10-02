@@ -82,6 +82,8 @@ class MediaScanner(IScanner):
         responsible for minimising state-change (i.e try not to repeat work) and should account for the
         possiblity files are deleted."""
 
+        self.db.delete_views()
+
         phash_table = self.db.phashes_table()
         exif_table = self.db.exif_table()
         photos_table = self.db.photos_table()
@@ -191,6 +193,8 @@ class WikidataScanner(IScanner):
         """Read or infer wikidata IDs from our database, and collect wikidata properties"""
 
         # scan
+        # upload
+        # check everything is uploaded
         # read albums
         # read photos
         # if new photos, write photos
