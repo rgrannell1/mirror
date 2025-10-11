@@ -100,6 +100,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/835c7ff700.webp) | Bath | bath-25 | England |  |
 | ![](https://photos-cdn.rgrannell.xyz/2196642deb.webp) | Cologne | cologne-25 | Germany | I briefly visited Cologne for a work conference. I didn't get much time for sightseeing, but I did at least see the enormous cathedral |
 | ![](https://photos-cdn.rgrannell.xyz/7d0f0e2d9a.webp) | Conwy | conwy-25 | Wales | Conwy is a compact town with an enormous castle. It's visitable from Dublin with an overnight stay, but barely (ferry's are slow!) |
+| ![](https://photos-cdn.rgrannell.xyz/db375d5a8e.webp) | Dublin Zoo | dublin-zoo-25 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/da867d06fa.webp) | Howth | howth-25 | Ireland | I was lucky enough to spot and (badly) photograph a raven for the first time while hiking up the cliffs overlooking Howth. |
 | ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | la-lagunas-25 | Tenerife | San Cristóbal de La Laguna is a UNESCO world-heritage site due to its early grid-pattern non-fortified colonial town layout |
 | ![](https://photos-cdn.rgrannell.xyz/2a07141c8b.webp) | Phoenix Park | phoenix-park-25 | Ireland |  |
