@@ -725,7 +725,7 @@ id = "urn:ró:place:99"
 name = " Slieve Bloom Mountains"
 wikipedia = "https://en.wikipedia.org/wiki/Slieve_Bloom_Mountains"
 in = ["urn:ró:country:ireland"]
-features = ["urn:ró:place_feature:mountains"]
+features = ["urn:ró:place_feature:mountain"]
 
 [[places]]
 id = "urn:ró:place:100"
@@ -858,3 +858,59 @@ wikipedia = "https://en.wikipedia.org/wiki/Archaeological_Areas_of_Pompei,_Hercu
 in = ["urn:ró:country:italy", "urn:ró:place:35"]
 features = ["urn:ró:place_feature:unesco"]
 unesco_id = "urn:ró:unesco:829"
+
+[[places]]
+id = "urn:ró:place:118"
+name= "Postojna Cave"
+wikipedia = "https://en.wikipedia.org/wiki/Postojna_Cave"
+in = ["urn:ró:country:slovenia"]
+features = ["urn:ró:place_feature:cave"]
+
+[[places]]
+id = "urn:ró:place:119"
+name = "Llanfairpwllgwyngyll"
+wikipedia = "https://en.wikipedia.org/wiki/Llanfairpwllgwyngyll"
+in = ["urn:ró:country:wales"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:120"
+name = "Toledo Cathedral"
+wikipedia = "https://en.wikipedia.org/wiki/Toledo_Cathedral"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:121"
+name = "The Monastery of San Juan de los Reyes"
+wikipedia = "https://en.wikipedia.org/wiki/Monastery_of_San_Juan_de_los_Reyes"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:monastery"]
+
+[[places]]
+id = "urn:ró:place:122"
+name = "Museum of Santa Cruz"
+wikipedia = "https://en.wikipedia.org/wiki/Museum_of_Santa_Cruz"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:123"
+name = "Lisbon"
+wikipedia = "https://en.wikipedia.org/wiki/Lisbon"
+in = ["urn:ró:country:portugal"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:124"
+name = "Belém Tower"
+wikipedia = "https://en.wikipedia.org/wiki/Bel%C3%A9m_Tower"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:125"
+name = "Monument of the Discoveries"
+wikipedia = "https://en.wikipedia.org/wiki/Monument_of_the_Discoveries"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:monument"]
