@@ -653,7 +653,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/a1f7e67d84.webp) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:insect:sphex-pensylvanicus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b2cec1f4f5.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:123 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ddaf21837a.webp) | Lisbon | Cityscape | ⭐ | urn:ró:place:124 | Well, it would be a nice photo if the scaffolding weren't there... |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/66b2af6465.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:125 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/66b2af6465.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:125 | [Not my kind of art](https://www.lkarno.com/post/yes-the-monument-to-the-discoveries-was-built-as-fascist-propaganda-and-this-is-why-you-should-car) |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ffe5197bf.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/92655c26a0.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5f80ea6e88.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
