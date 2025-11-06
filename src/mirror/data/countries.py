@@ -20,6 +20,7 @@ flags = {
     "urn:ró:country:the-netherlands": "🇳🇱",
     "urn:ró:country:united-states-of-america": "🇺🇸",
     "urn:ró:country:wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+    "urn:ró:country:portugal": "🇵🇹"
 }
 
 

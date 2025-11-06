@@ -103,7 +103,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/db375d5a8e.webp) | Dublin Zoo | dublin-zoo-25 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/da867d06fa.webp) | Howth | howth-25 | Ireland | I was lucky enough to spot and (badly) photograph a raven for the first time while hiking up the cliffs overlooking Howth. |
 | ![](https://photos-cdn.rgrannell.xyz/e261da6ed7.webp) | La Lagunas | la-lagunas-25 | Tenerife | San Cristóbal de La Laguna is a UNESCO world-heritage site due to its early grid-pattern non-fortified colonial town layout |
-| ![](https://photos-cdn.rgrannell.xyz/b2cec1f4f5.webp) | Lisbon | lisbon-25 | Portugal  |  |
+| ![](https://photos-cdn.rgrannell.xyz/720ccaf46b.webp) | Lisbon | lisbon-25 | Portugal  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2a07141c8b.webp) | Phoenix Park | phoenix-park-25 | Ireland |  |
 | ![](https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp) | Puerto de la Cruz | puorto-de-la-cruz-24 | Tenerife |  |
 | ![](https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp) | Slovenia | slovenia-25 | Slovenia | Slovenia is a wonderful, forested country with enormous mountain ranges and beautiful architecture from various eras (a lot of Yugoslav buildings & monuments are still standing in the capital Ljublana). It's also home to the [olm](/#/thing/amphibian:proteus-anguinus), a blind cave-dwelling neotenous salamander (that was surprisingly difficult to photograph). |

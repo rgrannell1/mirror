@@ -914,3 +914,38 @@ name = "Monument of the Discoveries"
 wikipedia = "https://en.wikipedia.org/wiki/Monument_of_the_Discoveries"
 in = ["urn:ró:country:portugal", "urn:ró:place:123"]
 features = ["urn:ró:place_feature:monument"]
+
+[[places]]
+id = "urn:ró:place:126"
+name = "Lisbon Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Lisbon_Zoo"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:127"
+name = "São Jorge Castle"
+wikipedia = "https://en.wikipedia.org/wiki/S%C3%A3o_Jorge_Castle"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:castle"]
+
+[[places]]
+id = "urn:ró:place:128"
+name = "Sintra"
+wikipedia = "https://en.wikipedia.org/wiki/Sintra"
+in = ["urn:ró:country:portugal"]
+features = ["urn:ró:place_feature:town"]
+
+[[places]]
+id = "urn:ró:place:129"
+name = "Pena Palace"
+wikipedia = "https://en.wikipedia.org/wiki/Pena_Palace"
+in = ["urn:ró:country:portugal", "urn:ró:place:128"]
+features = ["urn:ró:place_feature:palace", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:130"
+name = "Castle of the Moors"
+wikipedia = "https://en.wikipedia.org/wiki/Castle_of_the_Moors"
+in = ["urn:ró:country:portugal", "urn:ró:place:128"]
+features = ["urn:ró:place_feature:castle"]
