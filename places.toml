@@ -948,4 +948,4 @@ id = "urn:ró:place:130"
 name = "Castle of the Moors"
 wikipedia = "https://en.wikipedia.org/wiki/Castle_of_the_Moors"
 in = ["urn:ró:country:portugal", "urn:ró:place:128"]
-features = ["urn:ró:place_feature:castle"]
+features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]

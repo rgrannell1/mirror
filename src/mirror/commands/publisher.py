@@ -227,8 +227,23 @@ class StatsArtifact(IArtifact):
     def count_mammals(self, subjects: List[PhotoMetadataModel]) -> int:
         return self.count_type("mammal", subjects)
 
-    def count_unesco_sites(self, places: List[PhotoMetadataModel]) -> int:
-        return self.count_type("unesco", places)
+    def count_unesco_sites(self, places: List[PhotoMetadataModel], db: SqliteDatabase) -> int:
+        # TODO this is not accurate.
+        # Read through places, then cross-match
+
+        unesco_places = set()
+
+        for place in PlacesMetadataReader().read(db):
+            if place.relation == "feature" and place.target == "urn:ró:place_feature:unesco":
+                unesco_places.add(place.source)
+
+        photo_places = set()
+
+        for place in places:
+            if place.target in unesco_places:
+                photo_places.add(place.target)
+
+        return len(photo_places)
 
     def count_reptiles(self, subjects: List[PhotoMetadataModel]) -> int:
         return self.count_type("reptile", subjects)
@@ -279,7 +294,7 @@ class StatsArtifact(IArtifact):
             "reptile_species": self.count_reptiles(subjects),
             "amphibian_species": self.count_amphibians(subjects),
             "fish_species": self.count_fish(subjects),
-            "unesco_sites": self.count_unesco_sites(places),
+            "unesco_sites": self.count_unesco_sites(places, db),
         }
 
         self.validate(data)

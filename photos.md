@@ -651,9 +651,21 @@
 | ![](https://photos-cdn.rgrannell.xyz/53157ba168.webp) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:nycticorax-nycticorax?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/d2e5c12557.webp) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐ | urn:ró:place:87 |  | urn:ró:mammal:suricata-suricatta?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a1f7e67d84.webp) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:insect:sphex-pensylvanicus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/b2cec1f4f5.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:123 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ddaf21837a.webp) | Lisbon | Cityscape | ⭐ | urn:ró:place:124 | Well, it would be a nice photo if the scaffolding weren't there... |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/66b2af6465.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:125 | [Not my kind of art](https://www.lkarno.com/post/yes-the-monument-to-the-discoveries-was-built-as-fascist-propaganda-and-this-is-why-you-should-car) |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7dabbe4394.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  | urn:ró:mammal:pan-troglodytes?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/2639ad24df.webp) | Lisbon | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:126 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c777b3a5ec.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/178d07679d.webp) | Lisbon | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:126 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/e058c1c1fe.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c1834a813d.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/5cda6a572b.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  | urn:ró:bird:pavo-cristatus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/1a1215f2c9.webp) | Lisbon | Wildlife | ⭐⭐⭐ | urn:ró:place:126 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b2cec1f4f5.webp) | Lisbon | Cityscape | ⭐⭐ | urn:ró:place:123 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/720ccaf46b.webp) | Lisbon | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:123 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9bf071da9b.webp) | Lisbon | Cityscape | ⭐⭐⭐ | urn:ró:place:123 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/26249dba40.webp) | Lisbon | Cityscape | ⭐⭐⭐ | urn:ró:place:127 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b59199b0f8.webp) | Lisbon | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:123 | I saw him poke his head out of the railing ❤️ | urn:ró:mammal:canis-lupus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ffe5197bf.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/92655c26a0.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5f80ea6e88.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
@@ -1028,6 +1040,15 @@
 | ![](https://photos-cdn.rgrannell.xyz/9678e17db4.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/5d57860cf1.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/5ccad64362.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/f6dd565ade.webp) | Sintra | Other | ⭐⭐⭐⭐ | urn:ró:place:130 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/edad687385.webp) | Sintra | Landscape | ⭐⭐⭐ | urn:ró:place:128 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fafbc39b3f.webp) | Sintra | Other | ⭐⭐⭐ | urn:ró:place:130 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/83c4006499.webp) | Sintra | Landscape | ⭐⭐⭐ | urn:ró:place:128 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6578496b5d.webp) | Sintra | Other | ⭐⭐⭐ | urn:ró:place:130 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f6bc49bebe.webp) | Sintra | Landscape | ⭐⭐ | urn:ró:place:128 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/28789cebff.webp) | Sintra | Landscape | ⭐⭐⭐ | urn:ró:place:130 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a37f183183.webp) | Sintra | Other | ⭐⭐⭐ | urn:ró:place:130 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7e06cc746e.webp) | Sintra | Other | ⭐ | urn:ró:place:128 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d1e912ae34.webp) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:102 | a puffin taking flight off a rock. ocean in background | urn:ró:bird:fratercula-arctica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b71f25704.webp) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 | little skellig, surrounded by the ocean. looking towards ireland. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/26493ad2e5.webp) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:102 | gannets and other seabirds in flight | urn:ró:bird:morus-bassanus?context=wild |  |
