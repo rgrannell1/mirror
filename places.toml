@@ -949,3 +949,31 @@ name = "Castle of the Moors"
 wikipedia = "https://en.wikipedia.org/wiki/Castle_of_the_Moors"
 in = ["urn:ró:country:portugal", "urn:ró:place:128"]
 features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:131"
+name = "Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Segovia"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:132"
+name = "Aqueduct of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Aqueduct_of_Segovia"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:133"
+name = "Alcázar of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Alc%C3%A1zar_of_Segovia"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:134"
+name = "Cathedral of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Segovia_Cathedral"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:cathedral", "urn:ró:place_feature:unesco"]

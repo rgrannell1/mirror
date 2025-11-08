@@ -993,6 +993,24 @@
 | ![](https://photos-cdn.rgrannell.xyz/a6fe28bcb2.webp) | Sandymount Beach | Wildlife | ⭐⭐⭐ | urn:ró:place:43 |  | urn:ró:bird:egretta-garzetta?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a1c847fa93.webp) | Sandymount Beach | Wildlife | ⭐⭐⭐ | urn:ró:place:43 |  | urn:ró:bird:egretta-garzetta?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/fc444a22ec.webp) | Sandymount Beach | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:43 |  | urn:ró:bird:egretta-garzetta?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/7cb4692bb2.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:132 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6924158c76.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:132 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6bd2580420.webp) | Segovia |  | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/729961419f.webp) | Segovia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/84836f36f3.webp) | Segovia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a5c9f0ea3e.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e37322b3ae.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f008e91e03.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:133 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c9189e2220.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/44f7541b52.webp) | Segovia | Wildlife | ⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:gyps-fulvus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/3f792fe52e.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/075fd01922.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3622030d32.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/88afc06cd0.webp) | Segovia | Wildlife | ⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:milvus-milvus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/e985e89857.webp) | Segovia | Wildlife | ⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:gyps-fulvus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4363cf8e7d.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:133 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a2e51f9113.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:132 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c9d001b9a3.webp) | Segovia | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:milvus-milvus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/67b14577a8.webp) | Seville | Wildlife | ⭐⭐⭐ | urn:ró:geoname:6361046 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/49cc7074dc.webp) | Seville | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:27 |  | urn:ró:bird:ciconia-ciconia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/5245581800.webp) | Seville | Wildlife | ⭐⭐⭐ | urn:ró:place:27 |  | urn:ró:bird:psittacula-krameri?context=wild |  |
