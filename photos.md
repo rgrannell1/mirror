@@ -799,9 +799,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/66e3b0c73e.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7b2d1f48d2.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c5c75ea2f.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8864534bdb.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1068bfc3b0.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/704c1e0fa4.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/369391d958.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eaa761437a.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9839d47628.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
@@ -1269,3 +1267,4 @@
 | ![](https://photos-cdn.rgrannell.xyz/027e40db4e.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:137 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/49be47e537.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:139 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7b48e702d2.webp) | Zaragoza |  | ⭐⭐⭐⭐ | urn:ró:place:139 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3adb44a583.webp) | Zaragoza | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:138 |  |  |  |
