@@ -88,6 +88,7 @@ class MediaScanner(IScanner):
         exif_table = self.db.exif_table()
         photos_table = self.db.photos_table()
         videos_table = self.db.videos_table()
+        self.db.album_data_view()
 
         current_fpaths = set()
 

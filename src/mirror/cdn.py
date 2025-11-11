@@ -91,6 +91,8 @@ class CDN:
 
         return self.url(name)
 
+    # NOTE: this is an extreme bottleneck, and is more often than not used on a bad WiFi connection
+    # on my half-defective laptop wifi
     def upload_file_public(self, name: str, encoded_path: str) -> str:
         """Upload a file to the CDN"""
 
