@@ -1012,3 +1012,17 @@ name = "Aljafería Palace"
 wikipedia = "https://en.wikipedia.org/wiki/Aljafer%C3%ADa_Palace"
 in = ["urn:ró:country:spain", "urn:ró:place:137"]
 features = ["urn:ró:place_feature:palace"]
+
+[[places]]
+id = "urn:ró:place:140"
+name = "Cathedral of the Savior of Zaragoza"
+wikipedia = "https://en.wikipedia.org/wiki/Cathedral_of_the_Savior_of_Zaragoza"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:141"
+name = "Santa María Magdalena"
+wikipedia = "https://en.wikipedia.org/wiki/Santa_Mar%C3%ADa_Magdalena,_Zaragoza"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:church"]

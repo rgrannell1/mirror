@@ -794,6 +794,19 @@
 | ![](https://photos-cdn.rgrannell.xyz/ffc433bbae.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae7517caa0.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:buteo-jamaicensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2737cd6f70.webp) | Madison & Chicago | Cityscape | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/584351d425.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/962620fa0e.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/66e3b0c73e.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7b2d1f48d2.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c5c75ea2f.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8864534bdb.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1068bfc3b0.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/704c1e0fa4.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/369391d958.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/eaa761437a.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9839d47628.webp) | Madrid | Wildlife |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2798168ec8.webp) | Madrid | Cityscape |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ff2adb11ed.webp) | Madrid | Cityscape |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b59e770dbb.webp) | Mallorca | Cityscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ab41a9495.webp) | Mallorca | Cityscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8aede381ca.webp) | Mallorca | Cityscape | ⭐⭐ |  |  |  |  |
@@ -996,14 +1009,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/7cb4692bb2.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:132 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6924158c76.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:132 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6bd2580420.webp) | Segovia |  | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/729961419f.webp) | Segovia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/84836f36f3.webp) | Segovia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:131 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a5c9f0ea3e.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e37322b3ae.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f008e91e03.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:133 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c9189e2220.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/44f7541b52.webp) | Segovia | Wildlife | ⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:gyps-fulvus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/3f792fe52e.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/075fd01922.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3622030d32.webp) | Segovia | Cityscape | ⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/88afc06cd0.webp) | Segovia | Wildlife | ⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:milvus-milvus?context=wild |  |
@@ -1011,6 +1020,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/4363cf8e7d.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:133 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a2e51f9113.webp) | Segovia | Cityscape | ⭐⭐ | urn:ró:place:132 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c9d001b9a3.webp) | Segovia | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:131 |  | urn:ró:bird:milvus-milvus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/729961419f.webp) | Segovia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:131 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/67b14577a8.webp) | Seville | Wildlife | ⭐⭐⭐ | urn:ró:geoname:6361046 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/49cc7074dc.webp) | Seville | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:27 |  | urn:ró:bird:ciconia-ciconia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/5245581800.webp) | Seville | Wildlife | ⭐⭐⭐ | urn:ró:place:27 |  | urn:ró:bird:psittacula-krameri?context=wild |  |
@@ -1254,3 +1264,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/97b9dc1806.webp) | York | Transport | ⭐⭐⭐ |  |  | urn:ró:plane:ATR%2072-600 |  |
 | ![](https://photos-cdn.rgrannell.xyz/56954c5d19.webp) | York | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:47 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a920d58e7.webp) | York | Transport | ⭐⭐ | urn:ró:place:47 | a rented boat in york on the river ous, viewed from the cabin | urn:ró:boat:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/d5eab59421.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:140 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dd46b3216c.webp) | Zaragoza | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:141 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/027e40db4e.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:137 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/49be47e537.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:139 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7b48e702d2.webp) | Zaragoza |  | ⭐⭐⭐⭐ | urn:ró:place:139 |  |  |  |
