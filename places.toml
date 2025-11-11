@@ -969,11 +969,46 @@ id = "urn:ró:place:133"
 name = "Alcázar of Segovia"
 wikipedia = "https://en.wikipedia.org/wiki/Alc%C3%A1zar_of_Segovia"
 in = ["urn:ró:country:spain", "urn:ró:place:131"]
-features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]
+features = ["urn:ró:place_feature:castle"]
 
 [[places]]
 id = "urn:ró:place:134"
 name = "Cathedral of Segovia"
 wikipedia = "https://en.wikipedia.org/wiki/Segovia_Cathedral"
 in = ["urn:ró:country:spain", "urn:ró:place:131"]
-features = ["urn:ró:place_feature:cathedral", "urn:ró:place_feature:unesco"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:135"
+name = "Madrid"
+wikipedia = "https://en.wikipedia.org/wiki/Madrid"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:136"
+name = "Madrid Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Madrid_Zoo"
+in = ["urn:ró:country:spain", "urn:ró:place:135"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:137"
+name = "Zaragoza"
+wikipedia = "https://en.wikipedia.org/wiki/Zaragoza"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:138"
+name = "Basílica de Nuestra Señora del Pilar"
+wikipedia = "https://en.wikipedia.org/wiki/Bas%C3%ADlica_de_Nuestra_Se%C3%B1ora_del_Pilar"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:church"]
+
+[[places]]
+id = "urn:ró:place:139"
+name = "Aljafería Palace"
+wikipedia = "https://en.wikipedia.org/wiki/Aljafer%C3%ADa_Palace"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:palace"]
