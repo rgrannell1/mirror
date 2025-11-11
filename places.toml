@@ -557,6 +557,7 @@ name = "Newgrange"
 wikipedia = "https://en.wikipedia.org/wiki/Newgrange"
 in = ["urn:ró:country:ireland"]
 features = ["urn:ró:place_feature:archaeological site", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:659"
 
 [[places]]
 id = "urn:ró:place:76"
@@ -907,6 +908,7 @@ name = "Belém Tower"
 wikipedia = "https://en.wikipedia.org/wiki/Bel%C3%A9m_Tower"
 in = ["urn:ró:country:portugal", "urn:ró:place:123"]
 features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:263"
 
 [[places]]
 id = "urn:ró:place:125"
@@ -942,6 +944,7 @@ name = "Pena Palace"
 wikipedia = "https://en.wikipedia.org/wiki/Pena_Palace"
 in = ["urn:ró:country:portugal", "urn:ró:place:128"]
 features = ["urn:ró:place_feature:palace", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:723"
 
 [[places]]
 id = "urn:ró:place:130"
@@ -949,20 +952,23 @@ name = "Castle of the Moors"
 wikipedia = "https://en.wikipedia.org/wiki/Castle_of_the_Moors"
 in = ["urn:ró:country:portugal", "urn:ró:place:128"]
 features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:723"
 
 [[places]]
 id = "urn:ró:place:131"
 name = "Segovia"
 wikipedia = "https://en.wikipedia.org/wiki/Segovia"
 in = ["urn:ró:country:spain"]
-features = ["urn:ró:place_feature:city"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:311"
 
 [[places]]
 id = "urn:ró:place:132"
 name = "Aqueduct of Segovia"
 wikipedia = "https://en.wikipedia.org/wiki/Aqueduct_of_Segovia"
 in = ["urn:ró:country:spain", "urn:ró:place:131"]
-features = ["urn:ró:place_feature:unesco"]
+features = ["urn:ró:place_feature:aqueduct"]
+
 
 [[places]]
 id = "urn:ró:place:133"
@@ -1004,7 +1010,8 @@ id = "urn:ró:place:138"
 name = "Basílica de Nuestra Señora del Pilar"
 wikipedia = "https://en.wikipedia.org/wiki/Bas%C3%ADlica_de_Nuestra_Se%C3%B1ora_del_Pilar"
 in = ["urn:ró:country:spain", "urn:ró:place:137"]
-features = ["urn:ró:place_feature:church"]
+features = ["urn:ró:place_feature:church", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:378"
 
 [[places]]
 id = "urn:ró:place:139"
@@ -1012,17 +1019,20 @@ name = "Aljafería Palace"
 wikipedia = "https://en.wikipedia.org/wiki/Aljafer%C3%ADa_Palace"
 in = ["urn:ró:country:spain", "urn:ró:place:137"]
 features = ["urn:ró:place_feature:palace"]
+unesco_id = "urn:ró:unesco:378"
 
 [[places]]
 id = "urn:ró:place:140"
 name = "Cathedral of the Savior of Zaragoza"
 wikipedia = "https://en.wikipedia.org/wiki/Cathedral_of_the_Savior_of_Zaragoza"
 in = ["urn:ró:country:spain", "urn:ró:place:137"]
-features = ["urn:ró:place_feature:cathedral"]
+features = ["urn:ró:place_feature:cathedral", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:378"
 
 [[places]]
 id = "urn:ró:place:141"
 name = "Santa María Magdalena"
 wikipedia = "https://en.wikipedia.org/wiki/Santa_Mar%C3%ADa_Magdalena,_Zaragoza"
 in = ["urn:ró:country:spain", "urn:ró:place:137"]
-features = ["urn:ró:place_feature:church"]
+features = ["urn:ró:place_feature:church", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:378"
