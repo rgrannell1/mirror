@@ -5,19 +5,19 @@ from feedgen.feed import FeedGenerator
 from datetime import datetime, timezone
 import json
 import os
-from typing import Any, Iterator, List, Optional, Protocol
+from typing import Iterator, List, Optional, Protocol
 from dateutil import tz
-import markdown
 
-from mirror.album import AlbumDataModel
-from mirror.config import DATA_URL, PHOTOS_URL
+from mirror.config import PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
+from mirror.data.ratings import RatingsReader
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, PhotosCountryReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.places import PlacesMetadataReader
 from mirror.data.types import SemanticTriple
+from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.database import SqliteDatabase
 from mirror.photo import PhotoMetadataModel, PhotoModel
@@ -346,13 +346,13 @@ class TriplesArtifact(IArtifact):
             VideosReader(),
             GeonameMetadataReader(),
             PlacesMetadataReader(),
+            UnescoReader(),
             WikidataMetadataReader(),
             BirdwatchUrlReader(),
             PhotoRelationsReader(),
             CountriesReader(),
             PhotosCountryReader()
         ]
-
         for long, alias in self.state['curie'].items():
             yield [
                 long, "curie", alias
