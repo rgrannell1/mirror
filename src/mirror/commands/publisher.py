@@ -286,6 +286,7 @@ class StatsArtifact(IArtifact):
 
         data = {
             "photos": sum(album.photos_count for album in albums),
+            "videos": sum(album.videos_count for album in albums),
             "albums": len(albums),
             "years": self.count_years(albums),
             "countries": self.count_countries(albums),
