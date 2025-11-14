@@ -17,6 +17,9 @@ class ThingsReader:
     src = item['id']
 
     for relation in item.keys():
+      if relation == 'id':
+        continue
+
       tgt_vals = item[relation]
 
       if isinstance(tgt_vals, list):

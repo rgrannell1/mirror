@@ -11,11 +11,9 @@ from dateutil import tz
 from mirror.config import PHOTOS_URL
 from mirror.data.birdwatch import BirdwatchUrlReader
 from mirror.data.countries import CountriesReader
-from mirror.data.ratings import RatingsReader
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, PhotosCountryReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
-from mirror.data.places import PlacesMetadataReader
 from mirror.data.things import ThingsReader
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
@@ -234,15 +232,15 @@ class StatsArtifact(IArtifact):
 
         unesco_places = set()
 
-        for place in PlacesMetadataReader().read(db):
-            if place.relation == "feature" and place.target == "urn:ró:place_feature:unesco":
-                unesco_places.add(place.source)
+        for thing in ThingsReader().read(db):
+            if thing.relation == "feature" and thing.target == "urn:ró:place_feature:unesco":
+                unesco_places.add(thing.source)
 
         photo_places = set()
 
-        for place in places:
-            if place.target in unesco_places:
-                photo_places.add(place.target)
+        for thing in places:
+            if thing.target in unesco_places:
+                photo_places.add(thing.target)
 
         return len(photo_places)
 
@@ -347,7 +345,6 @@ class TriplesArtifact(IArtifact):
             ExifReader(),
             VideosReader(),
             GeonameMetadataReader(),
-            PlacesMetadataReader(),
             ThingsReader(),
             UnescoReader(),
             WikidataMetadataReader(),

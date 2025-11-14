@@ -1,48 +1,1096 @@
 
+
+[[places]]
+id = "urn:ró:place:0"
+name = "Macizo de Anaga"
+short_name = "Anaga"
+wikipedia = "https://es.wikipedia.org/wiki/Macizo_de_Anaga"
+features = ["urn:ró:place_feature:mountain", "urn:ró:place_feature:rainforest"]
+in = ["urn:ró:country:tenerife"]
+
+[[places]]
+id = "urn:ró:place:1"
+name = "San Cristóbal de La Laguna"
+short_name = "La Lagunas"
+wikipedia = "https://en.wikipedia.org/wiki/San_Crist%C3%B3bal_de_La_Laguna"
+in = ["urn:ró:country:tenerife"]
+near = ["urn:ró:place:0"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:2"
+name = "Puerto de la Cruz"
+short_name = "Puerto de la Cruz"
+wikipedia = "https://en.wikipedia.org/wiki/Puerto_de_la_Cruz"
+in = ["urn:ró:country:tenerife"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:3"
+name = "Loro Parque"
+short_name = "Loro Parque"
+wikipedia = "https://en.wikipedia.org/wiki/Loro_Parque"
+in = ["urn:ró:country:tenerife", "urn:ró:place:2"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:4"
+name = "Cologne"
+short_name = "Cologne"
+wikipedia = "https://en.wikipedia.org/wiki/Cologne"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:5"
+name = "Hohenzollernbrücke"
+short_name = "Hohenzollernbrücke"
+wikipedia = "https://en.wikipedia.org/wiki/Hohenzollernbr%C3%BCcke"
+in = ["urn:ró:country:germany", "urn:ró:place:4"]
+features = ["urn:ró:place_feature:bridge"]
+
+[[places]]
+id = "urn:ró:place:6"
+name = "Cologne Cathedral"
+short_name = "Cologne Cathedral"
+wikipedia = "https://en.wikipedia.org/wiki/Cologne_Cathedral"
+in = ["urn:ró:country:germany", "urn:ró:place:4"]
+features = ["urn:ró:place_feature:cathedral"]
+near = ["urn:ró:place:5"]
+
+[[places]]
+id = "urn:ró:place:7"
+name = "Rheinauhafen"
+short_name = "Rheinauhafen"
+wikipedia = "https://en.wikipedia.org/wiki/Rheinauhafen"
+in = ["urn:ró:country:germany", "urn:ró:place:4"]
+features = ["urn:ró:place_feature:district"]
+near = ["urn:ró:place:5", "urn:ró:place:6"]
+
+[[places]]
+id = "urn:ró:place:8"
+name = "Howth"
+short_name = "Howth"
+wikipedia = "https://en.wikipedia.org/wiki/Howth"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:town"]
+
+[[places]]
+id = "urn:ró:place:9"
+name = "Bath"
+short_name = "Bath"
+wikipedia = "https://en.wikipedia.org/wiki/Bath,_Somerset"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:10"
+name = "Ljubljana"
+wikipedia = "https://en.wikipedia.org/wiki/Ljubljana"
+in = ["urn:ró:country:slovenia"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:11"
+name = "Ljubljana Mosque"
+wikipedia = "https://en.wikipedia.org/wiki/Ljubljana_Mosque"
+in = ["urn:ró:country:slovenia", "urn:ró:place:10"]
+features = ["urn:ró:place_feature:mosque"]
+
+[[places]]
+id = "urn:ró:place:12"
+name = "Lake Bled"
+wikipedia = "https://en.wikipedia.org/wiki/Lake_Bled"
+in = ["urn:ró:country:slovenia"]
+features = ["urn:ró:place_feature:lake", "urn:ró:place_feature:castle"]
+near = ["urn:ró:place:10"]
+
+[[places]]
+id = "urn:ró:place:13"
+name = "Conwy"
+wikipedia = "https://en.wikipedia.org/wiki/Conwy"
+in = ["urn:ró:country:wales"]
+features = ["urn:ró:place_feature:town", "urn:ró:place_feature:unesco", "urn:ró:place_feature:castle"]
+
+[[places]]
+id = "urn:ró:place:14"
+name = "Phoenix Park"
+wikipedia = "https://en.wikipedia.org/wiki/Phoenix_Park"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:park"]
+
+[[places]]
+id = "urn:ró:place:15"
+name = "Dublin"
+wikipedia = "https://en.wikipedia.org/wiki/Dublin"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:16"
+name = "Toledo"
+wikipedia = "https://en.wikipedia.org/wiki/Toledo,_Spain"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:17"
+name = "Dun Laoghaire"
+wikipedia = "https://en.wikipedia.org/wiki/D%C3%BAn_Laoghaire"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:town", "urn:ró:place_feature:harbor"]
+near = ["urn:ró:place:15"]
+
+[[places]]
+id = "urn:ró:place:18"
+name = "National Museum of Ireland – Archaeology"
+wikipedia = "https://en.wikipedia.org/wiki/National_Museum_of_Ireland_%E2%80%93_Archaeology"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:19"
+name = "Chester Beatty Library"
+wikipedia = "https://en.wikipedia.org/wiki/Chester_Beatty_Library"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:20"
+name = "Collins Barracks"
+wikipedia = "https://en.wikipedia.org/wiki/Collins_Barracks,_Dublin"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:21"
+name = "Granada"
+wikipedia = "https://en.wikipedia.org/wiki/Granada"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:22"
+name = "Alhambra"
+wikipedia = "https://en.wikipedia.org/wiki/Alhambra"
+in = ["urn:ró:country:spain", "urn:ró:place:21"]
+features = ["urn:ró:place_feature:palace", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:23"
+name = "Generalife"
+wikipedia = "https://en.wikipedia.org/wiki/Generalife"
+in = ["urn:ró:country:spain", "urn:ró:place:21"]
+features = ["urn:ró:place_feature:garden", "urn:ró:place_feature:unesco"]
+near = ["urn:ró:place:22"]
+
+[[places]]
+id = "urn:ró:place:24"
+name = "Córdoba"
+wikipedia = "https://en.wikipedia.org/wiki/C%C3%B3rdoba,_Spain"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:25"
+name = "Mezquita-Catedral de Córdoba"
+wikipedia = "https://en.wikipedia.org/wiki/Mosque%E2%80%93Cathedral_of_C%C3%B3rdoba"
+in = ["urn:ró:country:spain", "urn:ró:place:24"]
+features = ["urn:ró:place_feature:mosque","urn:ró:place_feature:cathedral", "urn:ró:place_feature:unesco"]
+
+[[places]]
+id = "urn:ró:place:26"
+name = "Cádiz"
+wikipedia = "https://en.wikipedia.org/wiki/C%C3%A1diz"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:27"
+name = "Seville"
+wikipedia = "https://en.wikipedia.org/wiki/Seville"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:28"
+name = "Plaza de España, Seville"
+wikipedia = "https://en.wikipedia.org/wiki/Plaza_de_Espa%C3%B1a,_Seville"
+in = ["urn:ró:country:spain", "urn:ró:place:27"]
+features = ["urn:ró:place_feature:square"]
+
+[[places]]
+id = "urn:ró:place:29"
+name = "Real Alcázar, Seville"
+wikipedia = "https://en.wikipedia.org/wiki/Alc%C3%A1zar_of_Seville"
+in = ["urn:ró:country:spain", "urn:ró:place:27"]
+features = ["urn:ró:place_feature:palace", "urn:ró:place_feature:unesco"]
+near = ["urn:ró:place:28"]
+
+[[places]]
+id = "urn:ró:place:30"
+name = "Naples"
+wikipedia = "https://en.wikipedia.org/wiki/Naples"
+in = ["urn:ró:country:italy"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:31"
+name = "Naples National Archaeological Museum"
+wikipedia = "https://en.wikipedia.org/wiki/Naples_National_Archaeological_Museum"
+in = ["urn:ró:country:italy", "urn:ró:place:30"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:32"
+name = "Castel Nuovo"
+wikipedia = "https://en.wikipedia.org/wiki/Castel_Nuovo"
+in = ["urn:ró:country:italy", "urn:ró:place:30"]
+features = ["urn:ró:place_feature:castle"]
+
+[[places]]
+id = "urn:ró:place:33"
+name = "Galleria Umberto I"
+wikipedia = "https://en.wikipedia.org/wiki/Galleria_Umberto_I"
+in = ["urn:ró:country:italy", "urn:ró:place:30"]
+features = []
+
+[[places]]
+id = "urn:ró:place:34"
+name = "Piazza del Plebiscito"
+wikipedia = "https://en.wikipedia.org/wiki/Piazza_del_Plebiscito"
+in = ["urn:ró:country:italy", "urn:ró:place:30"]
+features = ["urn:ró:place_feature:square"]
+
+[[places]]
+id = "urn:ró:place:35"
+name = "Pompeii"
+wikipedia = "https://en.wikipedia.org/wiki/Pompeii"
+in = ["urn:ró:country:italy"]
+features = ["urn:ró:place_feature:archaeological site", "urn:ró:place_feature:unesco"]
+near = ["urn:ró:place:30"]
+
+[[places]]
+id = "urn:ró:place:36"
+name = "Cherbourg"
+wikipedia = "https://en.wikipedia.org/wiki/Cherbourg"
+in = ["urn:ró:country:france"]
+features = ["urn:ró:place_feature:port", "urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:37"
+name = "London"
+wikipedia = "https://en.wikipedia.org/wiki/London"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:38"
+name = "Victoria and Albert Museum"
+wikipedia = "https://en.wikipedia.org/wiki/Victoria_and_Albert_Museum"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:39"
+name = "Natural History Museum, London"
+wikipedia = "https://en.wikipedia.org/wiki/Natural_History_Museum,_London"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:40"
+name = "Science Museum, London"
+wikipedia = "https://en.wikipedia.org/wiki/Science_Museum,_London"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:museum"]
+near = ["urn:ró:place:38", "urn:ró:place:39"]
+
+[[places]]
+id = "urn:ró:place:41"
+name = "British Museum"
+wikipedia = "https://en.wikipedia.org/wiki/British_Museum"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:42"
+name = "National Botanic Gardens"
+wikipedia = "https://en.wikipedia.org/wiki/National_Botanic_Gardens,_Ireland"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:garden"]
+near = ["urn:ró:place:15"]
+
+[[places]]
+id = "urn:ró:place:43"
+name = "Sandymount Beach"
+wikipedia = "https://en.wikipedia.org/wiki/Sandymount"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:beach"]
+near = ["urn:ró:place:15", "urn:ró:place:17"]
+
+[[places]]
+id = "urn:ró:place:44"
+name = "Bray"
+wikipedia = "https://en.wikipedia.org/wiki/Bray,_County_Wicklow"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:town"]
+near = ["urn:ró:place:15", "urn:ró:place:17"]
+
+[[places]]
+id = "urn:ró:place:45"
+name = "Mount Teide"
+wikipedia = "https://en.wikipedia.org/wiki/Mount_Teide"
+in = ["urn:ró:country:tenerife", "urn:ró:place:46"]
+features = ["urn:ró:place_feature:volcano", "urn:ró:place_feature:national-park"]
+
+[[places]]
+id = "urn:ró:place:46"
+name = "Teide National-Park"
+wikipedia = "https://en.wikipedia.org/wiki/Teide_National_Park"
+in = ["urn:ró:country:tenerife"]
+features = ["urn:ró:place_feature:national-park", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:1258"
+
+[[places]]
+id = "urn:ró:place:47"
+name = "York"
+wikipedia = "https://en.wikipedia.org/wiki/York"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:48"
+name = "York Minster"
+wikipedia = "https://en.wikipedia.org/wiki/York_Minster"
+in = ["urn:ró:country:england", "urn:ró:place:47"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:49"
+name = "National Railway Museum"
+wikipedia = "https://en.wikipedia.org/wiki/National_Railway_Museum"
+in = ["urn:ró:country:england", "urn:ró:place:47"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:50"
+name = "Ireland's Eye"
+wikipedia = "https://en.wikipedia.org/wiki/Ireland%27s_Eye"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island"]
+near = ["urn:ró:place:15", "urn:ró:place:8"]
+
+[[places]]
+id = "urn:ró:place:51"
+name = "Oslo"
+wikipedia = "https://en.wikipedia.org/wiki/Oslo"
+in = ["urn:ró:country:norway"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:52"
+name = "Stockholm"
+wikipedia = "https://en.wikipedia.org/wiki/Stockholm"
+in = ["urn:ró:country:sweden"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:53"
+name = "Dalkey Island"
+wikipedia = "https://en.wikipedia.org/wiki/Dalkey_Island"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island"]
+near = ["urn:ró:place:15", "urn:ró:place:17"]
+
+[[places]]
+id = "urn:ró:place:54"
+name = "Bristol"
+wikipedia = "https://en.wikipedia.org/wiki/Bristol"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:55"
+name = "Clifton Suspension Bridge"
+wikipedia = "https://en.wikipedia.org/wiki/Clifton_Suspension_Bridge"
+in = ["urn:ró:country:england", "urn:ró:place:54"]
+features = ["urn:ró:place_feature:bridge"]
+
+[[places]]
+id = "urn:ró:place:56"
+name = "Temple Meads"
+wikipedia = "https://en.wikipedia.org/wiki/Temple_Meads"
+in = ["urn:ró:country:england", "urn:ró:place:54"]
+features = ["urn:ró:place_feature:train station"]
+
+[[places]]
+id = "urn:ró:place:57"
+name = "Lough Neagh"
+wikipedia = "https://en.wikipedia.org/wiki/Lough_Neagh"
+in = ["urn:ró:country:northern-ireland"]
+features = ["urn:ró:place_feature:lake"]
+
+[[places]]
+id = "urn:ró:place:58"
+name = "Hamburg"
+wikipedia = "https://en.wikipedia.org/wiki/Hamburg"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:59"
+name = "Miniatur Wunderland"
+wikipedia = "https://en.wikipedia.org/wiki/Miniatur_Wunderland"
+in = ["urn:ró:country:germany", "urn:ró:place:58"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:60"
+name = "Lübeck"
+wikipedia = "https://en.wikipedia.org/wiki/L%C3%BCbeck"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:61"
+name = "Zürich"
+wikipedia = "https://en.wikipedia.org/wiki/Z%C3%BCrich"
+in = ["urn:ró:country:switzerland"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:62"
+name = "Rheinfall"
+wikipedia = "https://en.wikipedia.org/wiki/Rheinfall"
+in = ["urn:ró:country:switzerland"]
+features = ["urn:ró:place_feature:waterfall"]
+
+[[places]]
+id = "urn:ró:place:63"
+name = "Berlin"
+wikipedia = "https://en.wikipedia.org/wiki/Berlin"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:64"
+name = "Museum Island"
+wikipedia = "https://en.wikipedia.org/wiki/Museum_Island"
+in = ["urn:ró:country:germany", "urn:ró:place:63"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:65"
+name = "Berlin Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Berlin_Zoo"
+in = ["urn:ró:country:germany", "urn:ró:place:63"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:66"
+name = "Brandenburg Gate"
+wikipedia = "https://en.wikipedia.org/wiki/Brandenburg_Gate"
+in = ["urn:ró:country:germany", "urn:ró:place:63"]
+features = ["urn:ró:place_feature:monument"]
+
+[[places]]
+id = "urn:ró:place:67"
+name = "Karl Marx Allee"
+wikipedia = "https://en.wikipedia.org/wiki/Karl_Marx_Allee"
+in = ["urn:ró:country:germany", "urn:ró:place:63"]
+features = ["urn:ró:place_feature:street"]
+
+[[places]]
+id = "urn:ró:place:68"
+name = "Tiergarten, Berlin"
+wikipedia = "https://en.wikipedia.org/wiki/Tiergarten,_Berlin"
+in = ["urn:ró:country:germany", "urn:ró:place:63"]
+features = ["urn:ró:place_feature:park"]
+
+[[places]]
+id = "urn:ró:place:69"
+name = "Bull Island"
+wikipedia = "https://en.wikipedia.org/wiki/Bull_Island"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island"]
+near = ["urn:ró:place:15", "urn:ró:place:17"]
+
+[[places]]
+id = "urn:ró:place:70"
+name = "Fota Wildlife Park"
+wikipedia = "https://en.wikipedia.org/wiki/Fota_Wildlife_Park"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:71"
+name = "Edinburgh"
+wikipedia = "https://en.wikipedia.org/wiki/Edinburgh"
+in = ["urn:ró:country:scotland"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:728"
+
+[[places]]
+id = "urn:ró:place:72"
+name = "Edinburgh Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Edinburgh_Zoo"
+in = ["urn:ró:country:scotland", "urn:ró:place:71"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:73"
+name = "Burr Point"
+wikipedia = "https://en.wikipedia.org/wiki/Burr_Point"
+in = ["urn:ró:country:northern-ireland"]
+features = []
+
+[[places]]
+id = "urn:ró:place:74"
+name = "Rotterdam"
+wikipedia = "https://en.wikipedia.org/wiki/Rotterdam"
+in = ["urn:ró:country:the-netherlands"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:port"]
+
+[[places]]
+id = "urn:ró:place:75"
+name = "Newgrange"
+wikipedia = "https://en.wikipedia.org/wiki/Newgrange"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:archaeological site", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:659"
+
+[[places]]
+id = "urn:ró:place:76"
+name = "Ballyfin"
+wikipedia = "https://en.wikipedia.org/wiki/Ballyfin"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:77"
+name = "Cong"
+wikipedia = "https://en.wikipedia.org/wiki/Cong"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:78"
+name = "Birmingham"
+wikipedia = "https://en.wikipedia.org/wiki/Birmingham"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:79"
+name = "London Wetland Centre"
+wikipedia = "https://en.wikipedia.org/wiki/London_Wetland_Centre"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:nature reserve"]
+
+[[places]]
+id = "urn:ró:place:80"
+name = "Killarney National-Park"
+wikipedia = "https://en.wikipedia.org/wiki/Killarney_National_Park"
+in = ["urn:ró:country:ireland", "urn:ró:place:104"]
+features = ["urn:ró:place_feature:national-park"]
+
+[[places]]
+id = "urn:ró:place:81"
+name = "Düsseldorf"
+wikipedia = "https://en.wikipedia.org/wiki/D%C3%BCsseldorf"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:82"
+name = "Amsterdam"
+wikipedia = "https://en.wikipedia.org/wiki/Amsterdam"
+in = ["urn:ró:country:the-netherlands"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:83"
+name = "Regent's Park"
+wikipedia = "https://en.wikipedia.org/wiki/Regent%27s_Park"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:park"]
+
+[[places]]
+id = "urn:ró:place:84"
+name = "Wisconsin"
+wikipedia = "https://en.wikipedia.org/wiki/Wisconsin"
+in = ["urn:ró:country:usa"]
+features = ["urn:ró:place_feature:state"]
+
+[[places]]
+id = "urn:ró:place:85"
+name = "International Crane Foundation"
+wikipedia = "https://en.wikipedia.org/wiki/International_Crane_Foundation"
+in = ["urn:ró:country:usa"]
+features = ["urn:ró:place_feature:wildlife-conservation"]
+
+[[places]]
+id = "urn:ró:place:86"
+name = "Madison"
+wikipedia = "https://en.wikipedia.org/wiki/Madison,_Wisconsin"
+in = ["urn:ró:country:usa", "urn:ró:place:84"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:87"
+name = "Lincoln Park Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Lincoln_Park_Zoo"
+in = ["urn:ró:country:usa", "urn:ró:place:88"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:88"
+name = "Chicago"
+wikipedia = "https://en.wikipedia.org/wiki/Chicago"
+in = ["urn:ró:country:usa"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:89"
+name = "Shedd Aquarium"
+wikipedia = "https://en.wikipedia.org/wiki/Shedd_Aquarium"
+in = ["urn:ró:country:usa", "urn:ró:place:88"]
+features = ["urn:ró:place_feature:aquarium"]
+
+[[places]]
+id = "urn:ró:place:90"
+name = "Lake Geneva"
+wikipedia = "https://en.wikipedia.org/wiki/Lake_Geneva_(Illinois-Wisconsin)"
+in = ["urn:ró:country:usa"]
+features = ["urn:ró:place_feature:lake"]
+near = ["urn:ró:place:84", "urn:ró:place:86", "urn:ró:place:88"]
+
+[[places]]
+id = "urn:ró:place:91"
+name = "Grand Canal, Dublin"
+wikipedia = "https://en.wikipedia.org/wiki/Grand_Canal_(Ireland)"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:canal"]
+
+[[places]]
+id = "urn:ró:place:92"
+name = "Galway"
+wikipedia = "https://en.wikipedia.org/wiki/Galway"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:93"
+name = "Salthill"
+wikipedia = "https://en.wikipedia.org/wiki/Salthill"
+in = ["urn:ró:country:ireland", "urn:ró:place:92"]
+features = ["urn:ró:place_feature:town"]
+
+[[places]]
+id = "urn:ró:place:94"
+name = "London Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/ZSL_London_Zoo"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:95"
+name = "Dublin Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Dublin_Zoo"
+in = ["urn:ró:country:ireland", "urn:ró:place:15"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:96"
+name = "Chester Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Chester_Zoo"
+in = ["urn:ró:country:england"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:97"
+name = "Avoca Village"
+wikipedia = "https://en.wikipedia.org/wiki/Avoca,_County_Wicklow"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:98"
+name = "Emo Court"
+wikipedia = "https://en.wikipedia.org/wiki/Emo_Court"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:park"]
+
+[[places]]
+id = "urn:ró:place:99"
+name = " Slieve Bloom Mountains"
+wikipedia = "https://en.wikipedia.org/wiki/Slieve_Bloom_Mountains"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:mountain"]
+
+[[places]]
+id = "urn:ró:place:100"
+name = "Boston"
+wikipedia = "https://en.wikipedia.org/wiki/Boston"
+in = ["urn:ró:country:usa"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:101"
+name = "Gleanveagh National-Park"
+wikipedia = "https://en.wikipedia.org/wiki/Glenveagh_National_Park"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:national-park"]
+
+[[places]]
+id = "urn:ró:place:102"
+name = "Skellig Michael"
+wikipedia = "https://en.wikipedia.org/wiki/Skellig_Michael"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:757"
+
+[[places]]
+id = "urn:ró:place:103"
+name = "Lough Atalia"
+wikipedia = "https://en.wikipedia.org/wiki/Lough_Atalia"
+in = ["urn:ró:country:ireland", "urn:ró:place:92"]
+features = ["urn:ró:place_feature:lake"]
+
+[[places]]
+id = "urn:ró:place:104"
+name = "Kerry"
+wikipedia = "https://en.wikipedia.org/wiki/Kerry"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:county"]
+
+[[places]]
+id = "urn:ró:place:105"
+name = "Saltee Islands"
+wikipedia = "https://en.wikipedia.org/wiki/Saltee_Islands"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island", "urn:ró:place_feature:nature reserve"]
+
+[[places]]
+id = "urn:ró:place:106"
+name = "Timanfaya National-Park"
+wikipedia = "https://en.wikipedia.org/wiki/Timanfaya_National_Park"
+in = ["urn:ró:country:lanzarote"]
+features = ["urn:ró:place_feature:national-park", "urn:ró:place_feature:volcano"]
+
+[[places]]
+id = "urn:ró:place:107"
+name = "Munich"
+wikipedia = "https://en.wikipedia.org/wiki/Munich"
+in = ["urn:ró:country:germany"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:108"
+name = "Cliffs of Moher"
+wikipedia = "https://en.wikipedia.org/wiki/Cliffs_of_Moher"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:cliffs"]
+
+[[places]]
+id = "urn:ró:place:109"
+name = "Aran Islands"
+wikipedia = "https://en.wikipedia.org/wiki/Aran_Islands"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:island", "urn:ró:place_feature:nature reserve"]
+
+[[places]]
+id = "urn:ró:place:110"
+name = "Laois"
+wikipedia = "https://en.wikipedia.org/wiki/Laois"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:county"]
+
+[[places]]
+id = "urn:ró:place:111"
+name = "Roundstone"
+wikipedia = "https://en.wikipedia.org/wiki/Roundstone"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:112"
+name = "Ouchterard"
+wikipedia = "https://en.wikipedia.org/wiki/Oughterard"
+in = ["urn:ró:country:ireland"]
+features = ["urn:ró:place_feature:town"]
+
+[[places]]
+id = "urn:ró:place:113"
+name = "Castles and Town Walls of King Edward in Gwynedd"
+wikipedia = "https://en.wikipedia.org/wiki/Castles_and_Town_Walls_of_King_Edward_in_Gwynedd"
+in = ["urn:ró:country:wales"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:374"
+
+[[places]]
+id = "urn:ró:place:114"
+name = "Cathedral, Alcázar and Archivo de Indias in Seville"
+wikipedia = "https://en.wikipedia.org/wiki/Cathedral,_Alc%C3%A1zar_and_Archivo_de_Indias_in_Seville"
+in = ["urn:ró:country:spain", "urn:ró:place:27", "urn:ró:place:29"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:383"
+
+[[places]]
+id = "urn:ró:place:115"
+name = "Palace of Westminster and Westminster Abbey including Saint Margaret’s Church"
+wikipedia = "https://en.wikipedia.org/wiki/Palace_of_Westminster_and_Westminster_Abbey_including_Saint_Margaret%27s_Church"
+in = ["urn:ró:country:england", "urn:ró:place:37"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:426"
+
+[[places]]
+id = "urn:ró:place:116"
+name = "Brú na Bóinne - Archaeological Ensemble of the Bend of the Boyne"
+wikipedia = "https://en.wikipedia.org/wiki/Br%C3%BA_na_B%C3%B3inne_-_Archaeological_Ensemble_of_the_Bend_of_the_Boyne"
+in = ["urn:ró:country:ireland", "urn:ró:place:75"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:659"
+
+[[places]]
+id = "urn:ró:place:117"
+name = " Archaeological Areas of Pompei, Herculaneum and Torre Annunziata"
+wikipedia = "https://en.wikipedia.org/wiki/Archaeological_Areas_of_Pompei,_Herculaneum_and_Torre_Annunziata"
+in = ["urn:ró:country:italy", "urn:ró:place:35"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:829"
+
+[[places]]
+id = "urn:ró:place:118"
+name= "Postojna Cave"
+wikipedia = "https://en.wikipedia.org/wiki/Postojna_Cave"
+in = ["urn:ró:country:slovenia"]
+features = ["urn:ró:place_feature:cave"]
+
+[[places]]
+id = "urn:ró:place:119"
+name = "Llanfairpwllgwyngyll"
+wikipedia = "https://en.wikipedia.org/wiki/Llanfairpwllgwyngyll"
+in = ["urn:ró:country:wales"]
+features = ["urn:ró:place_feature:village"]
+
+[[places]]
+id = "urn:ró:place:120"
+name = "Toledo Cathedral"
+wikipedia = "https://en.wikipedia.org/wiki/Toledo_Cathedral"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:121"
+name = "The Monastery of San Juan de los Reyes"
+wikipedia = "https://en.wikipedia.org/wiki/Monastery_of_San_Juan_de_los_Reyes"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:monastery"]
+
+[[places]]
+id = "urn:ró:place:122"
+name = "Museum of Santa Cruz"
+wikipedia = "https://en.wikipedia.org/wiki/Museum_of_Santa_Cruz"
+in = ["urn:ró:country:spain", "urn:ró:place:16"]
+features = ["urn:ró:place_feature:museum"]
+
+[[places]]
+id = "urn:ró:place:123"
+name = "Lisbon"
+wikipedia = "https://en.wikipedia.org/wiki/Lisbon"
+in = ["urn:ró:country:portugal"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:124"
+name = "Belém Tower"
+wikipedia = "https://en.wikipedia.org/wiki/Bel%C3%A9m_Tower"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:263"
+
+[[places]]
+id = "urn:ró:place:125"
+name = "Monument of the Discoveries"
+wikipedia = "https://en.wikipedia.org/wiki/Monument_of_the_Discoveries"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:monument"]
+
+[[places]]
+id = "urn:ró:place:126"
+name = "Lisbon Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Lisbon_Zoo"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:127"
+name = "São Jorge Castle"
+wikipedia = "https://en.wikipedia.org/wiki/S%C3%A3o_Jorge_Castle"
+in = ["urn:ró:country:portugal", "urn:ró:place:123"]
+features = ["urn:ró:place_feature:castle"]
+
+[[places]]
+id = "urn:ró:place:128"
+name = "Sintra"
+wikipedia = "https://en.wikipedia.org/wiki/Sintra"
+in = ["urn:ró:country:portugal"]
+features = ["urn:ró:place_feature:town"]
+
+[[places]]
+id = "urn:ró:place:129"
+name = "Pena Palace"
+wikipedia = "https://en.wikipedia.org/wiki/Pena_Palace"
+in = ["urn:ró:country:portugal", "urn:ró:place:128"]
+features = ["urn:ró:place_feature:palace", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:723"
+
+[[places]]
+id = "urn:ró:place:130"
+name = "Castle of the Moors"
+wikipedia = "https://en.wikipedia.org/wiki/Castle_of_the_Moors"
+in = ["urn:ró:country:portugal", "urn:ró:place:128"]
+features = ["urn:ró:place_feature:castle", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:723"
+
+[[places]]
+id = "urn:ró:place:131"
+name = "Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Segovia"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:311"
+
+[[places]]
+id = "urn:ró:place:132"
+name = "Aqueduct of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Aqueduct_of_Segovia"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:aqueduct"]
+
+
+[[places]]
+id = "urn:ró:place:133"
+name = "Alcázar of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Alc%C3%A1zar_of_Segovia"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:castle"]
+
+[[places]]
+id = "urn:ró:place:134"
+name = "Cathedral of Segovia"
+wikipedia = "https://en.wikipedia.org/wiki/Segovia_Cathedral"
+in = ["urn:ró:country:spain", "urn:ró:place:131"]
+features = ["urn:ró:place_feature:cathedral"]
+
+[[places]]
+id = "urn:ró:place:135"
+name = "Madrid"
+wikipedia = "https://en.wikipedia.org/wiki/Madrid"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:136"
+name = "Madrid Zoo"
+wikipedia = "https://en.wikipedia.org/wiki/Madrid_Zoo"
+in = ["urn:ró:country:spain", "urn:ró:place:135"]
+features = ["urn:ró:place_feature:zoo"]
+
+[[places]]
+id = "urn:ró:place:137"
+name = "Zaragoza"
+wikipedia = "https://en.wikipedia.org/wiki/Zaragoza"
+in = ["urn:ró:country:spain"]
+features = ["urn:ró:place_feature:city"]
+
+[[places]]
+id = "urn:ró:place:138"
+name = "Cathedral-Basilica of Our Lady of the Pillar"
+wikipedia = "https://en.wikipedia.org/wiki/Cathedral-Basilica_of_Our_Lady_of_the_Pillar"
+in = ["urn:ró:place:137"]
+features = ["urn:ró:place_feature:church"]
+
+[[places]]
+id = "urn:ró:place:139"
+name = "Aljafería Palace"
+wikipedia = "https://en.wikipedia.org/wiki/Aljafer%C3%ADa_Palace"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:palace"]
+unesco_id = "urn:ró:unesco:378"
+
+[[places]]
+id = "urn:ró:place:140"
+name = "Cathedral of the Savior of Zaragoza"
+wikipedia = "https://en.wikipedia.org/wiki/Cathedral_of_the_Savior_of_Zaragoza"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:cathedral", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:378"
+
+[[places]]
+id = "urn:ró:place:141"
+name = "Santa María Magdalena"
+wikipedia = "https://en.wikipedia.org/wiki/Santa_Mar%C3%ADa_Magdalena,_Zaragoza"
+in = ["urn:ró:country:spain", "urn:ró:place:137"]
+features = ["urn:ró:place_feature:church", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:378"
+
+
+
+
+
+
+
+
+
+
+
 [[trips]]
 id = "urn:ró:trip:iberia-25"
 contains_album = [
-  "zaragoza-25",
-  "madrid-25",
-  "segovia-25",
-  "sintra-25",
-  "lisbon-25"
+  "urn:ró:album:zaragoza-25",
+  "urn:ró:album:madrid-25",
+  "urn:ró:album:segovia-25",
+  "urn:ró:album:sintra-25",
+  "urn:ró:album:lisbon-25"
 ]
 
 [[trips]]
 id = "urn:ró:trip:canary-25"
 contains_album = [
-  "la-lagunas-25",
+  "urn:ró:album:la-lagunas-25",
   # well that's wrong, twice
-  "puorto-de-la-cruz-24",
-  "anaga-25"
+  "urn:ró:album:puorto-de-la-cruz-24",
+  "urn:ró:album:anaga-25"
 ]
 
 [[trips]]
 id = "urn:ró:trip:iberia-24"
 contains_album = [
-  "granada-24",
-  "cordoba-24",
-  "cadiz-24",
-  "seville-24"
+  "urn:ró:album:granada-24",
+  "urn:ró:album:cordoba-24",
+  "urn:ró:album:cadiz-24",
+  "urn:ró:album:seville-24"
 ]
 
 [[trips]]
 id = "urn:ró:trip:canary-24"
 contains_album = [
-  "mount-tiede-24",
-  "tenerife-24"
+  "urn:ró:album:mount-tiede-24",
+  "urn:ró:album:tenerife-24"
 ]
 
 [[trips]]
 id = "urn:ró:trip:us-22"
 contains_album = [
-  "wisconsin-22",
-  "cranes-22",
-  "lincoln-park-zoo-22",
-  "shedd-aquarium-22",
+  "urn:ró:album:wisconsin-22",
+  "urn:ró:album:cranes-22",
+  "urn:ró:album:lincoln-park-zoo-22",
+  "urn:ró:album:shedd-aquarium-22",
   # well, no, not 24...
-  "wisconsin-state-24"
+  "urn:ró:album:wisconsin-state-24"
 ]
 
 [[place_feature]]
@@ -102,20 +1150,12 @@ id = "urn:ró:place_feature:canal"
 name = "Canal"
 
 [[place_feature]]
-id = "urn:ró:place_feature:castle"
-name = "Castle"
-
-[[place_feature]]
 id = "urn:ró:place_feature:cathedral"
 name = "Cathedral"
 
 [[place_feature]]
 id = "urn:ró:place_feature:cave"
 name = "Cave"
-
-[[place_feature]]
-id = "urn:ró:place_feature:city"
-name = "City"
 
 [[place_feature]]
 id = "urn:ró:place_feature:cliffs"
@@ -162,24 +1202,12 @@ id = "urn:ró:place_feature:museum"
 name = "Museum"
 
 [[place_feature]]
-id = "urn:ró:place_feature:national-park"
-name = "National Park"
-
-[[place_feature]]
-id = "urn:ró:place_feature:nature reserve"
-name = "Nature Reserve"
-
-[[place_feature]]
 id = "urn:ró:place_feature:palace"
 name = "Palace"
 
 [[place_feature]]
 id = "urn:ró:place_feature:park"
 name = "Park"
-
-[[place_feature]]
-id = "urn:ró:place_feature:port"
-name = "Port"
 
 [[place_feature]]
 id = "urn:ró:place_feature:square"
@@ -202,16 +1230,8 @@ id = "urn:ró:place_feature:train station"
 name = "Train Station"
 
 [[place_feature]]
-id = "urn:ró:place_feature:unesco"
-name = "UNESCO"
-
-[[place_feature]]
 id = "urn:ró:place_feature:village"
 name = "Village"
-
-[[place_feature]]
-id = "urn:ró:place_feature:volcano"
-name = "Volcano"
 
 [[place_feature]]
 id = "urn:ró:place_feature:waterfall"
