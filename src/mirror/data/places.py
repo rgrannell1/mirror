@@ -36,55 +36,6 @@ class PlaceModel:
             near_places=data.get("near", []),
         )
 
-
-FEATURES = {
-    "urn:ró:place_feature:castle": "Castle",
-    "urn:ró:place_feature:city": "City",
-    "urn:ró:place_feature:harbor": "Harbour",
-    "urn:ró:place_feature:national-park": "National Park",
-    "urn:ró:place_feature:nature reserve": "Nature Reserve",
-    "urn:ró:place_feature:port": "Port",
-    "urn:ró:place_feature:rainforest": "Rainforest",
-    "urn:ró:place_feature:unesco": "UNESCO",
-    "urn:ró:place_feature:volcano": "Volcano",
-    "urn:ró:place_feature:aquarium": "Aquarium",
-    "urn:ró:place_feature:archaeological site": "Archaeological Site",
-    "urn:ró:place_feature:beach": "Beach",
-    "urn:ró:place_feature:bridge": "Bridge",
-    "urn:ró:place_feature:canal": "Canal",
-    "urn:ró:place_feature:castle": "Castle",
-    "urn:ró:place_feature:cathedral": "Cathedral",
-    "urn:ró:place_feature:cave": "Cave",
-    "urn:ró:place_feature:city": "City",
-    "urn:ró:place_feature:cliffs": "Cliffs",
-    "urn:ró:place_feature:county": "County",
-    "urn:ró:place_feature:district": "District",
-    "urn:ró:place_feature:garden": "Garden",
-    "urn:ró:place_feature:island": "Island",
-    "urn:ró:place_feature:lake": "Lake",
-    "urn:ró:place_feature:monastery": "Monastery",
-    "urn:ró:place_feature:monument": "Monument",
-    "urn:ró:place_feature:mosque": "Mosque",
-    "urn:ró:place_feature:mountain": "Mountain",
-    "urn:ró:place_feature:museum": "Museum",
-    "urn:ró:place_feature:national-park": "National Park",
-    "urn:ró:place_feature:nature reserve": "Nature Reserve",
-    "urn:ró:place_feature:palace": "Palace",
-    "urn:ró:place_feature:park": "Park",
-    "urn:ró:place_feature:port": "Port",
-    "urn:ró:place_feature:square": "Square",
-    "urn:ró:place_feature:state": "State",
-    "urn:ró:place_feature:street": "Street",
-    "urn:ró:place_feature:town": "Town",
-    "urn:ró:place_feature:train station": "Train Station",
-    "urn:ró:place_feature:unesco": "UNESCO",
-    "urn:ró:place_feature:village": "Village",
-    "urn:ró:place_feature:volcano": "Volcano",
-    "urn:ró:place_feature:waterfall": "Waterfall",
-    "urn:ró:place_feature:wildlife-conservation": "Wildlife Conservation",
-    "urn:ró:place_feature:zoo": "Zoo",
-}
-
 class PlacesMetadataReader:
     """Read place information from places.toml file"""
 
@@ -100,13 +51,6 @@ class PlacesMetadataReader:
 
         with open(places_path, 'rb') as f:
             data = tomllib.load(f)
-
-        for feature_urn, feature_name in FEATURES.items():
-            yield SemanticTriple(
-                source=feature_urn,
-                relation=KnownRelations.NAME,
-                target=feature_name,
-            )
 
         places = data.get("places", [])
         for place_data in places:

@@ -1,0 +1,226 @@
+
+[[trips]]
+id = "urn:ró:trip:iberia-25"
+contains_album = [
+  "zaragoza-25",
+  "madrid-25",
+  "segovia-25",
+  "sintra-25",
+  "lisbon-25"
+]
+
+[[trips]]
+id = "urn:ró:trip:canary-25"
+contains_album = [
+  "la-lagunas-25",
+  # well that's wrong, twice
+  "puorto-de-la-cruz-24",
+  "anaga-25"
+]
+
+[[trips]]
+id = "urn:ró:trip:iberia-24"
+contains_album = [
+  "granada-24",
+  "cordoba-24",
+  "cadiz-24",
+  "seville-24"
+]
+
+[[trips]]
+id = "urn:ró:trip:canary-24"
+contains_album = [
+  "mount-tiede-24",
+  "tenerife-24"
+]
+
+[[trips]]
+id = "urn:ró:trip:us-22"
+contains_album = [
+  "wisconsin-22",
+  "cranes-22",
+  "lincoln-park-zoo-22",
+  "shedd-aquarium-22",
+  # well, no, not 24...
+  "wisconsin-state-24"
+]
+
+[[place_feature]]
+id = "urn:ró:place_feature:castle"
+name = "Castle"
+
+[[place_feature]]
+id = "urn:ró:place_feature:city"
+name = "City"
+
+[[place_feature]]
+id = "urn:ró:place_feature:harbor"
+name = "Harbour"
+
+[[place_feature]]
+id = "urn:ró:place_feature:national-park"
+name = "National Park"
+
+[[place_feature]]
+id = "urn:ró:place_feature:nature reserve"
+name = "Nature Reserve"
+
+[[place_feature]]
+id = "urn:ró:place_feature:port"
+name = "Port"
+
+[[place_feature]]
+id = "urn:ró:place_feature:rainforest"
+name = "Rainforest"
+
+[[place_feature]]
+id = "urn:ró:place_feature:unesco"
+name = "UNESCO"
+
+[[place_feature]]
+id = "urn:ró:place_feature:volcano"
+name = "Volcano"
+
+[[place_feature]]
+id = "urn:ró:place_feature:aquarium"
+name = "Aquarium"
+
+[[place_feature]]
+id = "urn:ró:place_feature:archaeological site"
+name = "Archaeological Site"
+
+[[place_feature]]
+id = "urn:ró:place_feature:beach"
+name = "Beach"
+
+[[place_feature]]
+id = "urn:ró:place_feature:bridge"
+name = "Bridge"
+
+[[place_feature]]
+id = "urn:ró:place_feature:canal"
+name = "Canal"
+
+[[place_feature]]
+id = "urn:ró:place_feature:castle"
+name = "Castle"
+
+[[place_feature]]
+id = "urn:ró:place_feature:cathedral"
+name = "Cathedral"
+
+[[place_feature]]
+id = "urn:ró:place_feature:cave"
+name = "Cave"
+
+[[place_feature]]
+id = "urn:ró:place_feature:city"
+name = "City"
+
+[[place_feature]]
+id = "urn:ró:place_feature:cliffs"
+name = "Cliffs"
+
+[[place_feature]]
+id = "urn:ró:place_feature:county"
+name = "County"
+
+[[place_feature]]
+id = "urn:ró:place_feature:district"
+name = "District"
+
+[[place_feature]]
+id = "urn:ró:place_feature:garden"
+name = "Garden"
+
+[[place_feature]]
+id = "urn:ró:place_feature:island"
+name = "Island"
+
+[[place_feature]]
+id = "urn:ró:place_feature:lake"
+name = "Lake"
+
+[[place_feature]]
+id = "urn:ró:place_feature:monastery"
+name = "Monastery"
+
+[[place_feature]]
+id = "urn:ró:place_feature:monument"
+name = "Monument"
+
+[[place_feature]]
+id = "urn:ró:place_feature:mosque"
+name = "Mosque"
+
+[[place_feature]]
+id = "urn:ró:place_feature:mountain"
+name = "Mountain"
+
+[[place_feature]]
+id = "urn:ró:place_feature:museum"
+name = "Museum"
+
+[[place_feature]]
+id = "urn:ró:place_feature:national-park"
+name = "National Park"
+
+[[place_feature]]
+id = "urn:ró:place_feature:nature reserve"
+name = "Nature Reserve"
+
+[[place_feature]]
+id = "urn:ró:place_feature:palace"
+name = "Palace"
+
+[[place_feature]]
+id = "urn:ró:place_feature:park"
+name = "Park"
+
+[[place_feature]]
+id = "urn:ró:place_feature:port"
+name = "Port"
+
+[[place_feature]]
+id = "urn:ró:place_feature:square"
+name = "Square"
+
+[[place_feature]]
+id = "urn:ró:place_feature:state"
+name = "State"
+
+[[place_feature]]
+id = "urn:ró:place_feature:street"
+name = "Street"
+
+[[place_feature]]
+id = "urn:ró:place_feature:town"
+name = "Town"
+
+[[place_feature]]
+id = "urn:ró:place_feature:train station"
+name = "Train Station"
+
+[[place_feature]]
+id = "urn:ró:place_feature:unesco"
+name = "UNESCO"
+
+[[place_feature]]
+id = "urn:ró:place_feature:village"
+name = "Village"
+
+[[place_feature]]
+id = "urn:ró:place_feature:volcano"
+name = "Volcano"
+
+[[place_feature]]
+id = "urn:ró:place_feature:waterfall"
+name = "Waterfall"
+
+[[place_feature]]
+id = "urn:ró:place_feature:wildlife-conservation"
+name = "Wildlife Conservation"
+
+[[place_feature]]
+id = "urn:ró:place_feature:zoo"
+name = "Zoo"

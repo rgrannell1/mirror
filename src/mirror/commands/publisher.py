@@ -16,6 +16,7 @@ from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, PhotosCountryReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.places import PlacesMetadataReader
+from mirror.data.things import ThingsReader
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
@@ -347,6 +348,7 @@ class TriplesArtifact(IArtifact):
             VideosReader(),
             GeonameMetadataReader(),
             PlacesMetadataReader(),
+            ThingsReader(),
             UnescoReader(),
             WikidataMetadataReader(),
             BirdwatchUrlReader(),

@@ -1,4 +1,24 @@
 
+[[trips]]
+id = "urn:ró:trip:iberia-25"
+albums = [
+  "zaragoza-25",
+  "madrid-25",
+  "segovia-25",
+  "sintra-25",
+  "lisbon-25"
+]
+
+[[trips]]
+id = "urn:ró:trip:canary-25"
+albums = [
+  "la-lagunas-25",
+  # well that's wrong, twice
+  "puorto-de-la-cruz-24",
+  "anaga-25"
+]
+
+
 [[places]]
 id = "urn:ró:place:0"
 name = "Macizo de Anaga"
@@ -347,7 +367,7 @@ features = ["urn:ró:place_feature:volcano", "urn:ró:place_feature:national-par
 id = "urn:ró:place:46"
 name = "Teide National-Park"
 wikipedia = "https://en.wikipedia.org/wiki/Teide_National_Park"
-in = ["urn:ró:country:tenerife", "urn:ró:place:45"]
+in = ["urn:ró:country:tenerife"]
 features = ["urn:ró:place_feature:national-park", "urn:ró:place_feature:unesco"]
 unesco_id = "urn:ró:unesco:1258"
 
