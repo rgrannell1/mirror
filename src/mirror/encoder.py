@@ -1,6 +1,7 @@
 """Encode video and images"""
 
 import io
+import math
 import os
 from mirror.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
 import cv2
@@ -15,8 +16,50 @@ from PIL import Image, ImageOps
 from typing import Dict, Optional, Tuple
 from mirror.photo import PhotoContent
 
+from PIL import Image
 
 class PhotoEncoder:
+    @classmethod
+    def compute_contrasting_grey(cls, fpath: str) -> str:
+        """
+        Copilot generated function. Is it correct? Who knows!
+
+        It uses the LAB colour space (https://en.wikipedia.org/wiki/CIELAB_color_space) as a
+        perceptually uniform colour space to compute the lighness of the top-right of the image (where we
+        plonk a metadata icon). It then chooses a grey colour that is a constant perceptual distance away
+        from that lightness, to ensure the icon is always visible against the image.
+        """
+
+        lab = Image.open(fpath).convert("RGB").convert("LAB")
+        L, _, __ = lab.split()
+
+        width, height = L.size
+        top_right = L.crop((7 * width // 8, 0, width, height // 8))
+
+        pixels = list(top_right.getdata())
+        avg_lightness = sum(pixels) / len(pixels)  # 0–255, proportional to L*
+
+        # if the image is not too bright, go brighter
+        if avg_lightness < math.floor(255 * 0.8):
+            target_lightness = min(255, int(avg_lightness + math.floor(255 * 0.6)))
+        else:
+            # too damn bright, go darker
+            target_lightness = max(0, int(avg_lightness - math.floor(255 * 0.4)))
+
+        # Build a neutral Lab colour with that L (a=128, b=128 is neutral axis)
+        L_img = Image.new("L", (1, 1), int(target_lightness))
+        a_img = Image.new("L", (1, 1), 128)
+        b_img = Image.new("L", (1, 1), 128)
+        lab_pixel = Image.merge("LAB", (L_img, a_img, b_img))
+
+        # Convert back to RGB
+        rgb_pixel = lab_pixel.convert("RGB").getpixel((0, 0))
+
+        # Force perfect grey by averaging channels
+        g = int(round(sum(rgb_pixel) / 3))
+
+        return f"#{g:02X}{g:02X}{g:02X}"
+
     @classmethod
     def encode_image_colours(cls, fpath: str) -> list[str]:
         """Create a list of colours in the image, to use as a data-url while the main image loads"""
@@ -92,7 +135,8 @@ class VideoEncoder:
 
         actual_width, actual_height = cls.resolution(fpath)
         if actual_width and actual_height and width and height and (actual_width < width or actual_height < height):
-            raise InvalidVideoDimensionsException("Video is too small to encode")
+
+            raise InvalidVideoDimensionsException(f"Video {fpath} is too small to encode")
 
         VIDEO_CODEC = "libx264"
 

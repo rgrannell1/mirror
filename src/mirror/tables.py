@@ -1,5 +1,12 @@
 """SQL tables for storing album information"""
 
+PHOTO_ICON_TABLE = """
+create table if not exists photo_icons (
+  fpath       text primary key,
+  grey_value  text not null
+);
+"""
+
 PHOTOS_TABLE = """
 create table if not exists photos (
   fpath text primary key,

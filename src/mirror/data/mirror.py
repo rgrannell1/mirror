@@ -152,6 +152,9 @@ class PhotoTriples:
             yield SemanticTriple(source, 'full_image', PhotoTriples.short_cdn_url(photo.full_image))
             yield SemanticTriple(source, 'created_at', str(int(photo.get_ctime().timestamp() * 1000)))
 
+        for fpath, grey_value in db.photo_icon_table().list():
+            source = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+            yield SemanticTriple(source, 'contrasting_grey', grey_value)
 
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:

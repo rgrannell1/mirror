@@ -13,6 +13,7 @@ from mirror.video import EncodedVideoModel, VideoModel
 from mirror.album import AlbumDataModel, AlbumMetadataModel
 
 from mirror.tables import (
+    PHOTO_ICON_TABLE,
     ENCODED_PHOTOS_TABLE,
     ENCODED_VIDEO_TABLE,
     GEONAME_TABLE,
@@ -30,9 +31,28 @@ from mirror.tables import (
     WIKIDATA_TABLE,
     BINOMIALS_WIKIDATA_ID_TABLE,
 )
-from mirror.video import Video
 import string
 
+class PhotoIconTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(PHOTO_ICON_TABLE)
+
+    def add(self, fpath: str, grey_value: str) -> None:
+        self.conn.execute(
+            "insert or replace into photo_icons (fpath, grey_value) values (?, ?)",
+            (fpath, grey_value),
+        )
+        self.conn.commit()
+
+    def get_by_fpath(self, fpath: str) -> Optional[str]:
+        for row in self.conn.execute("select grey_value from photo_icons where fpath = ?", (fpath,)):
+            return row[0]
+        return None
+
+    def list(self) -> Iterator[tuple[str, str]]:
+        for row in self.conn.execute("select fpath, grey_value from photo_icons"):
+            yield (row[0], row[1])
 
 class PhotosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
@@ -515,6 +535,8 @@ class SqliteDatabase:
         self.conn.execute("drop view if exists view_photo_metadata_summary")
         self.conn.commit()
 
+    def photo_icon_table(self):
+        return PhotoIconTable(self.conn)
 
     def photos_table(self):
         return PhotosTable(self.conn)

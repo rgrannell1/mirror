@@ -41,6 +41,18 @@ class MediaUploader:
 
             encoded_photos_table.add(fpath, v2_content, self.MOSAIC_ROLE, "custom")
 
+    def find_contrasting_colour(self, fpath: str) -> None:
+        """Compute a nice constrasting grey for the metadata icon. Convert to greyscale, compute luminance
+        and choose a grey perceptually a constant distance away."""
+        ...
+
+        icons = self.db.photo_icon_table()
+        if icons.get_by_fpath(fpath):
+            return
+
+        grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
+        icons.add(fpath, grey_value)
+
     def publish_photo_encodings(self, fpath: str) -> None:
         """Publish all encodings for the given photo"""
 
@@ -132,6 +144,7 @@ class MediaUploader:
         for fpath in self.db.photos_table().list():
             self.add_image_colours(fpath)
             self.publish_photo_encodings(fpath)
+            self.find_contrasting_colour(fpath)
 
         for fpath in self.db.videos_table().list():
             self.publish_video_encodings(fpath)
