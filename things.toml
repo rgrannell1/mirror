@@ -1037,6 +1037,16 @@ in = ["urn:ró:country:spain", "urn:ró:place:137"]
 features = ["urn:ró:place_feature:church", "urn:ró:place_feature:unesco"]
 unesco_id = "urn:ró:unesco:378"
 
+[[places]]
+id = "urn:ró:place:142"
+name = "Europe"
+features = ["urn:ró:place_feature:continent"]
+
+[[places]]
+id = "urn:ró:place:143"
+name = "North America"
+features = ["urn:ró:place_feature:continent"]
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # This section should be deprecated; countries should be refactored to places
 
@@ -1045,82 +1055,121 @@ unesco_id = "urn:ró:unesco:378"
 id = "urn:ró:country:usa"
 name = "The United States of America"
 flag = "🇺🇸"
+in = ["urn:ró:place:143"]
 
 [[country]]
 id = "urn:ró:country:england"
+name = "England"
 flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:france"
+name = "France"
 flag = "🇫🇷"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:germany"
+name = "Germany"
 flag = "🇩🇪"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:ireland"
+name = "Ireland"
 flag = "🇮🇪"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:italy"
+name = "Italy"
 flag = "🇮🇹"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:lanzarote"
+name = "Lanzarote"
 flag = "🇪🇸"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:mallorca"
+name = "Mallorca"
 flag = "🇪🇸"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:northern-ireland"
+name = "Northern Ireland"
 flag = "🇬🇧"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:norway"
+name = "Norway"
 flag = "🇳🇴"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:scotland"
+name = "Scotland"
 flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:slovenia"
+name = "Slovenia"
 flag = "🇸🇮"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:spain"
+name = "Spain"
 flag = "🇪🇸"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:sweden"
+name = "Sweden"
 flag = "🇸🇪"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:switzerland"
+name = "Switzerland"
 flag = "🇨🇭"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:tenerife"
+name = "Tenerife"
 flag = "🇪🇸"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:the-netherlands"
+name = "The Netherlands"
 flag = "🇳🇱"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:united-states-of-america"
+name = "The United States of America"
 flag = "🇺🇸"
+in = ["urn:ró:place:143"]
 
 [[country]]
 id = "urn:ró:country:wales"
+name = "Wales"
 flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+in = ["urn:ró:place:142"]
 
 [[country]]
 id = "urn:ró:country:portugal"
+name = "Portugal"
 flag = "🇵🇹"
+in = ["urn:ró:place:142"]
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # +++++++++++++++++++++++++++++++++++++++ TRIPS

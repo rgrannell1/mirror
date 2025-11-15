@@ -20,3 +20,4 @@ albums.json
 main.py
 .vscode/settings.json
 uv.lock
+src/data/whc001.json
