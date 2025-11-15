@@ -5,18 +5,18 @@ from mirror.data.types import SemanticTriple
 
 
 class UnescoReader:
-    places_file: str
+    things_file: str
     data_file: str
 
-    def __init__(self, places_file: str = "places.toml", data_file: str = "src/data/whc001.json"):
-        self.places_file = places_file
+    def __init__(self, things_file: str = "things.toml", data_file: str = "src/data/whc001.json"):
+        self.things_file = things_file
         self.data_file = data_file
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
 
       unesco_ids = set()
 
-      with open(self.places_file, 'rb') as conn:
+      with open(self.things_file, 'rb') as conn:
           places = tomllib.load(conn)
 
       for place in places['places']:

@@ -9,8 +9,6 @@ from typing import Iterator, List, Optional, Protocol
 from dateutil import tz
 
 from mirror.config import PHOTOS_URL
-from mirror.data.birdwatch import BirdwatchUrlReader
-from mirror.data.countries import CountriesReader
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.mirror import AlbumTriples, ExifReader, PhotoTriples, PhotosCountryReader, VideosReader
 from mirror.data.photo_relations import PhotoRelationsReader
@@ -348,9 +346,7 @@ class TriplesArtifact(IArtifact):
             ThingsReader(),
             UnescoReader(),
             WikidataMetadataReader(),
-            BirdwatchUrlReader(),
             PhotoRelationsReader(),
-            CountriesReader(),
             PhotosCountryReader()
         ]
         for long, alias in self.state['curie'].items():

@@ -1037,15 +1037,95 @@ in = ["urn:ró:country:spain", "urn:ró:place:137"]
 features = ["urn:ró:place_feature:church", "urn:ró:place_feature:unesco"]
 unesco_id = "urn:ró:unesco:378"
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# This section should be deprecated; countries should be refactored to places
 
+# this should be deprecated in particular; some things are probably labeled USA, others with the longer name form
+[[countries]]
+id = "urn:ró:country:usa"
+name = "The United States of America"
+flag = "🇺🇸"
 
+[[country]]
+id = "urn:ró:country:england"
+flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
 
+[[country]]
+id = "urn:ró:country:france"
+flag = "🇫🇷"
 
+[[country]]
+id = "urn:ró:country:germany"
+flag = "🇩🇪"
 
+[[country]]
+id = "urn:ró:country:ireland"
+flag = "🇮🇪"
 
+[[country]]
+id = "urn:ró:country:italy"
+flag = "🇮🇹"
 
+[[country]]
+id = "urn:ró:country:lanzarote"
+flag = "🇪🇸"
 
+[[country]]
+id = "urn:ró:country:mallorca"
+flag = "🇪🇸"
 
+[[country]]
+id = "urn:ró:country:northern-ireland"
+flag = "🇬🇧"
+
+[[country]]
+id = "urn:ró:country:norway"
+flag = "🇳🇴"
+
+[[country]]
+id = "urn:ró:country:scotland"
+flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+
+[[country]]
+id = "urn:ró:country:slovenia"
+flag = "🇸🇮"
+
+[[country]]
+id = "urn:ró:country:spain"
+flag = "🇪🇸"
+
+[[country]]
+id = "urn:ró:country:sweden"
+flag = "🇸🇪"
+
+[[country]]
+id = "urn:ró:country:switzerland"
+flag = "🇨🇭"
+
+[[country]]
+id = "urn:ró:country:tenerife"
+flag = "🇪🇸"
+
+[[country]]
+id = "urn:ró:country:the-netherlands"
+flag = "🇳🇱"
+
+[[country]]
+id = "urn:ró:country:united-states-of-america"
+flag = "🇺🇸"
+
+[[country]]
+id = "urn:ró:country:wales"
+flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+
+[[country]]
+id = "urn:ró:country:portugal"
+flag = "🇵🇹"
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++ TRIPS
+#
+# Multiple albums can be part of a single connected series (e.g a visit to two cities when on holidays)
 
 [[trips]]
 id = "urn:ró:trip:iberia-25"
@@ -1092,6 +1172,11 @@ contains_album = [
   # well, no, not 24...
   "urn:ró:album:wisconsin-state-24"
 ]
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++ Place Features
+#
+# Places have subtypes; castles, lakes, etc.
 
 [[place_feature]]
 id = "urn:ró:place_feature:castle"
@@ -1244,3 +1329,860 @@ name = "Wildlife Conservation"
 [[place_feature]]
 id = "urn:ró:place_feature:zoo"
 name = "Zoo"
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++ Birds
+#
+# Extra details about birds
+
+[[birds]]
+id = "urn:ró:bird:sterna-dougallii"
+birdwatch_url = "https://birdwatchireland.ie/birds/arctic-tern"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-mauretanicus"
+birdwatch_url = "https://birdwatchireland.ie/birds/balearic-shearwater"
+
+[[birds]]
+id = "urn:ró:bird:limosa-lapponica"
+birdwatch_url = "https://birdwatchireland.ie/birds/bar-tailed-godwit"
+
+[[birds]]
+id = "urn:ró:bird:tyto-alba"
+birdwatch_url = "https://birdwatchireland.ie/birds/barn-owl"
+
+[[birds]]
+id = "urn:ró:bird:branta-leucopsis"
+birdwatch_url = "https://birdwatchireland.ie/birds/barnacle-goose"
+
+[[birds]]
+id = "urn:ró:bird:anser-fabalis"
+birdwatch_url = "https://birdwatchireland.ie/birds/bean-goose"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-columbianus"
+birdwatch_url = "https://birdwatchireland.ie/birds/bewicks-swan"
+
+[[birds]]
+id = "urn:ró:bird:branta-bernicla"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-brant"
+
+[[birds]]
+id = "urn:ró:bird:cepphus-grylle"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-guillemot"
+
+[[birds]]
+id = "urn:ró:bird:chroicocephalus-ridibundus"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-headed-gull"
+
+[[birds]]
+id = "urn:ró:bird:rissa-tridactyla"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-legged-kittiwake"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-nigricollis"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-necked-grebe"
+
+[[birds]]
+id = "urn:ró:bird:phoenicurus-ochruros"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-redstart"
+
+[[birds]]
+id = "urn:ró:bird:limosa-limosa"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-tailed-godwit"
+
+[[birds]]
+id = "urn:ró:bird:gavia-arctica"
+birdwatch_url = "https://birdwatchireland.ie/birds/black-throated-diver"
+
+[[birds]]
+id = "urn:ró:bird:turdus-merula"
+birdwatch_url = "https://birdwatchireland.ie/birds/blackbird"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-atricapilla"
+birdwatch_url = "https://birdwatchireland.ie/birds/blackcap"
+
+[[birds]]
+id = "urn:ró:bird:cyanistes-caeruleus"
+birdwatch_url = "https://birdwatchireland.ie/birds/blue-tit"
+
+[[birds]]
+id = "urn:ró:bird:fringilla-montifringilla"
+birdwatch_url = "https://birdwatchireland.ie/birds/brambling"
+
+[[birds]]
+id = "urn:ró:bird:branta-bernicla"
+birdwatch_url = "https://birdwatchireland.ie/birds/brent-goose-dark-bellied"
+
+[[birds]]
+id = "urn:ró:bird:branta-bernicla"
+birdwatch_url = "https://birdwatchireland.ie/birds/brent-goose-light-bellied"
+
+[[birds]]
+id = "urn:ró:bird:calidris-subruficollis"
+birdwatch_url = "https://birdwatchireland.ie/birds/buff-breasted-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:pyrrhula-pyrrhula"
+birdwatch_url = "https://birdwatchireland.ie/birds/bullfinch"
+
+[[birds]]
+id = "urn:ró:bird:buteo-buteo"
+birdwatch_url = "https://birdwatchireland.ie/birds/buzzard"
+
+[[birds]]
+id = "urn:ró:bird:branta-canadensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/canada-goose"
+
+[[birds]]
+id = "urn:ró:bird:bubulcus-ibis"
+birdwatch_url = "https://birdwatchireland.ie/birds/cattle-egret"
+
+[[birds]]
+id = "urn:ró:bird:fringilla-coelebs"
+birdwatch_url = "https://birdwatchireland.ie/birds/chaffinch"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-collybita"
+birdwatch_url = "https://birdwatchireland.ie/birds/chiffchaff"
+
+[[birds]]
+id = "urn:ró:bird:pyrrhocorax-pyrrhocorax"
+birdwatch_url = "https://birdwatchireland.ie/birds/chough"
+
+[[birds]]
+id = "urn:ró:bird:periparus-ater"
+birdwatch_url = "https://birdwatchireland.ie/birds/coal-tit"
+
+[[birds]]
+id = "urn:ró:bird:streptopelia-decaocto"
+birdwatch_url = "https://birdwatchireland.ie/birds/collared-dove"
+
+[[birds]]
+id = "urn:ró:bird:larus-canus"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-gull"
+
+[[birds]]
+id = "urn:ró:bird:phoenicurus-phoenicurus"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-redstart"
+
+[[birds]]
+id = "urn:ró:bird:actitis-hypoleucos"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-nigra"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-scoter"
+
+[[birds]]
+id = "urn:ró:bird:sterna-hirundo"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-tern"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-communis"
+birdwatch_url = "https://birdwatchireland.ie/birds/common-whitethroat"
+
+[[birds]]
+id = "urn:ró:bird:fulica-atra"
+birdwatch_url = "https://birdwatchireland.ie/birds/coot"
+
+[[birds]]
+id = "urn:ró:bird:phalacrocorax-carbo"
+birdwatch_url = "https://birdwatchireland.ie/birds/cormorant"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-calandra"
+birdwatch_url = "https://birdwatchireland.ie/birds/corn-bunting"
+
+[[birds]]
+id = "urn:ró:bird:crex-crex"
+birdwatch_url = "https://birdwatchireland.ie/birds/corncrake"
+
+[[birds]]
+id = "urn:ró:bird:calonectris-diomedea"
+birdwatch_url = "https://birdwatchireland.ie/birds/corys-shearwater"
+
+[[birds]]
+id = "urn:ró:bird:loxia-curvirostra"
+birdwatch_url = "https://birdwatchireland.ie/birds/crossbill"
+
+[[birds]]
+id = "urn:ró:bird:cuculus-canorus"
+birdwatch_url = "https://birdwatchireland.ie/birds/cuckoo"
+
+[[birds]]
+id = "urn:ró:bird:calidris-ferruginea"
+birdwatch_url = "https://birdwatchireland.ie/birds/curlew-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:numenius-arquata"
+birdwatch_url = "https://birdwatchireland.ie/birds/curlew"
+
+[[birds]]
+id = "urn:ró:bird:cinclus-cinclus"
+birdwatch_url = "https://birdwatchireland.ie/birds/dipper"
+
+[[birds]]
+id = "urn:ró:bird:calidris-alpina"
+birdwatch_url = "https://birdwatchireland.ie/birds/dunlin"
+
+[[birds]]
+id = "urn:ró:bird:prunella-modularis"
+birdwatch_url = "https://birdwatchireland.ie/birds/dunnock"
+
+[[birds]]
+id = "urn:ró:bird:somateria-mollissima"
+birdwatch_url = "https://birdwatchireland.ie/birds/eider"
+
+[[birds]]
+id = "urn:ró:bird:gulosus-aristotelis"
+birdwatch_url = "https://birdwatchireland.ie/birds/european-shag"
+
+[[birds]]
+id = "urn:ró:bird:columba-livia"
+birdwatch_url = "https://birdwatchireland.ie/birds/feral-pigeon"
+
+[[birds]]
+id = "urn:ró:bird:turdus-pilaris"
+birdwatch_url = "https://birdwatchireland.ie/birds/fieldfare"
+
+[[birds]]
+id = "urn:ró:bird:regulus-ignicapilla"
+birdwatch_url = "https://birdwatchireland.ie/birds/firecrest"
+
+[[birds]]
+id = "urn:ró:bird:fulmarus-glacialis"
+birdwatch_url = "https://birdwatchireland.ie/birds/fulmar"
+
+[[birds]]
+id = "urn:ró:bird:mareca-strepera"
+birdwatch_url = "https://birdwatchireland.ie/birds/gadwall"
+
+[[birds]]
+id = "urn:ró:bird:morus-bassanus"
+birdwatch_url = "https://birdwatchireland.ie/birds/gannet"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-borin"
+birdwatch_url = "https://birdwatchireland.ie/birds/garden-warbler"
+
+[[birds]]
+id = "urn:ró:bird:spatula-querquedula"
+birdwatch_url = "https://birdwatchireland.ie/birds/garganey"
+
+[[birds]]
+id = "urn:ró:bird:larus-hyperboreus"
+birdwatch_url = "https://birdwatchireland.ie/birds/glaucous-gull"
+
+[[birds]]
+id = "urn:ró:bird:regulus-regulus"
+birdwatch_url = "https://birdwatchireland.ie/birds/goldcrest"
+
+[[birds]]
+id = "urn:ró:bird:aquila-chrysaetos"
+birdwatch_url = "https://birdwatchireland.ie/birds/golden-eagle"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-apricaria"
+birdwatch_url = "https://birdwatchireland.ie/birds/golden-plover"
+
+[[birds]]
+id = "urn:ró:bird:bucephala-clangula"
+birdwatch_url = "https://birdwatchireland.ie/birds/goldeneye"
+
+[[birds]]
+id = "urn:ró:bird:carduelis-carduelis"
+birdwatch_url = "https://birdwatchireland.ie/birds/goldfinch"
+
+[[birds]]
+id = "urn:ró:bird:mergus-merganser"
+birdwatch_url = "https://birdwatchireland.ie/birds/goosander"
+
+[[birds]]
+id = "urn:ró:bird:accipiter-gentilis"
+birdwatch_url = "https://birdwatchireland.ie/birds/goshawk"
+
+[[birds]]
+id = "urn:ró:bird:locustella-naevia"
+birdwatch_url = "https://birdwatchireland.ie/birds/grasshopper-warbler"
+
+[[birds]]
+id = "urn:ró:bird:larus-marinus"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-black-backed-gull"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-cristatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-crested-grebe"
+
+[[birds]]
+id = "urn:ró:bird:gavia-immer"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-northern-diver"
+
+[[birds]]
+id = "urn:ró:bird:stercorarius-skua"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-skua"
+
+[[birds]]
+id = "urn:ró:bird:dendrocopus-major"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-spotted-woodpecker"
+
+[[birds]]
+id = "urn:ró:bird:parus-major"
+birdwatch_url = "https://birdwatchireland.ie/birds/great-tit"
+
+[[birds]]
+id = "urn:ró:bird:tringa-ochropus"
+birdwatch_url = "https://birdwatchireland.ie/birds/green-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:anas-carolinensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/green-winged-teal"
+
+[[birds]]
+id = "urn:ró:bird:chloris-chloris"
+birdwatch_url = "https://birdwatchireland.ie/birds/greenfinch"
+
+[[birds]]
+id = "urn:ró:bird:anser-albifrons"
+birdwatch_url = "https://birdwatchireland.ie/birds/greenland-white-fronted-goose"
+
+[[birds]]
+id = "urn:ró:bird:tringa-nebularia"
+birdwatch_url = "https://birdwatchireland.ie/birds/greenshank"
+
+[[birds]]
+id = "urn:ró:bird:ardea-cinerea"
+birdwatch_url = "https://birdwatchireland.ie/birds/grey-heron"
+
+[[birds]]
+id = "urn:ró:bird:perdix-perdix"
+birdwatch_url = "https://birdwatchireland.ie/birds/grey-partridge"
+
+[[birds]]
+id = "urn:ró:bird:phalaropus-fulicarius"
+birdwatch_url = "https://birdwatchireland.ie/birds/grey-phalarope"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-squatarola"
+birdwatch_url = "https://birdwatchireland.ie/birds/grey-plover"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-cinerea"
+birdwatch_url = "https://birdwatchireland.ie/birds/grey-wagtail"
+
+[[birds]]
+id = "urn:ró:bird:anser-anser"
+birdwatch_url = "https://birdwatchireland.ie/birds/greylag-goose"
+
+[[birds]]
+id = "urn:ró:bird:uria-aalge"
+birdwatch_url = "https://birdwatchireland.ie/birds/guillemot"
+
+[[birds]]
+id = "urn:ró:bird:circus-cyaneus"
+birdwatch_url = "https://birdwatchireland.ie/birds/hen-harrier"
+
+[[birds]]
+id = "urn:ró:bird:larus-argentatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/herring-gull"
+
+[[birds]]
+id = "urn:ró:bird:corvus-cornix"
+birdwatch_url = "https://birdwatchireland.ie/birds/hooded-crow"
+
+[[birds]]
+id = "urn:ró:bird:delichon-urbicum"
+birdwatch_url = "https://birdwatchireland.ie/birds/house-martin"
+
+[[birds]]
+id = "urn:ró:bird:passer-domesticus"
+birdwatch_url = "https://birdwatchireland.ie/birds/house-sparrow"
+
+[[birds]]
+id = "urn:ró:bird:larus-glaucoides"
+birdwatch_url = "https://birdwatchireland.ie/birds/iceland-gull"
+
+[[birds]]
+id = "urn:ró:bird:lymnocryptes-minimus"
+birdwatch_url = "https://birdwatchireland.ie/birds/jack-snipe"
+
+[[birds]]
+id = "urn:ró:bird:coloeus-monedula"
+birdwatch_url = "https://birdwatchireland.ie/birds/jackdaw"
+
+[[birds]]
+id = "urn:ró:bird:garrulus-glandarius"
+birdwatch_url = "https://birdwatchireland.ie/birds/jay"
+
+[[birds]]
+id = "urn:ró:bird:falco-tinnunculus"
+birdwatch_url = "https://birdwatchireland.ie/birds/kestrel"
+
+[[birds]]
+id = "urn:ró:bird:alcedo-atthis"
+birdwatch_url = "https://birdwatchireland.ie/birds/kingfisher"
+
+[[birds]]
+id = "urn:ró:bird:calidris-canutus"
+birdwatch_url = "https://birdwatchireland.ie/birds/knot"
+
+[[birds]]
+id = "urn:ró:bird:vanellus-vanellus"
+birdwatch_url = "https://birdwatchireland.ie/birds/lapwing"
+
+[[birds]]
+id = "urn:ró:bird:hydrobates-leucorhous"
+birdwatch_url = "https://birdwatchireland.ie/birds/leachs-petrel"
+
+[[birds]]
+id = "urn:ró:bird:larus-fuscus"
+birdwatch_url = "https://birdwatchireland.ie/birds/lesser-black-backed-gull"
+
+[[birds]]
+id = "urn:ró:bird:acanthis-cabaret"
+birdwatch_url = "https://birdwatchireland.ie/birds/lesser-redpoll"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-curruca"
+birdwatch_url = "https://birdwatchireland.ie/birds/lesser-whitethroat"
+
+[[birds]]
+id = "urn:ró:bird:carduelis-cannabina"
+birdwatch_url = "https://birdwatchireland.ie/birds/linnet"
+
+[[birds]]
+id = "urn:ró:bird:egretta-garzetta"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-egret"
+
+[[birds]]
+id = "urn:ró:bird:tachybaptus-ruficollis"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-grebe"
+
+[[birds]]
+id = "urn:ró:bird:hydrocoloeus-minutus"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-gull"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-dubius"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-ringed-plover"
+
+[[birds]]
+id = "urn:ró:bird:calidris-minuta"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-stint"
+
+[[birds]]
+id = "urn:ró:bird:sternula-albifrons"
+birdwatch_url = "https://birdwatchireland.ie/birds/little-tern"
+
+[[birds]]
+id = "urn:ró:bird:asio-otus"
+birdwatch_url = "https://birdwatchireland.ie/birds/long-eared-owl"
+
+[[birds]]
+id = "urn:ró:bird:clangula-hyemalis"
+birdwatch_url = "https://birdwatchireland.ie/birds/long-tailed-duck"
+
+[[birds]]
+id = "urn:ró:bird:aegithalos-caudatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/long-tailed-tit"
+
+[[birds]]
+id = "urn:ró:bird:pica-pica"
+birdwatch_url = "https://birdwatchireland.ie/birds/magpie"
+
+[[birds]]
+id = "urn:ró:bird:anas-platyrhynchos"
+birdwatch_url = "https://birdwatchireland.ie/birds/mallard"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-puffinus"
+birdwatch_url = "https://birdwatchireland.ie/birds/manx-shearwater"
+
+[[birds]]
+id = "urn:ró:bird:circus-aeruginosus"
+birdwatch_url = "https://birdwatchireland.ie/birds/marsh-harrier"
+
+[[birds]]
+id = "urn:ró:bird:anthus-pratensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/meadow-pipit"
+
+[[birds]]
+id = "urn:ró:bird:ichthyaetus-melanocephalus"
+birdwatch_url = "https://birdwatchireland.ie/birds/mediterranean-gull"
+
+[[birds]]
+id = "urn:ró:bird:falco-columbarius"
+birdwatch_url = "https://birdwatchireland.ie/birds/merlin"
+
+[[birds]]
+id = "urn:ró:bird:turdus-viscivorus"
+birdwatch_url = "https://birdwatchireland.ie/birds/mistle-thrush"
+
+[[birds]]
+id = "urn:ró:bird:gallinula-chloropus"
+birdwatch_url = "https://birdwatchireland.ie/birds/moorhen"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-olor"
+birdwatch_url = "https://birdwatchireland.ie/birds/mute-swan"
+
+[[birds]]
+id = "urn:ró:bird:caprimulgus-europaeus"
+birdwatch_url = "https://birdwatchireland.ie/birds/nightjar"
+
+[[birds]]
+id = "urn:ró:bird:haematopus-ostralegus"
+birdwatch_url = "https://birdwatchireland.ie/birds/oystercatcher"
+
+[[birds]]
+id = "urn:ró:bird:calidris-melanotos"
+birdwatch_url = "https://birdwatchireland.ie/birds/pectoral-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:falco-peregrinus"
+birdwatch_url = "https://birdwatchireland.ie/birds/peregrine-falcon"
+
+[[birds]]
+id = "urn:ró:bird:phasianus-colchicus"
+birdwatch_url = "https://birdwatchireland.ie/birds/pheasant"
+
+[[birds]]
+id = "urn:ró:bird:ficedula-hypoleuca"
+birdwatch_url = "https://birdwatchireland.ie/birds/pied-flycatcher"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-alba"
+birdwatch_url = "https://birdwatchireland.ie/birds/pied-wagtail"
+
+[[birds]]
+id = "urn:ró:bird:anser-brachyrhynchus"
+birdwatch_url = "https://birdwatchireland.ie/birds/pink-footed-goose"
+
+[[birds]]
+id = "urn:ró:bird:anas-acuta"
+birdwatch_url = "https://birdwatchireland.ie/birds/pintail"
+
+[[birds]]
+id = "urn:ró:bird:aythya-ferina"
+birdwatch_url = "https://birdwatchireland.ie/birds/pochard"
+
+[[birds]]
+id = "urn:ró:bird:fratercula-arctica"
+birdwatch_url = "https://birdwatchireland.ie/birds/puffin"
+
+[[birds]]
+id = "urn:ró:bird:calidris-maritima"
+birdwatch_url = "https://birdwatchireland.ie/birds/purple-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:coturnix-coturnix"
+birdwatch_url = "https://birdwatchireland.ie/birds/quail"
+
+[[birds]]
+id = "urn:ró:bird:corvus-corax"
+birdwatch_url = "https://birdwatchireland.ie/birds/raven"
+
+[[birds]]
+id = "urn:ró:bird:alca-torda"
+birdwatch_url = "https://birdwatchireland.ie/birds/razorbill"
+
+[[birds]]
+id = "urn:ró:bird:mergus-serrator"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-breasted-merganser"
+
+[[birds]]
+id = "urn:ró:bird:lagopus-lagopus"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-grouse"
+
+[[birds]]
+id = "urn:ró:bird:milvus-milvus"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-kite"
+
+[[birds]]
+id = "urn:ró:bird:alectoris-rufa"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-legged-partridge"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-grisegena"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-necked-grebe"
+
+[[birds]]
+id = "urn:ró:bird:phalaropus-lobatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-necked-phalarope"
+
+[[birds]]
+id = "urn:ró:bird:gavia-stellata"
+birdwatch_url = "https://birdwatchireland.ie/birds/red-throated-diver"
+
+[[birds]]
+id = "urn:ró:bird:tringa-totanus"
+birdwatch_url = "https://birdwatchireland.ie/birds/redshank"
+
+[[birds]]
+id = "urn:ró:bird:turdus-iliacus"
+birdwatch_url = "https://birdwatchireland.ie/birds/redwing"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-schoeniclus"
+birdwatch_url = "https://birdwatchireland.ie/birds/reed-bunting"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-scirpaceus"
+birdwatch_url = "https://birdwatchireland.ie/birds/reed-warbler"
+
+[[birds]]
+id = "urn:ró:bird:larus-delawarensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/ring-billed-gull"
+
+[[birds]]
+id = "urn:ró:bird:aythya-collaris"
+birdwatch_url = "https://birdwatchireland.ie/birds/ring-necked-duck"
+
+[[birds]]
+id = "urn:ró:bird:turdus-torquatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/ring-ouzel"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-hiaticula"
+birdwatch_url = "https://birdwatchireland.ie/birds/ringed-plover"
+
+[[birds]]
+id = "urn:ró:bird:erithacus-rubecula"
+birdwatch_url = "https://birdwatchireland.ie/birds/robin"
+
+[[birds]]
+id = "urn:ró:bird:columba-livia"
+birdwatch_url = "https://birdwatchireland.ie/birds/rock-dove"
+
+[[birds]]
+id = "urn:ró:bird:anthus-petrosus"
+birdwatch_url = "https://birdwatchireland.ie/birds/rock-pipit"
+
+[[birds]]
+id = "urn:ró:bird:corvus-frugilegus"
+birdwatch_url = "https://birdwatchireland.ie/birds/rook"
+
+[[birds]]
+id = "urn:ró:bird:sterna-dougallii"
+birdwatch_url = "https://birdwatchireland.ie/birds/roseate-tern"
+
+[[birds]]
+id = "urn:ró:bird:oxyura-jamaicensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/ruddy-duck"
+
+[[birds]]
+id = "urn:ró:bird:calidris-pugnax"
+birdwatch_url = "https://birdwatchireland.ie/birds/ruff"
+
+[[birds]]
+id = "urn:ró:bird:xema-sabini"
+birdwatch_url = "https://birdwatchireland.ie/birds/sabines-gull"
+
+[[birds]]
+id = "urn:ró:bird:riparia-riparia"
+birdwatch_url = "https://birdwatchireland.ie/birds/sand-martin"
+
+[[birds]]
+id = "urn:ró:bird:calidris-alba"
+birdwatch_url = "https://birdwatchireland.ie/birds/sanderling"
+
+[[birds]]
+id = "urn:ró:bird:thalasseus-sandvicensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/sandwich-tern"
+
+[[birds]]
+id = "urn:ró:bird:aythya-marila"
+birdwatch_url = "https://birdwatchireland.ie/birds/scaup"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-schoenobaenus"
+birdwatch_url = "https://birdwatchireland.ie/birds/sedge-warbler"
+
+[[birds]]
+id = "urn:ró:bird:tadorna-tadorna"
+birdwatch_url = "https://birdwatchireland.ie/birds/shelduck"
+
+[[birds]]
+id = "urn:ró:bird:asio-flammeus"
+birdwatch_url = "https://birdwatchireland.ie/birds/short-eared-owl"
+
+[[birds]]
+id = "urn:ró:bird:spatula-clypeata"
+birdwatch_url = "https://birdwatchireland.ie/birds/shoveler"
+
+[[birds]]
+id = "urn:ró:bird:spinus-spinus"
+birdwatch_url = "https://birdwatchireland.ie/birds/siskin"
+
+[[birds]]
+id = "urn:ró:bird:alauda-arvensis"
+birdwatch_url = "https://birdwatchireland.ie/birds/skylark"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-auritus"
+birdwatch_url = "https://birdwatchireland.ie/birds/slavonian-grebe"
+
+[[birds]]
+id = "urn:ró:bird:mergellus-albellus"
+birdwatch_url = "https://birdwatchireland.ie/birds/smew"
+
+[[birds]]
+id = "urn:ró:bird:gallinago-gallinago"
+birdwatch_url = "https://birdwatchireland.ie/birds/snipe"
+
+[[birds]]
+id = "urn:ró:bird:plectrophenax-nivalis"
+birdwatch_url = "https://birdwatchireland.ie/birds/snow-bunting"
+
+[[birds]]
+id = "urn:ró:bird:anser-caerulescens"
+birdwatch_url = "https://birdwatchireland.ie/birds/snow-goose"
+
+[[birds]]
+id = "urn:ró:bird:bubo-scandiacus"
+birdwatch_url = "https://birdwatchireland.ie/birds/snowy-owl"
+
+[[birds]]
+id = "urn:ró:bird:turdus-philomelos"
+birdwatch_url = "https://birdwatchireland.ie/birds/song-thrush"
+
+[[birds]]
+id = "urn:ró:bird:ardenna-grisea"
+birdwatch_url = "https://birdwatchireland.ie/birds/sooty-shearwater"
+
+[[birds]]
+id = "urn:ró:bird:accipiter-nisus"
+birdwatch_url = "https://birdwatchireland.ie/birds/sparrowhawk"
+
+[[birds]]
+id = "urn:ró:bird:muscicapa-striata"
+birdwatch_url = "https://birdwatchireland.ie/birds/spotted-flycatcher"
+
+[[birds]]
+id = "urn:ró:bird:tringa-erythropus"
+birdwatch_url = "https://birdwatchireland.ie/birds/spotted-redshank"
+
+[[birds]]
+id = "urn:ró:bird:sturnus-vulgaris"
+birdwatch_url = "https://birdwatchireland.ie/birds/starling"
+
+[[birds]]
+id = "urn:ró:bird:columba-oenas"
+birdwatch_url = "https://birdwatchireland.ie/birds/stock-dove"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-torquatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/stonechat"
+
+[[birds]]
+id = "urn:ró:bird:hydrobates-pelagicus"
+birdwatch_url = "https://birdwatchireland.ie/birds/storm-petrel"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-perspicillata"
+birdwatch_url = "https://birdwatchireland.ie/birds/surf-scoter"
+
+[[birds]]
+id = "urn:ró:bird:hirundo-rustica"
+birdwatch_url = "https://birdwatchireland.ie/birds/swallow"
+
+[[birds]]
+id = "urn:ró:bird:apus-apus"
+birdwatch_url = "https://birdwatchireland.ie/birds/swift"
+
+[[birds]]
+id = "urn:ró:bird:anas-crecca"
+birdwatch_url = "https://birdwatchireland.ie/birds/teal"
+
+[[birds]]
+id = "urn:ró:bird:passer-montanus"
+birdwatch_url = "https://birdwatchireland.ie/birds/tree-sparrow"
+
+[[birds]]
+id = "urn:ró:bird:certhia-familiaris"
+birdwatch_url = "https://birdwatchireland.ie/birds/treecreeper"
+
+[[birds]]
+id = "urn:ró:bird:aythya-fuligula"
+birdwatch_url = "https://birdwatchireland.ie/birds/tufted-duck"
+
+[[birds]]
+id = "urn:ró:bird:arenaria-interpres"
+birdwatch_url = "https://birdwatchireland.ie/birds/turnstone"
+
+[[birds]]
+id = "urn:ró:bird:streptopelia-turtur"
+birdwatch_url = "https://birdwatchireland.ie/birds/turtle-dove"
+
+[[birds]]
+id = "urn:ró:bird:linaria-flavirostris"
+birdwatch_url = "https://birdwatchireland.ie/birds/twite"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-fusca"
+birdwatch_url = "https://birdwatchireland.ie/birds/velvet-scoter"
+
+[[birds]]
+id = "urn:ró:bird:rallus-aquaticus"
+birdwatch_url = "https://birdwatchireland.ie/birds/water-rail"
+
+[[birds]]
+id = "urn:ró:bird:bombycilla-garrulus"
+birdwatch_url = "https://birdwatchireland.ie/birds/waxwing"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-oenanthe"
+birdwatch_url = "https://birdwatchireland.ie/birds/wheatear"
+
+[[birds]]
+id = "urn:ró:bird:numenius-phaeopus"
+birdwatch_url = "https://birdwatchireland.ie/birds/whimbrel"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-rubetra"
+birdwatch_url = "https://birdwatchireland.ie/birds/whinchat"
+
+[[birds]]
+id = "urn:ró:bird:haliaeetus-albicilla"
+birdwatch_url = "https://birdwatchireland.ie/birds/white-tailed-eagle"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-cygnus"
+birdwatch_url = "https://birdwatchireland.ie/birds/whooper-swan"
+
+[[birds]]
+id = "urn:ró:bird:mareca-penelope"
+birdwatch_url = "https://birdwatchireland.ie/birds/wigeon"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-trochilus"
+birdwatch_url = "https://birdwatchireland.ie/birds/willow-warbler"
+
+[[birds]]
+id = "urn:ró:bird:tringa-glareola"
+birdwatch_url = "https://birdwatchireland.ie/birds/wood-sandpiper"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-sibilatrix"
+birdwatch_url = "https://birdwatchireland.ie/birds/wood-warbler"
+
+[[birds]]
+id = "urn:ró:bird:scolopax-rusticola"
+birdwatch_url = "https://birdwatchireland.ie/birds/woodcock"
+
+[[birds]]
+id = "urn:ró:bird:columba-palumbus"
+birdwatch_url = "https://birdwatchireland.ie/birds/woodpigeon"
+
+[[birds]]
+id = "urn:ró:bird:troglodytes-troglodytes"
+birdwatch_url = "https://birdwatchireland.ie/birds/wren"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-inornatus"
+birdwatch_url = "https://birdwatchireland.ie/birds/yellow-browed-warbler"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-citrinella"
+birdwatch_url = "https://birdwatchireland.ie/birds/yellowhammer"
