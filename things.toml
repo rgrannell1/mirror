@@ -1047,6 +1047,12 @@ id = "urn:ró:place:143"
 name = "North America"
 features = ["urn:ró:place_feature:continent"]
 
+[[places]]
+id = "urn:ró:place:144"
+name = "The United Kingdom"
+in = ["urn:ró:place:142"]
+features = ["urn:ró:place_feature:country"]
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # This section should be deprecated; countries should be refactored to places
 
@@ -1061,7 +1067,7 @@ in = ["urn:ró:place:143"]
 id = "urn:ró:country:england"
 name = "England"
 flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:place:144"]
 
 [[country]]
 id = "urn:ró:country:france"
@@ -1091,19 +1097,19 @@ in = ["urn:ró:place:142"]
 id = "urn:ró:country:lanzarote"
 name = "Lanzarote"
 flag = "🇪🇸"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:country:spain"]
 
 [[country]]
 id = "urn:ró:country:mallorca"
 name = "Mallorca"
 flag = "🇪🇸"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:country:spain"]
 
 [[country]]
 id = "urn:ró:country:northern-ireland"
 name = "Northern Ireland"
 flag = "🇬🇧"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:place:144"]
 
 [[country]]
 id = "urn:ró:country:norway"
@@ -1115,7 +1121,7 @@ in = ["urn:ró:place:142"]
 id = "urn:ró:country:scotland"
 name = "Scotland"
 flag = "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:place:144"]
 
 [[country]]
 id = "urn:ró:country:slovenia"
@@ -1145,7 +1151,7 @@ in = ["urn:ró:place:142"]
 id = "urn:ró:country:tenerife"
 name = "Tenerife"
 flag = "🇪🇸"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:country:spain"]
 
 [[country]]
 id = "urn:ró:country:the-netherlands"
@@ -1163,7 +1169,7 @@ in = ["urn:ró:place:143"]
 id = "urn:ró:country:wales"
 name = "Wales"
 flag = "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
-in = ["urn:ró:place:142"]
+in = ["urn:ró:place:142", "urn:ró:place:144"]
 
 [[country]]
 id = "urn:ró:country:portugal"
