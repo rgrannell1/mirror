@@ -50,15 +50,17 @@ class PhotoEncoder:
         L_img = Image.new("L", (1, 1), int(target_lightness))
         a_img = Image.new("L", (1, 1), 128)
         b_img = Image.new("L", (1, 1), 128)
-        lab_pixel = Image.merge("LAB", (L_img, a_img, b_img))
 
-        # Convert back to RGB
-        rgb_pixel = lab_pixel.convert("RGB").getpixel((0, 0))
+        rgb_pixel = (
+            Image.merge("LAB", (L_img, a_img, b_img))
+            .convert("RGB")
+            .getpixel((0, 0))
+        )
 
-        # Force perfect grey by averaging channels
-        g = int(round(sum(rgb_pixel) / 3))
+        # averaging channels to get a grey
+        grey = int(round(sum(rgb_pixel) / 3))
 
-        return f"#{g:02X}{g:02X}{g:02X}"
+        return f"#{grey:02X}{grey:02X}{grey:02X}"
 
     @classmethod
     def encode_image_colours(cls, fpath: str) -> list[str]:
