@@ -2241,3 +2241,23 @@ birdwatch_url = "https://birdwatchireland.ie/birds/yellow-browed-warbler"
 [[birds]]
 id = "urn:ró:bird:emberiza-citrinella"
 birdwatch_url = "https://birdwatchireland.ie/birds/yellowhammer"
+
+[[ratings]]
+id = "urn:ró:rating:0"
+name = "⭐"
+
+[[ratings]]
+id = "urn:ró:rating:1"
+name = "⭐⭐"
+
+[[ratings]]
+id = "urn:ró:rating:2"
+name = "⭐⭐⭐"
+
+[[ratings]]
+id = "urn:ró:rating:3"
+name = "⭐⭐⭐⭐"
+
+[[ratings]]
+id = "urn:ró:rating:4"
+name = "⭐⭐⭐⭐⭐"
