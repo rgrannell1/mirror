@@ -4,6 +4,7 @@ import json
 import os
 import sqlite3
 from typing import Iterator, List, Optional, Set
+from mirror.config import D1_DUMP_PATH
 from mirror.data.geoname import GeonameModel
 from mirror.data.wikidata import WikidataModel
 from mirror.exif import PhotoExifData
@@ -640,3 +641,11 @@ class D1SqliteDatabase:
 
     def social_card_table(self):
         return SocialCardTable(self.conn)
+
+    def dump(self):
+        with open(D1_DUMP_PATH, "w", encoding="utf-8") as f:
+            for line in self.conn.iterdump():
+                if "social_cards" in line:
+                    f.write(line + "\n")
+
+        self.conn.close()

@@ -148,7 +148,7 @@ class D1Builder:
                 dpath_to_details[album.src]['description'] = album.target
 
             if album.relation == 'permalink':
-                dpath_to_details[album.src]['path'] = f'/albums/{album.target}'
+                dpath_to_details[album.src]['path'] = f'/album/{album.target}'
 
             if album.relation == 'title':
                 dpath_to_details[album.src]['title'] = album.target
@@ -160,5 +160,15 @@ class D1Builder:
             if dpath_to_details.get(dpath):
                 dpath_to_details[dpath]['image_url'] = album_cover.url
 
-        print(dpath_to_details)
-        # add the information into the D1 database
+        socials = d1.social_card_table()
+
+        for details in dpath_to_details.values():
+            socials.add(
+                path=details['path'],
+                description=details['description'],
+                title=details['title'],
+                image_url=details['image_url'],
+            )
+
+        # add the information into the D1 database, then snapshot
+        d1.dump()
