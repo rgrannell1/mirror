@@ -54,6 +54,13 @@ IMAGE_ENCODINGS = {
         "width": 1444,
         "height": 1084,
     },
+    "social_card": {
+        "format": "webp",
+        "quality": 85,
+        "method": 6,
+        "width": 1200,
+        "height": 630
+    }
 }
 
 # How should we encode our videos? Currently uses unscaled + various

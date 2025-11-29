@@ -65,6 +65,10 @@ class MediaUploader:
             if role in published_roles:
                 continue
 
+            # only generate social-cards for album covers, for the moment
+            if '+cover' not in fpath and role == 'social_card':
+                continue
+
             uploaded_url = self.cdn.upload_photo(
                 encoded_data=PhotoEncoder.encode(fpath, role, params),
                 role=role,

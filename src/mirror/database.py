@@ -221,6 +221,13 @@ class EncodedPhotosTable:
         ):
             yield EncodedPhotoModel.from_row(row)
 
+    def list_by_role(self, role: str) -> Iterator[EncodedPhotoModel]:
+        for row in self.conn.execute(
+            "select fpath, mimetype, role, url from encoded_photos where role = ?",
+            (role,),
+        ):
+            yield EncodedPhotoModel.from_row(row)
+
     def delete(self, fpath: str) -> None:
         self.conn.execute("delete from encoded_photos where fpath = ?", (fpath,))
         self.conn.commit()

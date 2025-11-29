@@ -1,5 +1,6 @@
 """Interact with the CDN that hosts photos and videos"""
 
+import os
 import boto3  # type: ignore
 import boto3.session  # type: ignore
 import botocore  # type: ignore
@@ -134,6 +135,30 @@ class D1Builder:
     def build(self) -> None:
         d1 = D1SqliteDatabase(D1_DATABASE_PATH)
 
-        # find cover images, or good images.
-        # ensure these alone are encode in 1200 x 630 format (social-card size)
-        # for each thing, album, photo, add this information into d1
+        encoded_photos = self.db.encoded_photos_table()
+        media_metadata = self.db.media_metadata_table()
+        albums = media_metadata.list_albums()
+
+        dpath_to_details: dict = {}
+        for album in albums:
+            if not album.src in dpath_to_details:
+                dpath_to_details[album.src] = {}
+
+            if album.relation == 'summary':
+                dpath_to_details[album.src]['description'] = album.target
+
+            if album.relation == 'permalink':
+                dpath_to_details[album.src]['path'] = f'/albums/{album.target}'
+
+            if album.relation == 'title':
+                dpath_to_details[album.src]['title'] = album.target
+
+        album_covers = list(encoded_photos.list_by_role("social_card"))
+        for album_cover in album_covers:
+            dpath = os.path.dirname(album_cover.fpath)
+
+            if dpath_to_details.get(dpath):
+                dpath_to_details[dpath]['image_url'] = album_cover.url
+
+        print(dpath_to_details)
+        # add the information into the D1 database
