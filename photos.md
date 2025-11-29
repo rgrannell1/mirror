@@ -54,7 +54,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/c32642ec85.webp) | Bath | Cityscape | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b86a316a1.webp) | Bath | Cityscape | ⭐⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/835c7ff700.webp) | Bath | Other | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d0a0091a95.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d0a0091a95.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 | I saw a sign in Bath saying "meet the Gorgon", and I did not turn down the chance. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f74a34291f.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/443bc05ba8.webp) | Bath | Other | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0d7742c8c6.webp) | Bath | Other | ⭐⭐⭐ | urn:ró:place:9 |  |  |  |
@@ -70,7 +70,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/a351a7e500.webp) | Berlin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:65 |  | urn:ró:bird:leucogeranus-leucogeranus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/7f50c14d75.webp) | Berlin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:65 |  | urn:ró:mammal:ursus-arctos?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/43817a2d89.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:66 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/178f4d08d8.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:68 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/178f4d08d8.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:68 | I was listening to the Tannhauser Overture while walking through Tiergarten, so it was fitting to run into a Wagner statue. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/950906d72b.webp) | Berlin | Cityscape | ⭐⭐ | urn:ró:place:63 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fb618f8aca.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:63 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/89b7f95031.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:63 |  |  |  |
@@ -83,7 +83,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/031301f0a3.webp) | Berlin | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:63 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/acda17e830.webp) | Berlin | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:63 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4be613e962.webp) | Berlin | Landscape | ⭐⭐⭐⭐ | urn:ró:place:68 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/56612ce6b2.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:68 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/56612ce6b2.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:68 | "*Life is not light*, *but refracted colour*" |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/279673d6ab.webp) | Berlin | Cityscape | ⭐⭐⭐ | urn:ró:place:63 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/46086d14f4.webp) | Berlin | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:67 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8e5f4ab6d6.webp) | Birmingham, England | Cityscape | ⭐⭐ | urn:ró:place:78 |  |  |  |
@@ -233,7 +233,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/49cfee6d16.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:aplonis-metallica?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a927f585cd.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/55e8166731.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:myrmecophaga-tridactyla |  |
-| ![](https://photos-cdn.rgrannell.xyz/00fa63a5a4.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/00fa63a5a4.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 | I actually printed and framed this photo. It's hanging in my sitting-room. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae4fc183cb.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tragelaphus-spekii |  |
 | ![](https://photos-cdn.rgrannell.xyz/64c5d96c37.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:giraffa-camelopardalis |  |
 | ![](https://photos-cdn.rgrannell.xyz/7be167163d.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hydrochoerus-hydrochaeris |  |
@@ -255,13 +255,13 @@
 | ![](https://photos-cdn.rgrannell.xyz/c7e4b63150.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:108 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b2a75d88d6.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐ | urn:ró:place:108 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a5b63ae8a1.webp) | Cliffs of Moher | Landscape | ⭐⭐ | urn:ró:place:108 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/107781de2d.webp) | Cliffs of Moher | Wildlife | ⭐ | urn:ró:place:108 | three chough |  urn:ró:boat:unknown,urn:ró:bird:pyrrhocorax-pyrrhocorax?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/107781de2d.webp) | Cliffs of Moher | Wildlife | ⭐ | urn:ró:place:108 |  |  urn:ró:boat:unknown,urn:ró:bird:pyrrhocorax-pyrrhocorax?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c8ff18b8f7.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐ | urn:ró:place:108 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3782de41a2.webp) | Cologne | Transport | ⭐⭐ | urn:ró:place:5 |  | urn:ró:train:ice |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ecbc00268.webp) | Cologne | Cityscape | ⭐⭐⭐ |  urn:ró:place:6,urn:ró:place:5 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2196642deb.webp) | Cologne | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:4 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9df9010671.webp) | Cong | Landscape | ⭐⭐⭐⭐ | urn:ró:place:77 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f534912f62.webp) | Cong | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:77 |  | urn:ró:mammal:canis-familiaris |  |
+| ![](https://photos-cdn.rgrannell.xyz/f534912f62.webp) | Cong | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:77 | ❤️ | urn:ró:mammal:canis-familiaris |  |
 | ![](https://photos-cdn.rgrannell.xyz/acb52749d7.webp) | Cong | Other | ⭐⭐⭐⭐ | urn:ró:place:77 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b227b915d9.webp) | Conwy | Cityscape | ⭐⭐⭐ | urn:ró:place:13 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd3e095732.webp) | Conwy | Landscape | ⭐⭐⭐ | urn:ró:place:13 |  |  |  |
@@ -332,7 +332,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/032a17f6dc.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/61067a0c93.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/27034b3963.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c8d906feff.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c8d906feff.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 | A personal favourite from the musuem |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/28139f1ce8.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bcf70d67df.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e50cc43649.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
@@ -1246,7 +1246,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/792bec9b5f.webp) | Wisconsin | Landscape | ⭐⭐⭐⭐ | urn:ró:place:86 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f5cd184d31.webp) | Wisconsin | Landscape | ⭐⭐⭐⭐ | urn:ró:place:86 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eb313af4f6.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:spinus-tristis?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/bb27a9d26f.webp) | Wisconsin | Transport | ⭐⭐⭐⭐ | urn:ró:place:90 |  | urn:ró:boat:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/bb27a9d26f.webp) | Wisconsin | Transport | ⭐⭐⭐⭐ | urn:ró:place:90 | A similar boat delivers mail to houses around Lake Geneva | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/8d77e54c3a.webp) | York | Cityscape | ⭐⭐⭐ | urn:ró:place:47 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/930af3d987.webp) | York | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:47 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c40f38b997.webp) | York | Landscape | ⭐⭐⭐⭐ | urn:ró:place:47 |  |  |  |
@@ -1266,5 +1266,5 @@
 | ![](https://photos-cdn.rgrannell.xyz/dd46b3216c.webp) | Zaragoza | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:141 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/027e40db4e.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:137 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/49be47e537.webp) | Zaragoza | Cityscape | ⭐⭐⭐ | urn:ró:place:139 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7b48e702d2.webp) | Zaragoza |  | ⭐⭐⭐⭐ | urn:ró:place:139 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7b48e702d2.webp) | Zaragoza | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:139 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3adb44a583.webp) | Zaragoza | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:138 |  |  |  |

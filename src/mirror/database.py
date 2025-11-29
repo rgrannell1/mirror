@@ -30,6 +30,7 @@ from mirror.tables import (
     PHOTO_METADATA_TABLE,
     WIKIDATA_TABLE,
     BINOMIALS_WIKIDATA_ID_TABLE,
+    SOCIAL_CARD_TABLE
 )
 import string
 
@@ -609,3 +610,26 @@ class SqliteDatabase:
         """):
             fpath = row[0]
             self.encoded_photos_table().delete(fpath)
+
+class SocialCardTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(SOCIAL_CARD_TABLE)
+
+    def add(self, path: str, description: Optional[str], title: Optional[str], image_url: str) -> None:
+        self.conn.execute(
+            "insert or replace into social_cards (path, description, title, image_url) values (?, ?, ?, ?)",
+            (path, description, title, image_url),
+        )
+        self.conn.commit()
+
+class D1SqliteDatabase:
+    """A SQLite database used just for D1 caching"""
+
+    conn: sqlite3.Connection
+
+    def __init__(self, fpath: str) -> None:
+        self.conn = sqlite3.connect(fpath)
+
+    def social_card_table(self):
+        return SocialCardTable(self.conn)

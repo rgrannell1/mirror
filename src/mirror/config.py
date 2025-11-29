@@ -20,6 +20,7 @@ PHOTOS_URL = "https://photos-cdn.rgrannell.xyz"
 HOME = os.getenv("HOME")
 PHOTO_DIRECTORY = f"{HOME}/Drive/Media"
 DATABASE_PATH = f"{HOME}/media.db"
+D1_DATABASE_PATH = f"{HOME}/media_d1.db"
 OUTPUT_DIRECTORY = f"{HOME}/Code/websites/photos.rgrannell.xyz/manifest"
 ALBUM_METADATA_FILE = f"{HOME}/Code/mirror/src/mirror/schemas/album_metadata.json"
 PHOTO_METADATA_FILE = f"{HOME}/Code/mirror/src/mirror/schemas/photo_metadata.json"

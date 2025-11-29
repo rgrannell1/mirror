@@ -326,3 +326,13 @@ create table if not exists wikidata (
   data    text not null
 );
 """
+
+# D1 database, used to store social-card information
+SOCIAL_CARD_TABLE = """
+create table if not exists social_cards (
+  path          text not null primary key,
+  description   text,
+  title         text,
+  image_url     text not null
+);
+"""

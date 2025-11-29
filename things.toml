@@ -16,6 +16,7 @@ wikipedia = "https://en.wikipedia.org/wiki/San_Crist%C3%B3bal_de_La_Laguna"
 in = ["urn:ró:country:tenerife"]
 near = ["urn:ró:place:0"]
 features = ["urn:ró:place_feature:city", "urn:ró:place_feature:unesco"]
+unesco_id = "urn:ró:unesco:929"
 
 [[places]]
 id = "urn:ró:place:2"
@@ -1292,6 +1293,10 @@ name = "Canal"
 [[place_feature]]
 id = "urn:ró:place_feature:cathedral"
 name = "Cathedral"
+
+[[place_feature]]
+id = "urn:ró:place_feature:church"
+name = "Church"
 
 [[place_feature]]
 id = "urn:ró:place_feature:cave"

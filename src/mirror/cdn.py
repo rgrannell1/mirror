@@ -11,8 +11,9 @@ from mirror.config import (
     SPACES_SECRET_KEY,
 )
 from mirror.constants import VIDEO_CONTENT_TYPE
+from mirror.database import D1SqliteDatabase, SqliteDatabase
 from mirror.photo import PhotoContent
-from mirror.config import PHOTOS_URL
+from mirror.config import PHOTOS_URL, D1_DATABASE_PATH
 from mirror.utils import deterministic_hash_str
 
 
@@ -121,3 +122,18 @@ class CDN:
         video parameters"""
 
         return f"{deterministic_hash_str(f'{fpath}{bitrate}{width}{height}')}.{format}"
+
+
+class D1Builder:
+    """Build D1 SQL database, so that we can generate social-cards from that information"""
+
+    def __init__(self, db: SqliteDatabase) -> None:
+        self.db = db
+        self.d1 = D1SqliteDatabase(D1_DATABASE_PATH)
+
+    def build(self) -> None:
+        d1 = D1SqliteDatabase(D1_DATABASE_PATH)
+
+        # find cover images, or good images.
+        # ensure these alone are encode in 1200 x 630 format (social-card size)
+        # for each thing, album, photo, add this information into d1

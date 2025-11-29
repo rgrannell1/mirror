@@ -5,7 +5,7 @@ from mirror.ansi import ANSI
 from mirror.commands import write_metadata
 from mirror.commands.write_triples import write_neo4j_triples
 from mirror.commands.publisher import ArtifactBuilder
-from mirror.cdn import CDN
+from mirror.cdn import CDN, D1Builder
 from mirror.commands.read_metadata import read_metadata
 from mirror.commands.write_metadata import write_metadata
 from mirror.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
@@ -60,6 +60,8 @@ class Mirror:
 
         builder = ArtifactBuilder(db, OUTPUT_DIRECTORY)
         builder.build()
+
+        D1Builder(db).build()
 
     def read_metadata(self, content: str) -> None:
         """Read album or photo semantic information from stdin"""
