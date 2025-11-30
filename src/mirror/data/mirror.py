@@ -123,6 +123,12 @@ class AlbumTriples:
 
             description = markdown.markdown(album.description) if album.description else ""
 
+            countries = []
+            for flag in album.flags:
+                country = flag
+                country_id = country.lower().replace(' ', '-')
+                countries.append(f"urn:ró:country:{country_id}")
+
             source = f"urn:ró:album:{album.id}"
             yield SemanticTriple(source, 'name', album.name)
             yield SemanticTriple(source, 'photos_count', album.photos_count)
@@ -133,7 +139,8 @@ class AlbumTriples:
             yield SemanticTriple(source, 'short_date_range', date_range(min_date, max_date, short=True))
             yield SemanticTriple(source, 'thumbnail_url', AlbumTriples.short_cdn_url(album.thumbnail_url))
             yield SemanticTriple(source, 'mosaic', album.mosaic_colours)
-            yield SemanticTriple(source, 'country', album.flags)
+            for country in countries:
+                yield SemanticTriple(source, 'country', country)
             yield SemanticTriple(source, 'description', description)
 
 class PhotoTriples:
@@ -160,6 +167,8 @@ class PhotoTriples:
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
 
+        # TODO I don't get this logic.
+
         photos = list(db.photo_data_table().list())
 
         for album in db.album_data_view().list():
@@ -169,4 +178,8 @@ class PhotosCountryReader:
             for photo in photos:
                 if photo.album_id == album.id:
                     source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
-                    yield SemanticTriple(source, 'country', album.flags[0])
+                    country = album.flags[0]
+                    country_id = country.lower().replace(' ', '-')
+                    country_urn = f"urn:ró:country:{country_id}"
+
+                    yield SemanticTriple(source, 'country', country_urn)
