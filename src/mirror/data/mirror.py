@@ -5,7 +5,7 @@ import markdown
 from mirror.config import PHOTOS_URL
 from mirror.data.types import SemanticTriple
 from mirror.utils import deterministic_hash_str
-
+from mirror.dates import date_range
 
 class ExifReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
@@ -129,11 +129,12 @@ class AlbumTriples:
             yield SemanticTriple(source, 'videos_count', album.videos_count)
             yield SemanticTriple(source, 'min_date', str(int(min_date.timestamp() * 1000)))
             yield SemanticTriple(source, 'max_date', str(int(max_date.timestamp() * 1000)))
+            yield SemanticTriple(source, 'date_range', date_range(min_date, max_date, short=False))
+            yield SemanticTriple(source, 'short_date_range', date_range(min_date, max_date, short=True))
             yield SemanticTriple(source, 'thumbnail_url', AlbumTriples.short_cdn_url(album.thumbnail_url))
             yield SemanticTriple(source, 'mosaic', album.mosaic_colours)
-            yield SemanticTriple(source, 'flags', album.flags)
+            yield SemanticTriple(source, 'country', album.flags)
             yield SemanticTriple(source, 'description', description)
-
 
 class PhotoTriples:
     @classmethod

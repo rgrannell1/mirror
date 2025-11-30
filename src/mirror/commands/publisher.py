@@ -156,6 +156,7 @@ class AtomArtifact:
         pages = self.paginate(media, page_size)
 
         atom_dir = os.path.join(output_dir, "atom")
+        os.makedirs(atom_dir, exist_ok=True)
 
         for idx, page in enumerate(pages[1:]):
             next_page = pages[idx + 1] if idx + 1 < len(pages) else None
@@ -329,10 +330,14 @@ class TriplesArtifact(IArtifact):
                 return mapped
         return value
 
+    def camelCase(self, value: str) -> str:
+        parts = value.split('_')
+        return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+
     def process(self, triple: SemanticTriple) -> list:
         return [[
                 self.simplify(triple.source),
-                triple.relation,
+                self.camelCase(triple.relation),
                 self.simplify(triple.target)
         ]]
 
