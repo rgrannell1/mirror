@@ -20,7 +20,9 @@ dependencies = [
   "PyYAML",
   "requests",
   "sqlean.py",
-  "xmltodict"
+  "xmltodict",
+  "feedgen",
+  "markdown"
 ]
 
 [tool.ruff]

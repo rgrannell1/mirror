@@ -153,8 +153,12 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         reader = csv.reader(sys.stdin, delimiter="|")
         headers = next(reader)[1:-1]
 
-        if headers[0].strip() != "embedding":
-            raise ValueError("Invalid header in Markdown table")
+
+        try:
+            if headers[0].strip() != "embedding":
+                raise ValueError("Invalid header in Markdown table")
+        except IndexError:
+            raise ValueError(f"Invalid header in Markdown table: {headers}")
 
         next(reader)
 

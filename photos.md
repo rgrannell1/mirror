@@ -794,7 +794,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/ffc433bbae.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae7517caa0.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:buteo-jamaicensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2737cd6f70.webp) | Madison & Chicago | Cityscape | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/584351d425.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:upupa-epops,urn:ró:bird:ciconia-ciconia |  |
+| ![](https://photos-cdn.rgrannell.xyz/584351d425.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  |  urn:ró:bird:upupa-epops,urn:ró:bird:ciconia-ciconia |  |
 | ![](https://photos-cdn.rgrannell.xyz/962620fa0e.webp) | Madrid | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:arctictis-binturong |  |
 | ![](https://photos-cdn.rgrannell.xyz/66e3b0c73e.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailurus-fulgens |  |
 | ![](https://photos-cdn.rgrannell.xyz/7b2d1f48d2.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:casuarius-casuarius |  |
@@ -865,6 +865,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/518dc81109.webp) | National Botanic Gardens | Wildlife | ⭐⭐ | urn:ró:place:42 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0df9fbf29e.webp) | National Botanic Gardens | Cityscape | ⭐⭐ | urn:ró:place:42 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/29e10a41d8.webp) | National Botanic Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:42 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/320082c9b2.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9357d0beb4.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c181a7c424.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fd727e77f1.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/578dd75ae3.webp) | Newgrange | Other | ⭐⭐ | urn:ró:unesco:659 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d5050c376c.webp) | Newgrange | Wildlife | ⭐⭐ | urn:ró:place:75 |  | urn:ró:mammal:oryctolagus-cuniculus |  |
 | ![](https://photos-cdn.rgrannell.xyz/26dd30cfb1.webp) | Newgrange | Other | ⭐⭐ | urn:ró:place:75 |  |  |  |
