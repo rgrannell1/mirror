@@ -111,6 +111,8 @@ def UploadMedia(
 
     yield Await(jobs)
 
+    # This is an odd bug. For now, we need this, or we get complaints of an unstarted
+    # generator.
     yield iter([])
 
 
