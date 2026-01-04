@@ -49,7 +49,6 @@ class MediaScanner(IScanner):
             for media in album.media():
                 yield media
 
-
     def _unsaved_exifs(self) -> Iterator[PhotoExifData]:
         """Return exif data for all photos not in the database"""
 

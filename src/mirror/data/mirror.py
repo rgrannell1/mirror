@@ -7,6 +7,7 @@ from mirror.data.types import SemanticTriple
 from mirror.utils import deterministic_hash_str
 from mirror.dates import date_range
 
+
 class ExifReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         camera_models = set()
@@ -25,7 +26,6 @@ class ExifReader:
                 relation="focal_length",
                 target=exif.focal_length,
             )
-
 
             if exif.model:
                 camera_urn = f"urn:ró:camera:{exif.model.lower().replace(' ', '-')}"
@@ -77,38 +77,45 @@ class VideosReader:
 
             yield SemanticTriple(
                 source,
-                'album_id',
-                video.album_id,)
+                "album_id",
+                video.album_id,
+            )
 
             yield SemanticTriple(
                 source,
-                'description',
-                video.description,)
+                "description",
+                video.description,
+            )
 
             yield SemanticTriple(
                 source,
-                'video_url_unscaled',
-                VideosReader.short_cdn_url(video.video_url_unscaled),)
+                "video_url_unscaled",
+                VideosReader.short_cdn_url(video.video_url_unscaled),
+            )
 
             yield SemanticTriple(
                 source,
-                'video_url_1080p',
-                VideosReader.short_cdn_url(video.video_url_1080p),)
+                "video_url_1080p",
+                VideosReader.short_cdn_url(video.video_url_1080p),
+            )
 
             yield SemanticTriple(
                 source,
-                'video_url_720p',
-                VideosReader.short_cdn_url(video.video_url_720p),)
+                "video_url_720p",
+                VideosReader.short_cdn_url(video.video_url_720p),
+            )
 
             yield SemanticTriple(
                 source,
-                'video_url_480p',
-                VideosReader.short_cdn_url(video.video_url_480p),)
+                "video_url_480p",
+                VideosReader.short_cdn_url(video.video_url_480p),
+            )
 
             yield SemanticTriple(
                 source,
-                'poster_url',
-                VideosReader.short_cdn_url(video.poster_url),)
+                "poster_url",
+                VideosReader.short_cdn_url(video.poster_url),
+            )
 
 
 class AlbumTriples:
@@ -126,22 +133,23 @@ class AlbumTriples:
             countries = []
             for flag in album.flags:
                 country = flag
-                country_id = country.lower().replace(' ', '-')
+                country_id = country.lower().replace(" ", "-")
                 countries.append(f"urn:ró:country:{country_id}")
 
             source = f"urn:ró:album:{album.id}"
-            yield SemanticTriple(source, 'name', album.name)
-            yield SemanticTriple(source, 'photos_count', album.photos_count)
-            yield SemanticTriple(source, 'videos_count', album.videos_count)
-            yield SemanticTriple(source, 'min_date', str(int(min_date.timestamp() * 1000)))
-            yield SemanticTriple(source, 'max_date', str(int(max_date.timestamp() * 1000)))
-            yield SemanticTriple(source, 'date_range', date_range(min_date, max_date, short=False))
-            yield SemanticTriple(source, 'short_date_range', date_range(min_date, max_date, short=True))
-            yield SemanticTriple(source, 'thumbnail_url', AlbumTriples.short_cdn_url(album.thumbnail_url))
-            yield SemanticTriple(source, 'mosaic', album.mosaic_colours)
+            yield SemanticTriple(source, "name", album.name)
+            yield SemanticTriple(source, "photos_count", album.photos_count)
+            yield SemanticTriple(source, "videos_count", album.videos_count)
+            yield SemanticTriple(source, "min_date", str(int(min_date.timestamp() * 1000)))
+            yield SemanticTriple(source, "max_date", str(int(max_date.timestamp() * 1000)))
+            yield SemanticTriple(source, "date_range", date_range(min_date, max_date, short=False))
+            yield SemanticTriple(source, "short_date_range", date_range(min_date, max_date, short=True))
+            yield SemanticTriple(source, "thumbnail_url", AlbumTriples.short_cdn_url(album.thumbnail_url))
+            yield SemanticTriple(source, "mosaic", album.mosaic_colours)
             for country in countries:
-                yield SemanticTriple(source, 'country', country)
-            yield SemanticTriple(source, 'description', description)
+                yield SemanticTriple(source, "country", country)
+            yield SemanticTriple(source, "description", description)
+
 
 class PhotoTriples:
     @classmethod
@@ -152,21 +160,21 @@ class PhotoTriples:
         for photo in db.photo_data_table().list():
             source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
 
-            yield SemanticTriple(source, 'album_id', photo.album_id)
-            yield SemanticTriple(source, 'thumbnail_url', PhotoTriples.short_cdn_url(photo.thumbnail_url))
-            yield SemanticTriple(source, 'png_url', PhotoTriples.short_cdn_url(photo.png_url))
-            yield SemanticTriple(source, 'mid_image_lossy_url', PhotoTriples.short_cdn_url(photo.mid_image_lossy_url))
-            yield SemanticTriple(source, 'mosaic_colours', photo.mosaic_colours)
-            yield SemanticTriple(source, 'full_image', PhotoTriples.short_cdn_url(photo.full_image))
-            yield SemanticTriple(source, 'created_at', str(int(photo.get_ctime().timestamp() * 1000)))
+            yield SemanticTriple(source, "album_id", photo.album_id)
+            yield SemanticTriple(source, "thumbnail_url", PhotoTriples.short_cdn_url(photo.thumbnail_url))
+            yield SemanticTriple(source, "png_url", PhotoTriples.short_cdn_url(photo.png_url))
+            yield SemanticTriple(source, "mid_image_lossy_url", PhotoTriples.short_cdn_url(photo.mid_image_lossy_url))
+            yield SemanticTriple(source, "mosaic_colours", photo.mosaic_colours)
+            yield SemanticTriple(source, "full_image", PhotoTriples.short_cdn_url(photo.full_image))
+            yield SemanticTriple(source, "created_at", str(int(photo.get_ctime().timestamp() * 1000)))
 
         for fpath, grey_value in db.photo_icon_table().list():
             source = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
-            yield SemanticTriple(source, 'contrasting_grey', grey_value)
+            yield SemanticTriple(source, "contrasting_grey", grey_value)
+
 
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-
         # TODO I don't get this logic.
 
         photos = list(db.photo_data_table().list())
@@ -179,7 +187,7 @@ class PhotosCountryReader:
                 if photo.album_id == album.id:
                     source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
                     country = album.flags[0]
-                    country_id = country.lower().replace(' ', '-')
+                    country_id = country.lower().replace(" ", "-")
                     country_urn = f"urn:ró:country:{country_id}"
 
-                    yield SemanticTriple(source, 'country', country_urn)
+                    yield SemanticTriple(source, "country", country_urn)

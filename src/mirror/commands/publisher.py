@@ -37,6 +37,7 @@ class IArtifact(Protocol):
     def short_cdn_url(cls, url: Optional[str]) -> str:
         return url.replace(PHOTOS_URL, "") if url else ""
 
+
 class EnvArtifact(IArtifact):
     """Build artifact describing build information"""
 
@@ -48,12 +49,7 @@ class EnvArtifact(IArtifact):
         self.publication_id = publication_id
 
     def content(self, db: SqliteDatabase) -> str:
-        return json.dumps(
-            {
-                "photos_url": PHOTOS_URL,
-                "publication_id": self.publication_id
-            }
-        )
+        return json.dumps({"photos_url": PHOTOS_URL, "publication_id": self.publication_id})
 
 
 class AtomArtifact:
@@ -192,7 +188,6 @@ class AtomArtifact:
         index.atom_file(index_path)
 
 
-
 class StatsArtifact(IArtifact):
     """Build artifact giving semantic facts for the albums page"""
 
@@ -308,11 +303,11 @@ class TriplesArtifact(IArtifact):
     def __init__(self):
         self.state = {
             # https://en.wikipedia.org/wiki/CURIE, e.g [isbn:0393315703]
-            'curie': {
-                'urn:ró:': 'i',
-                'https://birdwatchireland.ie/birds/': 'birdwatch',
-                'https://photos-cdn.rgrannell.xyz/': 'photos',
-                'https://en.wikipedia.org/wiki/': 'wiki'
+            "curie": {
+                "urn:ró:": "i",
+                "https://birdwatchireland.ie/birds/": "birdwatch",
+                "https://photos-cdn.rgrannell.xyz/": "photos",
+                "https://en.wikipedia.org/wiki/": "wiki",
             }
         }
 
@@ -320,26 +315,22 @@ class TriplesArtifact(IArtifact):
         if not isinstance(value, str):
             return value
 
-        for prefix, curie in self.state['curie'].items():
+        for prefix, curie in self.state["curie"].items():
             if value.startswith(prefix):
-                mapped =  f"[{value.replace(prefix, curie + ':')}]"
+                mapped = f"[{value.replace(prefix, curie + ':')}]"
 
-                if '[i::' in mapped:
+                if "[i::" in mapped:
                     raise ValueError(f"Invalid curie generated {value} -> {mapped}")
 
                 return mapped
         return value
 
     def camelCase(self, value: str) -> str:
-        parts = value.split('_')
-        return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+        parts = value.split("_")
+        return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
     def process(self, triple: SemanticTriple) -> list:
-        return [[
-                self.simplify(triple.source),
-                self.camelCase(triple.relation),
-                self.simplify(triple.target)
-        ]]
+        return [[self.simplify(triple.source), self.camelCase(triple.relation), self.simplify(triple.target)]]
 
     def read(self, db: SqliteDatabase) -> Iterator[list]:
         readers = [
@@ -352,12 +343,10 @@ class TriplesArtifact(IArtifact):
             UnescoReader(),
             WikidataMetadataReader(),
             PhotoRelationsReader(),
-            PhotosCountryReader()
+            PhotosCountryReader(),
         ]
-        for long, alias in self.state['curie'].items():
-            yield [
-                long, "curie", alias
-            ]
+        for long, alias in self.state["curie"].items():
+            yield [long, "curie", alias]
 
         for reader in readers:
             for triple in reader.read(db):
@@ -385,7 +374,7 @@ class ArtifactBuilder:
             TriplesArtifact,
         ]
 
-        removeable_prefixes = {klass.NAME for klass in mirror_artifacts if klass.CLEAN} | {'tribbles'}
+        removeable_prefixes = {klass.NAME for klass in mirror_artifacts if klass.CLEAN} | {"tribbles"}
         removeable = [file for file in os.listdir(dpath) if file.startswith(tuple(removeable_prefixes))]
 
         for file in removeable:

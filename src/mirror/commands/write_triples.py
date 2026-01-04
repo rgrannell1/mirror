@@ -155,8 +155,8 @@ def write_neo4j_triples(db, neo4j_uri="bolt://localhost:7687", neo4j_user="neo4j
         with driver.session() as session:
             for source, relation, target in reader.read(db):
                 # Parse source
-                source_parsed = parse_urn(source.replace('::', 'urn:ró:')) if is_urn(source) else None
-                target_parsed = parse_urn(target.replace('::', 'urn:ró:')) if is_urn(target) else None
+                source_parsed = parse_urn(source.replace("::", "urn:ró:")) if is_urn(source) else None
+                target_parsed = parse_urn(target.replace("::", "urn:ró:")) if is_urn(target) else None
 
                 # Handle different cases
                 if source_parsed and target_parsed:

@@ -31,9 +31,10 @@ from mirror.tables import (
     PHOTO_METADATA_TABLE,
     WIKIDATA_TABLE,
     BINOMIALS_WIKIDATA_ID_TABLE,
-    SOCIAL_CARD_TABLE
+    SOCIAL_CARD_TABLE,
 )
 import string
+
 
 class PhotoIconTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
@@ -41,11 +42,13 @@ class PhotoIconTable:
         self.conn.execute(PHOTO_ICON_TABLE)
 
     def add(self, fpath: str, grey_value: str) -> None:
-        self.conn.execute(
-            "insert or replace into photo_icons (fpath, grey_value) values (?, ?)",
-            (fpath, grey_value),
-        )
-        self.conn.commit()
+        with self.conn as conn:
+            conn.execute("begin immediate;")
+            conn.execute(
+                "insert or replace into photo_icons (fpath, grey_value) values (?, ?)",
+                (fpath, grey_value),
+            )
+            conn.commit()
 
     def get_by_fpath(self, fpath: str) -> Optional[str]:
         for row in self.conn.execute("select grey_value from photo_icons where fpath = ?", (fpath,)):
@@ -56,6 +59,7 @@ class PhotoIconTable:
         for row in self.conn.execute("select fpath, grey_value from photo_icons"):
             yield (row[0], row[1])
 
+
 class PhotosTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -63,16 +67,20 @@ class PhotosTable:
 
     def add(self, fpath: str) -> None:
         dpath = os.path.dirname(fpath)
-        self.conn.execute(
-            """
-        insert or replace into photos (fpath, dpath)
-            values (?, ?)
-        """,
-            (fpath, dpath),
-        )
-        self.conn.commit()
+
+        with self.conn as conn:
+            conn.execute("begin immediate;")
+            conn.execute(
+                """
+            insert or replace into photos (fpath, dpath)
+                values (?, ?)
+            """,
+                (fpath, dpath),
+            )
+            conn.commit()
 
     def delete(self, fpath: str) -> None:
+        self.conn.execute("begin immediate;")
         self.conn.execute("delete from photos where fpath = ?", (fpath,))
         self.conn.commit()
 
@@ -534,8 +542,14 @@ class SqliteDatabase:
 
     def __init__(self, fpath: str) -> None:
         self.conn = sqlite3.connect(fpath)
+        # WAL-mode for concurrent reads and writes
+        self.conn.execute("PRAGMA journal_mode=WAL;")
+        # We do want foreign key constraints
+        self.conn.execute("PRAGMA foreign_keys=ON;")
+        # Not too long to wait
+        self.conn.execute("PRAGMA busy_timeout=5000;")
 
-    def delete_views(self)  -> None:
+    def delete_views(self) -> None:
         self.conn.execute("drop view if exists view_album_contents")
         self.conn.execute("drop view if exists view_album_data")
         self.conn.execute("drop view if exists view_photo_data")
@@ -619,6 +633,7 @@ class SqliteDatabase:
             fpath = row[0]
             self.encoded_photos_table().delete(fpath)
 
+
 class SocialCardTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
@@ -630,6 +645,7 @@ class SocialCardTable:
             (path, description, title, image_url),
         )
         self.conn.commit()
+
 
 class D1SqliteDatabase:
     """A SQLite database used just for D1 caching"""

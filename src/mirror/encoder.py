@@ -18,6 +18,7 @@ from mirror.photo import PhotoContent
 
 from PIL import Image
 
+
 class PhotoEncoder:
     @classmethod
     def compute_contrasting_grey(cls, fpath: str) -> str:
@@ -51,11 +52,7 @@ class PhotoEncoder:
         a_img = Image.new("L", (1, 1), 128)
         b_img = Image.new("L", (1, 1), 128)
 
-        rgb_pixel = (
-            Image.merge("LAB", (L_img, a_img, b_img))
-            .convert("RGB")
-            .getpixel((0, 0))
-        )
+        rgb_pixel = Image.merge("LAB", (L_img, a_img, b_img)).convert("RGB").getpixel((0, 0))
 
         # averaging channels to get a grey
         grey = int(round(sum(rgb_pixel) / 3))
@@ -137,7 +134,6 @@ class VideoEncoder:
 
         actual_width, actual_height = cls.resolution(fpath)
         if actual_width and actual_height and width and height and (actual_width < width or actual_height < height):
-
             raise InvalidVideoDimensionsException(f"Video {fpath} is too small to encode")
 
         VIDEO_CODEC = "libx264"

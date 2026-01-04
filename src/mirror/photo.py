@@ -151,6 +151,7 @@ class PhotoMetadataSummaryModel(IModel):
             subjects=subjects.split(",") if subjects else [],
             covers=covers.split(",") if covers else [],
         )
+
     @classmethod
     @lru_cache
     def schema(cls) -> dict[str, Any]:

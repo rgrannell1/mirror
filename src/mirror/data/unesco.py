@@ -13,39 +13,41 @@ class UnescoReader:
         self.data_file = data_file
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        unesco_ids = set()
 
-      unesco_ids = set()
+        with open(self.things_file, "rb") as conn:
+            places = tomllib.load(conn)
 
-      with open(self.things_file, 'rb') as conn:
-          places = tomllib.load(conn)
+        for place in places["places"]:
+            unesco_urn = place.get("unesco_id")
 
-      for place in places['places']:
-          unesco_urn = place.get("unesco_id")
+            if unesco_urn:
+                id = unesco_urn.split(":")[-1]
+                unesco_ids.add(id)
 
-          if unesco_urn:
-              id = unesco_urn.split(":")[-1]
-              unesco_ids.add(id)
+        unesco_data = json.load(open(self.data_file, "r", encoding="utf-8"))
 
-      unesco_data = json.load(open(self.data_file, "r", encoding="utf-8"))
+        for unesco_site in unesco_data:
+            id_no = unesco_site["id_no"]
+            if id_no not in unesco_ids:
+                continue
 
-      for unesco_site in unesco_data:
-          id_no = unesco_site['id_no']
-          if id_no not in unesco_ids:
-              continue
+            urn = f"urn:ró:unesco:{id_no}"
 
-          urn = f"urn:ró:unesco:{id_no}"
+            yield SemanticTriple(
+                source=urn,
+                relation="name",
+                target=unesco_site["name_en"],
+            )
 
-          yield SemanticTriple(
-              source=urn,
-              relation="name",
-              target=unesco_site['name_en'],)
+            yield SemanticTriple(
+                source=urn,
+                relation="longitude",
+                target=unesco_site["coordinates"]["lon"],
+            )
 
-          yield SemanticTriple(
-              source=urn,
-              relation="longitude",
-              target=unesco_site['coordinates']['lon'],)
-
-          yield SemanticTriple(
-              source=urn,
-              relation="latitude",
-              target=unesco_site['coordinates']['lat'],)
+            yield SemanticTriple(
+                source=urn,
+                relation="latitude",
+                target=unesco_site["coordinates"]["lat"],
+            )

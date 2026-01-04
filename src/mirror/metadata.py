@@ -153,7 +153,6 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         reader = csv.reader(sys.stdin, delimiter="|")
         headers = next(reader)[1:-1]
 
-
         try:
             if headers[0].strip() != "embedding":
                 raise ValueError("Invalid header in Markdown table")
@@ -173,12 +172,12 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             thumbnail_url = embedding[4:-1]
             dpath = album_data.album_dpath_from_thumbnail_url(thumbnail_url)
 
-            if permalink == 'lanzarote-17':
-                dpath = '/home/rg/Drive/Media/2017/Lanzarote/Published'
-            elif permalink == 'slieve-bloom-20':
-                dpath = '/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published'
-            elif permalink == 'dublin-zoo-21':
-                dpath = '/home/rg/Drive/Media/2021/Dublin Zoo/Published'
+            if permalink == "lanzarote-17":
+                dpath = "/home/rg/Drive/Media/2017/Lanzarote/Published"
+            elif permalink == "slieve-bloom-20":
+                dpath = "/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published"
+            elif permalink == "dublin-zoo-21":
+                dpath = "/home/rg/Drive/Media/2021/Dublin Zoo/Published"
 
             item = {
                 "fpath": dpath,
@@ -214,17 +213,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
 class MarkdownTablePhotoMetadataWriter:
     def write_photo_metadata(self, db: SqliteDatabase) -> None:
-        headers = [
-            "embedding",
-            "name",
-            "genre",
-            "rating",
-            "places",
-            "description",
-            "subjects",
-            "cover"
-        ]
-
+        headers = ["embedding", "name", "genre", "rating", "places", "description", "subjects", "cover"]
 
         db.album_contents_view()
         db.photo_metadata_view()
@@ -274,7 +263,7 @@ class MarkdownTablePhotoMetadataWriter:
                     ",".join(sorted(data["places"])),
                     data["description"],
                     ",".join(sorted(data["subjects"])),
-                    ""
+                    "",
                 ]
             )
 
@@ -322,7 +311,6 @@ class MarkdownTablePhotoMetadataReader:
                     raise ValueError(f"Multiple images claiming to be cover for {cov}")
                 unique_covers.add(cov)
 
-
             item = {
                 "thumbnail_url": url,
                 "album": title,
@@ -343,10 +331,10 @@ class MarkdownTablePhotoMetadataReader:
             yield PhotoMetadataSummaryModel(
                 url=url,
                 name=title,
-                genre=item['genre'],
-                rating=item['rating'],
-                places=item['places'],
-                description=item['description'],
-                subjects=item['subjects'],
-                covers=item['covers']
+                genre=item["genre"],
+                rating=item["rating"],
+                places=item["places"],
+                description=item["description"],
+                subjects=item["subjects"],
+                covers=item["covers"],
             )

@@ -21,3 +21,4 @@ main.py
 .vscode/settings.json
 uv.lock
 src/data/whc001.json
+mirror_jobs.db

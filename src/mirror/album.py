@@ -32,7 +32,7 @@ class Album:
 
         if self.published():
             for fname in os.listdir(self.published_path()):
-                if '+cover' in fname:
+                if "+cover" in fname:
                     fpath = os.path.join(self.published_path(), fname)
 
                     if Photo.is_a(fpath):

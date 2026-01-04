@@ -13,7 +13,14 @@ from mirror.database import SqliteDatabase
 from mirror.commands.uploader import MediaUploader
 from mirror.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
 
-commands = ["mirror scan", "mirror upload", "mirror publish", "mirror read_metadata", "mirror write_metadata", "mirror write_neo4j_triples"]
+commands = [
+    "mirror scan",
+    "mirror upload",
+    "mirror publish",
+    "mirror read_metadata",
+    "mirror write_metadata",
+    "mirror write_neo4j_triples",
+]
 
 doc = f"""
 {ANSI.bold("mirror")} 🪞

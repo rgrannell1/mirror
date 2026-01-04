@@ -144,30 +144,30 @@ class D1Builder:
             if not album.src in dpath_to_details:
                 dpath_to_details[album.src] = {}
 
-            if album.relation == 'summary':
-                dpath_to_details[album.src]['description'] = album.target
+            if album.relation == "summary":
+                dpath_to_details[album.src]["description"] = album.target
 
-            if album.relation == 'permalink':
-                dpath_to_details[album.src]['path'] = f'/album/{album.target}'
+            if album.relation == "permalink":
+                dpath_to_details[album.src]["path"] = f"/album/{album.target}"
 
-            if album.relation == 'title':
-                dpath_to_details[album.src]['title'] = album.target
+            if album.relation == "title":
+                dpath_to_details[album.src]["title"] = album.target
 
         album_covers = list(encoded_photos.list_by_role("social_card"))
         for album_cover in album_covers:
             dpath = os.path.dirname(album_cover.fpath)
 
             if dpath_to_details.get(dpath):
-                dpath_to_details[dpath]['image_url'] = album_cover.url
+                dpath_to_details[dpath]["image_url"] = album_cover.url
 
         socials = d1.social_card_table()
 
         for details in dpath_to_details.values():
             socials.add(
-                path=details['path'],
-                description=details['description'],
-                title=details['title'],
-                image_url=details['image_url'],
+                path=details["path"],
+                description=details["description"],
+                title=details["title"],
+                image_url=details["image_url"],
             )
 
         # add the information into the D1 database, then snapshot

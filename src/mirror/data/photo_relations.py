@@ -48,15 +48,7 @@ def parse_style(style_str: str) -> str:
 
 class PhotoRelationsReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        allowed_relations = {
-            "summary",
-            "style",
-            "location",
-            "subject",
-            "rating",
-            "wildlife",
-            "cover"
-        }
+        allowed_relations = {"summary", "style", "location", "subject", "rating", "wildlife", "cover"}
 
         for row in db.photo_metadata_table().list():
             # not sure this is useable in practice, check it's used...

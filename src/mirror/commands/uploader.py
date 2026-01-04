@@ -66,7 +66,7 @@ class MediaUploader:
                 continue
 
             # only generate social-cards for album covers, for the moment
-            if '+cover' not in fpath and role == 'social_card':
+            if "+cover" not in fpath and role == "social_card":
                 continue
 
             uploaded_url = self.cdn.upload_photo(
@@ -150,5 +150,6 @@ class MediaUploader:
             self.publish_photo_encodings(fpath)
             self.find_contrasting_colour(fpath)
 
-        for fpath in self.db.videos_table().list():
-            self.publish_video_encodings(fpath)
+
+#        for fpath in self.db.videos_table().list():
+#           self.publish_video_encodings(fpath)
