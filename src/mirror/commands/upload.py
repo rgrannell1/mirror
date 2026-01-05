@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterator, TypedDict
+from typing import Generator, Iterator, TypedDict
 
 from mirror.config import DATABASE_PATH
 from mirror.database import SqliteDatabase
@@ -17,8 +17,10 @@ from zahir import (
     WorkflowOutputEvent,
 )
 
+
 class PhotoJobInput(TypedDict):
     fpath: str
+
 
 class UploadOpts(TypedDict):
     force_recompute_grey: bool
@@ -92,7 +94,7 @@ def UploadMedia(
     context: Context,
     input: UploadOpts,
     dependencies={},
-) -> Iterator[Await | WorkflowOutputEvent]:
+) -> Generator[Await | WorkflowOutputEvent]:
     db = SqliteDatabase(DATABASE_PATH)
 
     force_recompute_grey = input.get("force_recompute_grey", False)
@@ -111,15 +113,10 @@ def UploadMedia(
 
     yield Await(jobs)
 
-    # This is an odd bug. For now, we need this, or we get complaints of an unstarted
-    # generator.
-    yield iter([])
-
-
 job_registry = SQLiteJobRegistry("mirror_jobs.db")
 context = MemoryContext(scope=LocalScope.from_module(), job_registry=job_registry)
 
-start = UploadMedia({"force_recompute_grey": False, "force_recompute_mosaic": False})
+start = UploadMedia({"force_recompute_grey": False, "force_recompute_mosaic": True})
 
 for event in LocalWorkflow(context, max_workers=15).run(start):
     print(event)
