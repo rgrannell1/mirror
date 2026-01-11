@@ -125,6 +125,9 @@ class AlbumTriples:
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for album in db.album_data_view().list():
+            if album.min_date is None or album.max_date is None:
+                continue
+
             min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
             max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
 

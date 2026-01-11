@@ -63,58 +63,53 @@ class PhotoEncoder:
     def encode_image_colours(cls, fpath: str) -> list[str]:
         """Create a list of colours in the image, to use as a data-url while the main image loads"""
 
-        img = Image.open(fpath)
-        rgb = img.convert("RGB")
+        with Image.open(fpath) as img:
+            rgb = img.convert("RGB")
 
-        # reduce the dimensions of the image to the thumbnail size
-        thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+            # reduce the dimensions of the image to the thumbnail size
+            thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
 
-        # remove EXIF data from the image by cloning
-        data = list(thumb.getdata())
-        no_exif = Image.new(thumb.mode, thumb.size)
-        no_exif.putdata(data)
+            # remove EXIF data from the image by cloning
+            data = list(thumb.getdata())
+            no_exif = Image.new(thumb.mode, thumb.size)
+            no_exif.putdata(data)
 
-        # resize down to a tiny mosaic data-url that can be used to
-        # "progressively render" a photo.
-        smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
+            # resize down to a tiny mosaic data-url that can be used to
+            # "progressively render" a photo.
+            smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
 
-        colours = smaller.getcolors(THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT)
-        if not colours:
-            return []
+            colours = smaller.getcolors(THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT)
+            if not colours:
+                return []
 
-        # get the colours in the image
-        return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
+            # get the colours in the image
+            return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
 
     @classmethod
     def encode(cls, fpath: str, role: str, params: Dict) -> PhotoContent:
         """Encode an image as Webp, optionally resizing, and remove EXIF data"""
 
-        img = Image.open(fpath)
-        rgb = img.convert("RGB")
+        with Image.open(fpath) as img:
+            # Optionally resize if width and height are in params
+            width = params.get("width")
+            height = params.get("height")
 
-        # Optionally resize if width and height are in params
-        width = params.get("width")
-        height = params.get("height")
+            if width and height:
+                img = ImageOps.fit(img, (width, height))
+            else:
+                if role == "thumbnail_lossy":
+                    raise ValueError("thumbnail_lossy role requires width and height")
 
-        if width and height:
-            print(f"🪩 | encoding {fpath} {role} @ {width} x {height}")
-            rgb = ImageOps.fit(rgb, (width, height))
-        else:
-            if role == "thumbnail_lossy":
-                raise ValueError("thumbnail_lossy role requires width and height")
+            img.getexif().clear()
+            img.info.pop("exif", None)
+            img.info.pop("xmp", None)
+            img.info.pop("icc_profile", None)
 
-            print(f"🪩 | encoding {fpath} {role}")
-
-        # remove EXIF data from the image by cloning
-        data = list(rgb.getdata())
-        no_exif = Image.new(rgb.mode, rgb.size)
-        no_exif.putdata(data)
-
-        with io.BytesIO() as output:
-            # Remove width and height from params to avoid side-effects
-            save_params = {key: val for key, val in params.items() if key not in ("width", "height")}
-            no_exif.save(output, **save_params)
-            return PhotoContent(output.getvalue())
+            with io.BytesIO() as output:
+                # Remove width and height from params to avoid side-effects
+                save_params = {key: val for key, val in params.items() if key not in ("width", "height")}
+                img.save(output, **save_params)
+                return PhotoContent(output.getvalue())
 
 
 class VideoEncoder:
@@ -191,23 +186,26 @@ class VideoEncoder:
     def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
         """Return a thumbnail for the video"""
         loaded = cv2.VideoCapture(fpath)
-        ret, frame = loaded.read()
-        if not ret:
-            raise VideoReadException(f"Failed to read frame from {fpath}")
+        try:
+            ret, frame = loaded.read()
+            if not ret:
+                raise VideoReadException(f"Failed to read frame from {fpath}")
 
-        img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
+            img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
 
-        img = Image.open(io.BytesIO(img_bytes))
-        thumb = ImageOps.fit(img, (width, height))
+            with Image.open(io.BytesIO(img_bytes)) as img:
+                thumb = ImageOps.fit(img, (width, height))
 
-        data = list(thumb.getdata())
-        no_exif = Image.new(thumb.mode, thumb.size)
-        no_exif.putdata(data)
+                data = list(thumb.getdata())
+                no_exif = Image.new(thumb.mode, thumb.size)
+                no_exif.putdata(data)
 
-        with io.BytesIO() as output:
-            # return the image hash and contents
+                with io.BytesIO() as output:
+                    # return the image hash and contents
 
-            no_exif.save(output, **params)
-            contents = output.getvalue()
+                    no_exif.save(output, **params)
+                    contents = output.getvalue()
 
-            return PhotoContent(contents)
+                    return PhotoContent(contents)
+        finally:
+            loaded.release()

@@ -139,7 +139,8 @@ class AtomArtifact:
             entry = fg.add_entry()
             entry.id(item["id"])
             entry.title(title)
-            entry.link(href=item["url"])
+            if item["url"] is not None:
+                entry.link(href=item["url"])
             entry.content(item["content_html"], type="html")
 
         fg.updated(max_time)
@@ -257,6 +258,9 @@ class StatsArtifact(IArtifact):
         # calculate album date-ranges
         TIME_FORMAT = "%Y:%m:%d %H:%M:%S"
         for album in albums:
+            if album.min_date is None or album.max_date is None:
+                continue
+
             if min_date is None or max_date is None:
                 min_date = datetime.strptime(album.min_date, TIME_FORMAT)
                 max_date = datetime.strptime(album.max_date, TIME_FORMAT)

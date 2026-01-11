@@ -211,11 +211,12 @@ class EncodedPhotosTable:
     def add(self, fpath: str, url: str, role: str, format: str) -> None:
         mimetype = f"image/{format}"
 
-        self.conn.execute(
-            "insert or replace into encoded_photos (fpath, mimetype, role, url) values (?, ?, ?, ?)",
-            (fpath, mimetype, role, url),
-        )
-        self.conn.commit()
+        with self.conn as conn:
+            conn.execute(
+                "insert or replace into encoded_photos (fpath, mimetype, role, url) values (?, ?, ?, ?)",
+                (fpath, mimetype, role, url),
+            )
+            conn.commit()
 
     def fpath_from_url(self, url: str) -> str | None:
         for row in self.conn.execute("select fpath from encoded_photos where url = ?", (url,)):
