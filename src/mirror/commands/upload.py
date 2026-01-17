@@ -20,9 +20,9 @@ from mirror.database import SqliteDatabase
 from mirror.encoder import PhotoEncoder
 
 from zahir import (
-    Job,
+    JobInstance,
     JobOutputEvent,
-    job,
+    spec,
     Await,
     Context,
     WorkflowOutputEvent,
@@ -45,7 +45,7 @@ class UploadOpts(TypedDict):
     force_upload_images: bool
 
 
-def list_photos_without_mosaic(db: SqliteDatabase, force_recompute: bool = False) -> Iterator[str]:
+def list_photos_without_mosaic(db: SqliteDatabase, force_recompute: bool = False) -> Generator[str]:
     photos = db.photos_table()
     encoded_photos_table = db.encoded_photos_table()
 
@@ -89,12 +89,13 @@ def list_photos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
             yield fpath
 
 
-@job()
+@spec()
 def ComputeContrastingGrey(
+    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies={},
-) -> Iterator[None]:
+) -> Generator[None]:
     fpath = input["fpath"]
 
     db = SqliteDatabase(DATABASE_PATH)
@@ -103,15 +104,16 @@ def ComputeContrastingGrey(
     grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
     icons.add(fpath, grey_value)
 
-    return iter(())
+    yield
 
 
-@job()
+@spec()
 def ComputeMosaic(
+    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies: DependencyGroup,
-) -> Iterator[None]:
+) -> Generator[None]:
     fpath = input["fpath"]
 
     db = SqliteDatabase(DATABASE_PATH)
@@ -122,15 +124,16 @@ def ComputeMosaic(
 
     encoded_photos_table.add(fpath, v2_content, "thumbnail_mosaic", "custom")
 
-    return iter(())
+    yield
 
 
-@job()
+@spec()
 def UploadPhoto(
+    spec_args,
     context: Context,
     input: dict,
     dependencies={},
-) -> Iterator:
+) -> Generator[JobOutputEvent]:
     fpath = input["fpath"]
     role = input["role"]
     params = input["params"]
@@ -152,12 +155,13 @@ def UploadPhoto(
     yield JobOutputEvent({"fpath": fpath, "role": role, "url": uploaded_url})
 
 
-@job()
+@spec()
 def FindMissingPhotos(
+    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies={},
-) -> Iterator[Job]:
+) -> Generator[JobInstance]:
     fpath = input["fpath"]
 
     db = SqliteDatabase(DATABASE_PATH)
@@ -174,13 +178,14 @@ def FindMissingPhotos(
         if "+cover" not in fpath and role == "social_card":
             continue
 
-        cdn_limit = ConcurrencyLimit(2, 1)
+        cdn_limit = ConcurrencyLimit(2, 1, context)
 
         yield UploadPhoto({"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit})
 
 
-@job()
+@spec()
 def UploadMedia(
+    spec_args,
     context: Context,
     input: UploadOpts,
     dependencies={},
@@ -214,7 +219,7 @@ job_registry = SQLiteJobRegistry("mirror_jobs.db")
 context = MemoryContext(
     scope=LocalScope(
         dependencies=[ConcurrencyLimit],
-        jobs=[ComputeContrastingGrey, ComputeMosaic, UploadPhoto, FindMissingPhotos, UploadMedia]),
+        specs=[ComputeContrastingGrey, ComputeMosaic, UploadPhoto, FindMissingPhotos, UploadMedia]),
     job_registry=job_registry,
 )
 
