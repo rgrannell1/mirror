@@ -1,4 +1,3 @@
-
 from mirror.commands.upload import main
 
 

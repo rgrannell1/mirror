@@ -84,6 +84,7 @@ def list_photos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
         if needs_upload:
             yield fpath
 
+
 def list_videos_without_upload(db: SqliteDatabase, force_upload: bool = False) -> Iterator[str]:
     videos = db.videos_table().list()
     encoded_videos_table = db.encoded_videos_table()
@@ -109,27 +110,28 @@ def is_silent(fpath: str) -> bool:
 
 
 def publish_video_encoding(cdn, db, fpath, role, params):
-        width, height, bitrate = params["width"], params["height"], params["bitrate"]
-        uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, "webm")
+    width, height, bitrate = params["width"], params["height"], params["bitrate"]
+    uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, "webm")
 
-        encoded_path = VideoEncoder.encode(
-            fpath=fpath,
-            upload_file_name=uploaded_video_name,
-            video_bitrate=bitrate,
-            width=width,
-            height=height,
-            share_audio=is_silent(fpath),
-        )
+    encoded_path = VideoEncoder.encode(
+        fpath=fpath,
+        upload_file_name=uploaded_video_name,
+        video_bitrate=bitrate,
+        width=width,
+        height=height,
+        share_audio=is_silent(fpath),
+    )
 
-        if not encoded_path:
-            raise Exception("Failed to encode video")
+    if not encoded_path:
+        raise Exception("Failed to encode video")
 
-        uploaded_video_url = cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
-        print(f"published {fpath} as {uploaded_video_url}")
+    uploaded_video_url = cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
+    print(f"published {fpath} as {uploaded_video_url}")
 
-        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
+    db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
 
-        return encoded_path
+    return encoded_path
+
 
 def publish_video_thumbnail(cdn, db, fpath, encoded_path):
     THUMBNAIL_FORMAT = "webp"
@@ -138,13 +140,8 @@ def publish_video_thumbnail(cdn, db, fpath, encoded_path):
         encoded_path, {"format": THUMBNAIL_FORMAT, "quality": 85, "method": 6}
     )
 
-    thumbnail_url = cdn.upload_photo(
-        encoded_data=encoded_thumbnail, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT
-    )
-    db.encoded_photos_table().add(
-        fpath=fpath, url=thumbnail_url, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT
-    )
-
+    thumbnail_url = cdn.upload_photo(encoded_data=encoded_thumbnail, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT)
+    db.encoded_photos_table().add(fpath=fpath, url=thumbnail_url, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT)
 
 
 @spec()
@@ -228,7 +225,8 @@ def FindMissingPhotos(
     encodings = list(encoded_photos_table.list_for_file(fpath))
     published_roles = {enc.role for enc in encodings}
 
-    cdn_limit = ConcurrencyLimit(2, 1, context)
+    # Use a fixed semaphore_id so all photo uploads share the same limit
+    cdn_limit = ConcurrencyLimit(2, 1, context, semaphore_id="global_photo_cdn_limit")
 
     for role, params in IMAGE_ENCODINGS.items():
         if role in published_roles:
@@ -265,6 +263,7 @@ def UploadVideo(
 
     yield JobOutputEvent({"fpath": fpath, "role": role})
 
+
 @spec()
 def FindMissingVideos(
     spec_args,
@@ -280,21 +279,16 @@ def FindMissingVideos(
     encodings = list(encoded_videos_table.list_for_file(fpath))
     published_roles = {enc.role for enc in encodings}
 
-    cdn_limit = ConcurrencyLimit(1, 1, context)
-    oom_limit = ResourceLimit(
-        resource="memory",
-        max_percent=45,
-        timeout=300
-    )
+    cdn_limit = ConcurrencyLimit(1, 1, context, semaphore_id="global_video_cdn_limit")
+    oom_limit = ResourceLimit(resource="memory", max_percent=45, timeout=300)
 
     for role, params in VIDEO_ENCODINGS:
         if role in published_roles:
             continue
 
-        yield UploadVideo({"fpath": fpath, "role": role, "params": params}, {
-            "cdn_limit": cdn_limit,
-            "oom_limit": oom_limit
-        })
+        yield UploadVideo(
+            {"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit, "oom_limit": oom_limit}
+        )
 
 
 @spec()
@@ -331,8 +325,9 @@ def UploadMedia(
 def main():
     """Execute the upload media workflow"""
     import multiprocessing
-    if multiprocessing.get_start_method() != 'fork':
-        multiprocessing.set_start_method('fork', force=True)
+
+    if multiprocessing.get_start_method() != "fork":
+        multiprocessing.set_start_method("fork", force=True)
 
     job_registry = SQLiteJobRegistry("mirror_jobs.db")
     context = MemoryContext(
@@ -345,11 +340,20 @@ def main():
                 FindMissingPhotos,
                 UploadVideo,
                 FindMissingVideos,
-                UploadMedia]),
-            job_registry=job_registry,
-        )
+                UploadMedia,
+            ],
+        ),
+        job_registry=job_registry,
+    )
 
-    start = UploadMedia({"force_recompute_grey": False, "force_recompute_mosaic": False, "force_upload_images": False, "force_upload_videos": False})
+    start = UploadMedia(
+        {
+            "force_recompute_grey": False,
+            "force_recompute_mosaic": False,
+            "force_upload_images": False,
+            "force_upload_videos": False,
+        }
+    )
 
     for event in LocalWorkflow(context, max_workers=15).run(start, show_progress=False):
         print(event)
