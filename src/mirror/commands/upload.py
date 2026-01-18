@@ -240,12 +240,30 @@ def FindMissingPhotos(
 
 
 @spec()
-def UploadVideo(
+def UploadVideoThumbnail(
     spec_args,
     context: Context,
     input: dict,
     dependencies={},
 ) -> Generator[JobOutputEvent]:
+    fpath = input["fpath"]
+    encoded_path = input["encoded_path"]
+
+    cdn = CDN()
+    db = SqliteDatabase(DATABASE_PATH)
+
+    publish_video_thumbnail(cdn, db, fpath, encoded_path)
+
+    yield JobOutputEvent({"fpath": fpath})
+
+
+@spec()
+def UploadVideo(
+    spec_args,
+    context: Context,
+    input: dict,
+    dependencies={},
+) -> Generator[JobOutputEvent | JobInstance]:
     fpath = input["fpath"]
     role = input["role"]
     params = input["params"]
@@ -259,7 +277,7 @@ def UploadVideo(
         encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
 
         if role == FULL_SIZED_VIDEO_ROLE:
-            publish_video_thumbnail(cdn, db, fpath, encoded_path)
+            yield UploadVideoThumbnail({"fpath": fpath, "encoded_path": encoded_path})
 
     yield JobOutputEvent({"fpath": fpath, "role": role})
 
@@ -280,7 +298,7 @@ def FindMissingVideos(
     published_roles = {enc.role for enc in encodings}
 
     cdn_limit = ConcurrencyLimit(1, 1, context, semaphore_id="global_video_cdn_limit")
-    oom_limit = ResourceLimit(resource="memory", max_percent=45, timeout=300)
+    oom_limit = ResourceLimit(resource="memory", max_percent=55)
 
     for role, params in VIDEO_ENCODINGS:
         if role in published_roles:
@@ -355,7 +373,7 @@ def main():
         }
     )
 
-    for event in LocalWorkflow(context, max_workers=15).run(start, show_progress=False):
+    for event in LocalWorkflow(context, max_workers=15).run(start):
         print(event)
 
 

@@ -24,3 +24,4 @@ src/data/whc001.json
 mirror_jobs.db
 mirror_jobs.db-wal
 mirror_jobs.db-shm
+zahir_logs
