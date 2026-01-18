@@ -51,8 +51,7 @@ create table if not exists encoded_photos (
   role        text not null,
   url         text not null,
 
-  primary key (fpath, mimetype, role),
-  foreign key (fpath) references photos(fpath) on delete cascade
+  primary key (fpath, mimetype, role)
 );
 """
 

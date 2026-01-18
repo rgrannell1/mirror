@@ -323,21 +323,17 @@ def UploadMedia(
     force_upload_images = input.get("force_upload_images", False)
     force_upload_videos = input.get("force_upload_videos", False)
 
-    jobs: list[JobInstance] = []
-
     for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey):
-        jobs.append(ComputeContrastingGrey({"fpath": fpath}))
+        yield ComputeContrastingGrey({"fpath": fpath})
 
     for fpath in list_photos_without_mosaic(db, force_recompute_mosaic):
-        jobs.append(ComputeMosaic({"fpath": fpath}))
+        yield ComputeMosaic({"fpath": fpath})
 
     for fpath in list_photos_without_upload(db, force_upload_images):
-        jobs.append(FindMissingPhotos({"fpath": fpath}))
+        yield FindMissingPhotos({"fpath": fpath})
 
     for fpath in list_videos_without_upload(db, force_upload_videos):
-        jobs.append(FindMissingVideos({"fpath": fpath}))
-
-    yield Await(jobs)
+        yield FindMissingVideos({"fpath": fpath})
 
 
 def main():
@@ -359,6 +355,7 @@ def main():
                 UploadVideo,
                 FindMissingVideos,
                 UploadMedia,
+                UploadVideoThumbnail
             ],
         ),
         job_registry=job_registry,
