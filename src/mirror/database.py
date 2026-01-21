@@ -264,6 +264,15 @@ class EncodedVideosTable:
         ):
             yield EncodedVideoModel.from_row(row)
 
+    def get_by_fpath_and_role(self, fpath: str, role: str) -> EncodedVideoModel:
+        for row in self.conn.execute(
+            "select fpath, mimetype, role, url from encoded_videos where fpath = ? and role = ?",
+            (fpath, role),
+        ):
+            return EncodedVideoModel.from_row(row)
+
+        raise ValueError(f"No encoded video found for fpath={fpath}, role={role}")
+
 
 class PhotoMetadataView:
     def __init__(self, conn: sqlite3.Connection) -> None:

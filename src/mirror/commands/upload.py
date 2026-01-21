@@ -113,6 +113,12 @@ def publish_video_encoding(cdn, db, fpath, role, params):
     width, height, bitrate = params["width"], params["height"], params["bitrate"]
     uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, "webm")
 
+    if cdn.has_object(uploaded_video_name):
+        # CDN already has the encoded asset; avoid re-encoding and just update the DB
+        uploaded_video_url = cdn.url(uploaded_video_name)
+        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
+        return None
+
     encoded_path = VideoEncoder.encode(
         fpath=fpath,
         upload_file_name=uploaded_video_name,
@@ -126,9 +132,9 @@ def publish_video_encoding(cdn, db, fpath, role, params):
         raise Exception("Failed to encode video")
 
     uploaded_video_url = cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
-    print(f"published {fpath} as {uploaded_video_url}")
 
     db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
+    db.encoded_videos_table().get_by_fpath_and_role(fpath, role)
 
     return encoded_path
 
@@ -146,7 +152,6 @@ def publish_video_thumbnail(cdn, db, fpath, encoded_path):
 
 @spec()
 def ComputeContrastingGrey(
-    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies={},
@@ -164,7 +169,6 @@ def ComputeContrastingGrey(
 
 @spec()
 def ComputeMosaic(
-    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies: DependencyGroup,
@@ -184,7 +188,6 @@ def ComputeMosaic(
 
 @spec()
 def UploadPhoto(
-    spec_args,
     context: Context,
     input: dict,
     dependencies={},
@@ -212,12 +215,12 @@ def UploadPhoto(
 
 @spec()
 def FindMissingPhotos(
-    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies={},
 ) -> Generator[JobInstance]:
     fpath = input["fpath"]
+    force = input.get("force", False)
 
     db = SqliteDatabase(DATABASE_PATH)
     encoded_photos_table = db.encoded_photos_table()
@@ -236,12 +239,11 @@ def FindMissingPhotos(
         if "+cover" not in fpath and role == "social_card":
             continue
 
-        yield UploadPhoto({"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit})
+        yield UploadPhoto({"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit}, once=not force)
 
 
 @spec()
 def UploadVideoThumbnail(
-    spec_args,
     context: Context,
     input: dict,
     dependencies={},
@@ -259,7 +261,6 @@ def UploadVideoThumbnail(
 
 @spec()
 def UploadVideo(
-    spec_args,
     context: Context,
     input: dict,
     dependencies={},
@@ -276,7 +277,8 @@ def UploadVideo(
     with cdn_limit:
         encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
 
-        if role == FULL_SIZED_VIDEO_ROLE:
+        # Only generate a thumbnail when we actually produced an encoded file
+        if role == FULL_SIZED_VIDEO_ROLE and encoded_path:
             yield UploadVideoThumbnail({"fpath": fpath, "encoded_path": encoded_path})
 
     yield JobOutputEvent({"fpath": fpath, "role": role})
@@ -284,12 +286,12 @@ def UploadVideo(
 
 @spec()
 def FindMissingVideos(
-    spec_args,
     context: Context,
     input: PhotoJobInput,
     dependencies={},
 ) -> Generator[JobInstance]:
     fpath = input["fpath"]
+    force = input.get("force", False)
 
     db = SqliteDatabase(DATABASE_PATH)
     encoded_videos_table = db.encoded_videos_table()
@@ -298,20 +300,19 @@ def FindMissingVideos(
     published_roles = {enc.role for enc in encodings}
 
     cdn_limit = ConcurrencyLimit(1, 1, context, semaphore_id="global_video_cdn_limit")
-    oom_limit = ResourceLimit(resource="memory", max_percent=55)
+    oom_limit = ResourceLimit(resource="memory", max_percent=65)
 
     for role, params in VIDEO_ENCODINGS:
         if role in published_roles:
             continue
 
         yield UploadVideo(
-            {"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit, "oom_limit": oom_limit}
+            {"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit, "oom_limit": oom_limit}, once=not force
         )
 
 
 @spec()
 def UploadMedia(
-    spec_args,
     context: Context,
     input: UploadOpts,
     dependencies={},
@@ -324,61 +325,13 @@ def UploadMedia(
     force_upload_videos = input.get("force_upload_videos", False)
 
     for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey):
-        yield ComputeContrastingGrey({"fpath": fpath})
+        yield ComputeContrastingGrey({"fpath": fpath, "force": force_recompute_grey})
 
     for fpath in list_photos_without_mosaic(db, force_recompute_mosaic):
-        yield ComputeMosaic({"fpath": fpath})
+        yield ComputeMosaic({"fpath": fpath, "force": force_recompute_mosaic})
 
     for fpath in list_photos_without_upload(db, force_upload_images):
-        yield FindMissingPhotos({"fpath": fpath})
+        yield FindMissingPhotos({"fpath": fpath, "force": force_upload_images})
 
     for fpath in list_videos_without_upload(db, force_upload_videos):
-        yield FindMissingVideos({"fpath": fpath})
-
-
-def main():
-    """Execute the upload media workflow"""
-    import multiprocessing
-
-    if multiprocessing.get_start_method() != "fork":
-        multiprocessing.set_start_method("fork", force=True)
-
-    job_registry = SQLiteJobRegistry("mirror_jobs.db")
-    context = MemoryContext(
-        scope=LocalScope(
-            dependencies=[ConcurrencyLimit],
-            specs=[
-                ComputeContrastingGrey,
-                ComputeMosaic,
-                UploadPhoto,
-                FindMissingPhotos,
-                UploadVideo,
-                FindMissingVideos,
-                UploadMedia,
-                UploadVideoThumbnail
-            ],
-        ),
-        job_registry=job_registry,
-    )
-
-    start = UploadMedia(
-        {
-            "force_recompute_grey": False,
-            "force_recompute_mosaic": False,
-            "force_upload_images": False,
-            "force_upload_videos": False,
-        }
-    )
-
-    for event in LocalWorkflow(context, max_workers=15).run(start):
-        print(event)
-
-
-import logging
-
-logging.basicConfig(level=logging.INFO, force=True)
-logging.getLogger("PIL").setLevel(logging.WARNING)
-
-
-if __name__ == "__main__":
-    main()
+        yield FindMissingVideos({"fpath": fpath, "force": force_upload_videos})

@@ -10,7 +10,6 @@ from mirror.commands.read_metadata import read_metadata
 from mirror.commands.write_metadata import write_metadata
 from mirror.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
 from mirror.database import SqliteDatabase
-from mirror.commands.uploader import MediaUploader
 from mirror.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
 
 commands = [
@@ -57,10 +56,7 @@ class Mirror:
         WikidataScanner(db).scan()
 
     def upload(self) -> None:
-        db = SqliteDatabase(DATABASE_PATH)
-        uploader = MediaUploader(db, CDN())
-
-        uploader.upload()
+        ...
 
     def publish(self) -> None:
         db = SqliteDatabase(DATABASE_PATH)
