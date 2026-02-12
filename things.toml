@@ -1361,8 +1361,9 @@ near = [
 
 [[places]]
 id = "urn:ró:place:91"
-longitude = -8.2
-latitude = 53.316666666667
+longitude = -6.274927551715018
+latitude = 53.32970502174372
+
 name = "Grand Canal, Dublin"
 wikipedia = "https://en.wikipedia.org/wiki/Grand_Canal_(Ireland)"
 in = [
@@ -2268,7 +2269,7 @@ in = [
 ]
 
 [[trips]]
-id = "urn:ró:trip:iberia-25"
+id = "urn:ró:trip:0"
 contains_album = [
     "urn:ró:album:zaragoza-25",
     "urn:ró:album:madrid-25",
@@ -2278,7 +2279,7 @@ contains_album = [
 ]
 
 [[trips]]
-id = "urn:ró:trip:canary-25"
+id = "urn:ró:trip:1"
 contains_album = [
     "urn:ró:album:la-lagunas-25",
     "urn:ró:album:puorto-de-la-cruz-24",
@@ -2286,7 +2287,7 @@ contains_album = [
 ]
 
 [[trips]]
-id = "urn:ró:trip:iberia-24"
+id = "urn:ró:trip:2"
 contains_album = [
     "urn:ró:album:granada-24",
     "urn:ró:album:cordoba-24",
@@ -2295,14 +2296,14 @@ contains_album = [
 ]
 
 [[trips]]
-id = "urn:ró:trip:canary-24"
+id = "urn:ró:trip:3"
 contains_album = [
     "urn:ró:album:mount-tiede-24",
     "urn:ró:album:tenerife-24",
 ]
 
 [[trips]]
-id = "urn:ró:trip:us-22"
+id = "urn:ró:trip:4"
 contains_album = [
     "urn:ró:album:wisconsin-22",
     "urn:ró:album:cranes-22",
@@ -2310,6 +2311,223 @@ contains_album = [
     "urn:ró:album:shedd-aquarium-22",
     "urn:ró:album:wisconsin-state-24",
 ]
+
+# Ordered edges for drawing travel maps (id, source, destination); order is significant
+[[transfers]]
+id = "urn:ró:transfer:0"
+source = "urn:ró:place:123"
+destination = "urn:ró:place:128"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:1"
+source = "urn:ró:place:128"
+destination = "urn:ró:place:123"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:2"
+source = "urn:ró:place:123"
+destination = "urn:ró:place:135"
+mode = "plane"
+
+[[transfers]]
+id = "urn:ró:transfer:3"
+source = "urn:ró:place:135"
+destination = "urn:ró:place:131"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:4"
+source = "urn:ró:place:131"
+destination = "urn:ró:place:135"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:5"
+source = "urn:ró:place:135"
+destination = "urn:ró:place:137"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:6"
+source = "urn:ró:place:137"
+destination = "urn:ró:place:135"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:7"
+source = "urn:ró:place:2"
+destination = "urn:ró:place:1"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:8"
+source = "urn:ró:place:1"
+destination = "urn:ró:place:0"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:9"
+source = "urn:ró:place:0"
+destination = "urn:ró:place:1"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:10"
+source = "urn:ró:place:1"
+destination = "urn:ró:place:2"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:11"
+source = "urn:ró:place:27"
+destination = "urn:ró:place:26"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:12"
+source = "urn:ró:place:26"
+destination = "urn:ró:place:24"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:13"
+source = "urn:ró:place:24"
+destination = "urn:ró:place:21"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:14"
+source = "urn:ró:place:21"
+destination = "urn:ró:place:27"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:15"
+source = "urn:ró:place:46"
+destination = "urn:ró:place:45"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:16"
+source = "urn:ró:place:45"
+destination = "urn:ró:place:46"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:17"
+source = "urn:ró:place:88"
+destination = "urn:ró:place:86"
+mode = "car"
+
+[[transfers]]
+id = "urn:ró:transfer:18"
+source = "urn:ró:place:86"
+destination = "urn:ró:place:88"
+mode = "car"
+
+[[transfers]]
+id = "urn:ró:transfer:19"
+source = "urn:ró:place:88"
+destination = "urn:ró:place:85"
+mode = "car"
+
+[[transfers]]
+id = "urn:ró:transfer:20"
+source = "urn:ró:place:85"
+destination = "urn:ró:place:86"
+mode = "car"
+
+[[transfers]]
+id = "urn:ró:transfer:21"
+source = "urn:ró:place:86"
+destination = "urn:ró:place:88"
+mode = "car"
+
+[[transfers]]
+id = "urn:ró:transfer:22"
+source = "urn:ró:place:30"
+destination = "urn:ró:place:35"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:23"
+source = "urn:ró:place:35"
+destination = "urn:ró:place:30"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:24"
+source = "urn:ró:place:51"
+destination = "urn:ró:place:52"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:25"
+source = "urn:ró:place:81"
+destination = "urn:ró:place:82"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:26"
+source = "urn:ró:place:10"
+destination = "urn:ró:place:12"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:27"
+source = "urn:ró:place:12"
+destination = "urn:ró:place:10"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:28"
+source = "urn:ró:place:10"
+destination = "urn:ró:place:118"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:29"
+source = "urn:ró:place:118"
+destination = "urn:ró:place:10"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:30"
+source = "urn:ró:place:58"
+destination = "urn:ró:place:60"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:31"
+source = "urn:ró:place:60"
+destination = "urn:ró:place:58"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:32"
+source = "urn:ró:place:119"
+destination = "urn:ró:place:13"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:33"
+source = "urn:ró:place:13"
+destination = "urn:ró:place:119"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:34"
+source = "urn:ró:place:16"
+destination = "urn:ró:place:135"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:35"
+source = "urn:ró:place:135"
+destination = "urn:ró:place:16"
+mode = "train"
 
 [[birds]]
 id = "urn:ró:bird:sterna-dougallii"
