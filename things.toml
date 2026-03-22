@@ -2101,6 +2101,20 @@ features = [
     "urn:ró:place_feature:country",
 ]
 
+[[places]]
+id ="urn:ró:place:145"
+longitude = 0
+latitude = 0
+name = "National Archaeological Museum"
+wikipedia = "https://en.wikipedia.org/wiki/National_Archaeological_Museum,_Madrid"
+in = [
+    "urn:ró:country:spain",
+    "urn:ró:place:135",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
 [[countries]]
 id = "urn:ró:country:usa"
 name = "The United States of America"

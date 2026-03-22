@@ -1,0 +1,211 @@
+"""Encode video and images"""
+
+import io
+import math
+import os
+from mirror.commons.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
+import cv2
+import ffmpeg
+from mirror.commons.exceptions import (
+    InvalidVideoDimensionsException,
+    VideoReadException,
+    VideoResolutionLookupException,
+)
+from PIL import Image, ImageOps
+
+from typing import Dict, Optional, Tuple
+from mirror.models.photo import PhotoContent
+
+from PIL import Image
+
+
+class PhotoEncoder:
+    @classmethod
+    def compute_contrasting_grey(cls, fpath: str) -> str:
+        """
+        Copilot generated function. Is it correct? Who knows!
+
+        It uses the LAB colour space (https://en.wikipedia.org/wiki/CIELAB_color_space) as a
+        perceptually uniform colour space to compute the lighness of the top-right of the image (where we
+        plonk a metadata icon). It then chooses a grey colour that is a constant perceptual distance away
+        from that lightness, to ensure the icon is always visible against the image.
+        """
+
+        lab = Image.open(fpath).convert("RGB").convert("LAB")
+        L, _, __ = lab.split()
+
+        width, height = L.size
+        top_right = L.crop((7 * width // 8, 0, width, height // 8))
+
+        pixels = list(top_right.getdata())
+        avg_lightness = sum(pixels) / len(pixels)  # 0–255, proportional to L*
+
+        # if the image is not too bright, go brighter
+        if avg_lightness < math.floor(255 * 0.8):
+            target_lightness = min(255, int(avg_lightness + math.floor(255 * 0.6)))
+        else:
+            # too damn bright, go darker
+            target_lightness = max(0, int(avg_lightness - math.floor(255 * 0.4)))
+
+        # Build a neutral Lab colour with that L (a=128, b=128 is neutral axis)
+        L_img = Image.new("L", (1, 1), int(target_lightness))
+        a_img = Image.new("L", (1, 1), 128)
+        b_img = Image.new("L", (1, 1), 128)
+
+        rgb_pixel = Image.merge("LAB", (L_img, a_img, b_img)).convert("RGB").getpixel((0, 0))
+
+        # averaging channels to get a grey
+        grey = int(round(sum(rgb_pixel) / 3))
+
+        return f"#{grey:02X}{grey:02X}{grey:02X}"
+
+    @classmethod
+    def encode_image_colours(cls, fpath: str) -> list[str]:
+        """Create a list of colours in the image, to use as a data-url while the main image loads"""
+
+        with Image.open(fpath) as img:
+            rgb = img.convert("RGB")
+
+            # reduce the dimensions of the image to the thumbnail size
+            thumb = ImageOps.fit(rgb, (THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
+
+            # remove EXIF data from the image by cloning
+            data = list(thumb.getdata())
+            no_exif = Image.new(thumb.mode, thumb.size)
+            no_exif.putdata(data)
+
+            # resize down to a tiny mosaic data-url that can be used to
+            # "progressively render" a photo.
+            smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
+
+            colours = smaller.getcolors(THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT)
+            if not colours:
+                return []
+
+            # get the colours in the image
+            return ["#{:02X}{:02X}{:02X}".format(col[1][0], col[1][1], col[1][2]) for col in colours]
+
+    @classmethod
+    def encode(cls, fpath: str, role: str, params: Dict) -> PhotoContent:
+        """Encode an image as Webp, optionally resizing, and remove EXIF data"""
+
+        with Image.open(fpath) as img:
+            # Optionally resize if width and height are in params
+            width = params.get("width")
+            height = params.get("height")
+
+            if width and height:
+                img = ImageOps.fit(img, (width, height))
+            else:
+                if role == "thumbnail_lossy":
+                    raise ValueError("thumbnail_lossy role requires width and height")
+
+            img.getexif().clear()
+            img.info.pop("exif", None)
+            img.info.pop("xmp", None)
+            img.info.pop("icc_profile", None)
+
+            with io.BytesIO() as output:
+                # Remove width and height from params to avoid side-effects
+                save_params = {key: val for key, val in params.items() if key not in ("width", "height")}
+                img.save(output, **save_params)
+                return PhotoContent(output.getvalue())
+
+
+class VideoEncoder:
+    """Encode & interact with video"""
+
+    @classmethod
+    def encode(
+        cls,
+        fpath: str,
+        upload_file_name: str,
+        video_bitrate: str,
+        width: Optional[int],
+        height: Optional[int],
+        share_audio: bool = False,
+    ) -> Optional[str]:
+        """Encode the video"""
+
+        actual_width, actual_height = cls.resolution(fpath)
+        if actual_width and actual_height and width and height and (actual_width < width or actual_height < height):
+            raise InvalidVideoDimensionsException(f"Video {fpath} is too small to encode")
+
+        VIDEO_CODEC = "libx264"
+
+        input_args: Dict = {}
+        kwargs = {
+            "vcodec": VIDEO_CODEC,
+            "video_bitrate": video_bitrate,
+            "strict": "-2",
+            "movflags": "+faststart",
+            "preset": "slow",
+            "format": "mp4",
+            "loglevel": "error",
+        }
+
+        if share_audio:
+            kwargs["acodec"] = "aac"
+        else:
+            input_args["an"] = None
+
+        if width and height:
+            kwargs["vf"] = f"scale={width}:{height}"
+
+        output_fpath = f"/tmp/mirror/{upload_file_name}"
+
+        os.makedirs(os.path.dirname(output_fpath), exist_ok=True)
+
+        # prevent accidental upload of old file
+        try:
+            os.remove(output_fpath)
+        except FileNotFoundError:
+            pass
+
+        (ffmpeg.input(fpath, **input_args).output(output_fpath, **kwargs).run())
+
+        return output_fpath
+
+    @classmethod
+    def resolution(cls, fpath: str) -> Tuple[int, int]:
+        """Encode a video"""
+        "Returns resolution of the video, if it's possible to determine?"
+
+        probe = ffmpeg.probe(fpath)
+        video_streams = [stream for stream in probe["streams"] if stream["codec_type"] == "video"]
+
+        if video_streams:
+            width = int(video_streams[0]["width"])
+            height = int(video_streams[0]["height"])
+
+            return width, height
+
+        raise VideoResolutionLookupException(f"Failed to determine resolution of {fpath}")
+
+    @classmethod
+    def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
+        """Return a thumbnail for the video"""
+        loaded = cv2.VideoCapture(fpath)
+        try:
+            ret, frame = loaded.read()
+            if not ret:
+                raise VideoReadException(f"Failed to read frame from {fpath}")
+
+            img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
+
+            with Image.open(io.BytesIO(img_bytes)) as img:
+                thumb = ImageOps.fit(img, (width, height))
+
+                data = list(thumb.getdata())
+                no_exif = Image.new(thumb.mode, thumb.size)
+                no_exif.putdata(data)
+
+                with io.BytesIO() as output:
+                    # return the image hash and contents
+
+                    no_exif.save(output, **params)
+                    contents = output.getvalue()
+
+                    return PhotoContent(contents)
+        finally:
+            loaded.release()

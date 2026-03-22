@@ -1,11 +1,15 @@
 from datetime import datetime
-from typing import Iterator, Optional
+from typing import TYPE_CHECKING, Iterator, Optional
 
-import markdown
-from mirror.config import PHOTOS_URL
+import markdown  # type: ignore
+from mirror.commons.config import PHOTOS_URL
 from mirror.data.types import SemanticTriple
-from mirror.utils import deterministic_hash_str
-from mirror.dates import date_range
+from mirror.commons.utils import deterministic_hash_str
+from mirror.commons.dates import date_range
+
+if TYPE_CHECKING:
+    # Only imported for static type checking (avoids runtime import cycles / overhead).
+    from mirror.services.database import SqliteDatabase
 
 
 class ExifReader:
@@ -125,11 +129,32 @@ class AlbumTriples:
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for album in db.album_data_view().list():
-            if album.min_date is None or album.max_date is None:
-                continue
+            min_dt: datetime | None = None
+            max_dt: datetime | None = None
 
-            min_date = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
-            max_date = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
+            if album.min_date is not None and album.max_date is not None:
+                min_dt = datetime.strptime(album.min_date, "%Y:%m:%d %H:%M:%S")
+                max_dt = datetime.strptime(album.max_date, "%Y:%m:%d %H:%M:%S")
+            else:
+                # Fallback: derive min/max from photo ctime when EXIF-derived album dates
+                # are missing. This prevents publishing albums with partial triples.
+                min_dt = None
+                max_dt = None
+                for photo in db.photo_data_table().list():
+                    if photo.album_id != album.id:
+                        continue
+                    ctime = photo.get_ctime()
+                    if min_dt is None or ctime < min_dt:
+                        min_dt = ctime
+                    if max_dt is None or ctime > max_dt:
+                        max_dt = ctime
+
+                # If we still can't compute dates, skip this album.
+                if min_dt is None or max_dt is None:
+                    continue
+
+            assert min_dt is not None
+            assert max_dt is not None
 
             description = markdown.markdown(album.description) if album.description else ""
 
@@ -143,10 +168,10 @@ class AlbumTriples:
             yield SemanticTriple(source, "name", album.name)
             yield SemanticTriple(source, "photos_count", album.photos_count)
             yield SemanticTriple(source, "videos_count", album.videos_count)
-            yield SemanticTriple(source, "min_date", str(int(min_date.timestamp() * 1000)))
-            yield SemanticTriple(source, "max_date", str(int(max_date.timestamp() * 1000)))
-            yield SemanticTriple(source, "date_range", date_range(min_date, max_date, short=False))
-            yield SemanticTriple(source, "short_date_range", date_range(min_date, max_date, short=True))
+            yield SemanticTriple(source, "min_date", str(int(min_dt.timestamp() * 1000)))
+            yield SemanticTriple(source, "max_date", str(int(max_dt.timestamp() * 1000)))
+            yield SemanticTriple(source, "date_range", date_range(min_dt, max_dt, short=False))
+            yield SemanticTriple(source, "short_date_range", date_range(min_dt, max_dt, short=True))
             yield SemanticTriple(source, "thumbnail_url", AlbumTriples.short_cdn_url(album.thumbnail_url))
             yield SemanticTriple(source, "mosaic", album.mosaic_colours)
             for country in countries:

@@ -2,9 +2,9 @@ from typing import Iterator, Set
 
 import markdown
 
-from mirror.constants import URN_PREFIX
+from mirror.commons.constants import URN_PREFIX
 from mirror.data.types import SemanticTriple
-from mirror.utils import deterministic_hash_str
+from mirror.commons.utils import deterministic_hash_str
 
 # Track style names we've already seen to avoid duplicate name triples
 style_names: Set[str] = set()

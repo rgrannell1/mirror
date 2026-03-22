@@ -1,114 +1,74 @@
-#!/usr/bin/env python3
 
-import sys
-from mirror.ansi import ANSI
-from mirror.commands import write_metadata
-from mirror.commands.write_triples import write_neo4j_triples
-from mirror.commands.publisher import ArtifactBuilder
-from mirror.cdn import CDN, D1Builder
-from mirror.commands.read_metadata import read_metadata
-from mirror.commands.write_metadata import write_metadata
-from mirror.config import DATABASE_PATH, OUTPUT_DIRECTORY, PHOTO_DIRECTORY
-from mirror.database import SqliteDatabase
-from mirror.commands.scanner import GeonamesScanner, MediaScanner, WikidataScanner
+import logging
+import multiprocessing
 
-commands = [
-    "mirror scan",
-    "mirror upload",
-    "mirror publish",
-    "mirror read_metadata",
-    "mirror write_metadata",
-    "mirror write_neo4j_triples",
-]
+from mirror.commands.enrich.enrich import EnrichData, EnrichPlace
+from mirror.commands.publish.publish import PublishArtifacts, PublishAtom, PublishEnv, PublishStats, PublishTriples
+from mirror.commands.scan.scan import GeonamesScan, MediaScan, ScanMedia, WikidataScan, ReadAlbums, ReadPhotos
+from mirror.commands.workflow import MirrorWorkflow
 
-doc = f"""
-{ANSI.bold("mirror")} 🪞
----------------------------------------------
+logging.basicConfig(level=logging.INFO, force=True)
+logging.getLogger("PIL").setLevel(logging.WARNING)
 
-Index photos and videos
-    {ANSI.green("mirror scan")}
-Encode and upload photos and videos to a CDN
-    {ANSI.green("mirror upload")}
-Publish the album artifacts
-    {ANSI.green("mirror publish")}
-Read album or photo metadata from stdin
-    {ANSI.green("mirror read_metadata")}
-Write album or photo metadata to stdout
-    {ANSI.green("mirror write_metadata")}
-Write triples
-    {ANSI.green("mirror write_triples")}
+from zahir import ConcurrencyLimit, LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
 
----------------------------------------------
-{ANSI.grey(" • ".join(commands))}"""
+from mirror.commands.upload import (
+    ComputeContrastingGrey,
+    ComputeImageMosaic,
+    UploadMissingPhotos,
+    UploadMissingVideos,
+    UploadMedia,
+    UploadPhoto,
+    UploadVideo,
+    UploadVideoThumbnail,
+)
 
 
-class Mirror:
-    def scan(self, dpath: str) -> None:
-        db = SqliteDatabase(DATABASE_PATH)
+def main():
+    """Execute the upload media workflow"""
 
-        photo_metadata_table = db.photo_metadata_table()
-        media_metadata_table = db.media_metadata_table()
-        photo_metadata_table.clean()
-        media_metadata_table.clean()
+    if multiprocessing.get_start_method() != "fork":
+        multiprocessing.set_start_method("fork", force=True)
 
-        MediaScanner(dpath, db).scan()
-        GeonamesScanner(db).scan()
-        WikidataScanner(db).scan()
+    job_registry = SQLiteJobRegistry("mirror_jobs.db")
+    context = MemoryContext(
+        scope=LocalScope(
+            dependencies=[ConcurrencyLimit],
+            specs=[
+                ComputeContrastingGrey,
+                ComputeImageMosaic,
+                UploadPhoto,
+                UploadMissingPhotos,
+                UploadVideo,
+                UploadMissingVideos,
+                UploadMedia,
+                UploadVideoThumbnail,
+                MirrorWorkflow,
+                EnrichData,
+                EnrichPlace,
+                PublishArtifacts,
+                PublishEnv,
+                PublishAtom,
+                PublishStats,
+                PublishTriples,
+                ScanMedia,
+                MediaScan,
+                GeonamesScan,
+                WikidataScan,
+                ReadAlbums,
+                ReadPhotos
+            ],
+        ),
+        job_registry=job_registry,
+    )
 
-    def upload(self) -> None:
-        ...
-
-    def publish(self) -> None:
-        db = SqliteDatabase(DATABASE_PATH)
-
-        builder = ArtifactBuilder(db, OUTPUT_DIRECTORY)
-        builder.build()
-
-        D1Builder(db).build()
-
-    def read_metadata(self, content: str) -> None:
-        """Read album or photo semantic information from stdin"""
-
-        db = SqliteDatabase(DATABASE_PATH)
-        read_metadata(db, content)
-
-    def write_metadata(self, content: str) -> None:
-        """Output album or photo semantic information to stdout"""
-
-        db = SqliteDatabase(DATABASE_PATH)
-        write_metadata(db, content)
-
-    def write_triples(self) -> None:
-        db = SqliteDatabase(DATABASE_PATH)
-        write_neo4j_triples(db)
-
-
-def main() -> None:
-    args = sys.argv[1:]
-
-    if not args:
-        print(doc, file=sys.stderr)
-        return
-
-    mirror = Mirror()
-    command = args[0]
-
-    if command == "scan":
-        mirror.scan(PHOTO_DIRECTORY)
-    elif command == "upload":
-        mirror.upload()
-    elif command == "publish":
-        mirror.publish()
-    elif command == "write_metadata":
-        mirror.write_metadata(args[1])
-    elif command == "read_metadata":
-        mirror.read_metadata(args[1])
-    elif command == "write_triples":
-        mirror.write_triples()
-    else:
-        print(f"Unknown command: {command}", file=sys.stderr)
-        print(doc, file=sys.stderr)
-        sys.exit(1)
+    start = MirrorWorkflow({
+        "upload_videos": False,
+        "upload_images": True
+    })
+    # Disable tracing (otel_output_dir=None) to avoid slow event-loop I/O; re-enable for debugging
+    for event in LocalWorkflow(context, max_workers=15, otel_output_dir=None).run(start):
+        print(event)
 
 
 if __name__ == "__main__":

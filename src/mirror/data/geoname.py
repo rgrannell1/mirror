@@ -4,7 +4,7 @@ import xmltodict
 from dataclasses import dataclass
 from typing import Any, Dict, Iterator, List
 
-from mirror.constants import URN_PREFIX, KnownRelations, KnownTypes
+from mirror.commons.constants import URN_PREFIX, KnownRelations, KnownTypes
 from mirror.data.types import SemanticTriple
 
 

@@ -22,7 +22,10 @@ dependencies = [
   "sqlean.py",
   "xmltodict",
   "feedgen",
-  "markdown"
+  "markdown",
+  "tomli-w",
+  "typeguard",
+  "psutil"
 ]
 
 [tool.ruff]

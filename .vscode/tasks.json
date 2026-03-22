@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "stop-mirror",
+      "type": "shell",
+      "command": "pkill",
+      "args": [
+        "-f",
+        "src/mirror/commands/run.py"
+      ],
+      "presentation": {
+        "reveal": "silent"
+      },
+      "isBackground": false
+    },
+    {
+      "label": "stop-mirror-and-cleanup-db",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "pkill -f 'src/mirror/commands/run.py' || true; rm -f mirror_jobs.db"
+      ],
+      "cwd": "${workspaceFolder}",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "isBackground": false
+    }
+  ]
+}
