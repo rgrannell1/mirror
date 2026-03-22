@@ -143,8 +143,14 @@ class PhashesTable:
         return fpaths
 
     def add_many(self, phashes: Iterator[PhashData]) -> None:
-        for phash in phashes:
-            self.add(phash)
+        rows = [(phash["fpath"], phash.get("phash")) for phash in phashes]
+        if not rows:
+            return
+        self.conn.executemany(
+            "insert or ignore into phashes (fpath, phash) values (?, ?)",
+            rows,
+        )
+        self.conn.commit()
 
     def has(self, fpath: str) -> bool:
         return bool(self.conn.execute("select 1 from phashes where fpath = ?", (fpath,)).fetchone())
