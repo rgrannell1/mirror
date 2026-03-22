@@ -9,13 +9,12 @@ from zahir import (
     Context,
     JobInstance,
     JobOutputEvent,
-    SqliteDependency,
     spec,
     WorkflowOutputEvent,
 )
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
-from mirror.commands.scan.utils import (
+from mirror.workflows.scan.utils import (
     ScanOpts,
     list_geonames_from_metadata,
     list_media,
@@ -174,10 +173,12 @@ def ReadAlbums(
 
     db.conn.commit()
 
-    yield JobOutputEvent({
-        "count": count,
-        "status": "albums_loaded",
-    })
+    yield JobOutputEvent(
+        {
+            "count": count,
+            "status": "albums_loaded",
+        }
+    )
 
 
 @spec()
@@ -206,10 +207,12 @@ def ReadPhotos(
         db.photo_metadata_table().add_summary(phash, md)
         count += 1
 
-    yield JobOutputEvent({
-        "count": count,
-        "status": "photos_loaded",
-    })
+    yield JobOutputEvent(
+        {
+            "count": count,
+            "status": "photos_loaded",
+        }
+    )
 
 
 @spec()
@@ -225,14 +228,22 @@ def ScanMedia(
     yield MediaScan({"dpath": dpath}, {})
 
     # Read metadata from markdown files
-    yield Await(ReadAlbums({
-        "markdown_path": input.get("albums_markdown_path"),
-    }, {}))
-    yield Await(ReadPhotos({
-        "markdown_path": input.get("photos_markdown_path"),
-    }, {}))
+    yield Await(
+        ReadAlbums(
+            {
+                "markdown_path": input.get("albums_markdown_path"),
+            },
+            {},
+        )
+    )
+    yield Await(
+        ReadPhotos(
+            {
+                "markdown_path": input.get("photos_markdown_path"),
+            },
+            {},
+        )
+    )
 
     # Then scan external data sources
     yield WikidataScan({}, {})
-
-    yield WorkflowOutputEvent({"status": "scan_complete"})

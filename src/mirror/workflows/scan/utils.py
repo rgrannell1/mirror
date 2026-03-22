@@ -11,7 +11,8 @@ from mirror.models.media import IMedia
 from mirror.models.photo import Photo
 from mirror.models.phash import PHashReader, PhashData
 from mirror.services.vault import MediaVault
-
+from mirror.data.geoname import GeonameMetadataReader
+from mirror.commons.constants import KnownRelations
 
 class ScanOpts(TypedDict):
     force_rescan: bool
@@ -73,8 +74,6 @@ def list_geonames_from_metadata(db: SqliteDatabase) -> Iterator[str]:
 def read_geonames_wikidata_ids(db: SqliteDatabase) -> Iterator[SemanticTriple]:
     """Read wikidata IDs from geonames metadata"""
 
-    from mirror.data.geoname import GeonameMetadataReader
-    from mirror.constants import KnownRelations
 
     for triple in GeonameMetadataReader().read(db):
         if triple.relation == KnownRelations.WIKIDATA:
@@ -86,7 +85,6 @@ def list_unsaved_binomials(db: SqliteDatabase) -> Iterator[str]:
 
     from mirror.data.binomials import list_photo_binomials
 
-    wikidata_table = db.wikidata_table()
     binomials_wikidata_table = db.binomials_wikidata_id_table()
 
     # subtract the set of stored binomials from the ones in our photos

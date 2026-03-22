@@ -1,8 +1,8 @@
 """Constant values used throughout the application."""
 
-from typing import cast
+from __future__ import annotations
 
-from mirror.models.mirror_types import VideoEncoding, VideoEncodingConfig
+from typing import Any
 
 
 MOSAIC_WIDTH = 2
@@ -59,50 +59,38 @@ IMAGE_ENCODINGS = {
 
 # How should we encode our videos? Currently uses unscaled + various
 # scaling of libx264 encoding
-VIDEO_ENCODINGS: list[VideoEncoding] = [
+VIDEO_ENCODINGS: list[Any] = [
     (
         "video_libx264_unscaled",
-        cast(
-            VideoEncodingConfig,
-            {
-                "bitrate": "30M",
-                "width": None,
-                "height": None,
-            },
-        ),
+        {
+            "bitrate": "30M",
+            "width": None,
+            "height": None,
+        },
     ),
     (
         "video_libx264_1080p",
-        cast(
-            VideoEncodingConfig,
-            {
-                "bitrate": "5000k",
-                "width": 1920,
-                "height": 1080,
-            },
-        ),
+        {
+            "bitrate": "5000k",
+            "width": 1920,
+            "height": 1080,
+        },
     ),
     (
         "video_libx264_720p",
-        cast(
-            VideoEncodingConfig,
-            {
-                "bitrate": "2500k",
-                "width": 1280,
-                "height": 720,
-            },
-        ),
+        {
+            "bitrate": "2500k",
+            "width": 1280,
+            "height": 720,
+        },
     ),
     (
         "video_libx264_480p",
-        cast(
-            VideoEncodingConfig,
-            {
-                "bitrate": "1000k",
-                "width": 854,
-                "height": 480,
-            },
-        ),
+        {
+            "bitrate": "1000k",
+            "width": 854,
+            "height": 480,
+        },
     ),
 ]
 

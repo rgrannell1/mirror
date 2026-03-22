@@ -1,12 +1,11 @@
 """A file for dealing with metadata for albums and photos"""
 
 import re
-import sys
 import csv
 from jsonschema import validate
 
 from collections import defaultdict
-from typing import Iterator, Protocol, cast
+from typing import Iterator, Protocol
 
 from mirror.models.album import AlbumMetadataModel
 from .database import SqliteDatabase
@@ -150,7 +149,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         self.fpath = fpath
 
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
-        with open(self.fpath, 'r') as file:
+        with open(self.fpath, "r") as file:
             reader = csv.reader(file, delimiter="|")
             headers = next(reader)[1:-1]
 
@@ -190,7 +189,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
                 try:
                     validate(item, AlbumMetadataModel.schema())
-                except Exception as err:
+                except Exception:
                     print(json.dumps(item, indent=2))
                     raise
 
@@ -283,7 +282,7 @@ class MarkdownTablePhotoMetadataReader:
     def read_photo_metadata(self, db: SqliteDatabase) -> Iterator[PhotoMetadataSummaryModel]:
         """Read photo metadata from a Markdown table"""
 
-        with open(self.fpath, 'r') as file:
+        with open(self.fpath, "r") as file:
             reader = csv.reader(file, delimiter="|")
             headers = next(reader)[1:-1]
 
@@ -332,7 +331,7 @@ class MarkdownTablePhotoMetadataReader:
 
                 try:
                     validate(item, PhotoMetadataSummaryModel.schema())
-                except Exception as err:
+                except Exception:
                     print("failing instance")
                     print(json.dumps(item, indent=2))
                     raise

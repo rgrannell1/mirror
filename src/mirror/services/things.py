@@ -12,7 +12,6 @@ help migration into the
 mapping. It'll output them to the photo-markdown file as URNs
 """
 
-from typing import Iterator, Optional, Protocol
 import urllib.parse
 
 from mirror.commons.constants import URN_PREFIX

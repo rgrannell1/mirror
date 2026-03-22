@@ -47,7 +47,6 @@ __all__ = [
     # utils
     "deterministic_hash",
     "deterministic_hash_str",
-    "deterministic_byte_hash",
     # dates
     "date_range",
     # ansi

@@ -9,7 +9,6 @@ from .encoder import PhotoEncoder, VideoEncoder
 from .metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
 from .vault import MediaVault
 from .things import Things
-from .cli import run_cli
 
 __all__ = [
     "SqliteDatabase",
@@ -21,5 +20,4 @@ __all__ = [
     "MarkdownTablePhotoMetadataReader",
     "MediaVault",
     "Things",
-    "run_cli",
 ]

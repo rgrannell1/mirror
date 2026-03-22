@@ -3,7 +3,13 @@
 import io
 import math
 import os
-from mirror.commons.constants import MOSAIC_HEIGHT, MOSAIC_WIDTH, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, VIDEO_THUMBNAIL_FORMAT
+from mirror.commons.constants import (
+    MOSAIC_HEIGHT,
+    MOSAIC_WIDTH,
+    THUMBNAIL_HEIGHT,
+    THUMBNAIL_WIDTH,
+    VIDEO_THUMBNAIL_FORMAT,
+)
 import cv2
 import ffmpeg
 from mirror.commons.exceptions import (
@@ -16,7 +22,6 @@ from PIL import Image, ImageOps
 from typing import Dict, Optional, Tuple
 from mirror.models.photo import PhotoContent
 
-from PIL import Image
 
 
 class PhotoEncoder:

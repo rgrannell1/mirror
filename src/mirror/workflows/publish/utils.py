@@ -25,10 +25,10 @@ from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
 from mirror.services.database import SqliteDatabase
-from mirror.photo import PhotoMetadataModel, PhotoModel
+from mirror.models.photo import PhotoMetadataModel, PhotoModel
 from mirror.services.things import Things
-from mirror.utils import deterministic_hash_str
-from mirror.video import VideoModel
+from mirror.commons.utils import deterministic_hash_str
+from mirror.models.video import VideoModel
 
 
 # CURIE prefixes for triples (https://en.wikipedia.org/wiki/CURIE)
@@ -53,10 +53,7 @@ def remove_artifacts(dpath: str) -> None:
     """Remove existing artifact files from the output directory."""
     if not os.path.isdir(dpath):
         return
-    removeable = [
-        f for f in os.listdir(dpath)
-        if any(f.startswith(prefix) for prefix in ARTIFACT_NAMES_CLEAN)
-    ]
+    removeable = [f for f in os.listdir(dpath) if any(f.startswith(prefix) for prefix in ARTIFACT_NAMES_CLEAN)]
     for f in removeable:
         os.remove(os.path.join(dpath, f))
 
@@ -82,21 +79,25 @@ def atom_media(db: SqliteDatabase) -> List[dict]:
     db.video_data_table()
     db.album_data_view()
     for video in videos:
-        media.append({
-            "id": video.poster_url,
-            "created_at": datetime.fromtimestamp(os.path.getmtime(video.fpath), tz=timezone.utc),
-            "url": video.video_url_unscaled,
-            "image": video.poster_url,
-            "content_html": _atom_video_html(video),
-        })
+        media.append(
+            {
+                "id": video.poster_url,
+                "created_at": datetime.fromtimestamp(os.path.getmtime(video.fpath), tz=timezone.utc),
+                "url": video.video_url_unscaled,
+                "image": video.poster_url,
+                "content_html": _atom_video_html(video),
+            }
+        )
     for photo in photos:
-        media.append({
-            "id": photo.thumbnail_url,
-            "created_at": photo.get_ctime(),
-            "url": photo.thumbnail_url,
-            "image": photo.thumbnail_url,
-            "content_html": _atom_image_html(photo),
-        })
+        media.append(
+            {
+                "id": photo.thumbnail_url,
+                "created_at": photo.get_ctime(),
+                "url": photo.thumbnail_url,
+                "image": photo.thumbnail_url,
+                "content_html": _atom_image_html(photo),
+            }
+        )
     return sorted(media, key=lambda item: item["created_at"])
 
 

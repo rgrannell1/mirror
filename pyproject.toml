@@ -1,9 +1,9 @@
 [project]
 name = "mirror"
 version = "0.1.0"
-description = "Add your description here"
+description = "Media asset management and publishing workflow engine"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
   "boto3",
   "botocore",
@@ -25,7 +25,8 @@ dependencies = [
   "markdown",
   "tomli-w",
   "typeguard",
-  "psutil"
+  "psutil",
+  "zahir @ file:///home/rg/Code/zahir"
 ]
 
 [tool.ruff]
@@ -62,7 +63,6 @@ line-length = 120
 indent-width = 4
 [project.scripts]
 mirror = "mirror.cli:main"
-haystack = "mirror.haystack.cli:main"
 [tool.setuptools]
 package-dir = { "" = "src" }
 

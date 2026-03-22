@@ -9,7 +9,7 @@ from zahir import Await, Context, spec, WorkflowOutputEvent
 
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.database import SqliteDatabase
-from mirror.commands.publish.utils import (
+from mirror.workflows.publish.utils import (
     atom_feed,
     atom_media,
     env_content,
@@ -26,7 +26,6 @@ def PublishEnv(
     input: dict,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
-
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     path = os.path.join(output_dir, "env.json")
@@ -42,7 +41,6 @@ def PublishAtom(
     input: dict,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
-
     output_dir = input["output_dir"]
     db = SqliteDatabase(DATABASE_PATH)
     atom_feed(atom_media(db), output_dir)
@@ -56,7 +54,6 @@ def PublishStats(
     input: dict,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
-
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     db = SqliteDatabase(DATABASE_PATH)
@@ -74,7 +71,6 @@ def PublishTriples(
     input: dict,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
-
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     db = SqliteDatabase(DATABASE_PATH)
@@ -98,11 +94,13 @@ def PublishArtifacts(
     remove_artifacts(output_dir)
     builder_inputs = {"output_dir": output_dir, "publication_id": pid}
 
-    yield Await([
-      PublishEnv(builder_inputs, {}),
-      #PublishAtom(builder_inputs, {}),
-      PublishStats(builder_inputs, {}),
-      PublishTriples(builder_inputs, {}),
-    ])
+    yield Await(
+        [
+            PublishEnv(builder_inputs, {}),
+            # PublishAtom(builder_inputs, {}),
+            PublishStats(builder_inputs, {}),
+            PublishTriples(builder_inputs, {}),
+        ]
+    )
 
     yield WorkflowOutputEvent({"publication_id": pid})

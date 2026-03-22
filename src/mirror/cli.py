@@ -2,17 +2,17 @@
 import logging
 import multiprocessing
 
-from mirror.commands.enrich.enrich import EnrichData, EnrichPlace
-from mirror.commands.publish.publish import PublishArtifacts, PublishAtom, PublishEnv, PublishStats, PublishTriples
-from mirror.commands.scan.scan import GeonamesScan, MediaScan, ScanMedia, WikidataScan, ReadAlbums, ReadPhotos
-from mirror.commands.workflow import MirrorWorkflow
+from mirror.workflows.enrich.enrich import EnrichData, EnrichPlace
+from mirror.workflows.publish.publish import PublishArtifacts, PublishAtom, PublishEnv, PublishStats, PublishTriples
+from mirror.workflows.scan.scan import GeonamesScan, MediaScan, ScanMedia, WikidataScan, ReadAlbums, ReadPhotos
+from mirror.workflows.workflow import MirrorWorkflow
 
 logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
 from zahir import ConcurrencyLimit, LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
 
-from mirror.commands.upload import (
+from mirror.workflows.upload import (
     ComputeContrastingGrey,
     ComputeImageMosaic,
     UploadMissingPhotos,
@@ -65,7 +65,7 @@ def main():
     start = MirrorWorkflow({
         "upload_videos": False,
         "upload_images": True
-    })
+    }, {})
     # Disable tracing (otel_output_dir=None) to avoid slow event-loop I/O; re-enable for debugging
     for event in LocalWorkflow(context, max_workers=15, otel_output_dir=None).run(start):
         print(event)

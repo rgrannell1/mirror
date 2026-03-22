@@ -141,7 +141,7 @@ class D1Builder:
 
         dpath_to_details: dict = {}
         for album in albums:
-            if not album.src in dpath_to_details:
+            if album.src not in dpath_to_details:
                 dpath_to_details[album.src] = {}
 
             if album.relation == "summary":

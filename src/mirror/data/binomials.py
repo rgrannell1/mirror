@@ -19,7 +19,7 @@ def list_photo_binomials(db) -> Iterator[str]:
             continue
 
         id = parsed["id"]
-        if not id in binomials:
+        if id not in binomials:
             yield id.replace("-", " ").capitalize()
             binomials.add(id)
 

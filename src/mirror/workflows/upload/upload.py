@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from typing import TypedDict
 
 
 from zahir import ConcurrencyLimit, ResourceLimit, DependencyGroup, SqliteDependency
 from typing import Generator
 
 from mirror.services.cdn import CDN
-from mirror.commands.upload.utils import (
+from mirror.workflows.upload.utils import (
     PhotoJobInput,
     UploadOpts,
     list_photos_without_contrasting_grey,
@@ -93,9 +92,15 @@ def UploadPhoto(
         encoded_photos_table.add(fpath, uploaded_url, role, params["format"])
 
     # Check it actually uploaded; throw if not
-    yield Await(SqliteDependency(DATABASE_PATH, """
+    yield Await(
+        SqliteDependency(
+            DATABASE_PATH,
+            """
     select case when exists(select 1 from encoded_photos where fpath = ? and role = ? and url = ?) then 'satisfied' else 'impossible' end as status
-    """, (fpath, role, uploaded_url)))
+    """,
+            (fpath, role, uploaded_url),
+        )
+    )
 
     yield JobOutputEvent({"fpath": fpath, "role": role, "url": uploaded_url})
 
@@ -168,9 +173,15 @@ def UploadVideo(
         if role == FULL_SIZED_VIDEO_ROLE and encoded_path:
             yield UploadVideoThumbnail({"fpath": fpath, "encoded_path": encoded_path})
 
-    yield Await(SqliteDependency(DATABASE_PATH, """
+    yield Await(
+        SqliteDependency(
+            DATABASE_PATH,
+            """
     select case when exists(select 1 from encoded_videos where fpath = ? and role = ? and url = ?) then 'satisfied' else 'impossible' end as status
-    """, (fpath, role, encoded_path)))
+    """,
+            (fpath, role, encoded_path),
+        )
+    )
 
     yield JobOutputEvent({"fpath": fpath, "role": role})
 
@@ -220,15 +231,15 @@ def UploadMedia(
     upload_videos = input.get("upload_videos")
 
     for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey):
-        yield ComputeContrastingGrey({"fpath": fpath, "force": force_recompute_grey})
+        yield ComputeContrastingGrey({"fpath": fpath, "force": force_recompute_grey}, {})
 
     for fpath in list_photos_without_mosaic(db, force_recompute_mosaic):
-        yield ComputeImageMosaic({"fpath": fpath, "force": force_recompute_mosaic})
+        yield ComputeImageMosaic({"fpath": fpath, "force": force_recompute_mosaic}, {})
 
     if upload_images:
         for fpath in list_photos_without_upload(db, force_upload_images):
-            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images})
+            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images}, {})
 
     if upload_videos:
         for fpath in list_videos_without_upload(db, force_upload_videos):
-            yield UploadMissingVideos({"fpath": fpath, "force": force_upload_videos})
+            yield UploadMissingVideos({"fpath": fpath, "force": force_upload_videos}, {})

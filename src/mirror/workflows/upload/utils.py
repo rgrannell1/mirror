@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from typing import TypedDict
-from typing import Generator, Iterator, TypedDict
+from typing import Generator, Iterator
 
 from mirror.services.cdn import CDN
-from mirror.commons.constants import  IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from mirror.commons.constants import IMAGE_ENCODINGS, VIDEO_ENCODINGS
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import VideoEncoder
+
 
 class PhotoJobInput(TypedDict):
     fpath: str
