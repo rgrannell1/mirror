@@ -24,7 +24,7 @@ class IAlbumMetadataReader(Protocol):
 class IAlbumMetadataWriter(Protocol):
     """Interface for storing album metadata"""
 
-    def write_album_metadata(self, db: SqliteDatabase) -> None: ...
+    def write_album_metadata(self, db: SqliteDatabase, *, output_path: str | None = None) -> None: ...
 
 
 class IPhotoMetadataReader(Protocol):
@@ -36,7 +36,7 @@ class IPhotoMetadataReader(Protocol):
 class IPhotoMetadataWriter(Protocol):
     """Interface for storing photo metadata"""
 
-    def write_photo_metadata(self, db: SqliteDatabase) -> None: ...
+    def write_photo_metadata(self, db: SqliteDatabase, *, output_path: str | None = None) -> None: ...
 
 
 class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
@@ -113,7 +113,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         return by_album
 
-    def write_album_metadata(self, db: SqliteDatabase) -> None:
+    def write_album_metadata(self, db: SqliteDatabase, *, output_path: str | None = None) -> None:
         headers = [
             "embedding",
             "title",
@@ -127,11 +127,11 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         # sort albums by file-path
         sorted_albums = sorted(by_album.items(), key=lambda pair: pair[0])
 
-        # Print as markdown table
-        print("| " + " | ".join(headers) + " |")
-        print("| " + " | ".join(["---"] * len(headers)) + " |")
+        lines: list[str] = []
+        lines.append("| " + " | ".join(headers) + " |")
+        lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
 
-        for embedding, album_data in sorted_albums:
+        for _dpath, album_data in sorted_albums:
             row = [
                 f"![]({album_data['embedding']})",
                 album_data["title"] or "",
@@ -139,7 +139,14 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
                 ",".join(album_data["country"]) if album_data["country"] else "",
                 album_data["summary"] or "",
             ]
-            print("| " + " | ".join(row) + " |")
+            lines.append("| " + " | ".join(row) + " |")
+
+        body = "\n".join(lines) + "\n"
+        if output_path is not None:
+            with open(output_path, "w") as handle:
+                handle.write(body)
+        else:
+            print(body, end="")
 
 
 class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
@@ -212,7 +219,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
 
 class MarkdownTablePhotoMetadataWriter:
-    def write_photo_metadata(self, db: SqliteDatabase) -> None:
+    def write_photo_metadata(self, db: SqliteDatabase, *, output_path: str | None = None) -> None:
         headers = ["embedding", "name", "genre", "rating", "places", "description", "subjects", "cover"]
 
         db.album_contents_view()
@@ -267,10 +274,18 @@ class MarkdownTablePhotoMetadataWriter:
                 ]
             )
 
-        print("| " + " | ".join(headers) + " |")
-        print("| " + " | ".join(["---"] * len(headers)) + " |")
+        lines: list[str] = []
+        lines.append("| " + " | ".join(headers) + " |")
+        lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
         for row in rows:
-            print("| " + " | ".join(row) + " |")
+            lines.append("| " + " | ".join(row) + " |")
+
+        body = "\n".join(lines) + "\n"
+        if output_path is not None:
+            with open(output_path, "w") as handle:
+                handle.write(body)
+        else:
+            print(body, end="")
 
 
 class MarkdownTablePhotoMetadataReader:

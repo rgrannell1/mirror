@@ -16,6 +16,7 @@ from mirror.services.database.photos import (
     PhashesTable,
     PhotosTable,
 )
+from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
 from mirror.services.database.videos import EncodedVideosTable, VideoDataTable, VideosTable
 
 
@@ -41,6 +42,10 @@ class SqliteDatabase:
         self.conn.execute("drop view if exists view_photo_metadata")
         self.conn.execute("drop view if exists view_photo_metadata_summary")
         self.conn.commit()
+
+    def refresh_dependent_views(self) -> None:
+        """Recreate all derived views; safe for concurrent reads only after this commits."""
+        rebuild_dependent_views(self.conn)
 
     def photo_icon_table(self):
         return PhotoIconTable(self.conn)

@@ -13,11 +13,13 @@ class PhotoJobInput(TypedDict):
     fpath: str
 
 
-class UploadOpts(TypedDict):
+class UploadOpts(TypedDict, total=False):
     force_recompute_grey: bool
     force_recompute_mosaic: bool
     force_upload_images: bool
     force_upload_videos: bool
+    upload_images: bool | None
+    upload_videos: bool | None
 
 
 def list_photos_without_mosaic(db: SqliteDatabase, force_recompute: bool = False) -> Generator[str]:

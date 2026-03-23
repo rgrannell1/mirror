@@ -8,7 +8,10 @@ from typing import Generator
 from zahir import Await, Context, spec, WorkflowOutputEvent
 
 from mirror.commons.config import DATABASE_PATH
+from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
+from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.services.database import SqliteDatabase
+from mirror.services.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
 from mirror.workflows.publish.utils import (
     atom_feed,
     atom_media,
@@ -23,7 +26,7 @@ from mirror.workflows.publish.utils import (
 @spec()
 def PublishEnv(
     context: Context,
-    input: dict,
+    input: PublishArtifactBundleInput,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
     output_dir = input["output_dir"]
@@ -38,7 +41,7 @@ def PublishEnv(
 @spec()
 def PublishAtom(
     context: Context,
-    input: dict,
+    input: PublishArtifactBundleInput,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
     output_dir = input["output_dir"]
@@ -51,7 +54,7 @@ def PublishAtom(
 @spec()
 def PublishStats(
     context: Context,
-    input: dict,
+    input: PublishArtifactBundleInput,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
     output_dir = input["output_dir"]
@@ -68,7 +71,7 @@ def PublishStats(
 @spec()
 def PublishTriples(
     context: Context,
-    input: dict,
+    input: PublishArtifactBundleInput,
     dependencies: dict,
 ) -> Generator[WorkflowOutputEvent]:
     output_dir = input["output_dir"]
@@ -83,19 +86,51 @@ def PublishTriples(
 
 
 @spec()
+def UpdateAlbumsMarkdown(
+    context: Context,
+    input: PublishArtifactBundleInput,
+    dependencies: dict,
+) -> Generator[WorkflowOutputEvent]:
+    markdown_path = input["albums_markdown_path"]
+    db = SqliteDatabase(DATABASE_PATH)
+    MarkdownAlbumMetadataWriter().write_album_metadata(db, output_path=markdown_path)
+    yield WorkflowOutputEvent({"artifact": "albums_md", "path": markdown_path})
+
+
+@spec()
+def UpdatePhotosMarkdown(
+    context: Context,
+    input: PublishArtifactBundleInput,
+    dependencies: dict,
+) -> Generator[WorkflowOutputEvent]:
+    markdown_path = input["photos_markdown_path"]
+    db = SqliteDatabase(DATABASE_PATH)
+    MarkdownTablePhotoMetadataWriter().write_photo_metadata(db, output_path=markdown_path)
+    yield WorkflowOutputEvent({"artifact": "photos_md", "path": markdown_path})
+
+@spec()
 def PublishArtifacts(
     context: Context,
-    input: dict,
+    input: PublishArtifactsInput,
     dependencies: dict,
 ) -> Generator[Await | WorkflowOutputEvent]:
     output_dir = input["output_dir"]
 
+    SqliteDatabase(DATABASE_PATH).refresh_dependent_views()
+
     pid = publication_id()
     remove_artifacts(output_dir)
-    builder_inputs = {"output_dir": output_dir, "publication_id": pid}
+    builder_inputs: PublishArtifactBundleInput = {
+        "output_dir": output_dir,
+        "publication_id": pid,
+        "albums_markdown_path": input.get("albums_markdown_path", DEFAULT_ALBUMS_MARKDOWN_PATH),
+        "photos_markdown_path": input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH),
+    }
 
     yield Await(
         [
+            UpdateAlbumsMarkdown(builder_inputs, {}),
+            UpdatePhotosMarkdown(builder_inputs, {}),
             PublishEnv(builder_inputs, {}),
             # PublishAtom(builder_inputs, {}),
             PublishStats(builder_inputs, {}),

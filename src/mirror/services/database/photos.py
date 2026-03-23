@@ -24,8 +24,6 @@ from mirror.models.photo import (
     PhotoMetadataSummaryModel,
     PhotoModel,
 )
-
-
 class PhotoIconTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn

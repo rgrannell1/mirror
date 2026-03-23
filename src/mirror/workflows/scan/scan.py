@@ -15,6 +15,8 @@ from zahir import (
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.workflows.scan.utils import (
+    DEFAULT_ALBUMS_MARKDOWN_PATH,
+    DEFAULT_PHOTOS_MARKDOWN_PATH,
     ScanOpts,
     list_geonames_from_metadata,
     list_media,
@@ -44,11 +46,12 @@ def MediaScan(
 
     # db.delete_views()  # TEMPORARILY DISABLED: may be causing encoded_videos to disappear
 
+    db.refresh_dependent_views()
+
     phash_table = db.phashes_table()
     exif_table = db.exif_table()
     photos_table = db.photos_table()
     videos_table = db.videos_table()
-    db.album_data_view()
 
     current_fpaths = set()
 
@@ -231,7 +234,7 @@ def ScanMedia(
     yield Await(
         ReadAlbums(
             {
-                "markdown_path": input.get("albums_markdown_path"),
+                "markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH,
             },
             {},
         )
@@ -239,7 +242,7 @@ def ScanMedia(
     yield Await(
         ReadPhotos(
             {
-                "markdown_path": input.get("photos_markdown_path"),
+                "markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH,
             },
             {},
         )

@@ -15,7 +15,13 @@ from mirror.data.geoname import GeonameMetadataReader
 from mirror.commons.constants import KnownRelations
 
 
-class ScanOpts(TypedDict):
+DEFAULT_ALBUMS_MARKDOWN_PATH = "albums.md"
+DEFAULT_PHOTOS_MARKDOWN_PATH = "photos.md"
+
+
+class ScanOpts(TypedDict, total=False):
+    albums_markdown_path: str
+    photos_markdown_path: str
     force_rescan: bool
 
 

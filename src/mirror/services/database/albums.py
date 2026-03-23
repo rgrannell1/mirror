@@ -3,7 +3,7 @@
 import sqlite3
 from typing import Iterator, Optional
 
-from mirror.commons.tables import ALBUM_CONTENTS_VIEW, ALBUM_DATA_VIEW
+from mirror.commons.tables import ALBUM_CONTENTS_VIEW
 from mirror.models.album import AlbumDataModel, AlbumMetadataModel
 
 
@@ -16,17 +16,8 @@ class AlbumContentsView:
 class AlbumDataView:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
-        # Ensure view definition stays up-to-date with the code.
-        # (SQLite can't reliably "replace" views in all versions.)
-        try:
-            self.conn.execute("DROP VIEW IF EXISTS view_album_data;")
-            self.conn.execute(ALBUM_DATA_VIEW)
-        except sqlite3.OperationalError as err:
-            # Handle race condition: another connection may have created the view
-            if "already exists" in str(err):
-                pass
-            else:
-                raise
+        # DDL lives in `SqliteDatabase.refresh_dependent_views` so parallel jobs
+        # do not contend on DROP/CREATE (see `views.refresh_dependent_views`).
 
     def list(self) -> Iterator[AlbumDataModel]:
         query = "select * from view_album_data"
