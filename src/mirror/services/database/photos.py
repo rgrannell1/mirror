@@ -116,12 +116,6 @@ class PhashesTable:
 
         return None
 
-    def fpaths_from_phash(self, phash: str) -> List[str]:
-        fpaths = []
-        for row in self.conn.execute("select fpath from phashes where phash = ?", (phash,)):
-            fpaths.append(row[0])
-        return fpaths
-
     def add_many(self, phashes: Iterator[PhashData]) -> None:
         rows = [(phash["fpath"], phash.get("phash")) for phash in phashes]
         if not rows:
@@ -228,10 +222,6 @@ class PhotoMetadataTable:
     def __init__(self, conn: sqlite3.Connection) -> None:
         self.conn = conn
         self.conn.execute(PHOTO_METADATA_TABLE)
-
-    def clean(self) -> None:
-        self.conn.execute("delete from photo_metadata_table")
-        self.conn.commit()
 
     def list(self) -> Iterator[PhotoMetadataModel]:
         query = """

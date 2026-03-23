@@ -64,15 +64,6 @@ class WikidataModel:
 
         return data.get("labels", {}).get("en", {}).get("value")
 
-    def find_description(self) -> str | None:
-        data = self.data
-        if not data or "descriptions" not in data:
-            return None
-
-        if "en" in data["descriptions"]:
-            return data["descriptions"]["en"]["value"]
-        return None
-
     def find_alias(self) -> str | None:
         data = self.data
 

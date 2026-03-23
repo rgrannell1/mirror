@@ -1,4 +1,4 @@
-"""Pure helpers for publish: artifact content, listing, and full build. No workflow/job logic."""
+"""Pure helpers for publish: artifact content and listing. No workflow/job logic."""
 
 from __future__ import annotations
 
@@ -285,18 +285,3 @@ def triples_content(db: SqliteDatabase) -> str:
     """Build triples artifact content."""
     triples = list(read_triples(db))
     return json.dumps(triples, separators=(",", ":"), ensure_ascii=False)
-
-
-def build(db: SqliteDatabase, output_dir: str) -> str:
-    """Run full publish: remove old artifacts, write env, atom, stats, triples. Returns publication_id."""
-    pid = publication_id()
-    remove_artifacts(output_dir)
-    print(f"{output_dir}/albums.{pid}.json")
-    with open(os.path.join(output_dir, "env.json"), "w") as f:
-        f.write(env_content(pid))
-    atom_feed(atom_media(db), output_dir)
-    with open(os.path.join(output_dir, "stats.{}.json".format(pid)), "w") as f:
-        f.write(stats_content(db))
-    with open(os.path.join(output_dir, "triples.{}.json".format(pid)), "w") as f:
-        f.write(triples_content(db))
-    return pid

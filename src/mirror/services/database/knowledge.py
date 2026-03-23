@@ -76,15 +76,6 @@ class BinomialsWikidataIdTable:
     def has(self, binomial: str) -> bool:
         return bool(self.conn.execute("select 1 from binomials_wikidata_id where binomial = ?", (binomial,)).fetchone())
 
-    def get_qid(self, binomial: str) -> Optional[str]:
-        """Given a binomial, get the WikiData ID"""
-        query = "select qid from binomials_wikidata_id where binomial = ?"
-
-        for row in self.conn.execute(query, (binomial,)):
-            return row[0]
-
-        return None
-
     def get_binomial(self, qid: str) -> Optional[str]:
         """Given a WikiData ID, get the binomial"""
         query = "select binomial from binomials_wikidata_id where qid = ?"

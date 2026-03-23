@@ -8,7 +8,6 @@ dependencies = [
   "boto3",
   "botocore",
   "dateparser",
-  "docopt",
   "ffmpeg-python",
   "imagehash",
   "jsonschema",

@@ -3,20 +3,6 @@ import tomllib
 from typing import Iterator
 
 
-def _item_to_triples(item: dict) -> Iterator:
-    src = item["id"]
-
-    for relation, tgt_vals in item.items():
-        if relation == "id":
-            continue
-
-        if isinstance(tgt_vals, list):
-            for val in tgt_vals:
-                yield (src, relation, val)
-        else:
-            yield (src, relation, tgt_vals)
-
-
 def read_things(fpath: str) -> Iterator:
     """Read things.toml and yield semantic triples"""
 
