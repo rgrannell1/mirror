@@ -1,10 +1,10 @@
 """Interact with the CDN that hosts photos and videos"""
 
-import os
 import boto3  # type: ignore
 import boto3.session  # type: ignore
 import botocore  # type: ignore
 from mirror.commons.config import (
+    PHOTOS_URL,
     SPACES_REGION,
     SPACES_ENDPOINT_URL,
     SPACES_BUCKET,
@@ -12,9 +12,7 @@ from mirror.commons.config import (
     SPACES_SECRET_KEY,
 )
 from mirror.commons.constants import VIDEO_CONTENT_TYPE
-from .database import D1SqliteDatabase, SqliteDatabase
 from mirror.models.photo import PhotoContent
-from mirror.commons.config import PHOTOS_URL, D1_DATABASE_PATH
 from mirror.commons.utils import deterministic_hash_str
 
 
@@ -123,52 +121,3 @@ class CDN:
         video parameters"""
 
         return f"{deterministic_hash_str(f'{fpath}{bitrate}{width}{height}')}.{format}"
-
-
-class D1Builder:
-    """Build D1 SQL database, so that we can generate social-cards from that information"""
-
-    def __init__(self, db: SqliteDatabase) -> None:
-        self.db = db
-        self.d1 = D1SqliteDatabase(D1_DATABASE_PATH)
-
-    def build(self) -> None:
-        d1 = D1SqliteDatabase(D1_DATABASE_PATH)
-
-        encoded_photos = self.db.encoded_photos_table()
-        media_metadata = self.db.media_metadata_table()
-        albums = media_metadata.list_albums()
-
-        dpath_to_details: dict = {}
-        for album in albums:
-            if album.src not in dpath_to_details:
-                dpath_to_details[album.src] = {}
-
-            if album.relation == "summary":
-                dpath_to_details[album.src]["description"] = album.target
-
-            if album.relation == "permalink":
-                dpath_to_details[album.src]["path"] = f"/album/{album.target}"
-
-            if album.relation == "title":
-                dpath_to_details[album.src]["title"] = album.target
-
-        album_covers = list(encoded_photos.list_by_role("social_card"))
-        for album_cover in album_covers:
-            dpath = os.path.dirname(album_cover.fpath)
-
-            if dpath_to_details.get(dpath):
-                dpath_to_details[dpath]["image_url"] = album_cover.url
-
-        socials = d1.social_card_table()
-
-        for details in dpath_to_details.values():
-            socials.add(
-                path=details["path"],
-                description=details["description"],
-                title=details["title"],
-                image_url=details["image_url"],
-            )
-
-        # add the information into the D1 database, then snapshot
-        d1.dump()

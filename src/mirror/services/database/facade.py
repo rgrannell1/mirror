@@ -1,7 +1,6 @@
 """Main application SQLite database facade."""
 
 import sqlite3
-from typing import Set
 
 from mirror.services.database.albums import AlbumContentsView, AlbumDataView, MediaMetadataTable
 from mirror.services.database.knowledge import BinomialsWikidataIdTable, GeonameTable, WikidataTable
@@ -100,47 +99,3 @@ class SqliteDatabase:
 
     def album_contents_view(self):
         return AlbumContentsView(self.conn)
-
-    # TODO move
-    def remove_deleted_photos(self, fpaths: Set[str]) -> None:
-        """
-        Remove rows from the DB for photos that no longer exist on disk.
-
-        This intentionally does not touch videos because there is known coupling elsewhere.
-        """
-        photos_table = self.photos_table()
-        exif_table = self.exif_table()
-        phashes_table = self.phashes_table()
-        icons_table = self.photo_icon_table()
-        encoded_photos_table = self.encoded_photos_table()
-
-        for fpath in photos_table.list():
-            if fpath in fpaths:
-                continue
-
-            photos_table.delete(fpath)
-            exif_table.delete(fpath)
-            phashes_table.delete(fpath)
-            icons_table.delete(fpath)
-            encoded_photos_table.delete(fpath)
-
-    # TODO move
-    def remove_deleted_files(self, fpaths: Set[str]) -> None:
-        for fpath in self.photos_table().list():
-            if fpath not in fpaths:
-                self.photos_table().delete(fpath)
-                self.exif_table().delete(fpath)
-
-        for fpath in self.videos_table().list():
-            if fpath not in fpaths:
-                self.videos_table().delete(fpath)
-
-        for row in self.conn.execute("""
-            select *
-            from encoded_photos
-            left join phashes on encoded_photos.fpath = phashes.fpath
-            where encoded_photos.role = 'thumbnail_data_url'
-            and phashes.fpath is null;
-        """):
-            fpath = row[0]
-            self.encoded_photos_table().delete(fpath)

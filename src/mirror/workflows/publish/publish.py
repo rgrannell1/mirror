@@ -108,6 +108,7 @@ def UpdatePhotosMarkdown(
     MarkdownTablePhotoMetadataWriter().write_photo_metadata(db, output_path=markdown_path)
     yield WorkflowOutputEvent({"artifact": "photos_md", "path": markdown_path})
 
+
 @spec()
 def PublishArtifacts(
     context: Context,

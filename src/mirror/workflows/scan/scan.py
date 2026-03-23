@@ -28,6 +28,7 @@ from mirror.workflows.scan.utils import (
 from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
 from mirror.data.wikidata import WikidataClient
 from mirror.services.database import SqliteDatabase
+from mirror.services.vault_sync import VaultIndexSync
 from mirror.models.photo import Photo
 from mirror.commons.urn import parse_mirror_urn
 from mirror.models.video import Video
@@ -65,7 +66,7 @@ def MediaScan(
             current_fpaths.add(entry.fpath)
 
     # Remove stale photo rows, without touching videos (video deletion is known-broken).
-    db.remove_deleted_photos(current_fpaths)
+    VaultIndexSync(db).remove_deleted_photos(current_fpaths)
 
     # Add exif data and phashes
     exif_table.add_many(list_unsaved_exifs(db, dpath))
