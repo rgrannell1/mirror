@@ -12,9 +12,9 @@ from feedgen.feed import FeedGenerator
 
 from mirror.commons.config import PHOTOS_URL
 from mirror.data.geoname import GeonameMetadataReader
-from mirror.data.mirror import (
+from mirror.data.semantic_triples import (
     AlbumTriples,
-    ExifReader,
+    ExifTriplesReader,
     PhotoTriples,
     PhotosCountryReader,
     VideosReader,
@@ -267,7 +267,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
     readers = [
         AlbumTriples(),
         PhotoTriples(),
-        ExifReader(),
+        ExifTriplesReader(),
         VideosReader(),
         GeonameMetadataReader(),
         ThingsReader(),

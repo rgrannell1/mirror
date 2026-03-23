@@ -47,6 +47,7 @@ __all__ = [
     # utils
     "deterministic_hash",
     "deterministic_hash_str",
+    "short_cdn_url",
     # dates
     "date_range",
     # ansi
