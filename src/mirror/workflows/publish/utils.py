@@ -24,9 +24,9 @@ from mirror.data.things import ThingsReader
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
+from mirror.commons.urn import is_mirror_urn, parse_mirror_urn
 from mirror.services.database import SqliteDatabase
 from mirror.models.photo import PhotoMetadataModel, PhotoModel
-from mirror.services.things import Things
 from mirror.commons.utils import deterministic_hash_str
 from mirror.models.video import VideoModel
 
@@ -76,8 +76,6 @@ def atom_media(db: SqliteDatabase) -> List[dict]:
     photos = db.photo_data_table().list()
     videos = db.video_data_table().list()
     media: List[dict] = []
-    db.video_data_table()
-    db.album_data_view()
     for video in videos:
         media.append(
             {
@@ -183,10 +181,10 @@ def _count_type(type_name: str, subjects: List[PhotoMetadataModel]) -> int:
     unique = set()
     for subject in subjects:
         value = subject.target
-        if not Things.is_urn(value):
+        if not is_mirror_urn(value):
             continue
-        parsed = Things.from_urn(value)
-        if value.startswith(f"urn:ró:{type_name}:"):
+        parsed = parse_mirror_urn(value)
+        if parsed["type"] == type_name:
             unique.add(parsed["id"])
     return len(unique)
 

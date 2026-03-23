@@ -8,7 +8,6 @@ from .cdn import CDN
 from .encoder import PhotoEncoder, VideoEncoder
 from .metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
 from .vault import MediaVault
-from .things import Things
 
 __all__ = [
     "SqliteDatabase",
@@ -19,5 +18,4 @@ __all__ = [
     "MarkdownAlbumMetadataReader",
     "MarkdownTablePhotoMetadataReader",
     "MediaVault",
-    "Things",
 ]

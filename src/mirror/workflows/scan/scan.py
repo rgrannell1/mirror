@@ -27,7 +27,7 @@ from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTableP
 from mirror.data.wikidata import WikidataClient
 from mirror.services.database import SqliteDatabase
 from mirror.models.photo import Photo
-from mirror.services.things import Things
+from mirror.commons.urn import parse_mirror_urn
 from mirror.models.video import Video
 
 
@@ -90,8 +90,8 @@ def GeonamesScan(
 
     # Yield individual geoname lookup tasks
     for geoname_urn in list_geonames_from_metadata(db):
-        thing = Things.from_urn(geoname_urn)
-        gid = thing["id"]
+        parsed = parse_mirror_urn(geoname_urn)
+        gid = parsed["id"]
 
         if geoname_table.has(gid):
             continue

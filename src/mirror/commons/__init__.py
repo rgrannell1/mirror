@@ -7,6 +7,7 @@ from mirror.commons.dates import *
 from mirror.commons.ansi import *
 from mirror.commons.exceptions import *
 from mirror.commons.tables import *
+from mirror.commons.urn import format_mirror_urn, is_mirror_urn, parse_mirror_urn
 
 __all__ = [
     # config
@@ -48,6 +49,10 @@ __all__ = [
     "deterministic_hash",
     "deterministic_hash_str",
     "short_cdn_url",
+    # urn
+    "format_mirror_urn",
+    "is_mirror_urn",
+    "parse_mirror_urn",
     # dates
     "date_range",
     # ansi
