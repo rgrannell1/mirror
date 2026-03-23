@@ -2,8 +2,6 @@ from typing import Generator, Iterator, TypedDict
 from zahir import Await, Context, DependencyGroup, JobOutputEvent, WorkflowOutputEvent, spec
 
 from mirror.workflows.enrich.utils import read_things
-from mirror.commons.config import DATABASE_PATH
-from mirror.services.database import SqliteDatabase
 
 
 def filter_things(type: str, things: list[dict]) -> Iterator[dict]:
@@ -33,7 +31,6 @@ def EnrichData(
     input,
     dependencies: DependencyGroup,
 ) -> Generator[Await | WorkflowOutputEvent]:
-    db = SqliteDatabase(DATABASE_PATH)
     things = list(read_things("things.toml"))
 
-    places = yield Await([EnrichPlace({"place": thing}) for thing in filter_things("place", things)])
+    yield Await([EnrichPlace({"place": thing}) for thing in filter_things("place", things)])

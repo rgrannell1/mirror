@@ -1,6 +1,9 @@
 import json
 import tomllib
-from typing import Iterator
+from typing import TYPE_CHECKING, Iterator
+
+if TYPE_CHECKING:
+    from mirror.services.database import SqliteDatabase
 from mirror.data.types import SemanticTriple
 
 

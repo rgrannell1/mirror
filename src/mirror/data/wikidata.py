@@ -1,5 +1,8 @@
 import json
-from typing import Any, Iterator
+from typing import TYPE_CHECKING, Any, Iterator
+
+if TYPE_CHECKING:
+    from mirror.services.database import SqliteDatabase
 import Levenshtein
 from attr import dataclass
 import requests

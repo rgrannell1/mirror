@@ -1,4 +1,7 @@
-from typing import Iterator, Set
+from typing import TYPE_CHECKING, Iterator, Set
+
+if TYPE_CHECKING:
+    from mirror.services.database import SqliteDatabase
 
 import markdown
 

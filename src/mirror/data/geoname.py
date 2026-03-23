@@ -2,7 +2,10 @@ import json
 import requests
 import xmltodict
 from dataclasses import dataclass
-from typing import Any, Dict, Iterator, List
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List
+
+if TYPE_CHECKING:
+    from mirror.services.database import SqliteDatabase
 
 from mirror.commons.constants import URN_PREFIX, KnownRelations, KnownTypes
 from mirror.data.types import SemanticTriple

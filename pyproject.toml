@@ -61,6 +61,10 @@ exclude = [
 
 line-length = 120
 indent-width = 4
+
+[tool.ruff.lint.per-file-ignores]
+"src/mirror/commons/__init__.py" = ["F403", "F405"]
+
 [project.scripts]
 mirror = "mirror.cli:main"
 [tool.setuptools]

@@ -93,6 +93,6 @@ class ExifReader:
 
         try:
             return PhotoExifData(**data, fpath=fpath)  # type: ignore
-        except:
+        except Exception:
             # GoPro image / other no-exif images I'm given
             return None
