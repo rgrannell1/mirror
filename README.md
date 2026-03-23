@@ -1,29 +1,16 @@
 # Mirror
 
 ```sh
-mirror scan
-mirror upload
-mirror publish
-mirror read_metadata
-mirror write_metadata
+uv run mirror
 ```
 
-# Workflows
+Runs the Zahir workflow: enrich → scan vault + `albums.md` / `photos.md` → upload → publish (manifests + rewrite markdown).
 
-**Add an Album**
+**Add an album**
 
-- Create folder in Media
-- Published directory
-- Add photos or videos
-- Add +cover to one filepath
-- `rs upload`
-- `rs clean; rs build; uv run mirror write_metadata album > albums.md`
-- Fill in details
+- Folder under `PHOTO_DIRECTORY` with `Published` media; one filename must contain `+cover`.
+- `uv run mirror`, then fill `albums.md` / `photos.md` and run again.
 
-**Annotate Photos**
+**Annotate**
 
-- `rs clean; rs build; uv run mirror write_metadata photo > photos.md`
-- Add geonames, species, etc
-- `rs clean; rs build; uv run mirror read_metadata photo < photos.md`
-- `rs scan`
-- `rs publish`
+- Edit `albums.md` / `photos.md`, then `uv run mirror`.
