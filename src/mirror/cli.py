@@ -23,10 +23,11 @@ def main():
         job_registry=job_registry,
     )
 
-    start = MirrorWorkflow({ "upload_videos": False, "upload_images": True }, {})
+    start = MirrorWorkflow({"upload_videos": False, "upload_images": True}, {})
 
     for event in LocalWorkflow(context, max_workers=15, otel_output_dir=None).run(start):
         print(event.output)
+
 
 if __name__ == "__main__":
     main()

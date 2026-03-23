@@ -23,7 +23,6 @@ from typing import Dict, Optional, Tuple
 from mirror.models.photo import PhotoContent
 
 
-
 class PhotoEncoder:
     @classmethod
     def compute_contrasting_grey(cls, fpath: str) -> str:

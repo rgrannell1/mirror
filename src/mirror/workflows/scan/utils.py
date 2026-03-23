@@ -14,6 +14,7 @@ from mirror.services.vault import MediaVault
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.commons.constants import KnownRelations
 
+
 class ScanOpts(TypedDict):
     force_rescan: bool
 
@@ -73,7 +74,6 @@ def list_geonames_from_metadata(db: SqliteDatabase) -> Iterator[str]:
 
 def read_geonames_wikidata_ids(db: SqliteDatabase) -> Iterator[SemanticTriple]:
     """Read wikidata IDs from geonames metadata"""
-
 
     for triple in GeonameMetadataReader().read(db):
         if triple.relation == KnownRelations.WIKIDATA:
