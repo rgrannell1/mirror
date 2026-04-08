@@ -25,7 +25,7 @@ class VideosTable:
 
     def add(self, fpath: str) -> None:
         dpath = os.path.dirname(fpath)
-        self.conn.execute("insert or replace into videos (fpath, dpath) values (?, ?)", (fpath, dpath))
+        self.conn.execute("insert or ignore into videos (fpath, dpath) values (?, ?)", (fpath, dpath))
         self.conn.commit()
 
     def delete(self, fpath: str) -> None:

@@ -1,3 +1,4 @@
+
 import logging
 import multiprocessing
 
@@ -55,13 +56,16 @@ def main():
                 GeonamesScan,
                 WikidataScan,
                 ReadAlbums,
-                ReadPhotos,
+                ReadPhotos
             ],
         ),
         job_registry=job_registry,
     )
 
-    start = MirrorWorkflow({"upload_videos": True, "upload_images": True}, {})
+    start = MirrorWorkflow({
+        "upload_videos": True,
+        "upload_images": True
+    }, {})
     # Disable tracing (otel_output_dir=None) to avoid slow event-loop I/O; re-enable for debugging
     for event in LocalWorkflow(context, max_workers=15, otel_output_dir=None).run(start):
         print(event)
