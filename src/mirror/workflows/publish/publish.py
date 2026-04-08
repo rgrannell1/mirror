@@ -130,8 +130,6 @@ def PublishArtifacts(
 
     yield Await(
         [
-            UpdateAlbumsMarkdown(builder_inputs, {}),
-            UpdatePhotosMarkdown(builder_inputs, {}),
             PublishEnv(builder_inputs, {}),
             # PublishAtom(builder_inputs, {}),
             PublishStats(builder_inputs, {}),

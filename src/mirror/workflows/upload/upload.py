@@ -117,7 +117,7 @@ def UploadMissingPhotos(
     encoded_photos_table = db.encoded_photos_table()
 
     encodings = list(encoded_photos_table.list_for_file(fpath))
-    published_roles = {enc.role for enc in encodings}
+    published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
 
     # Use a fixed semaphore_id so all photo uploads share the same limit
     cdn_limit = ConcurrencyLimit(2, 1, context, semaphore_id="global_photo_cdn_limit")
@@ -167,20 +167,19 @@ def UploadVideo(
 
     with cdn_limit:
         encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
+        yield Await(
+            SqliteDependency(
+                DATABASE_PATH,
+                """
+        select case when exists(select 1 from encoded_videos where fpath = ? and role = ? and url is not null and url != '') then 'satisfied' else 'impossible' end as status
+        """,
+                (fpath, role),
+            )
+        )
 
         # Only generate a thumbnail when we actually produced an encoded file
         if role == FULL_SIZED_VIDEO_ROLE and encoded_path:
             yield UploadVideoThumbnail({"fpath": fpath, "encoded_path": encoded_path})
-
-    yield Await(
-        SqliteDependency(
-            DATABASE_PATH,
-            """
-    select case when exists(select 1 from encoded_videos where fpath = ? and role = ? and url = ?) then 'satisfied' else 'impossible' end as status
-    """,
-            (fpath, role, encoded_path),
-        )
-    )
 
     yield JobOutputEvent({"fpath": fpath, "role": role})
 
@@ -190,7 +189,7 @@ def UploadMissingVideos(
     context: Context,
     input: PhotoJobInput,
     dependencies={},
-) -> Generator[JobInstance]:
+) -> Generator[JobInstance | Await]:
     fpath = input["fpath"]
     force = input.get("force", False)
 
@@ -212,6 +211,22 @@ def UploadMissingVideos(
             {"cdn_limit": cdn_limit, "oom_limit": oom_limit},
             once=not force,
         )
+
+    yield Await(
+        SqliteDependency(
+            DATABASE_PATH,
+            """
+    select case when (
+        select count(distinct role) from encoded_videos
+        where fpath = ?
+        and role in ('video_libx264_unscaled', 'video_libx264_1080p', 'video_libx264_720p', 'video_libx264_480p')
+        and url is not null
+        and url != ''
+    ) = 4 then 'satisfied' else 'unsatisfied' end as status
+    """,
+            (fpath,),
+        )
+    )
 
 
 @spec()

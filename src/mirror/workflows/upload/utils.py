@@ -72,7 +72,7 @@ def list_videos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
 
     for fpath in videos:
         encodings = list(encoded_videos_table.list_for_file(fpath))
-        published_roles = {enc.role for enc in encodings}
+        published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
         needs_upload = False
 
         for role, params in VIDEO_ENCODINGS:

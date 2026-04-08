@@ -1,14 +1,26 @@
 import logging
 import multiprocessing
-from pathlib import Path
 
+from mirror.workflows.enrich.enrich import EnrichData, EnrichPlace
+from mirror.workflows.publish.publish import PublishArtifacts, PublishAtom, PublishEnv, PublishStats, PublishTriples
+from mirror.workflows.scan.scan import GeonamesScan, MediaScan, ScanMedia, WikidataScan, ReadAlbums, ReadPhotos
 from mirror.workflows.workflow import MirrorWorkflow
-from zahir import LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
 
 logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
-_WORKFLOWS_DIR = Path(__file__).resolve().parent / "workflows"
+from zahir import ConcurrencyLimit, LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
+
+from mirror.workflows.upload import (
+    ComputeContrastingGrey,
+    ComputeImageMosaic,
+    UploadMissingPhotos,
+    UploadMissingVideos,
+    UploadMedia,
+    UploadPhoto,
+    UploadVideo,
+    UploadVideoThumbnail,
+)
 
 
 def main():
@@ -19,14 +31,40 @@ def main():
 
     job_registry = SQLiteJobRegistry("mirror_jobs.db")
     context = MemoryContext(
-        scope=LocalScope().scan(_WORKFLOWS_DIR),
+        scope=LocalScope(
+            dependencies=[ConcurrencyLimit],
+            specs=[
+                ComputeContrastingGrey,
+                ComputeImageMosaic,
+                UploadPhoto,
+                UploadMissingPhotos,
+                UploadVideo,
+                UploadMissingVideos,
+                UploadMedia,
+                UploadVideoThumbnail,
+                MirrorWorkflow,
+                EnrichData,
+                EnrichPlace,
+                PublishArtifacts,
+                PublishEnv,
+                PublishAtom,
+                PublishStats,
+                PublishTriples,
+                ScanMedia,
+                MediaScan,
+                GeonamesScan,
+                WikidataScan,
+                ReadAlbums,
+                ReadPhotos,
+            ],
+        ),
         job_registry=job_registry,
     )
 
-    start = MirrorWorkflow({"upload_videos": False, "upload_images": True}, {})
-
+    start = MirrorWorkflow({"upload_videos": True, "upload_images": True}, {})
+    # Disable tracing (otel_output_dir=None) to avoid slow event-loop I/O; re-enable for debugging
     for event in LocalWorkflow(context, max_workers=15, otel_output_dir=None).run(start):
-        print(event.output)
+        print(event)
 
 
 if __name__ == "__main__":

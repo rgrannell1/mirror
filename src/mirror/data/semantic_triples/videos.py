@@ -26,32 +26,42 @@ class VideosReader:
                 video.description,
             )
 
-            yield SemanticTriple(
-                source,
-                "video_url_unscaled",
-                short_cdn_url(video.video_url_unscaled),
-            )
+            video_url_unscaled = short_cdn_url(video.video_url_unscaled)
+            if video_url_unscaled:
+                yield SemanticTriple(
+                    source,
+                    "video_url_unscaled",
+                    video_url_unscaled,
+                )
 
-            yield SemanticTriple(
-                source,
-                "video_url_1080p",
-                short_cdn_url(video.video_url_1080p),
-            )
+            video_url_1080p = short_cdn_url(video.video_url_1080p)
+            if video_url_1080p:
+                yield SemanticTriple(
+                    source,
+                    "video_url_1080p",
+                    video_url_1080p,
+                )
 
-            yield SemanticTriple(
-                source,
-                "video_url_720p",
-                short_cdn_url(video.video_url_720p),
-            )
+            video_url_720p = short_cdn_url(video.video_url_720p)
+            if video_url_720p:
+                yield SemanticTriple(
+                    source,
+                    "video_url_720p",
+                    video_url_720p,
+                )
 
-            yield SemanticTriple(
-                source,
-                "video_url_480p",
-                short_cdn_url(video.video_url_480p),
-            )
+            video_url_480p = short_cdn_url(video.video_url_480p)
+            if video_url_480p:
+                yield SemanticTriple(
+                    source,
+                    "video_url_480p",
+                    video_url_480p,
+                )
 
-            yield SemanticTriple(
-                source,
-                "poster_url",
-                short_cdn_url(video.poster_url),
-            )
+            poster_url = short_cdn_url(video.poster_url)
+            if poster_url:
+                yield SemanticTriple(
+                    source,
+                    "poster_url",
+                    poster_url,
+                )
