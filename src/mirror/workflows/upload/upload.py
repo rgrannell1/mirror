@@ -206,11 +206,11 @@ def UploadMissingVideos(
         if role in published_roles:
             continue
 
-        yield UploadVideo(
+        yield Await(UploadVideo(
             {"fpath": fpath, "role": role, "params": params},
             {"cdn_limit": cdn_limit, "oom_limit": oom_limit},
             once=not force,
-        )
+        ))
 
     yield Await(
         SqliteDependency(
@@ -222,7 +222,7 @@ def UploadMissingVideos(
         and role in ('video_libx264_unscaled', 'video_libx264_1080p', 'video_libx264_720p', 'video_libx264_480p')
         and url is not null
         and url != ''
-    ) = 4 then 'satisfied' else 'unsatisfied' end as status
+    ) = 4 then 'satisfied' else 'impossible' end as status
     """,
             (fpath,),
         )

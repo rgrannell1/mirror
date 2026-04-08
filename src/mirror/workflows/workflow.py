@@ -31,6 +31,8 @@ def MirrorWorkflow(
         )
     )
 
+    print('uploading media')
+
     yield Await(
         UploadMedia(
             {
@@ -44,6 +46,8 @@ def MirrorWorkflow(
             {},
         )
     )
+
+    print('publishing artifacts')
 
     yield Await(
         PublishArtifacts(
