@@ -1,4 +1,5 @@
 
+import argparse
 import logging
 import multiprocessing
 
@@ -26,6 +27,15 @@ from mirror.workflows.upload import (
 
 def main():
     """Execute the upload media workflow"""
+
+    parser = argparse.ArgumentParser(description="Mirror media pipeline")
+    parser.add_argument("--no-upload-images", dest="upload_images", action="store_false", default=True)
+    parser.add_argument("--no-upload-videos", dest="upload_videos", action="store_false", default=True)
+    parser.add_argument("--force-recompute-grey", dest="force_recompute_grey", action="store_true", default=False)
+    parser.add_argument("--force-recompute-mosaic", dest="force_recompute_mosaic", action="store_true", default=False)
+    parser.add_argument("--force-upload-images", dest="force_upload_images", action="store_true", default=False)
+    parser.add_argument("--force-upload-videos", dest="force_upload_videos", action="store_true", default=False)
+    args = parser.parse_args()
 
     if multiprocessing.get_start_method() != "fork":
         multiprocessing.set_start_method("fork", force=True)
@@ -63,8 +73,12 @@ def main():
     )
 
     start = MirrorWorkflow({
-        "upload_videos": True,
-        "upload_images": True
+        "upload_images": args.upload_images,
+        "upload_videos": args.upload_videos,
+        "force_recompute_grey": args.force_recompute_grey,
+        "force_recompute_mosaic": args.force_recompute_mosaic,
+        "force_upload_images": args.force_upload_images,
+        "force_upload_videos": args.force_upload_videos,
     }, {})
     for event in LocalWorkflow(context, max_workers=15).run(start):
         print(event)

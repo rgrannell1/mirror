@@ -36,10 +36,10 @@ def MirrorWorkflow(
     yield Await(
         UploadMedia(
             {
-                "force_recompute_grey": False,
-                "force_recompute_mosaic": False,
-                "force_upload_images": False,
-                "force_upload_videos": False,
+                "force_recompute_grey": input.get("force_recompute_grey", False),
+                "force_recompute_mosaic": input.get("force_recompute_mosaic", False),
+                "force_upload_images": input.get("force_upload_images", False),
+                "force_upload_videos": input.get("force_upload_videos", False),
                 "upload_images": input.get("upload_images"),
                 "upload_videos": input.get("upload_videos"),
             },
