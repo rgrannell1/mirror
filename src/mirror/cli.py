@@ -2,27 +2,14 @@
 import argparse
 import logging
 import multiprocessing
+from pathlib import Path
 
-from mirror.workflows.enrich.enrich import EnrichData, EnrichPlace
-from mirror.workflows.publish.publish import PublishArtifacts, PublishAtom, PublishEnv, PublishStats, PublishTriples
-from mirror.workflows.scan.scan import GeonamesScan, MediaScan, ScanMedia, WikidataScan, ReadAlbums, ReadPhotos
 from mirror.workflows.workflow import MirrorWorkflow
 
 logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
-from zahir import ConcurrencyLimit, LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
-
-from mirror.workflows.upload import (
-    ComputeContrastingGrey,
-    ComputeImageMosaic,
-    UploadMissingPhotos,
-    UploadMissingVideos,
-    UploadMedia,
-    UploadPhoto,
-    UploadVideo,
-    UploadVideoThumbnail,
-)
+from zahir import LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
 
 
 def main():
@@ -42,33 +29,7 @@ def main():
 
     job_registry = SQLiteJobRegistry("mirror_jobs.db")
     context = MemoryContext(
-        scope=LocalScope(
-            dependencies=[ConcurrencyLimit],
-            specs=[
-                ComputeContrastingGrey,
-                ComputeImageMosaic,
-                UploadPhoto,
-                UploadMissingPhotos,
-                UploadVideo,
-                UploadMissingVideos,
-                UploadMedia,
-                UploadVideoThumbnail,
-                MirrorWorkflow,
-                EnrichData,
-                EnrichPlace,
-                PublishArtifacts,
-                PublishEnv,
-                PublishAtom,
-                PublishStats,
-                PublishTriples,
-                ScanMedia,
-                MediaScan,
-                GeonamesScan,
-                WikidataScan,
-                ReadAlbums,
-                ReadPhotos
-            ],
-        ),
+        scope=LocalScope().scan(Path(__file__).parent),
         job_registry=job_registry,
     )
 
