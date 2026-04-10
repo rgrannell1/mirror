@@ -14,6 +14,7 @@ from mirror.commons.config import PHOTOS_URL
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.semantic_triples import (
     AlbumTriples,
+    AlbumBannerReader,
     ExifTriplesReader,
     PhotoTriples,
     PhotosCountryReader,
@@ -273,6 +274,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         WikidataMetadataReader(),
         PhotoRelationsReader(),
         PhotosCountryReader(),
+        AlbumBannerReader(),
     ]
     for long, alias in CURIE.items():
         yield [long, "curie", alias]

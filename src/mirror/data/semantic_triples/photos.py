@@ -27,6 +27,41 @@ class PhotoTriples:
             yield SemanticTriple(source, "contrasting_grey", grey_value)
 
 
+class AlbumBannerReader:
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        rows = db.conn.execute("""
+            SELECT fpath, album_id, mosaic_banner_url
+            FROM (
+                SELECT
+                    vps.fpath,
+                    vpd.album_id,
+                    ep.url AS mosaic_banner_url,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY vpd.album_id
+                        ORDER BY
+                            vps.rating DESC,
+                            CASE
+                                WHEN lower(vps.genre) LIKE '%landscape%' THEN 0
+                                WHEN lower(vps.genre) LIKE '%cityscape%' THEN 1
+                                WHEN lower(vps.genre) LIKE '%wildlife%'  THEN 2
+                                ELSE 3
+                            END ASC
+                    ) AS rank
+                FROM view_photo_metadata_summary vps
+                JOIN view_photo_data vpd ON vps.fpath = vpd.fpath
+                JOIN encoded_photos ep ON vps.fpath = ep.fpath AND ep.role = 'mosaic_banner'
+                WHERE vpd.album_id IS NOT NULL
+            )
+            WHERE rank = 1
+        """).fetchall()
+
+        for fpath, album_id, mosaic_banner_url in rows:
+            photo_source = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+            album_source = f"urn:ró:album:{album_id}"
+            yield SemanticTriple(photo_source, "mosaic_banner", mosaic_banner_url)
+            yield SemanticTriple(album_source, "album_banner", photo_source)
+
+
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         # TODO I don't get this logic.

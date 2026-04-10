@@ -28,8 +28,7 @@ __all__ = [
     "PHOTO_METADATA_FILE",
     "GEONAMES_USERNAME",
     # constants
-    "MOSAIC_WIDTH",
-    "MOSAIC_HEIGHT",
+    "MOSAIC_ENCODINGS",
     "THUMBNAIL_WIDTH",
     "THUMBNAIL_HEIGHT",
     "DATE_FORMAT",

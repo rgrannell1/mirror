@@ -4,8 +4,6 @@ import io
 import math
 import os
 from mirror.commons.constants import (
-    MOSAIC_HEIGHT,
-    MOSAIC_WIDTH,
     THUMBNAIL_HEIGHT,
     THUMBNAIL_WIDTH,
     VIDEO_THUMBNAIL_FORMAT,
@@ -64,7 +62,7 @@ class PhotoEncoder:
         return f"#{grey:02X}{grey:02X}{grey:02X}"
 
     @classmethod
-    def encode_image_colours(cls, fpath: str) -> list[str]:
+    def encode_image_colours(cls, fpath: str, width: int, height: int) -> list[str]:
         """Create a list of colours in the image, to use as a data-url while the main image loads"""
 
         with Image.open(fpath) as img:
@@ -80,7 +78,7 @@ class PhotoEncoder:
 
             # resize down to a tiny mosaic data-url that can be used to
             # "progressively render" a photo.
-            smaller = no_exif.resize((MOSAIC_WIDTH, MOSAIC_HEIGHT), resample=Image.Resampling.BILINEAR)
+            smaller = no_exif.resize((width, height), resample=Image.Resampling.BILINEAR)
 
             colours = smaller.getcolors(THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT)
             if not colours:

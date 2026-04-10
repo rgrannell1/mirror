@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-from zahir import ConcurrencyLimit, ResourceLimit, DependencyGroup, SqliteDependency
+from zahir import ConcurrencyLimit, ResourceLimit, DependencyGroup, SqliteDependency, DependencyState
 from typing import Generator
 
 from mirror.services.cdn import CDN
@@ -16,7 +16,7 @@ from mirror.workflows.upload.utils import (
     publish_video_thumbnail,
 )
 from mirror.commons.config import DATABASE_PATH
-from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, VIDEO_ENCODINGS
+from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import PhotoEncoder
 
@@ -58,10 +58,9 @@ def ComputeImageMosaic(
     db = SqliteDatabase(DATABASE_PATH)
     encoded_photos_table = db.encoded_photos_table()
 
-    v2 = PhotoEncoder.encode_image_colours(fpath)
-    v2_content = "".join(v2)
-
-    encoded_photos_table.add(fpath, v2_content, "thumbnail_mosaic", "custom")
+    for role, params in MOSAIC_ENCODINGS.items():
+        colours = PhotoEncoder.encode_image_colours(fpath, params["width"], params["height"])
+        encoded_photos_table.add(fpath, "".join(colours), role, "custom")
 
     yield
 
@@ -225,7 +224,9 @@ def UploadMissingVideos(
     ) = 4 then 'satisfied' else 'impossible' end as status
     """,
             (fpath,),
-        )
+        ).message({
+            DependencyState.IMPOSSIBLE: f"No videos uploaded for {fpath}",
+        })
     )
 
 
