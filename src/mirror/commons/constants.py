@@ -26,6 +26,11 @@ EXIF_ATTR_ASSOCIATIONS = {
 
 SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 
+MOSAIC_ENCODINGS = {
+    "thumbnail_mosaic": {"width": 2, "height": 2},
+    "mosaic_banner": {"width": 10, "height": 10},
+}
+
 # How should we encode our photos? Currently uses
 # - thumbnail: a lossy thumbnail for fast loading
 # - full_image_lossless: a lossless webp image for high quality

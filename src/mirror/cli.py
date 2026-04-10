@@ -42,7 +42,7 @@ def main():
         "force_upload_images": args.force_upload_images,
         "force_upload_videos": args.force_upload_videos,
         "publish_d1": args.publish_d1,
-    }, {})
+    })
     for event in LocalWorkflow(context, max_workers=15).run(start):
         print(event)
 

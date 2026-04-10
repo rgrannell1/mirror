@@ -38,7 +38,7 @@ def BuildWebsite(
 ) -> Generator[Await]:
     yield Await(
         [
-            BuildSource({}, {}),
-            PublishD1Remote({}, {}),
+            BuildSource(),
+            PublishD1Remote(),
         ]
     )

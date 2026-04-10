@@ -246,15 +246,15 @@ def UploadMedia(
     upload_videos = input.get("upload_videos")
 
     for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey):
-        yield ComputeContrastingGrey({"fpath": fpath, "force": force_recompute_grey}, {})
+        yield ComputeContrastingGrey({"fpath": fpath, "force": force_recompute_grey})
 
     for fpath in list_photos_without_mosaic(db, force_recompute_mosaic):
-        yield ComputeImageMosaic({"fpath": fpath, "force": force_recompute_mosaic}, {})
+        yield ComputeImageMosaic({"fpath": fpath, "force": force_recompute_mosaic})
 
     if upload_images:
         for fpath in list_photos_without_upload(db, force_upload_images):
-            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images}, {})
+            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images})
 
     if upload_videos:
         for fpath in list_videos_without_upload(db, force_upload_videos):
-            yield UploadMissingVideos({"fpath": fpath, "force": force_upload_videos}, {})
+            yield UploadMissingVideos({"fpath": fpath, "force": force_upload_videos})

@@ -142,11 +142,11 @@ def PublishArtifacts(
 
     yield Await(
         [
-            PublishEnv(builder_inputs, {}),
-            # PublishAtom(builder_inputs, {}),
-            PublishStats(builder_inputs, {}),
-            PublishTriples(builder_inputs, {}),
-            PublishD1(builder_inputs, {}),
+            PublishEnv(builder_inputs),
+            # PublishAtom(builder_inputs),
+            PublishStats(builder_inputs),
+            PublishTriples(builder_inputs),
+            PublishD1(builder_inputs),
         ]
     )
 

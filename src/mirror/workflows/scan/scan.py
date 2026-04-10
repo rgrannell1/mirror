@@ -229,7 +229,7 @@ def ScanMedia(
     dpath = PHOTO_DIRECTORY
 
     # First scan all media files
-    yield MediaScan({"dpath": dpath}, {})
+    yield MediaScan({"dpath": dpath})
 
     # Read metadata from markdown files
     yield Await(
@@ -237,7 +237,6 @@ def ScanMedia(
             {
                 "markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH,
             },
-            {},
         )
     )
     yield Await(
@@ -245,9 +244,8 @@ def ScanMedia(
             {
                 "markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH,
             },
-            {},
         )
     )
 
     # Then scan external data sources
-    yield WikidataScan({}, {})
+    yield WikidataScan()

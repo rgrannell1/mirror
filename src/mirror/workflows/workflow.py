@@ -20,7 +20,7 @@ def MirrorWorkflow(
     photos_markdown_path = input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH)
     manifest_output_dir = input.get("manifest_output_dir", OUTPUT_DIRECTORY)
 
-    yield EnrichData({}, {})
+    yield EnrichData()
 
     yield Await(
         ScanMedia(
@@ -28,7 +28,6 @@ def MirrorWorkflow(
                 "albums_markdown_path": albums_markdown_path,
                 "photos_markdown_path": photos_markdown_path,
             },
-            {},
         )
     )
 
@@ -44,7 +43,6 @@ def MirrorWorkflow(
                 "upload_images": input.get("upload_images"),
                 "upload_videos": input.get("upload_videos"),
             },
-            {},
         )
     )
 
@@ -57,9 +55,8 @@ def MirrorWorkflow(
                 "albums_markdown_path": albums_markdown_path,
                 "photos_markdown_path": photos_markdown_path,
             },
-            {},
         )
     )
 
     if input.get("publish_d1"):
-        yield Await(BuildWebsite({}, {}))
+        yield Await(BuildWebsite())
