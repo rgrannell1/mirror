@@ -6,6 +6,7 @@ from mirror.workflows.publish.publish import PublishArtifacts
 from mirror.workflows.scan.scan import ScanMedia
 from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.workflows.upload.upload import UploadMedia
+from mirror.workflows.website.website import BuildWebsite
 from mirror.workflows.workflow_types import MirrorWorkflowInput
 
 
@@ -59,3 +60,6 @@ def MirrorWorkflow(
             {},
         )
     )
+
+    if input.get("publish_d1"):
+        yield Await(BuildWebsite({}, {}))

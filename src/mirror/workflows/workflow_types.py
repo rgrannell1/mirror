@@ -16,3 +16,4 @@ class MirrorWorkflowInput(TypedDict, total=False):
     photos_markdown_path: str
     # Overrides config `OUTPUT_DIRECTORY` when set
     manifest_output_dir: str
+    publish_d1: bool

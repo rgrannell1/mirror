@@ -5,6 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 
+MOSAIC_WIDTH = 2
+MOSAIC_HEIGHT = 2
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
@@ -28,11 +30,6 @@ SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 # - thumbnail: a lossy thumbnail for fast loading
 # - full_image_lossless: a lossless webp image for high quality
 # - full_image_png: a png image so I can share images to Signal and other non-webp apps
-MOSAIC_ENCODINGS = {
-    "thumbnail_mosaic": {"width": 2, "height": 2},
-    "mosaic_banner": {"width": 10, "height": 10},
-}
-
 IMAGE_ENCODINGS = {
     "thumbnail_lossy": {
         "format": "webp",

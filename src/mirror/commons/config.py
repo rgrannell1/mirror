@@ -24,6 +24,7 @@ PHOTO_DIRECTORY = os.getenv("PHOTO_DIRECTORY", f"{HOME}/Drive/Media")
 DATABASE_PATH = os.getenv("DATABASE_PATH", f"{HOME}/media.db")
 D1_DATABASE_PATH = os.getenv("D1_DATABASE_PATH", f"{HOME}/media_d1.db")
 D1_DUMP_PATH = os.getenv("D1_DUMP_PATH", f"{HOME}/media_d1.sql")
+WEBSITE_DIRECTORY = os.getenv("WEBSITE_DIRECTORY", f"{HOME}/Code/websites/photos.rgrannell.xyz")
 OUTPUT_DIRECTORY = os.getenv("OUTPUT_DIRECTORY", f"{HOME}/Code/websites/photos.rgrannell.xyz/manifest")
 
 # Schema file paths (relative to project root if needed)
