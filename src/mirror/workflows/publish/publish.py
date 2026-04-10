@@ -8,6 +8,7 @@ from typing import Generator
 from zahir import Await, Context, spec, WorkflowOutputEvent
 
 from mirror.commons.config import DATABASE_PATH
+from mirror.services.d1 import D1Builder
 from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
 from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.services.database import SqliteDatabase
@@ -110,6 +111,17 @@ def UpdatePhotosMarkdown(
 
 
 @spec()
+def PublishD1(
+    context: Context,
+    input: PublishArtifactBundleInput,
+    dependencies: dict,
+) -> Generator[WorkflowOutputEvent]:
+    db = SqliteDatabase(DATABASE_PATH)
+    D1Builder(db).build()
+    yield WorkflowOutputEvent({"artifact": "d1"})
+
+
+@spec()
 def PublishArtifacts(
     context: Context,
     input: PublishArtifactsInput,
@@ -134,6 +146,7 @@ def PublishArtifacts(
             # PublishAtom(builder_inputs, {}),
             PublishStats(builder_inputs, {}),
             PublishTriples(builder_inputs, {}),
+            PublishD1(builder_inputs, {}),
         ]
     )
 
