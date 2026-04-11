@@ -2653,6 +2653,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/chaffinch"
 
 [[birds]]
 id = "urn:ró:bird:phylloscopus-collybita"
+name = "Common Chiffchaff"
 birdwatch_url = "https://birdwatchireland.ie/birds/chiffchaff"
 
 [[birds]]
@@ -2833,6 +2834,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/great-skua"
 
 [[birds]]
 id = "urn:ró:bird:dendrocopus-major"
+name = "Great Spotted Woodpecker"
 birdwatch_url = "https://birdwatchireland.ie/birds/great-spotted-woodpecker"
 
 [[birds]]
@@ -2861,6 +2863,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/greenshank"
 
 [[birds]]
 id = "urn:ró:bird:ardea-cinerea"
+name = "Grey Heron"
 birdwatch_url = "https://birdwatchireland.ie/birds/grey-heron"
 
 [[birds]]
@@ -2921,6 +2924,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/jackdaw"
 
 [[birds]]
 id = "urn:ró:bird:garrulus-glandarius"
+name = "Eurasian Jay"
 birdwatch_url = "https://birdwatchireland.ie/birds/jay"
 
 [[birds]]
@@ -3394,3 +3398,51 @@ birdwatch_url = "https://birdwatchireland.ie/birds/yellow-browed-warbler"
 [[birds]]
 id = "urn:ró:bird:emberiza-citrinella"
 birdwatch_url = "https://birdwatchireland.ie/birds/yellowhammer"
+
+[[birds]]
+id = "urn:ró:bird:upupa-epops"
+name = "Eurasian Hoopoe"
+
+[[birds]]
+id = "urn:ró:bird:dendrocygna-viduata"
+name = "White-faced Whistling Duck"
+
+[[birds]]
+id = "urn:ró:bird:sarcoramphus-papa"
+name = "King Vulture"
+
+[[birds]]
+id = "urn:ró:bird:casuarius-casuarius"
+name = "Southern Cassowary"
+
+[[birds]]
+id = "urn:ró:bird:ciconia-ciconia"
+name = "White Stork"
+
+[[mammals]]
+id = "urn:ró:mammal:ailuropoda-melanoleuca"
+name = "Giant Panda"
+
+[[mammals]]
+id = "urn:ró:mammal:aonyx-cinereus"
+name = "Asian Small-clawed Otter"
+
+[[mammals]]
+id = "urn:ró:mammal:arctictis-binturong"
+name = "Binturong"
+
+[[mammals]]
+id = "urn:ró:mammal:canis-familiaris"
+name = "Domestic Dog"
+
+[[mammals]]
+id = "urn:ró:mammal:canis-lupus"
+name = "Wolf"
+
+[[mammals]]
+id = "urn:ró:mammal:giraffa-reticulata"
+name = "Reticulated Giraffe"
+
+[[mammals]]
+id = "urn:ró:mammal:zalophus-wollebaeki"
+name = "Galápagos Sea Lion"

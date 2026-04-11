@@ -16,7 +16,7 @@ def BuildSource(
     input: dict,
     dependencies: dict,
 ) -> Generator:
-    subprocess.run(["rs", "dev", "--build-only"], cwd=WEBSITE_DIRECTORY, check=True, stderr=None)
+    subprocess.run(["rs", "dev", "--build-only"], cwd=WEBSITE_DIRECTORY, check=True)
     yield
 
 
@@ -36,9 +36,5 @@ def BuildWebsite(
     input: dict,
     dependencies: dict,
 ) -> Generator[Await]:
-    yield Await(
-        [
-            BuildSource(),
-            PublishD1Remote(),
-        ]
-    )
+    yield Await(BuildSource())
+    yield Await(PublishD1Remote())

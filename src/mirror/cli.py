@@ -2,6 +2,7 @@
 import argparse
 import logging
 import multiprocessing
+import sys
 from pathlib import Path
 
 from mirror.workflows.workflow import MirrorWorkflow
@@ -10,6 +11,7 @@ logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
 from zahir import LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
+from zahir.events import JobIrrecoverableEvent, JobImpossibleEvent
 
 
 def main():
