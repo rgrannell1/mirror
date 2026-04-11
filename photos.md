@@ -903,26 +903,26 @@
 | ![](https://photos-cdn.rgrannell.xyz/4818ec3eb8.webp) | Newgrange | Other | ⭐⭐ | urn:ró:place:75 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4ae7d9c6c8.webp) | Newgrange | Landscape | ⭐⭐⭐⭐ | urn:ró:unesco:659 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bcb8857387.webp) | Newgrange | Landscape | ⭐⭐⭐ | urn:ró:place:75 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/80bae27a5e.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:alces-alces?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/10f3b1a787.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:bird:turdus-pilaris?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/134739cc8f.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a93f05205e.webp) | Oslo & Stockholm | Wildlife | ⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:ursus-arctos?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/b6b8d511fe.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:sus-scrofa?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/e4d04c3091.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:bird:branta-leucopsis?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/96949d57ef.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:oryctolagus-cuniculus?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/150a99c04f.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/e330fed90a.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:ursus-arctos?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/8dd043d4a6.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
-| ![](https://photos-cdn.rgrannell.xyz/969a55940d.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:sciurus-vulgaris?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/f5094ea3f9.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐⭐ | urn:ró:country:norway |  | urn:ró:boat:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/80bae27a5e.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:alces-alces?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/10f3b1a787.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:bird:turdus-pilaris?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/134739cc8f.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:place:52 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a93f05205e.webp) | Oslo & Stockholm | Wildlife | ⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:ursus-arctos?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/b6b8d511fe.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:sus-scrofa?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/e4d04c3091.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:bird:branta-leucopsis?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/96949d57ef.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:oryctolagus-cuniculus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/150a99c04f.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/e330fed90a.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:ursus-arctos?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/8dd043d4a6.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/969a55940d.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:sciurus-vulgaris?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/f5094ea3f9.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐⭐ | urn:ró:place:51 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/004c306938.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:norway |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c15c0a6eb9.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐⭐ | urn:ró:country:norway |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c15c0a6eb9.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:51 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/22b3643619.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a8e888718d.webp) | Oslo & Stockholm | Cityscape | ⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ff4ffb62c0.webp) | Oslo & Stockholm | Other | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b3a1e06f44.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3edd7d8272.webp) | Oslo & Stockholm | Transport | ⭐⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/75d5f6370c.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:country:sweden |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/a8e888718d.webp) | Oslo & Stockholm | Cityscape | ⭐⭐ | urn:ró:place:52 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ff4ffb62c0.webp) | Oslo & Stockholm | Other | ⭐⭐⭐ | urn:ró:place:52 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b3a1e06f44.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:place:52 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3edd7d8272.webp) | Oslo & Stockholm | Transport | ⭐⭐⭐⭐ | urn:ró:place:52 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/75d5f6370c.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:rangifer-tarandus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/91df57a4f7.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2d94d5e01c.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2271114e41.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=wild |  |
