@@ -2167,7 +2167,7 @@ in = [
 [[country]]
 id = "urn:ró:country:lanzarote"
 name = "Lanzarote"
-flag = "🇪🇸"
+flag = "🇮🇨"
 in = [
     "urn:ró:place:142",
     "urn:ró:country:spain",
@@ -2243,7 +2243,7 @@ in = [
 [[country]]
 id = "urn:ró:country:tenerife"
 name = "Tenerife"
-flag = "🇪🇸"
+flag = "🇮🇨"
 in = [
     "urn:ró:place:142",
     "urn:ró:country:spain",
