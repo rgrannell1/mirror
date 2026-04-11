@@ -1,7 +1,6 @@
 """Encode video and images"""
 
 import io
-import math
 import os
 from mirror.commons.constants import (
     THUMBNAIL_HEIGHT,
@@ -25,12 +24,12 @@ class PhotoEncoder:
     @classmethod
     def compute_contrasting_grey(cls, fpath: str) -> str:
         """
-        Copilot generated function. Is it correct? Who knows!
+        Uses the LAB colour space (https://en.wikipedia.org/wiki/CIELAB_color_space) to sample
+        the lightness of the top-right corner of the image (where the metadata icon sits), then
+        picks a grey at least 110 L-units (~43 L*) away to guarantee visible contrast.
 
-        It uses the LAB colour space (https://en.wikipedia.org/wiki/CIELAB_color_space) as a
-        perceptually uniform colour space to compute the lighness of the top-right of the image (where we
-        plonk a metadata icon). It then chooses a grey colour that is a constant perceptual distance away
-        from that lightness, to ensure the icon is always visible against the image.
+        Threshold is the true midpoint (128): dark regions get a lighter grey, light regions
+        get a darker grey.
         """
 
         lab = Image.open(fpath).convert("RGB").convert("LAB")
@@ -42,12 +41,15 @@ class PhotoEncoder:
         pixels = list(top_right.getdata())
         avg_lightness = sum(pixels) / len(pixels)  # 0–255, proportional to L*
 
-        # if the image is not too bright, go brighter
-        if avg_lightness < math.floor(255 * 0.8):
-            target_lightness = min(255, int(avg_lightness + math.floor(255 * 0.6)))
+        # Use true midpoint as threshold; always push at least 110 units away
+        # to guarantee ~43 L* units of perceptual separation.
+        # The old 80% threshold + 60% delta could produce only ~20 L* units
+        # of separation for mid-bright images (e.g. avg=200 → target=255, delta=55).
+        CONTRAST_DELTA = 110
+        if avg_lightness <= 128:
+            target_lightness = min(255, int(avg_lightness) + CONTRAST_DELTA)
         else:
-            # too damn bright, go darker
-            target_lightness = max(0, int(avg_lightness - math.floor(255 * 0.4)))
+            target_lightness = max(0, int(avg_lightness) - CONTRAST_DELTA)
 
         # Build a neutral Lab colour with that L (a=128, b=128 is neutral axis)
         L_img = Image.new("L", (1, 1), int(target_lightness))

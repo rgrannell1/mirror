@@ -20,8 +20,6 @@ def MirrorWorkflow(
     photos_markdown_path = input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH)
     manifest_output_dir = input.get("manifest_output_dir", OUTPUT_DIRECTORY)
 
-    yield EnrichData()
-
     yield Await(
         ScanMedia(
             {
