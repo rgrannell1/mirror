@@ -24,4 +24,5 @@ PRESET_FILTERS: list[tuple[str, Callable[[PhotoRow], bool]]] = [
     ("No place", lambda photo: not photo.places.strip()),
     ("Has cover", lambda photo: bool(photo.cover.strip())),
     ("Animal without context", _animal_without_context),
+    ("Wildlife no subject", lambda photo: photo.genre == "Wildlife" and not photo.subjects.strip()),
 ]

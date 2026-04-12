@@ -47,7 +47,7 @@ ratings = [
     { id = "urn:ró:rating:4", name = "⭐⭐⭐⭐⭐" },
 ]
 
-[[`]]
+[[places]]
 id = "urn:ró:place:0"
 longitude = -16.269163888889
 latitude = 28.536538888889
@@ -3502,6 +3502,10 @@ name = "Southern Cassowary"
 [[birds]]
 id = "urn:ró:bird:ciconia-ciconia"
 name = "White Stork"
+
+[[birds]]
+id = "urn:ró:bird:balaerica-pavonina"
+name = "Black Crowned Crane"
 
 [[mammals]]
 id = "urn:ró:mammal:ailuropoda-melanoleuca"

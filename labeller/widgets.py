@@ -37,23 +37,40 @@ class GenreSuggester(Suggester):
         return None
 
 
+_PLACE_PREFIXES = ("urn:ró:place:", "urn:ró:country:")
+
+
 class UrnSuggester(Suggester):
     """Autocomplete for places/subjects: match by name or URN prefix.
 
     Suggestions are displayed as 'Name [ urn ]'.  The input handler strips
     the display wrapper on submit so only the bare URN is stored.
+
+    field_name controls which URNs are offered:
+      'places'   → only place/country URNs
+      'subjects' → everything except place/country URNs
     """
 
-    def __init__(self) -> None:
+    def __init__(self, field_name: str) -> None:
         super().__init__(use_cache=False, case_sensitive=False)
-        self._suggestions = load_urn_suggestions()
+        all_suggestions = load_urn_suggestions()
+        if field_name == "places":
+            self._suggestions = [
+                (name, urn) for name, urn in all_suggestions
+                if any(urn.startswith(prefix) for prefix in _PLACE_PREFIXES)
+            ]
+        else:
+            self._suggestions = [
+                (name, urn) for name, urn in all_suggestions
+                if not any(urn.startswith(prefix) for prefix in _PLACE_PREFIXES)
+            ]
 
     async def get_suggestion(self, value: str) -> str | None:
         # value is already casefolded by base class
         if not value:
             return None
         for name, urn in self._suggestions:
-            if name.casefold().startswith(value) or urn.casefold().startswith(value):
+            if value in name.casefold() or urn.casefold().startswith(value):
                 return f"{name} [ {urn} ]"
         return None
 
@@ -320,8 +337,8 @@ class FieldTable(Widget, can_focus=True):
         if field_name in _URN_FIELDS:
             return Input(
                 value=current_value,
-                placeholder=f"Name or urn:ró:…",
-                suggester=UrnSuggester(),
+                placeholder="Name or urn:ró:…",
+                suggester=UrnSuggester(field_name),
                 id=_EDIT_INPUT_ID,
             )
         return Input(value=current_value, placeholder=f"Edit {field_name}…", id=_EDIT_INPUT_ID)
