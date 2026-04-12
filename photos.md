@@ -241,25 +241,25 @@
 | ![](https://photos-cdn.rgrannell.xyz/4637343bda.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/49cfee6d16.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:aplonis-metallica?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a927f585cd.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/55e8166731.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:myrmecophaga-tridactyla |  |
+| ![](https://photos-cdn.rgrannell.xyz/55e8166731.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:myrmecophaga-tridactyla?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/00fa63a5a4.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 | I actually printed and framed this photo. It's hanging in my sitting-room. |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ae4fc183cb.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tragelaphus-spekii |  |
-| ![](https://photos-cdn.rgrannell.xyz/64c5d96c37.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:giraffa-camelopardalis |  |
-| ![](https://photos-cdn.rgrannell.xyz/7be167163d.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hydrochoerus-hydrochaeris |  |
+| ![](https://photos-cdn.rgrannell.xyz/ae4fc183cb.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tragelaphus-spekii?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/64c5d96c37.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:giraffa-camelopardalis?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/7be167163d.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hydrochoerus-hydrochaeris?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/14ad5fa94e.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/70ff0c70bf.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:ptilinopus-superbus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/f928d7fa42.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b213455c00.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4e99791976.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:suricata-suricatta?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/64ea764a8d.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hylobates-moloch |  |
+| ![](https://photos-cdn.rgrannell.xyz/64ea764a8d.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hylobates-moloch?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/5f2cb2d009.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:spheniscus-magellanicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/47e006f4e5.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:helarctos-malayanus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ea1ff305f.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:helarctos-malayanus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/9d0c05feb8.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:goura-victoria?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/7f1dcba65c.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:suricata-suricatta?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/57d9ea1956.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:sapajus-xanthosternos |  |
-| ![](https://photos-cdn.rgrannell.xyz/e339e67c62.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
-| ![](https://photos-cdn.rgrannell.xyz/77879c835b.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tremarctos-ornatus |  |
+| ![](https://photos-cdn.rgrannell.xyz/57d9ea1956.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:sapajus-xanthosternos?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/e339e67c62.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/77879c835b.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tremarctos-ornatus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/8a24623204.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐ | urn:ró:place:108 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c7e4b63150.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:108 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b2a75d88d6.webp) | Cliffs of Moher | Landscape | ⭐⭐⭐ | urn:ró:place:108 |  |  |  |
@@ -270,7 +270,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/3ecbc00268.webp) | Cologne | Cityscape | ⭐⭐⭐ |  urn:ró:place:6,urn:ró:place:5 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2196642deb.webp) | Cologne | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:4 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9df9010671.webp) | Cong | Landscape | ⭐⭐⭐⭐ | urn:ró:place:77 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f534912f62.webp) | Cong | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:77 | ❤️ | urn:ró:mammal:canis-familiaris |  |
+| ![](https://photos-cdn.rgrannell.xyz/f534912f62.webp) | Cong | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:77 | ❤️ | urn:ró:mammal:canis-familiaris?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/acb52749d7.webp) | Cong | Other | ⭐⭐⭐⭐ | urn:ró:place:77 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b227b915d9.webp) | Conwy | Cityscape | ⭐⭐⭐ | urn:ró:place:13 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd3e095732.webp) | Conwy | Landscape | ⭐⭐⭐ | urn:ró:place:13 |  |  |  |
@@ -321,8 +321,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/f3cc4decc8.webp) | Dalkey Island | Wildlife | ⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:sterna-dougallii?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2f1c707d1d.webp) | Dalkey Island | Wildlife | ⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:tadorna-tadorna?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/1c909f8944.webp) | Dalkey Island | Landscape | ⭐⭐⭐ | urn:ró:place:53 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/1a863d13ab.webp) | Dalkey Island | Wildlife | ⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:halichoerus-grypus |  |
-| ![](https://photos-cdn.rgrannell.xyz/6b46100134.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:phoca-vitulina |  |
+| ![](https://photos-cdn.rgrannell.xyz/1a863d13ab.webp) | Dalkey Island | Wildlife | ⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:halichoerus-grypus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/6b46100134.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:phoca-vitulina?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/fc6b8aa4a6.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:motacilla-alba?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/335ce72789.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:capra-aegagrus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2bca3b1e0b.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
@@ -377,7 +377,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/f06efb3c17.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/757b6551b1.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8287894a8e.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6e934d6af4.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6e934d6af4.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a3ee50e8b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:geronticus-eremita?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9868d282b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a37255b00b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
@@ -388,27 +388,27 @@
 | ![](https://photos-cdn.rgrannell.xyz/50a936b3ec.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8d42d7ed6a.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:zalophus-wollebaeki?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/670c8071ae.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:cuon-alpinus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/fd496443c4.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:ardea-cinerea |  |
-| ![](https://photos-cdn.rgrannell.xyz/46dc2e8750.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens |  |
-| ![](https://photos-cdn.rgrannell.xyz/19f6bb7bad.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens |  |
-| ![](https://photos-cdn.rgrannell.xyz/d1ccc87320.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens |  |
+| ![](https://photos-cdn.rgrannell.xyz/fd496443c4.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/46dc2e8750.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/19f6bb7bad.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/d1ccc87320.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/736e2e27ff.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a973897c8d.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
-| ![](https://photos-cdn.rgrannell.xyz/08963a30e6.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
-| ![](https://photos-cdn.rgrannell.xyz/cb0dd6749a.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
-| ![](https://photos-cdn.rgrannell.xyz/324c1fe906.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
+| ![](https://photos-cdn.rgrannell.xyz/a973897c8d.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/08963a30e6.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/cb0dd6749a.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/324c1fe906.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/9a819aa080.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a33d8b48e9.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
+| ![](https://photos-cdn.rgrannell.xyz/a33d8b48e9.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/ec11ed0835.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/267e2a9b44.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/780ac1471e.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5b766ab071.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ab88d4199c.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9a62a45a23.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6d0e7968c8.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
-| ![](https://photos-cdn.rgrannell.xyz/db375d5a8e.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
+| ![](https://photos-cdn.rgrannell.xyz/6d0e7968c8.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/db375d5a8e.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/309046f2cf.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6001a13fc1.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
+| ![](https://photos-cdn.rgrannell.xyz/6001a13fc1.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/69f75ef424.webp) | Dublin Zoo |  | ⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/09e237217c.webp) | Dún Laoghaire Fireworks | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/72969eaebf.webp) | Dún Laoghaire Fireworks | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
@@ -470,7 +470,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/b83e448e36.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:bird:pelecanus-onocrotalus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/04005e5597.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:giraffa-camelopardalis?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/3f54e2170f.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐ | urn:ró:place:70 |  | urn:ró:reptile:unknown?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/573de2596a.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:cercopithecus-roloway |  |
+| ![](https://photos-cdn.rgrannell.xyz/573de2596a.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:cercopithecus-roloway?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/cc84cbcdaf.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:reptile:unknown?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/9c23823223.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:ateles-fusciceps?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/32b44ac017.webp) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:bird:anas-platyrhynchos?context=wild |  |
@@ -549,16 +549,16 @@
 | ![](https://photos-cdn.rgrannell.xyz/7d81cc190e.webp) | Grand Canal, Dublin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:91 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/832c6991cd.webp) | Grand Canal, Dublin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:91 |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/edfe0e2467.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/43ffff3f5a.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/43ffff3f5a.webp) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d4c8a0c1d9.webp) | Hamburg & Lübeck | Cityscape | ⭐ | urn:ró:place:58 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9088d9981f.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5e897bf7c6.webp) | Hamburg & Lübeck | Other | ⭐⭐ | urn:ró:place:58 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9088d9981f.webp) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5e897bf7c6.webp) | Hamburg & Lübeck | Museum | ⭐⭐ | urn:ró:place:58 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9500d12c8.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c48cc51a07.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e7906fc613.webp) | Hamburg & Lübeck | Other | ⭐⭐ | urn:ró:place:59 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4cb71c4951.webp) | Hamburg & Lübeck | Other | ⭐⭐ | urn:ró:place:59 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/360806d884.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/86daf443a3.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c48cc51a07.webp) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e7906fc613.webp) | Hamburg & Lübeck | Museum | ⭐⭐ | urn:ró:place:59 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4cb71c4951.webp) | Hamburg & Lübeck | Museum | ⭐⭐ | urn:ró:place:59 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/360806d884.webp) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/86daf443a3.webp) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ec58a0d513.webp) | Hamburg & Lübeck | Other | ⭐⭐⭐⭐ | urn:ró:place:60 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae147ff2d7.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b850466156.webp) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:place:60 |  |  |  |
@@ -707,7 +707,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/6632f3f3e1.webp) | London | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:equus-ferus-caballus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a475f0fa6a.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bcec5bc43a.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:amphibian:andrias-davidianus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/cb2637aceb.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:plecturocebus-cupreus |  |
+| ![](https://photos-cdn.rgrannell.xyz/cb2637aceb.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:plecturocebus-cupreus?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/f81d401400.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:reptile:egernia-stokesii?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/afc93e7d6b.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/ba5d0caf5a.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
@@ -726,9 +726,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/4946dec4a3.webp) | London | Cityscape | ⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d60dd1c0dd.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b8a2664941.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/a01753591a.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d09b3cc53d.webp) | London | Other | ⭐⭐ | urn:ró:place:38 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/850487e04a.webp) | London | Other | ⭐⭐⭐⭐ | urn:ró:place:38 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a01753591a.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d09b3cc53d.webp) | London | Museum | ⭐⭐ | urn:ró:place:38 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/850487e04a.webp) | London | Museum | ⭐⭐⭐⭐ | urn:ró:place:38 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f997b613a4.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/87de83861c.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:sputnik |  |
 | ![](https://photos-cdn.rgrannell.xyz/a668894e72.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  |  |  |
@@ -803,15 +803,15 @@
 | ![](https://photos-cdn.rgrannell.xyz/ffc433bbae.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae7517caa0.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:buteo-jamaicensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2737cd6f70.webp) | Madison & Chicago | Cityscape | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/584351d425.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  |  urn:ró:bird:upupa-epops,urn:ró:bird:ciconia-ciconia |  |
-| ![](https://photos-cdn.rgrannell.xyz/962620fa0e.webp) | Madrid | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:arctictis-binturong |  |
-| ![](https://photos-cdn.rgrannell.xyz/66e3b0c73e.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailurus-fulgens |  |
-| ![](https://photos-cdn.rgrannell.xyz/7b2d1f48d2.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:casuarius-casuarius |  |
-| ![](https://photos-cdn.rgrannell.xyz/4c5c75ea2f.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:struthio-camelus |  |
-| ![](https://photos-cdn.rgrannell.xyz/1068bfc3b0.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailuropoda-melanoleuca |  |
-| ![](https://photos-cdn.rgrannell.xyz/369391d958.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailuropoda-melanoleuca |  |
+| ![](https://photos-cdn.rgrannell.xyz/584351d425.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:upupa-epops?context=wild,urn:ró:bird:ciconia-ciconia?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/962620fa0e.webp) | Madrid | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:arctictis-binturong?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/66e3b0c73e.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailurus-fulgens?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/7b2d1f48d2.webp) | Madrid | Wildlife | ⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:casuarius-casuarius?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c5c75ea2f.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:struthio-camelus?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/1068bfc3b0.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailuropoda-melanoleuca?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/369391d958.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:ailuropoda-melanoleuca?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/eaa761437a.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9839d47628.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:ciconia-ciconia |  |
+| ![](https://photos-cdn.rgrannell.xyz/9839d47628.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:ciconia-ciconia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2798168ec8.webp) | Madrid | Cityscape | ⭐⭐ | urn:ró:place:135 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff2adb11ed.webp) | Madrid | Cityscape | ⭐⭐ | urn:ró:place:135 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b59e770dbb.webp) | Mallorca | Cityscape | ⭐⭐⭐ |  |  |  |  |
@@ -867,19 +867,19 @@
 | ![](https://photos-cdn.rgrannell.xyz/967c528be9.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a744c27b2e.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3c42ee4bdb.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/21760a159e.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/57cf7c7af8.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b1511a6177.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e0151f7a15.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b9b1711143.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f95686d97b.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/1658ed9a70.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/21760a159e.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/57cf7c7af8.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b1511a6177.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e0151f7a15.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b9b1711143.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f95686d97b.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1658ed9a70.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3573954559.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/287bcb370c.webp) | National Archaeological Museum | Museum | ⭐⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/74baa2fa3b.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f558079133.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 | "Electrum" is incidentally also the name of a project I've lead in work. Sadly electrum jewellry is both rare and expensive (I had to check) |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/929178e400.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/0f94ae8611.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0f94ae8611.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b1b3d15523.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5db4cf159f.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/46fd0c8537.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
@@ -898,7 +898,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/c181a7c424.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd727e77f1.webp) | New Years Eve | Other | ⭐⭐⭐ | urn:ró:place:17 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/578dd75ae3.webp) | Newgrange | Other | ⭐⭐ | urn:ró:unesco:659 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d5050c376c.webp) | Newgrange | Wildlife | ⭐⭐ | urn:ró:place:75 |  | urn:ró:mammal:oryctolagus-cuniculus |  |
+| ![](https://photos-cdn.rgrannell.xyz/d5050c376c.webp) | Newgrange | Wildlife | ⭐⭐ | urn:ró:place:75 |  | urn:ró:mammal:oryctolagus-cuniculus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/26dd30cfb1.webp) | Newgrange | Other | ⭐⭐ | urn:ró:place:75 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4818ec3eb8.webp) | Newgrange | Other | ⭐⭐ | urn:ró:place:75 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4ae7d9c6c8.webp) | Newgrange | Landscape | ⭐⭐⭐⭐ | urn:ró:unesco:659 |  |  |  |
@@ -1092,9 +1092,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/51af0e65e0.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:89 |  | urn:ró:reptile:unknown?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/66fe32b431.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/3aed24447c.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:89 |  | urn:ró:reptile:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/d79cf010a6.webp) | Shedd Aquarium & Science Museum, Chicago | Other | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f027e371d0.webp) | Shedd Aquarium & Science Museum, Chicago | Other | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e4066b99d7.webp) | Shedd Aquarium & Science Museum, Chicago | Other | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d79cf010a6.webp) | Shedd Aquarium & Science Museum, Chicago | Museum | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f027e371d0.webp) | Shedd Aquarium & Science Museum, Chicago | Museum | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e4066b99d7.webp) | Shedd Aquarium & Science Museum, Chicago | Museum | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/39ba21e422.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:88 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f3b18b0c0e.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/9499b9878a.webp) | Shedd Aquarium & Science Museum, Chicago | Wildlife | ⭐⭐ | urn:ró:place:89 |  | urn:ró:fish:unknown |  |
@@ -1190,9 +1190,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/92e2cf5323.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:platalea-alba?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/e1d3eeb065.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐⭐ |  |  | urn:ró:bird:sarcoramphus-papa?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/436096c795.webp) | Tenerife | Wildlife | ⭐⭐⭐ |  |  | urn:ró:reptile:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/e38acf1b36.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:mammal:suricata-suricatta |  |
+| ![](https://photos-cdn.rgrannell.xyz/e38acf1b36.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:mammal:suricata-suricatta?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/057f447c9d.webp) | Tenerife | Landscape | ⭐⭐⭐ |  urn:ró:unesco:1258,urn:ró:place:45 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/522314ae05.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:mammal:-zalophus-wollebaeki |  |
+| ![](https://photos-cdn.rgrannell.xyz/522314ae05.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:mammal:-zalophus-wollebaeki?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/0b3d91ccef.webp) | Tenerife | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:bird:parabuteo-unicinctus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/41e8beb23a.webp) | Tenerife | Wildlife | ⭐⭐ |  |  | urn:ró:bird:haliaeetus-leucocephalus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/f98cf19d33.webp) | Tenerife | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:aratinga-nenday?context=wild |  |
@@ -1277,7 +1277,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e531674e91.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:tauraco-persa?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/928671fcbc.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/48629892fe.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/c7d46a2698.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:mammal:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/c7d46a2698.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:mammal:unknown?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/9e6a5d1116.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/29c7063f26.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:mammal:hydrochoerus-hydrochaeris?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/32023ef0a9.webp) | Wisconsin | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:hirundo-rustica?context=wild |  |

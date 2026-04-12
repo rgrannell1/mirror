@@ -116,6 +116,8 @@ class PhotoTUI(App):
     BINDINGS = [
         Binding("left", "prev_photo", "Prev photo"),
         Binding("right", "next_photo", "Next photo"),
+        Binding("[", "prev_album", "Prev album"),
+        Binding("]", "next_album", "Next album"),
         Binding("r", "random_photo", "Random"),
         Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
@@ -168,6 +170,24 @@ class PhotoTUI(App):
         field_table.update_photo(photo)
         self._refresh_counter()
         self.notify(f"{field} → {value}")
+
+    def action_prev_album(self) -> None:
+        self._jump_album(-1)
+
+    def action_next_album(self) -> None:
+        self._jump_album(1)
+
+    def _jump_album(self, delta: int) -> None:
+        photos = self._state.photos
+        albums = sorted({photo.name for photo in photos})
+        if len(albums) <= 1:
+            return
+        current_album = self._state.current_photo.name
+        current_pos = albums.index(current_album) if current_album in albums else 0
+        target_album = albums[(current_pos + delta) % len(albums)]
+        target_index = next(idx for idx, photo in enumerate(photos) if photo.name == target_album)
+        self._state.photo_index = target_index
+        self._refresh_all()
 
     def action_random_photo(self) -> None:
         photos = self._state.photos
