@@ -48,16 +48,16 @@
 | ![](https://photos-cdn.rgrannell.xyz/93df01d518.webp) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:mammal:martes-martes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/92e0baf4da.webp) | Bath | Landscape | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e83d49756e.webp) | Bath | Landscape | ⭐⭐⭐ |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/745e7092e6.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4b702ca449.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/745e7092e6.webp) | Bath | Museum | ⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4b702ca449.webp) | Bath | Museum | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1fc5f4c799.webp) | Bath | Cityscape | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c32642ec85.webp) | Bath | Cityscape | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b86a316a1.webp) | Bath | Cityscape | ⭐⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/835c7ff700.webp) | Bath | Other | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d0a0091a95.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 | I saw a sign in Bath saying "meet the Gorgon", and I did not turn down the chance. |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f74a34291f.webp) | Bath | Other | ⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/443bc05ba8.webp) | Bath | Other | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/0d7742c8c6.webp) | Bath | Other | ⭐⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/835c7ff700.webp) | Bath | Museum | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d0a0091a95.webp) | Bath | Museum | ⭐⭐ | urn:ró:place:9 | I saw a sign in Bath saying "meet the Gorgon", and I did not turn down the chance. |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f74a34291f.webp) | Bath | Museum | ⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/443bc05ba8.webp) | Bath | Museum | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0d7742c8c6.webp) | Bath | Museum | ⭐⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/41923c47a7.webp) | Bath | Cityscape | ⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5ef7e5a601.webp) | Berlin | Wildlife | ⭐⭐⭐ | urn:ró:place:65 |  | urn:ró:bird:leucogeranus-leucogeranus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/1945a68c18.webp) | Berlin | Wildlife | ⭐⭐⭐ | urn:ró:place:65 |  | urn:ró:bird:phalacrocorax-carbo?context=wild |  |
@@ -225,15 +225,15 @@
 | ![](https://photos-cdn.rgrannell.xyz/bdfc878362.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:place:36 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9723591b38.webp) | Cherbourg | Cityscape | ⭐⭐⭐ | urn:ró:place:36 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ec9415272c.webp) | Cherbourg | Transport | ⭐⭐⭐⭐ | urn:ró:place:36 |  | urn:ró:boat:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/163db61777.webp) | Chester Beatty | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/340d72e7f4.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/95ba982a1e.webp) | Chester Beatty | Other | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f871a07d61.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/26b756fd05.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/efa5e889fa.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/976963600e.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b8ef4970c4.webp) | Chester Beatty | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/39d28b6340.webp) | Chester Beatty | Other | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/163db61777.webp) | Chester Beatty | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/340d72e7f4.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 | Realising this was a print, I actually bought this (for very little!) on Ebay. It's framed and hanging in my flat. |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/95ba982a1e.webp) | Chester Beatty | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f871a07d61.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/26b756fd05.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/efa5e889fa.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/976963600e.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b8ef4970c4.webp) | Chester Beatty | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/39d28b6340.webp) | Chester Beatty | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/35bbf9ecfd.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:lycaon-pictus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/d71a9d22f9.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tragelaphus-spekii?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/48a94ecf2e.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hydrochoerus-hydrochaeris?context=captivity |  |
@@ -326,57 +326,57 @@
 | ![](https://photos-cdn.rgrannell.xyz/fc6b8aa4a6.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:motacilla-alba?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/335ce72789.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:capra-aegagrus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2bca3b1e0b.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4dd337326f.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a3b98a37c2.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d0d1e19b63.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/487631332d.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/dcd3a93bc5.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/561a3bde64.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/fd01531aaf.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/18991f2554.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7c1a314d17.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/79da65260c.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/900c1c0073.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/53f160e80b.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/032a17f6dc.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/61067a0c93.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/27034b3963.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c8d906feff.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 | A personal favourite from the musuem |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/28139f1ce8.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/bcf70d67df.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e50cc43649.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/196090cae2.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5b9f353bc4.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9d98fed9a7.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/39525237e1.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f481fd6408.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f0ac33954f.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ca92ca95e3.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d3bd6f5406.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4dfc40ff27.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3254d9ad50.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/505c60f47e.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/887e226e78.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/fb5f336970.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e229c49e44.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/441bdbfac2.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ebe4678b48.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7231d89918.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/734b0a78fd.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/da4636f886.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/404954ac2c.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5ff4e54ca1.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/cfe2623de0.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2eb5ace608.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7461e93bfd.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/dbd14af202.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/76d67299c7.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2eb26f4a46.webp) | Dublin Museums | Other | ⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/0ca943493c.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ed47abc356.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f06efb3c17.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/757b6551b1.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8287894a8e.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4dd337326f.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a3b98a37c2.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d0d1e19b63.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/487631332d.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dcd3a93bc5.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/561a3bde64.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fd01531aaf.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/18991f2554.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7c1a314d17.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/79da65260c.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/900c1c0073.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/53f160e80b.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/032a17f6dc.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/61067a0c93.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/27034b3963.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c8d906feff.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 | A personal favourite from the musuem |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/28139f1ce8.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/bcf70d67df.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e50cc43649.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/196090cae2.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5b9f353bc4.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9d98fed9a7.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/39525237e1.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f481fd6408.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f0ac33954f.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ca92ca95e3.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d3bd6f5406.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4dfc40ff27.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3254d9ad50.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/505c60f47e.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/887e226e78.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fb5f336970.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e229c49e44.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/441bdbfac2.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:18 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ebe4678b48.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7231d89918.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/734b0a78fd.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/da4636f886.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/404954ac2c.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5ff4e54ca1.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 | I did find this vase is available to buy, but I think it'd be a hard purchase to justify... |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/cfe2623de0.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2eb5ace608.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7461e93bfd.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dbd14af202.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/76d67299c7.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2eb26f4a46.webp) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0ca943493c.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ed47abc356.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f06efb3c17.webp) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/757b6551b1.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8287894a8e.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6e934d6af4.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a3ee50e8b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:geronticus-eremita?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9868d282b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
