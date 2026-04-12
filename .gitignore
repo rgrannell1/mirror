@@ -26,4 +26,3 @@ mirror_jobs.db-wal
 mirror_jobs.db-shm
 zahir_logs
 traces/
-poc/
