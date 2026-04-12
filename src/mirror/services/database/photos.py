@@ -285,7 +285,15 @@ class PhotoMetadataTable:
 
             self.add(phash, "photo", "cover", cover)
 
+    def _clear_relation(self, phash: str, src_type: str, relation: str) -> None:
+        self.conn.execute(
+            "DELETE FROM photo_metadata_table WHERE phash = ? AND src_type = ? AND relation = ?",
+            (phash, src_type, relation),
+        )
+
     def add_summary(self, phash: str, metadata: PhotoMetadataSummaryModel) -> None:
+        for relation in ("style", "location", "subject", "summary", "rating"):
+            self._clear_relation(phash, "photo", relation)
         self.add_genre(phash, metadata.genre or [])
         self.add_place(phash, metadata.places or [])
         self.add_subject(phash, metadata.subjects or [])
