@@ -1,13 +1,14 @@
 """Reusable Textual widgets: ImageFrame, RatingSelector, FieldRow, and FieldTable."""
 
-from rich_pixels import Pixels
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.markup import escape
+from textual.suggester import Suggester
 from textual.widget import Widget
 from textual.widgets import Input, Static
+from textual_image.widget import Image as TIImage
 
-from .image_loader import fetch_image, fit_image
+from .image_loader import fetch_image
 from .messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from .parser import EDITABLE_COLUMNS, RATING_OPTIONS, PhotoRow
 
@@ -15,22 +16,39 @@ _FIELD_ROW_ID_PREFIX = "field-row-"
 _EDIT_INPUT_ID = "edit-input"
 _RATING_SELECTOR_ID = "rating-selector"
 
-# How many terminal rows the image frame occupies (excluding border/padding).
-_IMAGE_DISPLAY_ROWS = 40
+
+class GenreSuggester(Suggester):
+    """Autocomplete from a mutable genre set; new values extend the set live."""
+
+    def __init__(self, genres: set[str]) -> None:
+        super().__init__(use_cache=False, case_sensitive=False)
+        self._genres = genres
+
+    async def get_suggestion(self, value: str) -> str | None:
+        # value is already casefolded by the base class
+        if not value:
+            return None
+        for genre in sorted(self._genres):
+            if genre.casefold().startswith(value):
+                return genre
+        return None
 
 
-class ImageFrame(Static):
+class ImageFrame(Widget):
     """
-    Central panel that renders the current photo's thumbnail as pixel art.
+    Central panel that renders the current photo's thumbnail.
+    Uses the Kitty graphics protocol when available, falls back to half-blocks.
     Image fetching happens in a worker thread so the UI stays responsive.
-    While loading, shows the photo name and URL as a fallback.
     """
 
     DEFAULT_CSS = """
     ImageFrame {
         border: round $primary;
-        height: 44;
-        content-align: center middle;
+        height: 1fr;
+    }
+    ImageFrame > TIImage {
+        width: 1fr;
+        height: 1fr;
     }
     """
 
@@ -38,30 +56,28 @@ class ImageFrame(Static):
         super().__init__(**kwargs)
         self._current_url: str = ""
 
+    def compose(self) -> ComposeResult:
+        yield TIImage()
+
     def update_photo(self, photo: PhotoRow) -> None:
         if photo.thumbnail_url == self._current_url:
             return
         self._current_url = photo.thumbnail_url
-        safe_name = escape(photo.name)
-        safe_url = escape(photo.thumbnail_url)
-        self.update(f"[dim]{safe_name}[/dim]\n{safe_url}\n[dim]loading…[/dim]")
         self.run_worker(
-            lambda: self._fetch_and_build_pixels(photo.thumbnail_url),
+            lambda: self._fetch_and_set(photo.thumbnail_url),
             exclusive=True,
             thread=True,
         )
 
-    def _fetch_and_build_pixels(self, url: str) -> None:
-        """Runs in a thread: fetch, resize, convert to Pixels, push to main thread."""
-
-        image = fetch_image(url)
-        if image is None or url != self._current_url:
+    def _fetch_and_set(self, url: str) -> None:
+        """Runs in a thread: fetch image, then hand PIL image to the main thread."""
+        pil_image = fetch_image(url)
+        if pil_image is None or url != self._current_url:
             return
-        width = max(20, self.size.width - 4)
-        fitted = fit_image(image, width, _IMAGE_DISPLAY_ROWS)
-        pixels = Pixels.from_image(fitted)
-        if url == self._current_url:
-            self.app.call_from_thread(self.update, pixels)
+        self.app.call_from_thread(self._apply_image, pil_image)
+
+    def _apply_image(self, pil_image) -> None:
+        self.query_one(TIImage).image = pil_image
 
 
 class RatingSelector(Static, can_focus=True):
@@ -171,8 +187,7 @@ class FieldTable(Widget, can_focus=True):
     FieldTable {
         border: round $secondary;
         padding: 0 1;
-        height: 1fr;
-        overflow-y: auto;
+        height: auto;
     }
     FieldTable:focus {
         border: round $accent;
@@ -256,9 +271,16 @@ class FieldTable(Widget, can_focus=True):
     # ------------------------------------------------------------------
 
     def _make_editor(self, field_name: str, current_value: str) -> Widget:
-
         if field_name == "rating":
             return RatingSelector(current_value=current_value, id=_RATING_SELECTOR_ID)
+        if field_name == "genre":
+            genres: set[str] = self.app._state.known_genres  # type: ignore[attr-defined]
+            return Input(
+                value=current_value,
+                placeholder="Edit genre…",
+                suggester=GenreSuggester(genres),
+                id=_EDIT_INPUT_ID,
+            )
         return Input(value=current_value, placeholder=f"Edit {field_name}…", id=_EDIT_INPUT_ID)
 
     def _sync_all_rows(self) -> None:

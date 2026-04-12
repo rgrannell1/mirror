@@ -52,6 +52,22 @@ class PhotoFilterProvider(Provider):
                     help=preset_label.lower(),
                 )
 
+        # Per-genre entries
+        for genre in sorted(app._state.known_genres):
+            namespaced = f"Filter: Genre > {genre}"
+            score = matcher.match(namespaced)
+            if score > 0 or not query:
+                yield Hit(
+                    score=score,
+                    match_display=matcher.highlight(namespaced),
+                    command=(
+                        lambda g=genre: lambda: app._apply_filter(
+                            f"Genre > {g}", lambda photo, genre=g: photo.genre == genre
+                        )
+                    )(),
+                    help=genre,
+                )
+
         # Per-album entries
         albums = sorted({photo.name for photo in app._state.all_photos})
         for album_name in albums:
@@ -163,8 +179,11 @@ class PhotoTUI(App):
         message.stop()
         photo = self._state.current_photo
         field = self._state.current_field
-        photo.set_field(field, message.value)
+        new_value = message.value
+        photo.set_field(field, new_value)
         save_row(PHOTOS_PATH, photo)
+        if field == "genre" and new_value.strip():
+            self._state.known_genres.add(new_value.strip())
         field_table = self.query_one(FieldTable)
         field_table.exit_edit_mode()
         field_table.update_photo(photo)

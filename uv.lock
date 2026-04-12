@@ -373,6 +373,7 @@ dependencies = [
     { name = "rich-pixels" },
     { name = "sqlean-py" },
     { name = "textual" },
+    { name = "textual-image" },
     { name = "tomli-w" },
     { name = "typeguard" },
     { name = "xmltodict" },
@@ -400,6 +401,7 @@ requires-dist = [
     { name = "rich-pixels", specifier = ">=3.0.1" },
     { name = "sqlean-py" },
     { name = "textual", specifier = ">=8.2.3" },
+    { name = "textual-image", specifier = ">=0.11.0" },
     { name = "tomli-w" },
     { name = "typeguard" },
     { name = "xmltodict" },
@@ -798,6 +800,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/cf/2f/d44f0f12b3ddb1f0b88f7775652e99c6b5a43fd733badf4ce064bdbfef4a/textual-8.2.3.tar.gz", hash = "sha256:beea7b86b03b03558a2224f0cc35252e60ef8b0c4353b117b2f40972902d976a", size = 1848738, upload-time = "2026-04-05T09:12:45.338Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0e/28/a81d6ce9f4804818bd1231a9a6e4d56ea84ebbe8385c49591444f0234fa2/textual-8.2.3-py3-none-any.whl", hash = "sha256:5008ac581bebf1f6fa0520404261844a231e5715fdbddd10ca73916a3af48ca2", size = 724231, upload-time = "2026-04-05T09:12:48.747Z" },
+]
+
+[[package]]
+name = "textual-image"
+version = "0.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pillow" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a7/26/c7d40d681f459cec2201a247a279dd97bda63d7c544b138c1da74e4a566e/textual_image-0.11.0.tar.gz", hash = "sha256:38911787a19ad697f60ecc0ca1d720496e20f1f402598fde8cdce31b452851ac", size = 116357, upload-time = "2026-04-09T20:39:57.935Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/55/e4/49374cffb877c7a06fdd92c6435afbc37a8f40259a65c4900f086544355a/textual_image-0.11.0-py3-none-any.whl", hash = "sha256:7ade37c33de4b4aa4ff19cc8564e920e6dc8beebd3bfaf3c806b423429d2fdd0", size = 115595, upload-time = "2026-04-09T20:39:56.302Z" },
 ]
 
 [[package]]

@@ -325,7 +325,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/6b46100134.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:phoca-vitulina |  |
 | ![](https://photos-cdn.rgrannell.xyz/fc6b8aa4a6.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:motacilla-alba?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/335ce72789.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:capra-aegagrus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/2bca3b1e0b.webp) | Dublin Museums | Other | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2bca3b1e0b.webp) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4dd337326f.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a3b98a37c2.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d0d1e19b63.webp) | Dublin Museums | Other | ⭐⭐⭐ | urn:ró:place:19 |  |  |  |

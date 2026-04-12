@@ -13,10 +13,13 @@ class AppState:
     field_index: int = 0
     active_filter: str | None = None
     photos: list[PhotoRow] = field(default_factory=list)
+    known_genres: set[str] = field(default_factory=set)
 
     def __post_init__(self) -> None:
         if not self.photos:
             self.photos = list(self.all_photos)
+        if not self.known_genres:
+            self.known_genres = {photo.genre for photo in self.all_photos if photo.genre.strip()}
 
     @property
     def current_photo(self) -> PhotoRow:
