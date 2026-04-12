@@ -971,7 +971,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/8a7b126c8f.webp) | Puerto de la Cruz |  | ⭐⭐⭐⭐⭐ | urn:ró:place:2 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/af13d4d279.webp) | Puerto de la Cruz | Landscape | ⭐⭐⭐⭐ | urn:ró:place:2 |  | urn:ró:person:me |  |
 | ![](https://photos-cdn.rgrannell.xyz/15dfdb6dab.webp) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:2 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e5bad77acd.webp) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:2 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e5bad77acd.webp) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:2 | The photo sells this short, it was a beautiful view. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e4e7ceb6cc.webp) | Puerto de la Cruz |  | ⭐⭐ | urn:ró:place:2 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/95439b51c8.webp) | Regent's Park, London | Wildlife | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:psittacula-krameri?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e444b5a503.webp) | Regent's Park, London | Wildlife | ⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:sciurus-carolinensis?context=wild |  |
@@ -981,9 +981,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/74425a8ea7.webp) | Ring of Kerry | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:mammal:canis-familiaris?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/d077f552d1.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4962ab101f.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ | urn:ró:place:104 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/0c7712af11.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ | urn:ró:place:104 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0c7712af11.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ee6b39ed10.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/1abb88d3d6.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1abb88d3d6.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bac3054a01.webp) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a6e72bb689.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/dec6c8d24f.webp) | Ring of Kerry | Landscape | ⭐⭐⭐ | urn:ró:place:104 |  |  |  |
@@ -997,7 +997,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e186bf1771.webp) | River Dodder | Wildlife | ⭐⭐⭐ | urn:ró:place:15 |  | urn:ró:bird:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e31693fa3f.webp) | River Dodder | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:15 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ac601eefd0.webp) | River Dodder | Wildlife | ⭐⭐⭐ | urn:ró:place:15 |  | urn:ró:bird:unknown?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/363f865ca8.webp) | Rotterdam | Transport | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/363f865ca8.webp) | Rotterdam | Transport | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:train:eurostar |  |
 | ![](https://photos-cdn.rgrannell.xyz/d5bd31484d.webp) | Rotterdam | Transport | ⭐⭐⭐ | urn:ró:place:74 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/ca5a38a175.webp) | Rotterdam | Cityscape | ⭐⭐⭐ | urn:ró:place:74 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b2dbe6b6f.webp) | Roundstone | Wildlife | ⭐⭐⭐ | urn:ró:place:112 |  | urn:ró:bird:motacilla-cinerea?context=captivity |  |
@@ -1007,7 +1007,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/a30333da9d.webp) | Roundstone | Cityscape | ⭐⭐⭐⭐ | urn:ró:country:ireland | statue of the Connemara Giant |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/aff3a1db4b.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a7b4f853d7.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/89e69bf6bc.webp) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/89e69bf6bc.webp) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/925f22232f.webp) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f7827ad58f.webp) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff6fc5f240.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |

@@ -2629,6 +2629,7 @@ mode = "train"
 
 [[birds]]
 id = "urn:ró:bird:sterna-dougallii"
+name = "Roseate Tern"
 birdwatch_url = "https://birdwatchireland.ie/birds/arctic-tern"
 
 [[birds]]
@@ -2645,6 +2646,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/barn-owl"
 
 [[birds]]
 id = "urn:ró:bird:branta-leucopsis"
+name = "Barnacle Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/barnacle-goose"
 
 [[birds]]
@@ -2657,6 +2659,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/bewicks-swan"
 
 [[birds]]
 id = "urn:ró:bird:branta-bernicla"
+name = "Brent Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/black-brant"
 
 [[birds]]
@@ -2665,6 +2668,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/black-guillemot"
 
 [[birds]]
 id = "urn:ró:bird:chroicocephalus-ridibundus"
+name = "Black-headed Gull"
 birdwatch_url = "https://birdwatchireland.ie/birds/black-headed-gull"
 
 [[birds]]
@@ -2689,6 +2693,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/black-throated-diver"
 
 [[birds]]
 id = "urn:ró:bird:turdus-merula"
+name = "Common Blackbird"
 birdwatch_url = "https://birdwatchireland.ie/birds/blackbird"
 
 [[birds]]
@@ -2705,10 +2710,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/brambling"
 
 [[birds]]
 id = "urn:ró:bird:branta-bernicla"
+name = "Brent Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/brent-goose-dark-bellied"
 
 [[birds]]
 id = "urn:ró:bird:branta-bernicla"
+name = "Brent Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/brent-goose-light-bellied"
 
 [[birds]]
@@ -2725,14 +2732,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/buzzard"
 
 [[birds]]
 id = "urn:ró:bird:branta-canadensis"
+name = "Canada Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/canada-goose"
 
 [[birds]]
 id = "urn:ró:bird:bubulcus-ibis"
+name = "Cattle Egret"
 birdwatch_url = "https://birdwatchireland.ie/birds/cattle-egret"
 
 [[birds]]
 id = "urn:ró:bird:fringilla-coelebs"
+name = "Common Chaffinch"
 birdwatch_url = "https://birdwatchireland.ie/birds/chaffinch"
 
 [[birds]]
@@ -2742,14 +2752,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/chiffchaff"
 
 [[birds]]
 id = "urn:ró:bird:pyrrhocorax-pyrrhocorax"
+name = "Red-billed Chough"
 birdwatch_url = "https://birdwatchireland.ie/birds/chough"
 
 [[birds]]
 id = "urn:ró:bird:periparus-ater"
+name = "Coal Tit"
 birdwatch_url = "https://birdwatchireland.ie/birds/coal-tit"
 
 [[birds]]
 id = "urn:ró:bird:streptopelia-decaocto"
+name = "Eurasian Collared Dove"
 birdwatch_url = "https://birdwatchireland.ie/birds/collared-dove"
 
 [[birds]]
@@ -2778,10 +2791,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/common-whitethroat"
 
 [[birds]]
 id = "urn:ró:bird:fulica-atra"
+name = "Eurasian Coot"
 birdwatch_url = "https://birdwatchireland.ie/birds/coot"
 
 [[birds]]
 id = "urn:ró:bird:phalacrocorax-carbo"
+name = "Great Cormorant"
 birdwatch_url = "https://birdwatchireland.ie/birds/cormorant"
 
 [[birds]]
@@ -2810,6 +2825,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/curlew-sandpiper"
 
 [[birds]]
 id = "urn:ró:bird:numenius-arquata"
+name = "Eurasian Curlew"
 birdwatch_url = "https://birdwatchireland.ie/birds/curlew"
 
 [[birds]]
@@ -2830,14 +2846,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/eider"
 
 [[birds]]
 id = "urn:ró:bird:gulosus-aristotelis"
+name = "European Shag"
 birdwatch_url = "https://birdwatchireland.ie/birds/european-shag"
 
 [[birds]]
 id = "urn:ró:bird:columba-livia"
+name = "Rock Pigeon"
 birdwatch_url = "https://birdwatchireland.ie/birds/feral-pigeon"
 
 [[birds]]
 id = "urn:ró:bird:turdus-pilaris"
+name = "Fieldfare"
 birdwatch_url = "https://birdwatchireland.ie/birds/fieldfare"
 
 [[birds]]
@@ -2846,6 +2865,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/firecrest"
 
 [[birds]]
 id = "urn:ró:bird:fulmarus-glacialis"
+name = "Northern Fulmar"
 birdwatch_url = "https://birdwatchireland.ie/birds/fulmar"
 
 [[birds]]
@@ -2854,6 +2874,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/gadwall"
 
 [[birds]]
 id = "urn:ró:bird:morus-bassanus"
+name = "Northern Gannet"
 birdwatch_url = "https://birdwatchireland.ie/birds/gannet"
 
 [[birds]]
@@ -2886,6 +2907,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/goldeneye"
 
 [[birds]]
 id = "urn:ró:bird:carduelis-carduelis"
+name = "European Goldfinch"
 birdwatch_url = "https://birdwatchireland.ie/birds/goldfinch"
 
 [[birds]]
@@ -2902,6 +2924,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/grasshopper-warbler"
 
 [[birds]]
 id = "urn:ró:bird:larus-marinus"
+name = "Great Black-backed Gull"
 birdwatch_url = "https://birdwatchireland.ie/birds/great-black-backed-gull"
 
 [[birds]]
@@ -2923,6 +2946,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/great-spotted-woodpecker"
 
 [[birds]]
 id = "urn:ró:bird:parus-major"
+name = "Great Tit"
 birdwatch_url = "https://birdwatchireland.ie/birds/great-tit"
 
 [[birds]]
@@ -2935,6 +2959,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/green-winged-teal"
 
 [[birds]]
 id = "urn:ró:bird:chloris-chloris"
+name = "European Greenfinch"
 birdwatch_url = "https://birdwatchireland.ie/birds/greenfinch"
 
 [[birds]]
@@ -2964,14 +2989,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/grey-plover"
 
 [[birds]]
 id = "urn:ró:bird:motacilla-cinerea"
+name = "Grey Wagtail"
 birdwatch_url = "https://birdwatchireland.ie/birds/grey-wagtail"
 
 [[birds]]
 id = "urn:ró:bird:anser-anser"
+name = "Greylag Goose"
 birdwatch_url = "https://birdwatchireland.ie/birds/greylag-goose"
 
 [[birds]]
 id = "urn:ró:bird:uria-aalge"
+name = "Common Guillemot"
 birdwatch_url = "https://birdwatchireland.ie/birds/guillemot"
 
 [[birds]]
@@ -2980,14 +3008,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/hen-harrier"
 
 [[birds]]
 id = "urn:ró:bird:larus-argentatus"
+name = "European Herring Gull"
 birdwatch_url = "https://birdwatchireland.ie/birds/herring-gull"
 
 [[birds]]
 id = "urn:ró:bird:corvus-cornix"
+name = "Hooded Crow"
 birdwatch_url = "https://birdwatchireland.ie/birds/hooded-crow"
 
 [[birds]]
 id = "urn:ró:bird:delichon-urbicum"
+name = "Common House Martin"
 birdwatch_url = "https://birdwatchireland.ie/birds/house-martin"
 
 [[birds]]
@@ -3004,6 +3035,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/jack-snipe"
 
 [[birds]]
 id = "urn:ró:bird:coloeus-monedula"
+name = "Jackdaw"
 birdwatch_url = "https://birdwatchireland.ie/birds/jackdaw"
 
 [[birds]]
@@ -3013,6 +3045,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/jay"
 
 [[birds]]
 id = "urn:ró:bird:falco-tinnunculus"
+name = "Common Kestrel"
 birdwatch_url = "https://birdwatchireland.ie/birds/kestrel"
 
 [[birds]]
@@ -3025,6 +3058,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/knot"
 
 [[birds]]
 id = "urn:ró:bird:vanellus-vanellus"
+name = "Northern Lapwing"
 birdwatch_url = "https://birdwatchireland.ie/birds/lapwing"
 
 [[birds]]
@@ -3049,10 +3083,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/linnet"
 
 [[birds]]
 id = "urn:ró:bird:egretta-garzetta"
+name = "Little Egret"
 birdwatch_url = "https://birdwatchireland.ie/birds/little-egret"
 
 [[birds]]
 id = "urn:ró:bird:tachybaptus-ruficollis"
+name = "Little Grebe"
 birdwatch_url = "https://birdwatchireland.ie/birds/little-grebe"
 
 [[birds]]
@@ -3089,6 +3125,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/magpie"
 
 [[birds]]
 id = "urn:ró:bird:anas-platyrhynchos"
+name = "Mallard"
 birdwatch_url = "https://birdwatchireland.ie/birds/mallard"
 
 [[birds]]
@@ -3101,6 +3138,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/marsh-harrier"
 
 [[birds]]
 id = "urn:ró:bird:anthus-pratensis"
+name = "Meadow Pipit"
 birdwatch_url = "https://birdwatchireland.ie/birds/meadow-pipit"
 
 [[birds]]
@@ -3117,10 +3155,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/mistle-thrush"
 
 [[birds]]
 id = "urn:ró:bird:gallinula-chloropus"
+name = "Common Moorhen"
 birdwatch_url = "https://birdwatchireland.ie/birds/moorhen"
 
 [[birds]]
 id = "urn:ró:bird:cygnus-olor"
+name = "Mute Swan"
 birdwatch_url = "https://birdwatchireland.ie/birds/mute-swan"
 
 [[birds]]
@@ -3129,6 +3169,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/nightjar"
 
 [[birds]]
 id = "urn:ró:bird:haematopus-ostralegus"
+name = "Eurasian Oystercatcher"
 birdwatch_url = "https://birdwatchireland.ie/birds/oystercatcher"
 
 [[birds]]
@@ -3141,6 +3182,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/peregrine-falcon"
 
 [[birds]]
 id = "urn:ró:bird:phasianus-colchicus"
+name = "Common Pheasant"
 birdwatch_url = "https://birdwatchireland.ie/birds/pheasant"
 
 [[birds]]
@@ -3149,6 +3191,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/pied-flycatcher"
 
 [[birds]]
 id = "urn:ró:bird:motacilla-alba"
+name = "White Wagtail"
 birdwatch_url = "https://birdwatchireland.ie/birds/pied-wagtail"
 
 [[birds]]
@@ -3165,6 +3208,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/pochard"
 
 [[birds]]
 id = "urn:ró:bird:fratercula-arctica"
+name = "Atlantic Puffin"
 birdwatch_url = "https://birdwatchireland.ie/birds/puffin"
 
 [[birds]]
@@ -3177,10 +3221,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/quail"
 
 [[birds]]
 id = "urn:ró:bird:corvus-corax"
+name = "Common Raven"
 birdwatch_url = "https://birdwatchireland.ie/birds/raven"
 
 [[birds]]
 id = "urn:ró:bird:alca-torda"
+name = "Razorbill"
 birdwatch_url = "https://birdwatchireland.ie/birds/razorbill"
 
 [[birds]]
@@ -3193,6 +3239,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/red-grouse"
 
 [[birds]]
 id = "urn:ró:bird:milvus-milvus"
+name = "Red Kite"
 birdwatch_url = "https://birdwatchireland.ie/birds/red-kite"
 
 [[birds]]
@@ -3221,6 +3268,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/redwing"
 
 [[birds]]
 id = "urn:ró:bird:emberiza-schoeniclus"
+name = "Common Reed Bunting"
 birdwatch_url = "https://birdwatchireland.ie/birds/reed-bunting"
 
 [[birds]]
@@ -3245,14 +3293,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/ringed-plover"
 
 [[birds]]
 id = "urn:ró:bird:erithacus-rubecula"
+name = "European Robin"
 birdwatch_url = "https://birdwatchireland.ie/birds/robin"
 
 [[birds]]
 id = "urn:ró:bird:columba-livia"
+name = "Rock Pigeon"
 birdwatch_url = "https://birdwatchireland.ie/birds/rock-dove"
 
 [[birds]]
 id = "urn:ró:bird:anthus-petrosus"
+name = "Rock Pipit"
 birdwatch_url = "https://birdwatchireland.ie/birds/rock-pipit"
 
 [[birds]]
@@ -3261,6 +3312,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/rook"
 
 [[birds]]
 id = "urn:ró:bird:sterna-dougallii"
+name = "Roseate Tern"
 birdwatch_url = "https://birdwatchireland.ie/birds/roseate-tern"
 
 [[birds]]
@@ -3297,6 +3349,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/sedge-warbler"
 
 [[birds]]
 id = "urn:ró:bird:tadorna-tadorna"
+name = "Common Shelduck"
 birdwatch_url = "https://birdwatchireland.ie/birds/shelduck"
 
 [[birds]]
@@ -3305,14 +3358,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/short-eared-owl"
 
 [[birds]]
 id = "urn:ró:bird:spatula-clypeata"
+name = "Northern Shoveler"
 birdwatch_url = "https://birdwatchireland.ie/birds/shoveler"
 
 [[birds]]
 id = "urn:ró:bird:spinus-spinus"
+name = "Eurasian Siskin"
 birdwatch_url = "https://birdwatchireland.ie/birds/siskin"
 
 [[birds]]
 id = "urn:ró:bird:alauda-arvensis"
+name = "Eurasian Skylark"
 birdwatch_url = "https://birdwatchireland.ie/birds/skylark"
 
 [[birds]]
@@ -3321,6 +3377,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/slavonian-grebe"
 
 [[birds]]
 id = "urn:ró:bird:mergellus-albellus"
+name = "Smew"
 birdwatch_url = "https://birdwatchireland.ie/birds/smew"
 
 [[birds]]
@@ -3349,6 +3406,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/sooty-shearwater"
 
 [[birds]]
 id = "urn:ró:bird:accipiter-nisus"
+name = "Eurasian Sparrowhawk"
 birdwatch_url = "https://birdwatchireland.ie/birds/sparrowhawk"
 
 [[birds]]
@@ -3381,10 +3439,12 @@ birdwatch_url = "https://birdwatchireland.ie/birds/surf-scoter"
 
 [[birds]]
 id = "urn:ró:bird:hirundo-rustica"
+name = "Barn Swallow"
 birdwatch_url = "https://birdwatchireland.ie/birds/swallow"
 
 [[birds]]
 id = "urn:ró:bird:apus-apus"
+name = "Common Swift"
 birdwatch_url = "https://birdwatchireland.ie/birds/swift"
 
 [[birds]]
@@ -3397,14 +3457,17 @@ birdwatch_url = "https://birdwatchireland.ie/birds/tree-sparrow"
 
 [[birds]]
 id = "urn:ró:bird:certhia-familiaris"
+name = "Eurasian Treecreeper"
 birdwatch_url = "https://birdwatchireland.ie/birds/treecreeper"
 
 [[birds]]
 id = "urn:ró:bird:aythya-fuligula"
+name = "Tufted Duck"
 birdwatch_url = "https://birdwatchireland.ie/birds/tufted-duck"
 
 [[birds]]
 id = "urn:ró:bird:arenaria-interpres"
+name = "Ruddy Turnstone"
 birdwatch_url = "https://birdwatchireland.ie/birds/turnstone"
 
 [[birds]]
@@ -3433,6 +3496,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/wheatear"
 
 [[birds]]
 id = "urn:ró:bird:numenius-phaeopus"
+name = "Whimbrel"
 birdwatch_url = "https://birdwatchireland.ie/birds/whimbrel"
 
 [[birds]]
@@ -3473,6 +3537,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/woodpigeon"
 
 [[birds]]
 id = "urn:ró:bird:troglodytes-troglodytes"
+name = "Eurasian Wren"
 birdwatch_url = "https://birdwatchireland.ie/birds/wren"
 
 [[birds]]
@@ -3481,6 +3546,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/yellow-browed-warbler"
 
 [[birds]]
 id = "urn:ró:bird:emberiza-citrinella"
+name = "Yellowhammer"
 birdwatch_url = "https://birdwatchireland.ie/birds/yellowhammer"
 
 [[birds]]
@@ -3638,3 +3704,499 @@ name = "Van RV-6"
 [[planes]]
 id = "urn:ró:plane:van-rv-8"
 name = "Van RV-8"
+
+[[birds]]
+id = "urn:ró:bird:aix-galericulata"
+name = "Mandarin Duck"
+
+[[birds]]
+id = "urn:ró:bird:alopochen-aegyptiaca"
+name = "Egyptian Goose"
+
+[[birds]]
+id = "urn:ró:bird:antigone-antigone"
+name = "Sarus Crane"
+
+[[birds]]
+id = "urn:ró:bird:antigone-canadensis"
+name = "Sandhill Crane"
+
+[[birds]]
+id = "urn:ró:bird:aplonis-metallica"
+name = "Metallic Starling"
+
+[[birds]]
+id = "urn:ró:bird:apus-unicolor"
+name = "Plain Swift"
+
+[[birds]]
+id = "urn:ró:bird:ara-ararauna"
+name = "Blue-and-yellow Macaw"
+
+[[birds]]
+id = "urn:ró:bird:aratinga-nenday"
+name = "Nanday Parakeet"
+
+[[birds]]
+id = "urn:ró:bird:balearica-regulorum"
+name = "Grey Crowned Crane"
+
+[[birds]]
+id = "urn:ró:bird:buteo-jamaicensis"
+name = "Red-tailed Hawk"
+
+[[birds]]
+id = "urn:ró:bird:buteo-platypterus"
+name = "Broad-winged Hawk"
+
+[[birds]]
+id = "urn:ró:bird:cairina-moschata"
+name = "Muscovy Duck"
+
+[[birds]]
+id = "urn:ró:bird:caloenas-nicobarica"
+name = "Nicobar Pigeon"
+
+[[birds]]
+id = "urn:ró:bird:cathartes-aura"
+name = "Turkey Vulture"
+
+[[birds]]
+id = "urn:ró:bird:chloebia-gouldiae"
+name = "Gouldian Finch"
+
+[[birds]]
+id = "urn:ró:bird:crax-alberti"
+name = "Blue-billed Curassow"
+
+[[birds]]
+id = "urn:ró:bird:cyanocitta-cristata"
+name = "Blue Jay"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-buccinator"
+name = "Trumpeter Swan"
+
+[[birds]]
+id = "urn:ró:bird:dromaius-novaehollandiae"
+name = "Emu"
+
+[[birds]]
+id = "urn:ró:bird:dryobates-pubescens"
+name = "Downy Woodpecker"
+
+[[birds]]
+id = "urn:ró:bird:eurypyga-helias"
+name = "Sunbittern"
+
+[[birds]]
+id = "urn:ró:bird:geronticus-eremita"
+name = "Northern Bald Ibis"
+
+[[birds]]
+id = "urn:ró:bird:goura-victoria"
+name = "Victoria Crowned Pigeon"
+
+[[birds]]
+id = "urn:ró:bird:grus-carunculata"
+name = "Wattled Crane"
+
+[[birds]]
+id = "urn:ró:bird:grus-grus"
+name = "Common Crane"
+
+[[birds]]
+id = "urn:ró:bird:grus-nigricollis"
+name = "Black-necked Crane"
+
+[[birds]]
+id = "urn:ró:bird:grus-virgo"
+name = "Demoiselle Crane"
+
+[[birds]]
+id = "urn:ró:bird:guira-guira"
+name = "Guira Cuckoo"
+
+[[birds]]
+id = "urn:ró:bird:gymnoris-dentata"
+name = "Bush Petronia"
+
+[[birds]]
+id = "urn:ró:bird:gyps-fulvus"
+name = "Griffon Vulture"
+
+[[birds]]
+id = "urn:ró:bird:haliaeetus-leucocephalus"
+name = "Bald Eagle"
+
+[[birds]]
+id = "urn:ró:bird:larosterna-inca"
+name = "Inca Tern"
+
+[[birds]]
+id = "urn:ró:bird:leptoptilos-crumenifer"
+name = "Marabou Stork"
+
+[[birds]]
+id = "urn:ró:bird:leucogeranus-leucogeranus"
+name = "Siberian Crane"
+
+[[birds]]
+id = "urn:ró:bird:leucopsar-rothschildi"
+name = "Bali Myna"
+
+[[birds]]
+id = "urn:ró:bird:lorius-hypoinochrous"
+name = "Purple-bellied Lory"
+
+[[birds]]
+id = "urn:ró:bird:melanerpes-erythrocephalus"
+name = "Red-headed Woodpecker"
+
+[[birds]]
+id = "urn:ró:bird:meleagris-gallopavo"
+name = "Wild Turkey"
+
+[[birds]]
+id = "urn:ró:bird:mergus-squamatus"
+name = "Scaly-sided Merganser"
+
+[[birds]]
+id = "urn:ró:bird:milvus-migrans"
+name = "Black Kite"
+
+[[birds]]
+id = "urn:ró:bird:momotus-momota"
+name = "Amazonian Motmot"
+
+[[birds]]
+id = "urn:ró:bird:nestor-notabilis"
+name = "Kea"
+
+[[birds]]
+id = "urn:ró:bird:nycticorax-nycticorax"
+name = "Black-crowned Night Heron"
+
+[[birds]]
+id = "urn:ró:bird:ocyphaps-lophotes"
+name = "Crested Pigeon"
+
+[[birds]]
+id = "urn:ró:bird:parabuteo-unicinctus"
+name = "Harris's Hawk"
+
+[[birds]]
+id = "urn:ró:bird:passer-hispaniolensis"
+name = "Spanish Sparrow"
+
+[[birds]]
+id = "urn:ró:bird:pavo-cristatus"
+name = "Indian Peafowl"
+
+[[birds]]
+id = "urn:ró:bird:pelecanus-onocrotalus"
+name = "Great White Pelican"
+
+[[birds]]
+id = "urn:ró:bird:phoenicopterus-roseus"
+name = "Greater Flamingo"
+
+[[birds]]
+id = "urn:ró:bird:platalea-alba"
+name = "African Spoonbill"
+
+[[birds]]
+id = "urn:ró:bird:platalea-flavipes"
+name = "Yellow-billed Spoonbill"
+
+[[birds]]
+id = "urn:ró:bird:podargus-strigoides"
+name = "Tawny Frogmouth"
+
+[[birds]]
+id = "urn:ró:bird:polihierax-semitorquatus"
+name = "African Pygmy Falcon"
+
+[[birds]]
+id = "urn:ró:bird:polyboroides-radiatus"
+name = "Madagascar Harrier-Hawk"
+
+[[birds]]
+id = "urn:ró:bird:psephotus-haematonotus"
+name = "Red-rumped Parrot"
+
+[[birds]]
+id = "urn:ró:bird:psittacula-krameri"
+name = "Rose-ringed Parakeet"
+
+[[birds]]
+id = "urn:ró:bird:psittacus-erithacus"
+name = "Grey Parrot"
+
+[[birds]]
+id = "urn:ró:bird:ptilinopus-superbus"
+name = "Superb Fruit Dove"
+
+[[birds]]
+id = "urn:ró:bird:ptyonoprogne-rupestris"
+name = "Eurasian Crag Martin"
+
+[[birds]]
+id = "urn:ró:bird:pycnonotus-jocosus"
+name = "Red-whiskered Bulbul"
+
+[[birds]]
+id = "urn:ró:bird:ramphastos-toco"
+name = "Toco Toucan"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-rubicola"
+name = "European Stonechat"
+
+[[birds]]
+id = "urn:ró:bird:spheniscus-magellanicus"
+name = "Magellanic Penguin"
+
+[[birds]]
+id = "urn:ró:bird:spinus-tristis"
+name = "American Goldfinch"
+
+[[birds]]
+id = "urn:ró:bird:struthio-camelus"
+name = "Common Ostrich"
+
+[[birds]]
+id = "urn:ró:bird:tauraco-persa"
+name = "Guinea Turaco"
+
+[[birds]]
+id = "urn:ró:bird:tauraco-violaceus"
+name = "Violet Turaco"
+
+[[birds]]
+id = "urn:ró:bird:trichoglossus-ornatus"
+name = "Ornate Lorikeet"
+
+[[birds]]
+id = "urn:ró:bird:turdus-migratorius"
+name = "American Robin"
+
+[[birds]]
+id = "urn:ró:bird:vultur-gryphus"
+name = "Andean Condor"
+
+[[mammals]]
+id = "urn:ró:mammal:acinonyx-jubatus"
+name = "Cheetah"
+
+[[mammals]]
+id = "urn:ró:mammal:ailurus-fulgens"
+name = "Red Panda"
+
+[[mammals]]
+id = "urn:ró:mammal:alces-alces"
+name = "Moose"
+
+[[mammals]]
+id = "urn:ró:mammal:ateles-fusciceps"
+name = "Brown-headed Spider Monkey"
+
+[[mammals]]
+id = "urn:ró:mammal:camelus-bactrianus"
+name = "Bactrian Camel"
+
+[[mammals]]
+id = "urn:ró:mammal:capra-aegagrus"
+name = "Wild Goat"
+
+[[mammals]]
+id = "urn:ró:mammal:capra-ibex"
+name = "Alpine Ibex"
+
+[[mammals]]
+id = "urn:ró:mammal:cercopithecus-neglectus"
+name = "De Brazza's Monkey"
+
+[[mammals]]
+id = "urn:ró:mammal:cercopithecus-roloway"
+name = "Roloway Monkey"
+
+[[mammals]]
+id = "urn:ró:mammal:cervus-elaphus"
+name = "Red Deer"
+
+[[mammals]]
+id = "urn:ró:mammal:cuon-alpinus"
+name = "Dhole"
+
+[[mammals]]
+id = "urn:ró:mammal:cynomys-ludovicianus"
+name = "Black-tailed Prairie Dog"
+
+[[mammals]]
+id = "urn:ró:mammal:dama-dama"
+name = "Fallow Deer"
+
+[[mammals]]
+id = "urn:ró:mammal:equus-ferus-caballus"
+name = "Domestic Horse"
+
+[[mammals]]
+id = "urn:ró:mammal:felis-catus"
+name = "Domestic Cat"
+
+[[mammals]]
+id = "urn:ró:mammal:giraffa-camelopardalis"
+name = "Giraffe"
+
+[[mammals]]
+id = "urn:ró:mammal:gorilla-gorilla"
+name = "Western Gorilla"
+
+[[mammals]]
+id = "urn:ró:mammal:halichoerus-grypus"
+name = "Grey Seal"
+
+[[mammals]]
+id = "urn:ró:mammal:helarctos-malayanus"
+name = "Sun Bear"
+
+[[mammals]]
+id = "urn:ró:mammal:hydrochoerus-hydrochaeris"
+name = "Capybara"
+
+[[mammals]]
+id = "urn:ró:mammal:hylobates-moloch"
+name = "Silvery Gibbon"
+
+[[mammals]]
+id = "urn:ró:mammal:lemur-catta"
+name = "Ring-tailed Lemur"
+
+[[mammals]]
+id = "urn:ró:mammal:lutra-lutra"
+name = "Eurasian Otter"
+
+[[mammals]]
+id = "urn:ró:mammal:lycaon-pictus"
+name = "African Wild Dog"
+
+[[mammals]]
+id = "urn:ró:mammal:martes-martes"
+name = "European Pine Marten"
+
+[[mammals]]
+id = "urn:ró:mammal:myrmecophaga-tridactyla"
+name = "Giant Anteater"
+
+[[mammals]]
+id = "urn:ró:mammal:notamacropus-rufogriseus"
+name = "Red-necked Wallaby"
+
+[[mammals]]
+id = "urn:ró:mammal:ondatra-zibethicus"
+name = "Muskrat"
+
+[[mammals]]
+id = "urn:ró:mammal:oryctolagus-cuniculus"
+name = "European Rabbit"
+
+[[mammals]]
+id = "urn:ró:mammal:ovis-aries"
+name = "Domestic Sheep"
+
+[[mammals]]
+id = "urn:ró:mammal:pan-troglodytes"
+name = "Common Chimpanzee"
+
+[[mammals]]
+id = "urn:ró:mammal:panthera-tigris"
+name = "Tiger"
+
+[[mammals]]
+id = "urn:ró:mammal:phoca-vitulina"
+name = "Harbour Seal"
+
+[[mammals]]
+id = "urn:ró:mammal:plecturocebus-cupreus"
+name = "Coppery Titi"
+
+[[mammals]]
+id = "urn:ró:mammal:pongo-pygmaeus"
+name = "Bornean Orangutan"
+
+[[mammals]]
+id = "urn:ró:mammal:potamochoerus-porcus"
+name = "Red River Hog"
+
+[[mammals]]
+id = "urn:ró:mammal:rangifer-tarandus"
+name = "Reindeer"
+
+[[mammals]]
+id = "urn:ró:mammal:rattus-norvegicus"
+name = "Brown Rat"
+
+[[mammals]]
+id = "urn:ró:mammal:sapajus-xanthosternos"
+name = "Yellow-breasted Capuchin"
+
+[[mammals]]
+id = "urn:ró:mammal:sciurus-carolinensis"
+name = "Eastern Grey Squirrel"
+
+[[mammals]]
+id = "urn:ró:mammal:sciurus-vulgaris"
+name = "Red Squirrel"
+
+[[mammals]]
+id = "urn:ró:mammal:suricata-suricatta"
+name = "Meerkat"
+
+[[mammals]]
+id = "urn:ró:mammal:sus-scrofa"
+name = "Wild Boar"
+
+[[mammals]]
+id = "urn:ró:mammal:tamias-striatus"
+name = "Eastern Chipmunk"
+
+[[mammals]]
+id = "urn:ró:mammal:tapirus-terrestris"
+name = "South American Tapir"
+
+[[mammals]]
+id = "urn:ró:mammal:taxidea-taxus"
+name = "American Badger"
+
+[[mammals]]
+id = "urn:ró:mammal:tragelaphus-spekii"
+name = "Sitatunga"
+
+[[mammals]]
+id = "urn:ró:mammal:tremarctos-ornatus"
+name = "Spectacled Bear"
+
+[[mammals]]
+id = "urn:ró:mammal:ursus-arctos"
+name = "Brown Bear"
+
+[[mammals]]
+id = "urn:ró:mammal:vulpes-vulpes"
+name = "Red Fox"
+
+[[reptiles]]
+id = "urn:ró:reptile:egernia-stokesii"
+name = "Gidgee Skink"
+
+[[reptiles]]
+id = "urn:ró:reptile:gallotia-galloti"
+name = "Gallot's Lizard"
+
+[[reptiles]]
+id = "urn:ró:reptile:iguana-iguana"
+name = "Green Iguana"
+
+[[reptiles]]
+id = "urn:ró:reptile:podarcis-sicula"
+name = "Italian Wall Lizard"
