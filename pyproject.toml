@@ -25,7 +25,9 @@ dependencies = [
   "tomli-w",
   "typeguard",
   "psutil",
-  "zahir @ file:///home/rg/Code/zahir"
+  "zahir @ file:///home/rg/Code/zahir",
+  "textual>=8.2.3",
+  "rich-pixels>=3.0.1",
 ]
 
 [tool.ruff]

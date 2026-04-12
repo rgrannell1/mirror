@@ -3446,3 +3446,107 @@ name = "Reticulated Giraffe"
 [[mammals]]
 id = "urn:ró:mammal:zalophus-wollebaeki"
 name = "Galápagos Sea Lion"
+
+[[planes]]
+id = "urn:ró:plane:airbus-a320neo"
+name = "Airbus A320neo"
+
+[[planes]]
+id = "urn:ró:plane:airbus-a330"
+name = "Airbus A330"
+
+[[planes]]
+id = "urn:ró:plane:airbus-a380"
+name = "Airbus A380"
+
+[[planes]]
+id = "urn:ró:plane:aisa-i-115"
+name = "AISA I-115"
+
+[[planes]]
+id = "urn:ró:plane:atr-72-600"
+name = "ATR 72-600"
+
+[[planes]]
+id = "urn:ró:plane:bae-systems-hawk"
+name = "BAE Systems Hawk"
+
+[[planes]]
+id = "urn:ró:plane:boeing-stearman-model-75"
+name = "Boeing-Stearman Model 75"
+
+[[planes]]
+id = "urn:ró:plane:bristol-f2-fighter"
+name = "Bristol F.2 Fighter"
+
+[[planes]]
+id = "urn:ró:plane:cap-232"
+name = "CAP-232"
+
+[[planes]]
+id = "urn:ró:plane:casa-c-295"
+name = "CASA C-295"
+
+[[planes]]
+id = "urn:ró:plane:casa-iptn-cn-235"
+name = "CASA/IPTN CN-235"
+
+[[planes]]
+id = "urn:ró:plane:cessna-172"
+name = "Cessna 172"
+
+[[planes]]
+id = "urn:ró:plane:concorde"
+name = "Concorde"
+
+[[planes]]
+id = "urn:ró:plane:consolidated-pby-catalina"
+name = "Consolidated PBY Catalina"
+
+[[planes]]
+id = "urn:ró:plane:de-havilland-chipmunk"
+name = "de Havilland Chipmunk"
+
+[[planes]]
+id = "urn:ró:plane:extra-ea330lx"
+name = "Extra EA330LX"
+
+[[planes]]
+id = "urn:ró:plane:fokker-e-iii"
+name = "Fokker E.III"
+
+[[planes]]
+id = "urn:ró:plane:harrier"
+name = "Harrier"
+
+[[planes]]
+id = "urn:ró:plane:messerschmitt-me-163-komet"
+name = "Messerschmitt Me 163 Komet"
+
+[[planes]]
+id = "urn:ró:plane:north-american-p-51-mustang"
+name = "North American P-51 Mustang"
+
+[[planes]]
+id = "urn:ró:plane:pilatus-pc-9"
+name = "Pilatus PC-9"
+
+[[planes]]
+id = "urn:ró:plane:pitts-s-2"
+name = "Pitts S-2"
+
+[[planes]]
+id = "urn:ró:plane:qinetiq-banshee"
+name = "QinetiQ Banshee"
+
+[[planes]]
+id = "urn:ró:plane:saab-37-viggen"
+name = "Saab 37 Viggen"
+
+[[planes]]
+id = "urn:ró:plane:van-rv-6"
+name = "Van RV-6"
+
+[[planes]]
+id = "urn:ró:plane:van-rv-8"
+name = "Van RV-8"
