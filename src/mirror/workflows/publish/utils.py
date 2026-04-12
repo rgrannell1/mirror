@@ -276,11 +276,16 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         PhotosCountryReader(),
         AlbumBannerReader(),
     ]
+    seen: set[int] = set()
     for long, alias in CURIE.items():
         yield [long, "curie", alias]
     for reader in readers:
         for triple in reader.read(db):
-            yield from _process_triple(triple)
+            for processed in _process_triple(triple):
+                triple_hash = hash(tuple(processed))
+                if triple_hash not in seen:
+                    seen.add(triple_hash)
+                    yield processed
 
 
 def triples_content(db: SqliteDatabase) -> str:
