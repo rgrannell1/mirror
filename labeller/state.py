@@ -14,6 +14,7 @@ class AppState:
     active_filter: str | None = None
     photos: list[PhotoRow] = field(default_factory=list)
     known_genres: set[str] = field(default_factory=set)
+    last_edit: tuple[str, str] | None = None
 
     def __post_init__(self) -> None:
         if not self.photos:

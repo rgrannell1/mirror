@@ -117,6 +117,7 @@ class PhotoTUI(App):
         Binding("left", "prev_photo", "Prev photo"),
         Binding("right", "next_photo", "Next photo"),
         Binding("r", "random_photo", "Random"),
+        Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
         Binding("q", "quit", "Quit"),
     ]
@@ -153,6 +154,21 @@ class PhotoTUI(App):
         if self._state.move_photo(1):
             self._refresh_all()
 
+    def action_repeat_edit(self) -> None:
+        if self._state.last_edit is None:
+            self.notify("No previous edit to repeat", severity="warning")
+            return
+        field, value = self._state.last_edit
+        photo = self._state.current_photo
+        photo.set_field(field, value)
+        save_row(PHOTOS_PATH, photo)
+        if field == "genre" and value.strip():
+            self._state.known_genres.add(value.strip())
+        field_table = self.query_one(FieldTable)
+        field_table.update_photo(photo)
+        self._refresh_counter()
+        self.notify(f"{field} → {value}")
+
     def action_random_photo(self) -> None:
         photos = self._state.photos
         new_index = random.randrange(len(photos))
@@ -184,6 +200,7 @@ class PhotoTUI(App):
         save_row(PHOTOS_PATH, photo)
         if field == "genre" and new_value.strip():
             self._state.known_genres.add(new_value.strip())
+        self._state.last_edit = (field, new_value)
         field_table = self.query_one(FieldTable)
         field_table.exit_edit_mode()
         field_table.update_photo(photo)

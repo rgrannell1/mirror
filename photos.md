@@ -439,10 +439,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/868215e7dd.webp) | Edinburgh | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:72 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/c016f4342d.webp) | Edinburgh | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:72 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/32d4ba87de.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/fdb5ecf06c.webp) | Edinburgh | Other | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b52cd75bc3.webp) | Edinburgh | Other | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/192f72c197.webp) | Edinburgh | Other | ⭐⭐⭐⭐ | urn:ró:place:71 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f3bf93d9fb.webp) | Edinburgh | Other | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fdb5ecf06c.webp) | Edinburgh | Museum | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b52cd75bc3.webp) | Edinburgh | Museum | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/192f72c197.webp) | Edinburgh | Museum | ⭐⭐⭐⭐ | urn:ró:place:71 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f3bf93d9fb.webp) | Edinburgh | Museum | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6fa6027b4c.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f5bdd719d9.webp) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:unesco:728 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bf9e25a727.webp) | Emo Court | Landscape | ⭐⭐⭐⭐ | urn:ró:place:98 |  |  |  |
@@ -729,10 +729,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/a01753591a.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d09b3cc53d.webp) | London | Other | ⭐⭐ | urn:ró:place:38 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/850487e04a.webp) | London | Other | ⭐⭐⭐⭐ | urn:ró:place:38 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f997b613a4.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f997b613a4.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:38 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/87de83861c.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:sputnik |  |
 | ![](https://photos-cdn.rgrannell.xyz/a668894e72.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9f7b4c905c.webp) | London | Other | ⭐⭐ | urn:ró:place:40 | I was pleasantly surprised to see an [isotype](https://en.wikipedia.org/wiki/Isotype_(picture_language)) book in the Science Museum. I first came across the technique in the [Handbook of Tyranny](https://www.lars-mueller-publishers.com/handbook-tyranny-0), it's an underused way of sharing data in an accesible way. |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9f7b4c905c.webp) | London | Museum | ⭐⭐ | urn:ró:place:40 | I was pleasantly surprised to see an [isotype](https://en.wikipedia.org/wiki/Isotype_(picture_language)) book in the Science Museum. I first came across the technique in the [Handbook of Tyranny](https://www.lars-mueller-publishers.com/handbook-tyranny-0), it's an underused way of sharing data in an accesible way. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/384962f8cb.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:plane:qinetiq-banshee |  |
 | ![](https://photos-cdn.rgrannell.xyz/4d35eae63a.webp) | London | Transport | ⭐⭐⭐ | urn:ró:place:40 |  | urn:ró:plane:fokker-e-iii |  |
 | ![](https://photos-cdn.rgrannell.xyz/82d09c60c6.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:plane:messerschmitt-me-163-komet |  |
@@ -740,16 +740,16 @@
 | ![](https://photos-cdn.rgrannell.xyz/753d0dc40d.webp) | London | Cityscape | ⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/de09f34d90.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2f74863c08.webp) | London | Cityscape | ⭐⭐ | urn:ró:place:37 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/089aa0be74.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/207db48420.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c798387d82.webp) | London | Other | ⭐⭐ | urn:ró:place:37 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e0ee5275ac.webp) | London | Other | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/089aa0be74.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/207db48420.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c798387d82.webp) | London | Museum | ⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e0ee5275ac.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6c15f7c162.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/169f67b0e4.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/3a0e4fb537.webp) | London | Other | ⭐⭐ | urn:ró:place:40 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3a0e4fb537.webp) | London | Museum | ⭐⭐ | urn:ró:place:40 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9168f269cd.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:car:bmw-isetta |  |
 | ![](https://photos-cdn.rgrannell.xyz/a7cfcca6f1.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5c94d8673b.webp) | London | Other | ⭐⭐ | urn:ró:place:40 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5c94d8673b.webp) | London | Museum | ⭐⭐ | urn:ró:place:40 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd7773ab5c.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:anser-anser?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/576942495b.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/00ec3d180f.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
@@ -837,36 +837,36 @@
 | ![](https://photos-cdn.rgrannell.xyz/841c28a596.webp) | Munich | Cityscape | ⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f61b44d9d0.webp) | Munich | Cityscape | ⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5ba7c8fa40.webp) | Munich | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e2caace99a.webp) | Munich | Other | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e2caace99a.webp) | Munich | Museum | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/81e64f767b.webp) | Munich | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bdfb751664.webp) | Munich | Cityscape | ⭐⭐⭐ | urn:ró:place:107 | the munich u-bahn |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/27a1ebe9f8.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a8e21bb19b.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/27a1ebe9f8.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a8e21bb19b.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/405e12576d.webp) | Naples & Pompeii | Wildlife | ⭐⭐⭐ | urn:ró:place:30 |  | urn:ró:mammal:felis-catus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/98702e0fcf.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:32 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/10c66e1c24.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/10c66e1c24.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/05b69041ec.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐⭐ |  urn:ró:unesco:829,urn:ró:place:35 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/346a5aabcc.webp) | Naples & Pompeii | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:35 |  | urn:ró:reptile:podarcis-sicula?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2dfb128029.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:32 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ee53e15079.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:32 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5979f9dfa8.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5979f9dfa8.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0f8b49eed2.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:34 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4155dda167.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/10b25d6272.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:33 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9009568f59.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9009568f59.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c1152caed8.webp) | Naples & Pompeii | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:30 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c533af6211.webp) | Naples & Pompeii | Other | ⭐⭐⭐⭐ | urn:ró:place:31 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/381e552c62.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c533af6211.webp) | Naples & Pompeii | Museum | ⭐⭐⭐⭐ | urn:ró:place:31 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/381e552c62.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:31 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/226806709a.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ee58761bea.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b196593d3d.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ad233c1d6a.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e8eae361fe.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:35 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5bac97e10d.webp) | Naples & Pompeii | Other | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5bac97e10d.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/89ba9576f7.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/967c528be9.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a744c27b2e.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3c42ee4bdb.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/967c528be9.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a744c27b2e.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3c42ee4bdb.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/21760a159e.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/57cf7c7af8.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b1511a6177.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
@@ -874,15 +874,15 @@
 | ![](https://photos-cdn.rgrannell.xyz/b9b1711143.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f95686d97b.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1658ed9a70.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3573954559.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/287bcb370c.webp) | National Archaeological Museum | Other | ⭐⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/74baa2fa3b.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f558079133.webp) | National Archaeological Museum | Other | ⭐⭐ | urn:ró:place:145 | "Electrum" is incidentally also the name of a project I've lead in work. Sadly electrum jewellry is both rare and expensive (I had to check) |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/929178e400.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3573954559.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/287bcb370c.webp) | National Archaeological Museum | Museum | ⭐⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/74baa2fa3b.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f558079133.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 | "Electrum" is incidentally also the name of a project I've lead in work. Sadly electrum jewellry is both rare and expensive (I had to check) |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/929178e400.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0f94ae8611.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b1b3d15523.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5db4cf159f.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/46fd0c8537.webp) | National Archaeological Museum | Other | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b1b3d15523.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5db4cf159f.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/46fd0c8537.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5778b45a46.webp) | National Botanic Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:42 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/013d37626d.webp) | National Botanic Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:42 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/94dd207af8.webp) | National Botanic Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:42 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
@@ -1232,26 +1232,26 @@
 | ![](https://photos-cdn.rgrannell.xyz/10abeb4ff2.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1162f0e139.webp) | Toledo | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/aad9ce9974.webp) | Toledo | Cityscape | ⭐⭐⭐ | urn:ró:place:16 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/270e36f10d.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 | I like the smiling sun in the top-left corner |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7a156c5c5c.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/270e36f10d.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 | I like the smiling sun in the top-left corner |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7a156c5c5c.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0c31dd744b.webp) | Toledo | Landscape | ⭐⭐⭐ | urn:ró:place:16 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3e3918135f.webp) | Toledo | Other | ⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c785342675.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c5bdadfa49.webp) | Toledo | Other | ⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6e262a4e7b.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3e3918135f.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c785342675.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c5bdadfa49.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6e262a4e7b.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e04b1e9792.webp) | Toledo | Landscape | ⭐⭐⭐ | urn:ró:place:16 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6080f5eb14.webp) | Toledo | Cityscape | ⭐⭐⭐ | urn:ró:place:123 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3b401bfdfa.webp) | Toledo | Other | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a1bf0b15ad.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2d45eefda5.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/e3c4348212.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f8fcebbf19.webp) | Toledo | Other | ⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a1bf0b15ad.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2d45eefda5.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e3c4348212.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f8fcebbf19.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5940f807ef.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/43bf121496.webp) | Toledo | Wildlife | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d109b38ebc.webp) | Toledo | Cityscape | ⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b2103a4620.webp) | Toledo | Other | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b2103a4620.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp) | Toledo | Cityscape | ⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2057d482a5.webp) | Toledo | Other | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2057d482a5.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/35a64e0546.webp) | Toledo | Wildlife | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4202e1eabf.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6464bc4af2.webp) | Toledo | Cityspace | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
