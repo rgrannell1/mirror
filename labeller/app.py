@@ -121,6 +121,7 @@ class PhotoTUI(App):
         Binding("r", "random_photo", "Random"),
         Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
+        Binding("m", "open_things", "Open things.toml"),
         Binding("q", "quit", "Quit"),
     ]
 
@@ -194,6 +195,11 @@ class PhotoTUI(App):
         new_index = random.randrange(len(photos))
         self._state.photo_index = new_index
         self._refresh_all()
+
+    def action_open_things(self) -> None:
+        import subprocess
+        from .things import THINGS_PATH
+        subprocess.Popen(["code", str(THINGS_PATH)])
 
     def action_open_image(self) -> None:
         url = self._state.current_photo.thumbnail_url

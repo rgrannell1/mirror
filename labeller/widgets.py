@@ -11,6 +11,9 @@ from textual_image.widget import Image as TIImage
 from .image_loader import fetch_image
 from .messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from .parser import EDITABLE_COLUMNS, RATING_OPTIONS, PhotoRow
+from .things import load_urn_suggestions, resolve_urn
+
+_URN_FIELDS = {"places", "subjects"}
 
 _FIELD_ROW_ID_PREFIX = "field-row-"
 _EDIT_INPUT_ID = "edit-input"
@@ -31,6 +34,27 @@ class GenreSuggester(Suggester):
         for genre in sorted(self._genres):
             if genre.casefold().startswith(value):
                 return genre
+        return None
+
+
+class UrnSuggester(Suggester):
+    """Autocomplete for places/subjects: match by name or URN prefix.
+
+    Suggestions are displayed as 'Name [ urn ]'.  The input handler strips
+    the display wrapper on submit so only the bare URN is stored.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(use_cache=False, case_sensitive=False)
+        self._suggestions = load_urn_suggestions()
+
+    async def get_suggestion(self, value: str) -> str | None:
+        # value is already casefolded by base class
+        if not value:
+            return None
+        for name, urn in self._suggestions:
+            if name.casefold().startswith(value) or urn.casefold().startswith(value):
+                return f"{name} [ {urn} ]"
         return None
 
 
@@ -165,7 +189,19 @@ class FieldRow(Static):
         self._render_label()
 
     def _render_label(self) -> None:
-        display_value = escape(self._value) if self._value else "[dim](empty)[/dim]"
+        if not self._value:
+            display_value = "[dim](empty)[/dim]"
+        elif self._field_name in _URN_FIELDS:
+            parts = []
+            for token in self._value.split():
+                name = resolve_urn(token)
+                if name:
+                    parts.append(f"{escape(name)} [dim]{escape(token)}[/dim]")
+                else:
+                    parts.append(escape(token))
+            display_value = "  ".join(parts)
+        else:
+            display_value = escape(self._value)
         name_markup = f"[bold cyan]{self._field_name:>12}[/bold cyan]"
         self.update(f"{name_markup}  {display_value}")
 
@@ -281,6 +317,13 @@ class FieldTable(Widget, can_focus=True):
                 suggester=GenreSuggester(genres),
                 id=_EDIT_INPUT_ID,
             )
+        if field_name in _URN_FIELDS:
+            return Input(
+                value=current_value,
+                placeholder=f"Name or urn:ró:…",
+                suggester=UrnSuggester(),
+                id=_EDIT_INPUT_ID,
+            )
         return Input(value=current_value, placeholder=f"Edit {field_name}…", id=_EDIT_INPUT_ID)
 
     def _sync_all_rows(self) -> None:
@@ -333,8 +376,11 @@ class FieldTable(Widget, can_focus=True):
     # ------------------------------------------------------------------
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
-
-        self.post_message(SaveRequested(value=event.value))
+        value = event.value
+        # Strip display wrapper inserted by UrnSuggester: "Name [ urn ]" → "urn"
+        if value.endswith("]") and " [ " in value:
+            value = value.split(" [ ", 1)[1].rstrip("]").strip()
+        self.post_message(SaveRequested(value=value))
         event.stop()
 
     def on_key(self, event) -> None:

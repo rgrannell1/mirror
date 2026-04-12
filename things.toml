@@ -47,7 +47,7 @@ ratings = [
     { id = "urn:ró:rating:4", name = "⭐⭐⭐⭐⭐" },
 ]
 
-[[places]]
+[[`]]
 id = "urn:ró:place:0"
 longitude = -16.269163888889
 latitude = 28.536538888889
@@ -2113,6 +2113,90 @@ in = [
 ]
 features = [
     "urn:ró:place_feature:museum",
+]
+
+[[places]]
+id = "urn:ró:place:146"
+name = "Mallorca"
+wikipedia = "https://en.wikipedia.org/wiki/Mallorca"
+longitude = 2.75
+latitude = 39.583333333333336
+in = [
+    "urn:ró:country:mallorca",
+    "urn:ró:country:spain",
+]
+features = [
+    "urn:ró:place_feature:island",
+]
+
+[[places]]
+id = "urn:ró:place:147"
+name = "Tenerife"
+wikipedia = "https://en.wikipedia.org/wiki/Tenerife"
+longitude = -16.583333333333332
+latitude = 28.25
+in = [
+    "urn:ró:country:tenerife",
+    "urn:ró:country:spain",
+]
+features = [
+    "urn:ró:place_feature:island",
+]
+
+[[places]]
+id = "urn:ró:place:148"
+name = "Ireland"
+wikipedia = "https://en.wikipedia.org/wiki/Ireland"
+longitude = -8.24389
+latitude = 53.41291
+in = [
+    "urn:ró:country:ireland",
+    "urn:ró:place:142",
+]
+features = [
+    "urn:ró:place_feature:country",
+]
+
+[[places]]
+id = "urn:ró:place:149"
+name = "Slovenia"
+wikipedia = "https://en.wikipedia.org/wiki/Slovenia"
+longitude = 14.9955
+latitude = 46.1512
+in = [
+    "urn:ró:country:slovenia",
+    "urn:ró:place:142",
+]
+features = [
+    "urn:ró:place_feature:country",
+]
+
+[[places]]
+id = "urn:ró:place:150"
+name = "England"
+wikipedia = "https://en.wikipedia.org/wiki/England"
+longitude = -0.1275
+latitude = 51.50722222222222
+in = [
+    "urn:ró:country:england",
+    "urn:ró:place:142",
+]
+features = [
+    "urn:ró:place_feature:country",
+]
+
+[[places]]
+id = "urn:ró:place:151"
+name = "Lanzarote"
+wikipedia = "https://en.wikipedia.org/wiki/Lanzarote"
+longitude = -13.5
+latitude = 29.0
+in = [
+    "urn:ró:country:lanzarote",
+    "urn:ró:country:spain",
+]
+features = [
+    "urn:ró:place_feature:island",
 ]
 
 [[countries]]
