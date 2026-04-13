@@ -122,6 +122,7 @@ class PhotoTUI(App):
         Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
         Binding("m", "open_things", "Open things.toml"),
+        Binding("l", "label_image", "Label image"),
         Binding("q", "quit", "Quit"),
     ]
 
@@ -208,6 +209,31 @@ class PhotoTUI(App):
             open_in_viewer(fpath)
         else:
             self.notify(f"No local file found for {url}", severity="warning")
+
+    def action_label_image(self) -> None:
+        url = self._state.current_photo.thumbnail_url
+        fpath = fpath_for_url(url)
+        self.notify("Asking Google Vision...", timeout=3)
+        self.run_worker(
+            lambda: self._fetch_labels(fpath, url),
+            exclusive=False,
+            thread=True,
+        )
+
+    def _fetch_labels(self, fpath: str | None, url: str) -> None:
+        from rich.markup import escape
+        from .vision import label_image
+        try:
+            labels = label_image(fpath, url)
+        except Exception as exc:
+            self.call_from_thread(self.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
+            return
+        if not labels:
+            self.call_from_thread(self.notify, "No labels returned", severity="warning")
+            return
+        text = escape("  •  ".join(labels[:6]))
+        self.call_from_thread(self.copy_to_clipboard, "  •  ".join(labels[:6]))
+        self.call_from_thread(self.notify, text, timeout=12)
 
     # ------------------------------------------------------------------
     # Message handlers (from FieldTable)
