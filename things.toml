@@ -4208,3 +4208,179 @@ name = "Great Black Wasp"
 [[insects]]
 id = "urn:ró:insect:tyria-jacobaeae"
 name = "Cinnabar Moth"
+
+[[insects]]
+id = "urn:ró:insect:anthocharis-cardamines"
+name = "Orange-tip"
+
+[[insects]]
+id = "urn:ró:insect:apis-mellifera"
+name = "Western Honey Bee"
+
+[[insects]]
+id = "urn:ró:insect:bombus-lapidarius"
+name = "Red-tailed Bumblebee"
+
+[[insects]]
+id = "urn:ró:insect:bombus-terrestris"
+name = "Buff-tailed Bumblebee"
+
+[[insects]]
+id = "urn:ró:insect:calliptamus-italicus"
+name = "Italian Locust"
+
+[[insects]]
+id = "urn:ró:insect:coccinella-septempunctata"
+name = "Seven-spot Ladybird"
+
+[[insects]]
+id = "urn:ró:insect:crocothemis-erythraea"
+name = "Scarlet Darter"
+
+[[insects]]
+id = "urn:ró:insect:danaus-plexippus"
+name = "Monarch"
+
+[[insects]]
+id = "urn:ró:insect:episyrphus-balteatus"
+name = "Marmalade Hoverfly"
+
+[[insects]]
+id = "urn:ró:insect:papilio-cresphontes"
+name = "Giant Swallowtail"
+
+[[insects]]
+id = "urn:ró:insect:papilio-glaucus"
+name = "Eastern Tiger Swallowtail"
+
+[[insects]]
+id = "urn:ró:insect:pararge-aegeria"
+name = "Speckled Wood"
+
+[[birds]]
+id = "urn:ró:bird:aegypius-monachus"
+name = "Cinereous Vulture"
+
+[[birds]]
+id = "urn:ró:bird:larus-ridibundus"
+name = "Black-headed Gull"
+
+[[birds]]
+id = "urn:ró:bird:spheniscus-demersus"
+name = "African Penguin"
+
+[[mammals]]
+id = "urn:ró:mammal:camelus-dromedarius"
+name = "Dromedary"
+
+[[mammals]]
+id = "urn:ró:mammal:dolichotis-patagonum"
+name = "Patagonian Mara"
+
+[[mammals]]
+id = "urn:ró:mammal:equus-caballus"
+name = "Horse"
+
+[[mammals]]
+id = "urn:ró:mammal:hylobates-lar"
+name = "Lar Gibbon"
+
+[[mammals]]
+id = "urn:ró:mammal:macaca-nigra"
+name = "Celebes Crested Macaque"
+
+[[mammals]]
+id = "urn:ró:mammal:macropus-eugenii"
+name = "Tammar Wallaby"
+
+[[mammals]]
+id = "urn:ró:mammal:symphalangus-syndactylus"
+name = "Siamang"
+
+[[mammals]]
+id = "urn:ró:mammal:varecia-rubra"
+name = "Red Ruffed Lemur"
+
+[[reptiles]]
+id = "urn:ró:reptile:alligator-mississippiensis"
+name = "American Alligator"
+
+[[reptiles]]
+id = "urn:ró:reptile:brachylophus-fasciatus"
+name = "Fiji Banded Iguana"
+
+[[reptiles]]
+id = "urn:ró:reptile:bronchocela-cristatella"
+name = "Green Crested Lizard"
+
+[[reptiles]]
+id = "urn:ró:reptile:bufo-bufo"
+name = "Common Toad"
+
+[[reptiles]]
+id = "urn:ró:reptile:correlophus-ciliatus"
+name = "Crested Gecko"
+
+[[reptiles]]
+id = "urn:ró:reptile:crocodylus-niloticus"
+name = "Nile Crocodile"
+
+[[reptiles]]
+id = "urn:ró:reptile:cyclura-cornuta"
+name = "Rhinoceros Iguana"
+
+[[reptiles]]
+id = "urn:ró:reptile:dracaena-guianensis"
+name = "Caiman Lizard"
+
+[[reptiles]]
+id = "urn:ró:reptile:gonocephalus-liogaster"
+name = "Blue-crested Lizard"
+
+[[reptiles]]
+id = "urn:ró:reptile:graptemys-ouachitensis"
+name = "Ouachita Map Turtle"
+
+[[reptiles]]
+id = "urn:ró:reptile:hymenochirus-boettgeri"
+name = "Dwarf African Frog"
+
+[[reptiles]]
+id = "urn:ró:reptile:pseudemys-concinna"
+name = "River Cooter"
+
+[[reptiles]]
+id = "urn:ró:reptile:trachemys-scripta-scripta"
+name = "Yellow-bellied Slider"
+
+[[reptiles]]
+id = "urn:ró:reptile:tribolonotus-novaeguineae"
+name = "Red-eyed Crocodile Skink"
+
+[[reptiles]]
+id = "urn:ró:reptile:varanus-komodoensis"
+name = "Komodo Dragon"
+
+[[fish]]
+id = "urn:ró:fish:carcharhinus-plumbeus"
+name = "Sandbar Shark"
+
+[[fish]]
+id = "urn:ró:fish:diodon-holocanthus"
+name = "Balloonfish"
+
+[[fish]]
+id = "urn:ró:fish:gymnothorax-funebris"
+name = "Green Moray"
+
+[[fish]]
+id = "urn:ró:fish:heteroconger-hassi"
+name = "Spotted Garden Eel"
+
+[[fish]]
+id = "urn:ró:fish:maylandia-callainos"
+name = "Cobalt Zebra Cichlid"
+
+[[fish]]
+id = "urn:ró:fish:petromyzon-marinus"
+name = "Sea Lamprey"
