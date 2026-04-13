@@ -397,7 +397,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/08963a30e6.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/cb0dd6749a.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/324c1fe906.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/9a819aa080.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:unknown?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/9a819aa080.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:symphalangus-syndactylus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a33d8b48e9.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/ec11ed0835.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:macaca-nigra?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/267e2a9b44.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:macaca-nigra?context=captivity |  |
@@ -1221,7 +1221,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/a5a2db1c74.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:episyrphus-balteatus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/46620b22ad.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/1bf244a17f.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:bombus-lapidarius?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/efc6663519.webp) | Terryland Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/efc6663519.webp) | Terryland Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:pararge-aegeria?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b4264adc15.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e8b3222017.webp) | Toledo | Wildlife | ⭐⭐⭐ | urn:ró:place:16 |  | urn:ró:bird:phylloscopus-collybita?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/1de246894b.webp) | Toledo | Other | ⭐⭐ | urn:ró:place:16 |  |  |  |
@@ -1263,7 +1263,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d73187061d.webp) | West Ireland | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fb68439825.webp) | West Ireland | Landscape | ⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9e77902d2b.webp) | West Ireland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:148 | kylemore abbey reflected in a lake. framed by lakeside vegetation, with a forest in the background |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4052f8fc17.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:amphibian:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4052f8fc17.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:bufo-bufo?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/83747a558d.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c5bab0f1ba.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2cbef7f55c.webp) | Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
@@ -1273,7 +1273,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e4b03f5fd4.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:danaus-plexippus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/ccbe805b02.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:hirundo-rustica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/16fdaa990a.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:calliptamus-italicus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/8f9147da33.webp) | Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/8f9147da33.webp) | Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:papilio-glaucus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e531674e91.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:tauraco-persa?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/928671fcbc.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/48629892fe.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:unknown |  |
