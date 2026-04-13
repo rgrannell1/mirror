@@ -4200,3 +4200,11 @@ name = "Green Iguana"
 [[reptiles]]
 id = "urn:ró:reptile:podarcis-sicula"
 name = "Italian Wall Lizard"
+
+[[insects]]
+id = "urn:ró:insect:sphex-pensylvanicus"
+name = "Great Black Wasp"
+
+[[insects]]
+id = "urn:ró:insect:tyria-jacobaeae"
+name = "Cinnabar Moth"
