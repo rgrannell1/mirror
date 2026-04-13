@@ -1217,10 +1217,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/252913ee69.webp) | Tenerife | Landscape | ⭐⭐⭐ |  urn:ró:place:46,urn:ró:place:45 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4dd7586211.webp) | Tenerife | Landscape | ⭐⭐⭐⭐ |  urn:ró:place:46,urn:ró:place:45 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7fd14b3564.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:bird:turdus-merula?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/730063a3bf.webp) | Terryland Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/a5a2db1c74.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/730063a3bf.webp) | Terryland Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:anthocharis-cardamines?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/a5a2db1c74.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:episyrphus-balteatus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/46620b22ad.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/1bf244a17f.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/1bf244a17f.webp) | Terryland Park | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:bombus-lapidarius?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/efc6663519.webp) | Terryland Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b4264adc15.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e8b3222017.webp) | Toledo | Wildlife | ⭐⭐⭐ | urn:ró:place:16 |  | urn:ró:bird:phylloscopus-collybita?context=wild |  |
