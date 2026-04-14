@@ -4385,6 +4385,18 @@ name = "Cobalt Zebra Cichlid"
 id = "urn:ró:fish:petromyzon-marinus"
 name = "Sea Lamprey"
 
+[[cars]]
+id = "urn:ró:car:bmw-isetta"
+name = "BMW Isetta"
+
+[[cars]]
+id = "urn:ró:car:cadi-kr200"
+name = "KR200"
+
+[[cars]]
+id = "urn:ró:car:opel-kadett-b"
+name = "Opel Kadett B"
+
 [[trains]]
 id = "urn:ró:train:channel-tunnel-hunslet"
 name = "Channel Tunnel Hunslet"
