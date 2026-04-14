@@ -4384,3 +4384,35 @@ name = "Cobalt Zebra Cichlid"
 [[fish]]
 id = "urn:ró:fish:petromyzon-marinus"
 name = "Sea Lamprey"
+
+[[trains]]
+id = "urn:ró:train:channel-tunnel-hunslet"
+name = "Channel Tunnel Hunslet"
+
+[[trains]]
+id = "urn:ró:train:dutchess-of-hamilton"
+name = "Duchess of Hamilton"
+
+[[trains]]
+id = "urn:ró:train:eurostar"
+name = "Eurostar"
+
+[[trains]]
+id = "urn:ró:train:forchbahn-be-4-4"
+name = "Forchbahn Be 4/4"
+
+[[trains]]
+id = "urn:ró:train:ice"
+name = "ICE"
+
+[[trains]]
+id = "urn:ró:train:sbb-rabe-511"
+name = "SBB RABe 511"
+
+[[trains]]
+id = "urn:ró:train:shinkansen"
+name = "Shinkansen"
+
+[[trains]]
+id = "urn:ró:train:siemens-mireo"
+name = "Siemens Mireo"

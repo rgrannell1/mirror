@@ -6,7 +6,7 @@ from pathlib import Path
 
 THINGS_PATH = Path(__file__).parent.parent / "things.toml"
 
-_ANIMAL_TYPES = ("bird", "mammal")
+_ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
 _CONTEXT_VALUES = ("wild", "captive")
 _UNKNOWN_ANIMAL_TYPES = ("bird", "mammal", "reptile", "insect", "amphibian", "fish")
 
@@ -46,13 +46,14 @@ def load_urn_names() -> dict[str, str]:
             latin = urn.removeprefix("urn:ró:bird:")
             names[urn] = _latin_to_display(latin)
 
-    for mammal in data.get("mammals", []):
-        if "name" in mammal:
-            names[mammal["id"]] = mammal["name"]
-
-    for plane in data.get("planes", []):
-        if "name" in plane:
-            names[plane["id"]] = plane["name"]
+    for section in ("mammals", "reptiles", "amphibians", "fish", "insects", "planes", "cars", "trains"):
+        for entry in data.get(section, []):
+            urn = entry["id"]
+            if "name" in entry:
+                names[urn] = entry["name"]
+            else:
+                category = urn.split(":")[2]
+                names[urn] = _latin_to_display(urn.removeprefix(f"urn:ró:{category}:"))
 
     return names
 

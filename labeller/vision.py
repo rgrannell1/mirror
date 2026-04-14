@@ -13,7 +13,11 @@ PROMPT = (
     "(e.g. urn:ró:bird:hirundo-rustica?context=captivity, "
     "urn:ró:mammal:vulpes-vulpes?context=captivity, urn:ró:insect:vanessa-atalanta?context=wild, "
     "urn:ró:amphibian:rana-temporaria?context=wild). "
-    "For non-animals, give the most specific name possible (e.g. 'Shinkansen N700S', 'Boeing 737-800'). "
+    "For cars, return a URN tag in the format urn:ró:car:<make>-<model> with make and model lowercased "
+    "and hyphenated (e.g. urn:ró:car:ferrari-f40, urn:ró:car:volkswagen-beetle, urn:ró:car:ford-mustang). "
+    "For trains, return a URN tag in the format urn:ró:train:<operator>-<model> lowercased and hyphenated "
+    "(e.g. urn:ró:train:jr-shinkansen-n700s, urn:ró:train:eurostar-e320, urn:ró:train:dart-arrow). "
+    "For other non-animals, give the most specific name possible (e.g. 'Shinkansen N700S', 'Boeing 737-800'). "
     "Return only a comma-separated list of tags, most specific first, no explanation."
 )
 

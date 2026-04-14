@@ -238,7 +238,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d71a9d22f9.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:tragelaphus-spekii?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/48a94ecf2e.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:hydrochoerus-hydrochaeris?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a183327f81.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/4637343bda.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:insect:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/4637343bda.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:insect:lasius-niger?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/49cfee6d16.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:bird:aplonis-metallica?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a927f585cd.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:reptile:bronchocela-cristatella?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/55e8166731.webp) | Chester Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:myrmecophaga-tridactyla?context=captivity |  |
@@ -691,7 +691,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/b90dd0f143.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8c2b1901ab.webp) | London | Cityscape | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:equus-ferus-caballus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4aaaf6c7a8.webp) | London | Wildlife | ⭐⭐⭐ |  urn:ró:place:115,urn:ró:place:37 |  | urn:ró:bird:larus-argentatus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/093f2c0481.webp) | London | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:37 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/093f2c0481.webp) | London | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:larus-argentatus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/18b1815dd2.webp) | London | Transport | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/dad7c2ab54.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:fulica-atra?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/327fd84457.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:sciurus-carolinensis?context=wild |  |
@@ -744,11 +744,11 @@
 | ![](https://photos-cdn.rgrannell.xyz/207db48420.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c798387d82.webp) | London | Museum | ⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0ee5275ac.webp) | London | Museum | ⭐⭐⭐ | urn:ró:place:37 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6c15f7c162.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6c15f7c162.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 | The space shuttle vs buran |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/169f67b0e4.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:spacecraft:apollo-one |  |
 | ![](https://photos-cdn.rgrannell.xyz/3a0e4fb537.webp) | London | Museum | ⭐⭐ | urn:ró:place:40 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9168f269cd.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:car:bmw-isetta |  |
-| ![](https://photos-cdn.rgrannell.xyz/a7cfcca6f1.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a7cfcca6f1.webp) | London | Transport | ⭐⭐ | urn:ró:place:40 |  | urn:ró:car:cadi-kr200 |  |
 | ![](https://photos-cdn.rgrannell.xyz/5c94d8673b.webp) | London | Museum | ⭐⭐ | urn:ró:place:40 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd7773ab5c.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:anser-anser?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/576942495b.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
@@ -1147,8 +1147,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/878d29f4f2.webp) | Slovenia | Cityscape | ⭐⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/99a1c91854.webp) | Slovenia | Transport | ⭐⭐⭐ | urn:ró:place:10 |  | urn:ró:car:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/9f5bbbc63a.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2dbe45ea2f.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d8d13a7a06.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2dbe45ea2f.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 | The cyanometer |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d8d13a7a06.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 | A plaque commemorating James Joyce's accidental visit to Ljubliana |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bda21335ab.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:149 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/29b6f5b066.webp) | Slovenia | Transport | ⭐⭐⭐ | urn:ró:place:149 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/bf24f301a9.webp) | Slovenia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
@@ -1163,7 +1163,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/4343e6c711.webp) | Slovenia | Landscape | ⭐⭐⭐⭐ | urn:ró:place:12 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6dd966f370.webp) | Slovenia | Cityscape | ⭐⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0c20b9911f.webp) | Slovenia | Cityscape | ⭐⭐⭐ | urn:ró:place:10 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/84e064a261.webp) | Slovenia | Transport | ⭐⭐⭐ | urn:ró:place:149 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/84e064a261.webp) | Slovenia | Transport | ⭐⭐⭐ | urn:ró:place:149 |  | urn:ró:car:opel-kadett-b |  |
 | ![](https://photos-cdn.rgrannell.xyz/568b34cadc.webp) | Slovenia | Cityscape | ⭐⭐ | urn:ró:place:11 | Ljubljana Mosque. I was hoping for a better photo, but construction work ruined the view a little... |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp) | Slovenia | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:12 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/04634e2015.webp) | Slovenia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
@@ -1175,9 +1175,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/90d270e2fd.webp) | Switzerland | Cityscape | ⭐⭐⭐ | urn:ró:place:61 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0785b794cc.webp) | Switzerland | Landscape | ⭐⭐⭐ | urn:ró:place:61 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a154324449.webp) | Switzerland | Cityscape | ⭐⭐⭐ | urn:ró:place:61 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b4207fcc1c.webp) | Switzerland | Transport | ⭐⭐⭐ | urn:ró:place:61 |  | urn:ró:train:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/b4207fcc1c.webp) | Switzerland | Transport | ⭐⭐⭐ | urn:ró:place:61 |  | urn:ró:train:forchbahn-be-4-4 |  |
 | ![](https://photos-cdn.rgrannell.xyz/bc3ff7713e.webp) | Switzerland | Cityscape | ⭐⭐⭐ | urn:ró:place:61 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f6ca9d3532.webp) | Switzerland | Transport | ⭐⭐⭐ | urn:ró:place:61 |  | urn:ró:train:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/f6ca9d3532.webp) | Switzerland | Transport | ⭐⭐⭐ | urn:ró:place:61 |  | urn:ró:train:sbb-rabe-511 |  |
 | ![](https://photos-cdn.rgrannell.xyz/d5376d376e.webp) | Switzerland | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:61 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e88a42592e.webp) | Tenerife | Wildlife | ⭐⭐ | urn:ró:place:147 |  | urn:ró:bird:bubulcus-ibis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f06df952de.webp) | Tenerife | Wildlife | ⭐⭐ | urn:ró:place:147 |  | urn:ró:bird:passer-hispaniolensis?context=wild |  |
@@ -1298,7 +1298,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/c40f38b997.webp) | York | Landscape | ⭐⭐⭐⭐ | urn:ró:place:47 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/dcf6d2dfbe.webp) | York | Transport | ⭐⭐ | urn:ró:place:47 |  | urn:ró:train:dutchess-of-hamilton |  |
 | ![](https://photos-cdn.rgrannell.xyz/2cfeb22ec8.webp) | York | Transport | ⭐⭐ | urn:ró:place:47 |  | urn:ró:train:shinkansen |  |
-| ![](https://photos-cdn.rgrannell.xyz/20dcd64058.webp) | York | Transport | ⭐⭐ | urn:ró:place:47 |  | urn:ró:train:unknown |  |
+| ![](https://photos-cdn.rgrannell.xyz/20dcd64058.webp) | York | Transport | ⭐⭐ | urn:ró:place:47 |  | urn:ró:train:channel-tunnel-hunslet |  |
 | ![](https://photos-cdn.rgrannell.xyz/636d608336.webp) | York | Cityscape | ⭐⭐ | urn:ró:place:47 | A statue of constantine |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7125801a14.webp) | York | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:47 |  | urn:ró:bird:anser-anser?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/cec16b72af.webp) | York | Cityscape | ⭐⭐ | urn:ró:place:47 |  |  |  |
