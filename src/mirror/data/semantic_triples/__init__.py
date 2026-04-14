@@ -2,7 +2,7 @@
 
 from .albums import AlbumTriples
 from .exif import ExifTriplesReader
-from .photos import AlbumBannerReader, ListingCoverReader, PhotoTriples, PhotosCountryReader
+from .photos import AlbumBannerReader, ListingCoverReader, PhotoTriples, PhotosCountryReader, ThingCoverReader
 from .videos import VideosReader
 
 __all__ = [
@@ -12,5 +12,6 @@ __all__ = [
     "ListingCoverReader",
     "PhotoTriples",
     "PhotosCountryReader",
+    "ThingCoverReader",
     "VideosReader",
 ]

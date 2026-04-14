@@ -143,6 +143,62 @@ class ListingCoverReader:
             yield SemanticTriple(photo_urn, "cover", listing_urn)
 
 
+THING_COVER_QUERY = """
+WITH all_candidates AS (
+    -- Explicit cover assignments (is_explicit=1) and subject/location photos (is_explicit=0)
+    SELECT
+        ph.fpath,
+        pmt.target AS thing_urn,
+        vps.rating,
+        CASE WHEN pmt.relation = 'cover' THEN 1 ELSE 0 END AS is_explicit
+    FROM photo_metadata_table pmt
+    JOIN phashes ph ON pmt.phash = ph.phash
+    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+    WHERE pmt.relation IN ('subject', 'location', 'cover')
+
+    UNION ALL
+
+    -- Country photos derived from single-country album flags
+    SELECT
+        ph.fpath,
+        'urn:ró:country:' || replace(lower(vad.flags), ' ', '-') AS thing_urn,
+        vps.rating,
+        0 AS is_explicit
+    FROM photos p
+    JOIN phashes ph ON p.fpath = ph.fpath
+    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+    JOIN view_album_data vad ON p.dpath = vad.dpath
+    WHERE vad.flags IS NOT NULL AND vad.flags != '' AND vad.flags NOT LIKE '%,%'
+),
+ranked AS (
+    SELECT
+        fpath,
+        thing_urn,
+        ROW_NUMBER() OVER (
+            PARTITION BY thing_urn
+            ORDER BY is_explicit DESC, rating DESC
+        ) AS rank
+    FROM all_candidates
+)
+SELECT fpath, thing_urn FROM ranked WHERE rank = 1
+"""
+
+
+class ThingCoverReader:
+    """Selects one cover photo per individual thing (bird, place, country, etc.).
+
+    Explicit cover assignments (relation='cover' in photo_metadata_table) take
+    priority; otherwise the highest-rated photo referencing the thing is used.
+
+    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<type>:<thing-id>
+    """
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        for fpath, thing_urn in db.conn.execute(THING_COVER_QUERY).fetchall():
+            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+            yield SemanticTriple(photo_urn, "cover", thing_urn)
+
+
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         # TODO I don't get this logic.
