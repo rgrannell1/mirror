@@ -720,7 +720,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/ce535de04f.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:camelus-bactrianus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/d71052d021.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/16c192972c.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:panthera-tigris?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/efaad7c4cb.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:reptile:hymenochirus-boettgeri?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/efaad7c4cb.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:amphibian:hymenochirus-boettgeri?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8f66878ac6.webp) | London | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:suricata-suricatta?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a9c8be477e.webp) | London | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:aonyx-cinereus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4946dec4a3.webp) | London | Cityscape | ⭐⭐ | urn:ró:place:37 |  |  |  |
@@ -1263,7 +1263,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d73187061d.webp) | West Ireland | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/fb68439825.webp) | West Ireland | Landscape | ⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9e77902d2b.webp) | West Ireland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:148 | kylemore abbey reflected in a lake. framed by lakeside vegetation, with a forest in the background |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4052f8fc17.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:bufo-bufo?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4052f8fc17.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:amphibian:bufo-bufo?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/83747a558d.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c5bab0f1ba.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2cbef7f55c.webp) | Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:insect:unknown?context=wild |  |

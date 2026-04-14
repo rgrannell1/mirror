@@ -7,11 +7,12 @@ from pathlib import Path
 PROMPT = (
     "Identify the main subject of this image for photo tagging purposes. "
     "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "
-    "where <category> is one of: bird, mammal, insect, fish, reptile, and <latin-binomial> is the "
-    "species name lowercased with a hyphen, followed by ?context=wild for insects or "
+    "where <category> is one of: bird, mammal, insect, fish, reptile, amphibian, and <latin-binomial> is the "
+    "species name lowercased with a hyphen, followed by ?context=wild for insects and amphibians or "
     "?context=captivity for all other animal categories "
     "(e.g. urn:ró:bird:hirundo-rustica?context=captivity, "
-    "urn:ró:mammal:vulpes-vulpes?context=captivity, urn:ró:insect:vanessa-atalanta?context=wild). "
+    "urn:ró:mammal:vulpes-vulpes?context=captivity, urn:ró:insect:vanessa-atalanta?context=wild, "
+    "urn:ró:amphibian:rana-temporaria?context=wild). "
     "For non-animals, give the most specific name possible (e.g. 'Shinkansen N700S', 'Boeing 737-800'). "
     "Return only a comma-separated list of tags, most specific first, no explanation."
 )

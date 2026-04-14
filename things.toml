@@ -4313,8 +4313,8 @@ name = "Fiji Banded Iguana"
 id = "urn:ró:reptile:bronchocela-cristatella"
 name = "Green Crested Lizard"
 
-[[reptiles]]
-id = "urn:ró:reptile:bufo-bufo"
+[[amphibians]]
+id = "urn:ró:amphibian:bufo-bufo"
 name = "Common Toad"
 
 [[reptiles]]
@@ -4341,8 +4341,8 @@ name = "Blue-crested Lizard"
 id = "urn:ró:reptile:graptemys-ouachitensis"
 name = "Ouachita Map Turtle"
 
-[[reptiles]]
-id = "urn:ró:reptile:hymenochirus-boettgeri"
+[[amphibians]]
+id = "urn:ró:amphibian:hymenochirus-boettgeri"
 name = "Dwarf African Frog"
 
 [[reptiles]]
