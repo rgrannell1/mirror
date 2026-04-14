@@ -2,13 +2,14 @@
 
 from .albums import AlbumTriples
 from .exif import ExifTriplesReader
-from .photos import AlbumBannerReader, PhotoTriples, PhotosCountryReader
+from .photos import AlbumBannerReader, ListingCoverReader, PhotoTriples, PhotosCountryReader
 from .videos import VideosReader
 
 __all__ = [
     "AlbumTriples",
     "AlbumBannerReader",
     "ExifTriplesReader",
+    "ListingCoverReader",
     "PhotoTriples",
     "PhotosCountryReader",
     "VideosReader",

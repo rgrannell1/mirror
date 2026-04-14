@@ -62,6 +62,87 @@ class AlbumBannerReader:
             yield SemanticTriple(album_source, "album_banner", photo_source)
 
 
+LISTING_COVER_QUERY = """
+-- urn:ró: is 7 chars; substr(target, 8) strips the prefix leaving '<type>:<id>'
+WITH categorised AS (
+    SELECT
+        ph.fpath,
+        vps.rating,
+        vps.genre,
+        CASE
+            WHEN pmt.relation = 'subject'
+                THEN substr(pmt.target, 8, instr(substr(pmt.target, 8), ':') - 1)
+            WHEN pmt.relation = 'location' AND pmt.target LIKE 'urn:ró:place:%'
+                THEN 'place'
+        END AS listing_type
+    FROM photo_metadata_table pmt
+    JOIN phashes ph ON pmt.phash = ph.phash
+    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+),
+ranked AS (
+    SELECT
+        fpath,
+        listing_type,
+        ROW_NUMBER() OVER (
+            PARTITION BY listing_type
+            ORDER BY
+                CASE WHEN listing_type = 'place' AND lower(genre) LIKE '%landscape%' THEN 0 ELSE 1 END ASC,
+                rating DESC
+        ) AS rank
+    FROM categorised
+    WHERE listing_type IN ('bird', 'mammal', 'reptile', 'amphibian', 'fish', 'insect', 'plane', 'train', 'car', 'place')
+)
+SELECT fpath, listing_type FROM ranked WHERE rank = 1
+"""
+
+COUNTRY_COVER_QUERY = """
+WITH country_photos AS (
+    SELECT
+        ph.fpath,
+        vps.rating,
+        vps.genre
+    FROM photos p
+    JOIN phashes ph ON p.fpath = ph.fpath
+    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+    JOIN view_album_data vad ON p.dpath = vad.dpath
+    WHERE vad.flags IS NOT NULL AND vad.flags != '' AND vad.flags NOT LIKE '%,%'
+),
+ranked AS (
+    SELECT
+        fpath,
+        ROW_NUMBER() OVER (
+            ORDER BY
+                CASE WHEN lower(genre) LIKE '%landscape%' THEN 0 ELSE 1 END ASC,
+                rating DESC
+        ) AS rank
+    FROM country_photos
+)
+SELECT fpath, 'country' AS listing_type FROM ranked WHERE rank = 1
+"""
+
+
+class ListingCoverReader:
+    """Selects one representative cover photo per top-level listing type.
+
+    For subject-based types (bird, mammal, etc.) the highest-rated photo is
+    chosen.  For place and country the best landscape photo is preferred,
+    falling back to highest-rated if no landscape exists.
+
+    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:listing:<type>
+    """
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        for fpath, listing_type in db.conn.execute(LISTING_COVER_QUERY).fetchall():
+            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+            listing_urn = f"urn:ró:listing:{listing_type}"
+            yield SemanticTriple(photo_urn, "cover", listing_urn)
+
+        for fpath, listing_type in db.conn.execute(COUNTRY_COVER_QUERY).fetchall():
+            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+            listing_urn = f"urn:ró:listing:{listing_type}"
+            yield SemanticTriple(photo_urn, "cover", listing_urn)
+
+
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         # TODO I don't get this logic.

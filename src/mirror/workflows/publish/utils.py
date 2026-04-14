@@ -16,6 +16,7 @@ from mirror.data.semantic_triples import (
     AlbumTriples,
     AlbumBannerReader,
     ExifTriplesReader,
+    ListingCoverReader,
     PhotoTriples,
     PhotosCountryReader,
     VideosReader,
@@ -275,6 +276,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         PhotoRelationsReader(),
         PhotosCountryReader(),
         AlbumBannerReader(),
+        ListingCoverReader(),
     ]
     seen: set[int] = set()
     for long, alias in CURIE.items():
