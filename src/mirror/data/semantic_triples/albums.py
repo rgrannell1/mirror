@@ -51,6 +51,9 @@ class AlbumTriples:
                 country_id = country.lower().replace(" ", "-")
                 countries.append(f"urn:ró:country:{country_id}")
 
+            if album.id is None:
+                continue
+
             source = f"urn:ró:album:{album.id}"
             yield SemanticTriple(source, "name", album.name)
             yield SemanticTriple(source, "photos_count", album.photos_count)

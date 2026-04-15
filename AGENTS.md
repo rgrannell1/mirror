@@ -50,6 +50,20 @@ Required in `.env` or environment:
 - `GEONAMES_USERNAME` — for Geonames API lookups
 - `PHOTO_DIRECTORY`, `DATABASE_PATH`, `OUTPUT_DIRECTORY` — override default paths
 
+## How Triples Are Generated
+
+Album and photo identity flows from `albums.md` → `media_metadata_table` → views → triple readers → `triples.<id>.json`.
+
+- `media_metadata_table` is the source of truth for album metadata. Each row is `(src=dpath, src_type='album', relation, target)`. The `permalink` relation holds the album ID slug (e.g. `puerto-de-la-cruz-25`). `ReadAlbums` **wipes all album rows and rewrites from scratch** on every run.
+- `view_album_data` joins all distinct dpaths found in the `photos` / `videos` tables against `media_metadata_table`. The album's `id` column is the `permalink` target for that dpath.
+- `view_photo_data` joins `photos` (keyed by `fpath`/`dpath`) with `view_album_data` to derive `album_id`, and with `encoded_photos` to get CDN URLs.
+- `AlbumTriples` (in `data/semantic_triples/albums.py`) reads `view_album_data` and emits one block of triples per album under `urn:ró:album:<id>`.
+- `PhotoTriples` (in `data/semantic_triples/photos.py`) reads `view_photo_data` and emits one block per photo, including `album_id`.
+
+**Renaming an album ID** (permalink only, folder unchanged): edit the `permalink` column in `albums.md`, then re-run the pipeline. `ReadAlbums` clears and re-inserts all album metadata, so the old ID is fully gone before `PublishTriples` runs. Publishing without first running `ReadAlbums` will emit triples for the stale old ID.
+
+**Null-id risk**: if `view_album_data` returns a row with `id = NULL` (dpath present in `photos` but no matching permalink in `media_metadata_table`), `AlbumTriples` will emit `urn:ró:album:None` and `PhotoTriples` will emit photos with `album_id = None` — both cause frontend parse failures. Guard: always run `ReadAlbums` before `PublishTriples`, or add `if album.id is None: continue` in `AlbumTriples.read()`.
+
 ## Adding a New Album
 
 1. Add folder under `PHOTO_DIRECTORY` with `Published/` media; one filename must contain `+cover`

@@ -12,6 +12,9 @@ if TYPE_CHECKING:
 class PhotoTriples:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for photo in db.photo_data_table().list():
+            if photo.album_id is None:
+                continue
+
             source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
 
             yield SemanticTriple(source, "album_id", photo.album_id)
