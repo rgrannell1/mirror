@@ -19,7 +19,7 @@ def _row_to_line(row: PhotoRow) -> str:
     return "| " + " | ".join(cells) + " |"
 
 
-def save_row(path: Path, row: PhotoRow) -> None:
+def save_photo_row(path: Path, row: PhotoRow) -> None:
     with open(path) as handle:
         lines = handle.readlines()
     lines[row.line_number - 1] = _row_to_line(row) + "\n"

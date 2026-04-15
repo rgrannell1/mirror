@@ -1,8 +1,8 @@
-# Named preset filters available in the command palette.
-# Each entry is (display_label, predicate).
+"""Named preset filters for the photo command palette."""
+
 from typing import Callable
 
-from labeller.parser import PhotoRow
+from .parser import PhotoRow
 
 _ANIMAL_PREFIXES = ("urn:ró:bird:", "urn:ró:mammal:")
 

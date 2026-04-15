@@ -57,13 +57,13 @@ def _parse_row(line: str, line_number: int) -> PhotoRow | None:
 
 def load_photos(path: Path) -> list[PhotoRow]:
     rows = []
-    with open(path) as f:
-        lines = f.readlines()
-    for i, line in enumerate(lines, 1):
+    with open(path) as handle:
+        lines = handle.readlines()
+    for line_number, line in enumerate(lines, 1):
         stripped = line.rstrip("\n")
         if not stripped.startswith("|") or "---" in stripped or stripped.startswith("| embedding"):
             continue
-        row = _parse_row(stripped, i)
+        row = _parse_row(stripped, line_number)
         if row is not None:
             rows.append(row)
     return rows
