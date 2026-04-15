@@ -784,7 +784,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/aeae673eff.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:vulpes-vulpes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c8d2068e99.webp) | London Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:psittacus-erithacus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/632d8956b1.webp) | Lough Atalia | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:103 |  | urn:ró:bird:egretta-garzetta?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/8f73351b9e.webp) | Lough Neagh | Landscape | ⭐⭐ |  urn:ró:place:57,urn:ró:country:northern-ireland |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8f73351b9e.webp) | Lough Neagh | Landscape | ⭐⭐ |  urn:ró:place:57,urn:ró:place:160 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/afa8d34b4e.webp) | Madison & Chicago | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:reptile:correlophus-ciliatus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a59aba13d.webp) | Madison & Chicago | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:dryobates-pubescens?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b1aac92b1b.webp) | Madison & Chicago | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:dryobates-pubescens?context=wild |  |
@@ -917,9 +917,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/8dd043d4a6.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:rangifer-tarandus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/969a55940d.webp) | Oslo & Stockholm | Wildlife | ⭐⭐⭐ | urn:ró:place:52 |  | urn:ró:mammal:sciurus-vulgaris?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f5094ea3f9.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐⭐ | urn:ró:place:51 |  | urn:ró:boat:unknown |  |
-| ![](https://photos-cdn.rgrannell.xyz/004c306938.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:norway |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/004c306938.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:place:161 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c15c0a6eb9.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:51 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/22b3643619.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:country:sweden |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/22b3643619.webp) | Oslo & Stockholm | Landscape | ⭐⭐⭐ | urn:ró:place:165 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a8e888718d.webp) | Oslo & Stockholm | Cityscape | ⭐⭐ | urn:ró:place:52 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff4ffb62c0.webp) | Oslo & Stockholm | Other | ⭐⭐⭐ | urn:ró:place:52 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b3a1e06f44.webp) | Oslo & Stockholm | Cityscape | ⭐⭐⭐ | urn:ró:place:52 |  |  |  |
@@ -1003,10 +1003,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/d5bd31484d.webp) | Rotterdam | Transport | ⭐⭐⭐ | urn:ró:place:74 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/ca5a38a175.webp) | Rotterdam | Cityscape | ⭐⭐⭐ | urn:ró:place:74 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b2dbe6b6f.webp) | Roundstone | Wildlife | ⭐⭐⭐ | urn:ró:place:112 |  | urn:ró:bird:motacilla-cinerea?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/3049f3a56f.webp) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:country:ireland | an island in a connemara lake |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3049f3a56f.webp) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:place:156 | an island in a connemara lake |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/90ead2ab43.webp) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:place:111 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/25c000da6e.webp) | Roundstone | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:111 |  | urn:ró:bird:numenius-phaeopus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/a30333da9d.webp) | Roundstone | Cityscape | ⭐⭐⭐⭐ | urn:ró:country:ireland | statue of the Connemara Giant |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a30333da9d.webp) | Roundstone | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:156 | statue of the Connemara Giant |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/aff3a1db4b.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a7b4f853d7.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/89e69bf6bc.webp) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
