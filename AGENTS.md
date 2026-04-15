@@ -7,6 +7,7 @@
 - The media is in /home/rg/Media/<year>/<album>/Published/*
 - Project outputs to linked project /home/rg/Code/websites/photos.rgrannell.xyz
 - Use uv
+- Always use `uv run python`, never `python` or `python3`
 
 # Project Overview
 

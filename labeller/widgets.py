@@ -1,5 +1,6 @@
 """Reusable Textual widgets: ImageFrame, RatingSelector, FieldRow, and FieldTable."""
 
+from collections.abc import Callable
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.markup import escape
@@ -128,10 +129,11 @@ class FieldRow(Static):
     }
     """
 
-    def __init__(self, field_name: str, **kwargs) -> None:
+    def __init__(self, field_name: str, display_fn: Callable[[str], str] | None = None, **kwargs) -> None:
         super().__init__(**kwargs)
         self._field_name = field_name
         self._value: str = ""
+        self._display_fn = display_fn
 
     def refresh_value(self, value: str, selected: bool) -> None:
         self._value = value
@@ -144,6 +146,8 @@ class FieldRow(Static):
     def _render_label(self) -> None:
         if not self._value:
             display_value = "[dim](empty)[/dim]"
+        elif self._display_fn is not None:
+            display_value = escape(self._display_fn(self._value))
         else:
             display_value = escape(self._value)
         name_markup = f"[bold cyan]{self._field_name:>12}[/bold cyan]"

@@ -1,10 +1,12 @@
-"""Photo-specific widgets: GenreSuggester, PhotoFieldTable."""
+"""Photo-specific widgets: GenreSuggester, UrnSuggester, PhotoFieldTable."""
 
+from collections.abc import Callable
+from textual.app import ComposeResult
 from textual.suggester import Suggester
 from textual.widget import Widget
 from textual.widgets import Input
 
-from labeller.widgets import FieldTable, RatingSelector, _EDIT_INPUT_ID, _RATING_SELECTOR_ID
+from labeller.widgets import FieldRow, FieldTable, RatingSelector, _EDIT_INPUT_ID, _FIELD_ROW_ID_PREFIX, _RATING_SELECTOR_ID
 
 from .parser import EDITABLE_COLUMNS
 
@@ -25,15 +27,66 @@ class GenreSuggester(Suggester):
         return None
 
 
-class PhotoFieldTable(FieldTable):
-    """FieldTable with photo-specific editors: RatingSelector and GenreSuggester."""
+class UrnSuggester(Suggester):
+    """Autocomplete from a name→URN mapping; suggests 'Name [ urn ]' format.
 
-    def __init__(self, genres: set[str], **kwargs) -> None:
+    The display wrapper is stripped back to the raw URN by on_input_submitted
+    in FieldTable.
+    """
+
+    def __init__(self, name_to_urn: dict[str, str]) -> None:
+        super().__init__(use_cache=False, case_sensitive=False)
+        self._entries = sorted(name_to_urn.items())
+
+    async def get_suggestion(self, value: str) -> str | None:
+        if not value:
+            return None
+        lower = value.casefold()
+        for name, urn in self._entries:
+            if name.casefold().startswith(lower):
+                return f"{name} [ {urn} ]"
+        return None
+
+
+class PhotoFieldTable(FieldTable):
+    """FieldTable with photo-specific editors: RatingSelector, GenreSuggester, UrnSuggester."""
+
+    def __init__(self, genres: set[str], places: dict[str, str], subjects: dict[str, str], **kwargs) -> None:
         super().__init__(
             editable_columns=EDITABLE_COLUMNS,
             **kwargs,
         )
         self._genres = genres
+        self._places = places
+        self._subjects = subjects
+        # Reverse maps for display: urn → name
+        self._urn_to_place = {urn: name for name, urn in places.items()}
+        self._urn_to_subject = {urn: name for name, urn in subjects.items()}
+
+    def _urn_display(self, urn_to_name: dict[str, str]) -> Callable[[str], str]:
+        def _fmt_one(urn: str) -> str:
+            bare = urn.split("?", 1)[0]
+            name = urn_to_name.get(bare)
+            return f"{name} [{urn}]" if name else urn
+
+        def _fmt(value: str) -> str:
+            return ", ".join(_fmt_one(urn.strip()) for urn in value.split(","))
+
+        return _fmt
+
+    def compose(self) -> ComposeResult:
+        for field_index, field_name in enumerate(EDITABLE_COLUMNS):
+            if field_name == "places":
+                display_fn = self._urn_display(self._urn_to_place)
+            elif field_name == "subjects":
+                display_fn = self._urn_display(self._urn_to_subject)
+            else:
+                display_fn = None
+            yield FieldRow(
+                field_name=field_name,
+                display_fn=display_fn,
+                id=f"{_FIELD_ROW_ID_PREFIX}{field_index}",
+            )
 
     def _make_editor(self, field_name: str, current_value: str) -> Widget:
         if field_name == "rating":
@@ -43,6 +96,20 @@ class PhotoFieldTable(FieldTable):
                 value=current_value,
                 placeholder="Edit genre…",
                 suggester=GenreSuggester(self._genres),
+                id=_EDIT_INPUT_ID,
+            )
+        if field_name == "places":
+            return Input(
+                value=current_value,
+                placeholder="Edit places…",
+                suggester=UrnSuggester(self._places),
+                id=_EDIT_INPUT_ID,
+            )
+        if field_name == "subjects":
+            return Input(
+                value=current_value,
+                placeholder="Edit subjects…",
+                suggester=UrnSuggester(self._subjects),
                 id=_EDIT_INPUT_ID,
             )
         return Input(value=current_value, placeholder=f"Edit {field_name}…", id=_EDIT_INPUT_ID)

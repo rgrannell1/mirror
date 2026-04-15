@@ -815,7 +815,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/2798168ec8.webp) | Madrid | Cityscape | ⭐⭐ | urn:ró:place:135 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ff2adb11ed.webp) | Madrid | Cityscape | ⭐⭐ | urn:ró:place:135 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp) | Madrid | Cityscape | ⭐⭐⭐ | urn:ró:place:135 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d109b38ebc.webp) | Madrid | Cityscape | ⭐⭐⭐ | urn:ró:place:135 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d109b38ebc.webp) | Madrid | Cityscape | ⭐⭐⭐ | urn:ró:place:152 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b59e770dbb.webp) | Mallorca | Cityscape | ⭐⭐⭐ | urn:ró:place:146 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ab41a9495.webp) | Mallorca | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:146 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8aede381ca.webp) | Mallorca | Cityscape | ⭐⭐ | urn:ró:place:146 |  |  |  |
@@ -1248,14 +1248,14 @@
 | ![](https://photos-cdn.rgrannell.xyz/2d45eefda5.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e3c4348212.webp) | Toledo | Museum | ⭐⭐⭐ | urn:ró:place:122 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f8fcebbf19.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:122 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/5940f807ef.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/43bf121496.webp) | Toledo | Wildlife | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/b2103a4620.webp) | Toledo | Museum | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2057d482a5.webp) | Toledo | Museum | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/35a64e0546.webp) | Toledo | Wildlife | ⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  | urn:ró:bird:unknown?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/4202e1eabf.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6464bc4af2.webp) | Toledo | Cityspace | ⭐⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/c4812a1335.webp) | Toledo | Other | ⭐⭐⭐ |  urn:ró:place:16,urn:ró:place:121 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5940f807ef.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/43bf121496.webp) | Toledo | Wildlife | ⭐⭐ | urn:ró:place:16 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/b2103a4620.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:16 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2057d482a5.webp) | Toledo | Museum | ⭐⭐ | urn:ró:place:16 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/35a64e0546.webp) | Toledo | Wildlife | ⭐⭐ | urn:ró:place:16 |  | urn:ró:bird:unknown?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4202e1eabf.webp) | Toledo | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6464bc4af2.webp) | Toledo | Cityspace | ⭐⭐⭐⭐ | urn:ró:place:16 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c4812a1335.webp) | Toledo | Other | ⭐⭐⭐ | urn:ró:place:16 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a8e3977a29.webp) | University of Galway | Cityscape | ⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/05476a77f4.webp) | University of Galway | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/82b7408efd.webp) | University of Galway | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |

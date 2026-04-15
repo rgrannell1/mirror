@@ -2199,6 +2199,22 @@ features = [
     "urn:ró:place_feature:island",
 ]
 
+[[places]]
+id = "urn:ró:place:152"
+longitude = -3.7178
+latitude = 40.4237
+name = "Temple of Debod"
+short_name = "Temple of Debod"
+wikipedia = "https://en.wikipedia.org/wiki/Temple_of_Debod"
+in = [
+    "urn:ró:country:spain",
+    "urn:ró:place:135",
+]
+features = [
+    "urn:ró:place_feature:archaeological site",
+    "urn:ró:place_feature:monument",
+]
+
 [[countries]]
 id = "urn:ró:country:usa"
 name = "The United States of America"

@@ -1,6 +1,7 @@
 """PhotoPane widget and PhotoFilterProvider for the Photos tab."""
 
 import random
+import tomllib
 from collections.abc import Callable
 from pathlib import Path
 
@@ -21,6 +22,37 @@ from .widgets import PhotoFieldTable
 from .writer import save_photo_row
 
 PHOTOS_PATH = Path(__file__).parent.parent.parent / "photos.md"
+THINGS_PATH = Path(__file__).parent.parent.parent / "things.toml"
+
+# Sections in things.toml whose entries are treated as photo subjects
+_SUBJECT_SECTIONS = {"birds", "mammals", "reptiles", "insects"}
+
+
+def _load_urn_map(section: str) -> dict[str, str]:
+    """Return {name: urn} for all named entries in *section* of things.toml."""
+    if not THINGS_PATH.exists():
+        return {}
+    with open(THINGS_PATH, "rb") as fh:
+        data = tomllib.load(fh)
+    return {
+        entry["name"]: entry["id"]
+        for entry in data.get(section, [])
+        if "name" in entry and "id" in entry
+    }
+
+
+def _load_all_subject_urns() -> dict[str, str]:
+    """Merge name→urn mappings from all subject sections."""
+    if not THINGS_PATH.exists():
+        return {}
+    with open(THINGS_PATH, "rb") as fh:
+        data = tomllib.load(fh)
+    result: dict[str, str] = {}
+    for section in _SUBJECT_SECTIONS:
+        for entry in data.get(section, []):
+            if "name" in entry and "id" in entry:
+                result[entry["name"]] = entry["id"]
+    return result
 
 
 class PhotoFilterProvider(Provider):
@@ -128,11 +160,18 @@ class PhotoPane(Widget):
         super().__init__(**kwargs)
         photos = load_photos(PHOTOS_PATH)
         self._state = PhotoState(all_photos=photos)
+        self._places_urns = _load_urn_map("places")
+        self._subject_urns = _load_all_subject_urns()
 
     def compose(self) -> ComposeResult:
         yield Label(self._counter_text(), id="counter")
         yield ImageFrame(id="image-frame")
-        yield PhotoFieldTable(genres=self._state.known_genres, id="field-table")
+        yield PhotoFieldTable(
+            genres=self._state.known_genres,
+            places=self._places_urns,
+            subjects=self._subject_urns,
+            id="field-table",
+        )
 
     def on_mount(self) -> None:
         self._refresh_all()
