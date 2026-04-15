@@ -6,12 +6,14 @@ from textual.widgets import Footer, Header, TabbedContent, TabPane
 
 from labeller.albums.pane import AlbumFilterProvider, AlbumPane
 from labeller.photos.pane import PhotoFilterProvider, PhotoPane
+from labeller.videos.pane import VideoFilterProvider, VideoPane
+from labeller.widgets import load_places, load_subjects
 
 
 class LabellerApp(App):
-    """Tabbed labeller: Photos and Albums tabs."""
+    """Tabbed labeller: Photos, Videos, and Albums tabs."""
 
-    COMMANDS = App.COMMANDS | {PhotoFilterProvider, AlbumFilterProvider}
+    COMMANDS = App.COMMANDS | {PhotoFilterProvider, AlbumFilterProvider, VideoFilterProvider}
 
     CSS = """
     TabbedContent {
@@ -22,7 +24,7 @@ class LabellerApp(App):
         padding: 0;
     }
 
-    PhotoPane, AlbumPane {
+    PhotoPane, AlbumPane, VideoPane {
         height: 1fr;
     }
     """
@@ -31,13 +33,21 @@ class LabellerApp(App):
         Binding("q", "quit", "Quit"),
     ]
 
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self._places = load_places()
+        self._subjects = load_subjects()
+        self.last_edit: tuple[str, str] | None = None
+
     def compose(self) -> ComposeResult:
         yield Header()
         with TabbedContent():
             with TabPane("Photos", id="photos"):
-                yield PhotoPane()
+                yield PhotoPane(places=self._places, subjects=self._subjects)
+            with TabPane("Videos", id="videos"):
+                yield VideoPane(places=self._places, subjects=self._subjects)
             with TabPane("Albums", id="albums"):
-                yield AlbumPane()
+                yield AlbumPane(places=self._places)
         yield Footer()
 
     def on_mount(self) -> None:
@@ -48,3 +58,4 @@ class LabellerApp(App):
             self.query_one(PhotoPane).query_one("FieldTable").focus()
         elif event.tab.id == "albums":
             self.query_one(AlbumPane).query_one("FieldTable").focus()
+        # Videos tab focus is handled by VideoPane.on_show

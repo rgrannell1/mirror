@@ -1,9 +1,13 @@
 """Reusable Textual widgets: ImageFrame, RatingSelector, FieldRow, and FieldTable."""
 
+import tomllib
 from collections.abc import Callable
+from pathlib import Path
+
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.markup import escape
+from textual.suggester import Suggester
 from textual.widget import Widget
 from textual.widgets import Input, Static
 from textual_image.widget import Image as TIImage
@@ -11,11 +15,115 @@ from textual_image.widget import Image as TIImage
 from .image_loader import fetch_image
 from .messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 
+THINGS_PATH = Path(__file__).parent.parent / "things.toml"
+
+
+def load_places() -> dict[str, str]:
+    """Return {name: urn} for all named places in things.toml."""
+    if not THINGS_PATH.exists():
+        return {}
+    with open(THINGS_PATH, "rb") as fh:
+        data = tomllib.load(fh)
+    return {
+        entry["name"]: entry["id"]
+        for entry in data.get("places", [])
+        if "name" in entry and "id" in entry
+    }
+
+
+def load_subjects() -> dict[str, str]:
+    """Return {name: urn} for all non-place entries in things.toml."""
+    if not THINGS_PATH.exists():
+        return {}
+    with open(THINGS_PATH, "rb") as fh:
+        data = tomllib.load(fh)
+    result: dict[str, str] = {}
+    for section, entries in data.items():
+        if section == "places" or not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if "name" in entry and "id" in entry:
+                result[entry["name"]] = entry["id"]
+    return result
+
 _FIELD_ROW_ID_PREFIX = "field-row-"
 _EDIT_INPUT_ID = "edit-input"
 _RATING_SELECTOR_ID = "rating-selector"
 
 RATING_OPTIONS = ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"]
+
+
+class CyclingSuggester(Suggester):
+    """Base suggester that tracks all matches so callers can cycle through them.
+
+    Subclasses implement `_compute_matches(value)`.  `cycle(query, delta)`
+    advances the internal index and returns the new suggestion string so the
+    caller can push it straight into `Input._suggestion`.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(use_cache=False, case_sensitive=False)
+        self._last_query: str = ""
+        self._matches: list[str] = []
+        self._index: int = 0
+
+    def _compute_matches(self, value: str) -> list[str]:
+        raise NotImplementedError
+
+    def _refresh_if_needed(self, value: str) -> None:
+        if value != self._last_query:
+            self._last_query = value
+            self._matches = self._compute_matches(value)
+            self._index = 0
+
+    async def get_suggestion(self, value: str) -> str | None:
+        if not value:
+            self._matches = []
+            self._index = 0
+            self._last_query = ""
+            return None
+        self._refresh_if_needed(value)
+        return self._matches[self._index] if self._matches else None
+
+    def cycle(self, query: str, delta: int) -> str | None:
+        """Advance the match index by *delta* (wraps) and return the suggestion."""
+        self._refresh_if_needed(query)
+        if not self._matches:
+            return None
+        self._index = (self._index + delta) % len(self._matches)
+        return self._matches[self._index]
+
+
+class GenreSuggester(CyclingSuggester):
+    """Autocomplete from a mutable genre set; new values extend the set live."""
+
+    def __init__(self, genres: set[str]) -> None:
+        super().__init__()
+        self._genres = genres
+
+    def _compute_matches(self, value: str) -> list[str]:
+        lower = value.casefold()
+        prefix = [genre for genre in sorted(self._genres) if genre.casefold().startswith(lower)]
+        infix = [genre for genre in sorted(self._genres) if lower in genre.casefold() and not genre.casefold().startswith(lower)]
+        return prefix + infix
+
+
+class UrnSuggester(CyclingSuggester):
+    """Autocomplete from a name→URN mapping; suggests 'Name [ urn ]' format.
+
+    The display wrapper is stripped back to the raw URN by on_input_submitted
+    in FieldTable.
+    """
+
+    def __init__(self, name_to_urn: dict[str, str]) -> None:
+        super().__init__()
+        self._entries = sorted(name_to_urn.items())
+
+    def _compute_matches(self, value: str) -> list[str]:
+        lower = value.casefold()
+        prefix = [f"{name} [ {urn} ]" for name, urn in self._entries if name.casefold().startswith(lower)]
+        infix = [f"{name} [ {urn} ]" for name, urn in self._entries if lower in name.casefold() and not name.casefold().startswith(lower)]
+        return prefix + infix
 
 
 class ImageFrame(Widget):
@@ -320,3 +428,14 @@ class FieldTable(Widget, can_focus=True):
         if event.key == "escape" and self._edit_mode:
             self.post_message(EditCancelled())
             event.stop()
+            return
+        if self._edit_mode and event.key in ("up", "down"):
+            try:
+                inp = self.query_one(f"#{_EDIT_INPUT_ID}", Input)
+            except Exception:
+                return
+            if isinstance(inp.suggester, CyclingSuggester) and inp.value:
+                delta = -1 if event.key == "up" else 1
+                new_suggestion = inp.suggester.cycle(inp.value, delta)
+                inp._suggestion = new_suggestion or ""
+                event.stop()

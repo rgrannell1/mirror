@@ -15,6 +15,7 @@ from labeller.widgets import FieldTable, ImageFrame
 
 from .parser import AlbumRow, load_albums, EDITABLE_COLUMNS
 from .state import AlbumState
+from .widgets import AlbumFieldTable
 from .writer import save_album_row
 
 ALBUMS_PATH = Path(__file__).parent.parent.parent / "albums.md"
@@ -109,15 +110,16 @@ class AlbumPane(Widget):
     }
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, places: dict[str, str], **kwargs) -> None:
         super().__init__(**kwargs)
         albums = load_albums(ALBUMS_PATH)
         self._state = AlbumState(all_albums=albums)
+        self._places = places
 
     def compose(self) -> ComposeResult:
         yield Label(self._counter_text(), id="counter")
         yield ImageFrame(id="image-frame")
-        yield FieldTable(editable_columns=EDITABLE_COLUMNS, id="field-table")
+        yield AlbumFieldTable(places=self._places, id="field-table")
 
     def on_mount(self) -> None:
         self._refresh_all()
@@ -136,10 +138,13 @@ class AlbumPane(Widget):
             self._refresh_all()
 
     def action_repeat_edit(self) -> None:
-        if self._state.last_edit is None:
+        if self.app.last_edit is None:
             self.app.notify("No previous edit to repeat", severity="warning")
             return
-        field, value = self._state.last_edit
+        field, value = self.app.last_edit
+        if field not in EDITABLE_COLUMNS:
+            self.app.notify(f"Field '{field}' not available for albums", severity="warning")
+            return
         album = self._state.current_album
         album.set_field(field, value)
         save_album_row(ALBUMS_PATH, album)
@@ -176,7 +181,7 @@ class AlbumPane(Widget):
         new_value = message.value
         album.set_field(field, new_value)
         save_album_row(ALBUMS_PATH, album)
-        self._state.last_edit = (field, new_value)
+        self.app.last_edit = (field, new_value)
         field_table = self.query_one(FieldTable)
         field_table.exit_edit_mode()
         field_table.update_row(album)

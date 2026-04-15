@@ -1,6 +1,7 @@
-"""PhotoPane widget and PhotoFilterProvider for the Photos tab."""
+"""VideoPane widget and VideoFilterProvider for the Videos tab."""
 
 import random
+import subprocess
 from collections.abc import Callable
 from pathlib import Path
 
@@ -8,40 +9,40 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.command import Hit, Hits, Provider
 from textual.widget import Widget
-from textual.widgets import Label
+from textual.widgets import Label, Static
 
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer
 from labeller.widgets import FieldTable, ImageFrame
 
 from .filters import PRESET_FILTERS
-from .parser import PhotoRow, load_photos
-from .state import PhotoState
-from .widgets import PhotoFieldTable
-from .writer import save_photo_row
+from .parser import VideoRow, load_videos
+from .state import VideoState
+from .widgets import VideoFieldTable
+from .writer import save_video_row
 
-PHOTOS_PATH = Path(__file__).parent.parent.parent / "photos.md"
+VIDEOS_PATH = Path(__file__).parent.parent.parent / "videos.md"
 
 
-class PhotoFilterProvider(Provider):
+class VideoFilterProvider(Provider):
     """Command palette provider: preset filters and per-album/genre filters."""
 
     async def search(self, query: str) -> Hits:
         from textual.widgets import TabbedContent
-        if self.app.query_one(TabbedContent).active != "photos":
+        if self.app.query_one(TabbedContent).active != "videos":
             return
 
-        pane: PhotoPane = self.app.query_one(PhotoPane)
+        pane: VideoPane = self.app.query_one(VideoPane)
         matcher = self.matcher(query)
 
-        all_label = "All photos"
+        all_label = "All videos"
         all_score = matcher.match(all_label)
         if all_score > 0 or not query:
             yield Hit(
                 score=all_score,
                 match_display=matcher.highlight(all_label),
                 command=lambda: pane._apply_filter(None, None),
-                help="Remove filter — show all photos",
+                help="Remove filter — show all videos",
             )
 
         for preset_label, predicate in PRESET_FILTERS:
@@ -66,13 +67,13 @@ class PhotoFilterProvider(Provider):
                     match_display=matcher.highlight(namespaced),
                     command=(
                         lambda g=genre: lambda: pane._apply_filter(
-                            f"Genre > {g}", lambda photo, genre=g: photo.genre == genre
+                            f"Genre > {g}", lambda video, genre=g: video.genre == genre
                         )
                     )(),
                     help=genre,
                 )
 
-        albums = sorted({photo.name for photo in pane._state.all_photos})
+        albums = sorted({video.name for video in pane._state.all_videos})
         for album_name in albums:
             namespaced = f"Album: {album_name}"
             score = matcher.match(namespaced)
@@ -82,79 +83,101 @@ class PhotoFilterProvider(Provider):
                     match_display=matcher.highlight(namespaced),
                     command=(
                         lambda name=album_name: lambda: pane._apply_filter(
-                            name, lambda photo, n=name: photo.name == n
+                            name, lambda video, n=name: video.name == n
                         )
                     )(),
                     help=album_name,
                 )
 
 
-class PhotoPane(Widget):
-    """Browse and edit photos.md entries."""
+class VideoPane(Widget):
+    """Browse and edit videos.md entries."""
 
     BINDINGS = [
-        Binding("left", "prev_photo", "Prev photo"),
-        Binding("right", "next_photo", "Next photo"),
+        Binding("left", "prev_video", "Prev video"),
+        Binding("right", "next_video", "Next video"),
         Binding("[", "prev_album", "Prev album"),
         Binding("]", "next_album", "Next album"),
-        Binding("r", "random_photo", "Random"),
+        Binding("r", "random_video", "Random"),
         Binding("a", "repeat_edit", "Repeat last edit"),
-        Binding("o", "open_image", "Open image"),
-        Binding("l", "label_image", "Label image"),
+        Binding("o", "open_image", "Open poster"),
+        Binding("p", "play_video", "Play video"),
     ]
 
     DEFAULT_CSS = """
-    PhotoPane {
+    VideoPane {
         layout: vertical;
     }
 
-    PhotoPane > #counter {
+    VideoPane > #counter {
         text-align: center;
         color: $text-muted;
         height: 1;
         padding: 0 1;
     }
 
-    PhotoPane > ImageFrame {
+    VideoPane > ImageFrame {
         margin: 0 1;
     }
 
-    PhotoPane > FieldTable {
+    VideoPane > FieldTable {
         margin: 0 1 1 1;
+    }
+
+    VideoPane > #playback-hint {
+        text-align: center;
+        color: $text-muted;
+        height: 1;
+        padding: 0 1;
     }
     """
 
     def __init__(self, places: dict[str, str], subjects: dict[str, str], **kwargs) -> None:
         super().__init__(**kwargs)
-        photos = load_photos(PHOTOS_PATH)
-        self._state = PhotoState(all_photos=photos)
+        videos = load_videos(VIDEOS_PATH)
+        self._state = VideoState(all_videos=videos)
         self._places_urns = places
         self._subject_urns = subjects
 
     def compose(self) -> ComposeResult:
         yield Label(self._counter_text(), id="counter")
         yield ImageFrame(id="image-frame")
-        yield PhotoFieldTable(
+        yield VideoFieldTable(
             genres=self._state.known_genres,
             places=self._places_urns,
             subjects=self._subject_urns,
             id="field-table",
         )
+        yield Static("p play  ·  space pause  ·  ← → seek  ·  [ ] speed  ·  q quit", id="playback-hint")
 
     def on_mount(self) -> None:
+        # Populate the field table without loading an image — the pane is
+        # hidden at this point and issuing Kitty protocol writes from a hidden
+        # widget corrupts the display in the active pane.
+        if not self._state.videos:
+            self._refresh_counter()
+            return
+        video = self._state.current_video
+        field_table = self.query_one(VideoFieldTable)
+        field_table.update_row(video)
+        field_table.update_field_index(self._state.field_index)
+        self._refresh_counter()
+
+    def on_show(self) -> None:
+        """Called when the Videos tab becomes the active tab."""
         self._refresh_all()
-        self.query_one(PhotoFieldTable).focus()
+        self.query_one(VideoFieldTable).focus()
 
     # ------------------------------------------------------------------
     # Navigation actions
     # ------------------------------------------------------------------
 
-    def action_prev_photo(self) -> None:
-        if self._state.move_photo(-1):
+    def action_prev_video(self) -> None:
+        if self._state.move_video(-1):
             self._refresh_all()
 
-    def action_next_photo(self) -> None:
-        if self._state.move_photo(1):
+    def action_next_video(self) -> None:
+        if self._state.move_video(1):
             self._refresh_all()
 
     def action_repeat_edit(self) -> None:
@@ -164,14 +187,14 @@ class PhotoPane(Widget):
         field, value = self.app.last_edit
         from .parser import EDITABLE_COLUMNS
         if field not in EDITABLE_COLUMNS:
-            self.app.notify(f"Field '{field}' not available for photos", severity="warning")
+            self.app.notify(f"Field '{field}' not available for videos", severity="warning")
             return
-        photo = self._state.current_photo
-        photo.set_field(field, value)
-        save_photo_row(PHOTOS_PATH, photo)
+        video = self._state.current_video
+        video.set_field(field, value)
+        save_video_row(VIDEOS_PATH, video)
         if field == "genre" and value.strip():
             self._state.known_genres.add(value.strip())
-        self.query_one(PhotoFieldTable).update_row(photo)
+        self.query_one(VideoFieldTable).update_row(video)
         self._refresh_counter()
         self.app.notify(f"{field} → {value}")
 
@@ -182,85 +205,71 @@ class PhotoPane(Widget):
         self._jump_album(1)
 
     def _jump_album(self, delta: int) -> None:
-        photos = self._state.photos
-        albums = sorted({photo.name for photo in photos})
+        videos = self._state.videos
+        albums = sorted({video.name for video in videos})
         if len(albums) <= 1:
             return
-        current_album = self._state.current_photo.name
+        current_album = self._state.current_video.name
         current_pos = albums.index(current_album) if current_album in albums else 0
         target_album = albums[(current_pos + delta) % len(albums)]
-        target_index = next(idx for idx, photo in enumerate(photos) if photo.name == target_album)
-        self._state.photo_index = target_index
+        target_index = next(idx for idx, video in enumerate(videos) if video.name == target_album)
+        self._state.video_index = target_index
         self._refresh_all()
 
-    def action_random_photo(self) -> None:
-        new_index = random.randrange(len(self._state.photos))
-        self._state.photo_index = new_index
+    def action_random_video(self) -> None:
+        new_index = random.randrange(len(self._state.videos))
+        self._state.video_index = new_index
         self._refresh_all()
 
     def action_open_image(self) -> None:
-        url = self._state.current_photo.thumbnail_url
+        url = self._state.current_video.thumbnail_url
         fpath = fpath_for_url(url)
         if fpath:
             open_in_viewer(fpath)
         else:
             self.app.notify(f"No local file found for {url}", severity="warning")
 
-    def action_label_image(self) -> None:
-        url = self._state.current_photo.thumbnail_url
-        fpath = fpath_for_url(url)
-        self.app.notify("Asking Google Vision...", timeout=3)
-        self.run_worker(
-            lambda: self._fetch_labels(fpath, url),
-            exclusive=False,
-            thread=True,
-        )
-
-    def _fetch_labels(self, fpath: str | None, url: str) -> None:
-        from rich.markup import escape
-        from .vision import label_image
+    def action_play_video(self) -> None:
+        fpath = fpath_for_url(self._state.current_video.thumbnail_url)
+        if not fpath:
+            self.app.notify("No local video file found", severity="warning")
+            return
         try:
-            labels = label_image(fpath, url)
-        except Exception as exc:
-            self.app.call_from_thread(self.app.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
-            return
-        if not labels:
-            self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")
-            return
-        text = escape("  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.copy_to_clipboard, "  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.notify, text, timeout=12)
+            with self.app.suspend():
+                subprocess.run(["mpv", "--vo=kitty", "--really-quiet", fpath])
+        except FileNotFoundError:
+            self.app.notify("mpv not found — install it to play videos", severity="error")
 
     # ------------------------------------------------------------------
-    # Message handlers (from PhotoFieldTable)
+    # Message handlers (from VideoFieldTable)
     # ------------------------------------------------------------------
 
     def on_edit_requested(self, message: EditRequested) -> None:
         message.stop()
-        self.query_one(PhotoFieldTable).enter_edit_mode()
+        self.query_one(VideoFieldTable).enter_edit_mode()
 
     def on_save_requested(self, message: SaveRequested) -> None:
         message.stop()
-        photo = self._state.current_photo
+        video = self._state.current_video
         field = self._state.current_field
         new_value = message.value
-        photo.set_field(field, new_value)
-        save_photo_row(PHOTOS_PATH, photo)
+        video.set_field(field, new_value)
+        save_video_row(VIDEOS_PATH, video)
         if field == "genre" and new_value.strip():
             self._state.known_genres.add(new_value.strip())
         self.app.last_edit = (field, new_value)
-        field_table = self.query_one(PhotoFieldTable)
+        field_table = self.query_one(VideoFieldTable)
         field_table.exit_edit_mode()
-        field_table.update_row(photo)
+        field_table.update_row(video)
         self._refresh_counter()
 
     def on_edit_cancelled(self, message: EditCancelled) -> None:
         message.stop()
-        self.query_one(PhotoFieldTable).exit_edit_mode()
+        self.query_one(VideoFieldTable).exit_edit_mode()
 
     def on_field_changed(self, message: FieldChanged) -> None:
         message.stop()
-        field_table = self.query_one(PhotoFieldTable)
+        field_table = self.query_one(VideoFieldTable)
         self._state.field_index = field_table._field_index
 
     # ------------------------------------------------------------------
@@ -270,26 +279,30 @@ class PhotoPane(Widget):
     def _apply_filter(
         self,
         label: str | None,
-        predicate: Callable[[PhotoRow], bool] | None,
+        predicate: Callable[[VideoRow], bool] | None,
     ) -> None:
         self._state.apply_filter(label, predicate)
-        if not self._state.photos:
-            self.app.notify(f"No photos match '{label}'", severity="warning")
+        if not self._state.videos:
+            self.app.notify(f"No videos match '{label}'", severity="warning")
             self._state.apply_filter(None, None)
             return
         self._refresh_all()
 
     def _counter_text(self) -> str:
-        total = len(self._state.photos)
-        current = self._state.photo_index + 1
+        total = len(self._state.videos)
+        if total == 0:
+            return "No videos"
+        current = self._state.video_index + 1
         filter_suffix = f"  [{self._state.active_filter}]" if self._state.active_filter else ""
-        return f"Photo {current} / {total}{filter_suffix}"
+        return f"Video {current} / {total}{filter_suffix}"
 
     def _refresh_all(self) -> None:
-        photo = self._state.current_photo
-        self.query_one(ImageFrame).update_photo(photo.thumbnail_url)
-        field_table = self.query_one(PhotoFieldTable)
-        field_table.update_row(photo)
+        if not self._state.videos:
+            return
+        video = self._state.current_video
+        self.query_one(ImageFrame).update_photo(video.thumbnail_url)
+        field_table = self.query_one(VideoFieldTable)
+        field_table.update_row(video)
         field_table.update_field_index(self._state.field_index)
         self._refresh_counter()
 

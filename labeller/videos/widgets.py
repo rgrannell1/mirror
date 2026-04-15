@@ -1,4 +1,4 @@
-"""Photo-specific widgets: PhotoFieldTable."""
+"""Video-specific widgets: VideoFieldTable."""
 
 from collections.abc import Callable
 from textual.app import ComposeResult
@@ -10,8 +10,8 @@ from labeller.widgets import FieldRow, FieldTable, GenreSuggester, RatingSelecto
 from .parser import EDITABLE_COLUMNS
 
 
-class PhotoFieldTable(FieldTable):
-    """FieldTable with photo-specific editors: RatingSelector, GenreSuggester, UrnSuggester."""
+class VideoFieldTable(FieldTable):
+    """FieldTable with video-specific editors: RatingSelector, GenreSuggester, UrnSuggester."""
 
     def __init__(self, genres: set[str], places: dict[str, str], subjects: dict[str, str], **kwargs) -> None:
         super().__init__(
@@ -21,7 +21,6 @@ class PhotoFieldTable(FieldTable):
         self._genres = genres
         self._places = places
         self._subjects = subjects
-        # Reverse maps for display: urn → name
         self._urn_to_place = {urn: name for name, urn in places.items()}
         self._urn_to_subject = {urn: name for name, urn in subjects.items()}
 
