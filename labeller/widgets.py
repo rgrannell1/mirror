@@ -128,10 +128,9 @@ class FieldRow(Static):
     }
     """
 
-    def __init__(self, field_name: str, urn_fields: frozenset[str] = frozenset(), **kwargs) -> None:
+    def __init__(self, field_name: str, **kwargs) -> None:
         super().__init__(**kwargs)
         self._field_name = field_name
-        self._urn_fields = urn_fields
         self._value: str = ""
 
     def refresh_value(self, value: str, selected: bool) -> None:
@@ -145,16 +144,6 @@ class FieldRow(Static):
     def _render_label(self) -> None:
         if not self._value:
             display_value = "[dim](empty)[/dim]"
-        elif self._field_name in self._urn_fields:
-            from labeller.things import resolve_urn
-            parts = []
-            for token in self._value.split():
-                name = resolve_urn(token)
-                if name:
-                    parts.append(f"{escape(name)} [dim]{escape(token)}[/dim]")
-                else:
-                    parts.append(escape(token))
-            display_value = "  ".join(parts)
         else:
             display_value = escape(self._value)
         name_markup = f"[bold cyan]{self._field_name:>12}[/bold cyan]"
@@ -194,12 +183,10 @@ class FieldTable(Widget, can_focus=True):
     def __init__(
         self,
         editable_columns: list[str],
-        urn_fields: frozenset[str] = frozenset(),
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
         self._editable_columns = editable_columns
-        self._urn_fields = urn_fields
         self._row = None
         self._field_index: int = 0
         self._edit_mode: bool = False
@@ -212,7 +199,6 @@ class FieldTable(Widget, can_focus=True):
         for field_index, field_name in enumerate(self._editable_columns):
             yield FieldRow(
                 field_name=field_name,
-                urn_fields=self._urn_fields,
                 id=f"{_FIELD_ROW_ID_PREFIX}{field_index}",
             )
 

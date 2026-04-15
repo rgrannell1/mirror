@@ -100,7 +100,6 @@ class PhotoPane(Widget):
         Binding("r", "random_photo", "Random"),
         Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
-        Binding("m", "open_things", "Open things.toml"),
         Binding("l", "label_image", "Label image"),
     ]
 
@@ -187,11 +186,6 @@ class PhotoPane(Widget):
         new_index = random.randrange(len(self._state.photos))
         self._state.photo_index = new_index
         self._refresh_all()
-
-    def action_open_things(self) -> None:
-        import subprocess
-        from labeller.things import THINGS_PATH
-        subprocess.Popen(["code", str(THINGS_PATH)])
 
     def action_open_image(self) -> None:
         url = self._state.current_photo.thumbnail_url
