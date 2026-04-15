@@ -15,6 +15,7 @@ from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.semantic_triples import (
     AlbumTriples,
     AlbumBannerReader,
+    AnimalFirstSeenReader,
     ExifTriplesReader,
     ListingCoverReader,
     PhotoTriples,
@@ -279,6 +280,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         AlbumBannerReader(),
         ListingCoverReader(),
         ThingCoverReader(),
+        AnimalFirstSeenReader(),
     ]
     seen: set[int] = set()
     for long, alias in CURIE.items():
