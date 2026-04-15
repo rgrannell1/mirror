@@ -2410,6 +2410,14 @@ contains_album = [
     "urn:ró:album:wisconsin-state-24",
 ]
 
+[[trips]]
+id = "urn:ró:trip:5"
+contains_album = [
+    "urn:ró:album:toledo-26",
+    "urn:ró:album:madrid-city-26",
+    "urn:ró:album:man-26",
+]
+
 # Ordered edges for drawing travel maps (id, source, destination); order is significant
 [[transfers]]
 id = "urn:ró:transfer:0"
@@ -2625,6 +2633,12 @@ mode = "train"
 id = "urn:ró:transfer:35"
 source = "urn:ró:place:135"
 destination = "urn:ró:place:16"
+mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:36"
+source = "urn:ró:place:16"
+destination = "urn:ró:place:135"
 mode = "train"
 
 [[birds]]

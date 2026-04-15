@@ -6,10 +6,11 @@ from textual.widgets import Footer, Header, TabbedContent, TabPane
 
 from labeller.albums.pane import AlbumFilterProvider, AlbumPane
 from labeller.photos.pane import PhotoFilterProvider, PhotoPane
+from labeller.things_editor.pane import TripPane
 
 
 class LabellerApp(App):
-    """Tabbed labeller: Photos tab and Albums tab."""
+    """Tabbed labeller: Photos, Albums, and Trips tabs."""
 
     COMMANDS = App.COMMANDS | {PhotoFilterProvider, AlbumFilterProvider}
 
@@ -22,7 +23,7 @@ class LabellerApp(App):
         padding: 0;
     }
 
-    PhotoPane, AlbumPane {
+    PhotoPane, AlbumPane, TripPane {
         height: 1fr;
     }
     """
@@ -38,6 +39,8 @@ class LabellerApp(App):
                 yield PhotoPane()
             with TabPane("Albums", id="albums"):
                 yield AlbumPane()
+            with TabPane("Trips", id="trips"):
+                yield TripPane()
         yield Footer()
 
     def on_mount(self) -> None:
@@ -48,3 +51,5 @@ class LabellerApp(App):
             self.query_one(PhotoPane).query_one("FieldTable").focus()
         elif event.tab.id == "albums":
             self.query_one(AlbumPane).query_one("FieldTable").focus()
+        elif event.tab.id == "trips":
+            self.query_one(TripPane).query_one("FieldTable").focus()

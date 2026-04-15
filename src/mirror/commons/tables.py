@@ -77,7 +77,33 @@ create view if not exists view_album_contents as
 
 ALBUM_DATA_VIEW = """
 CREATE VIEW view_album_data AS
-WITH date_range AS (
+WITH folder_names AS (
+    -- Derive the album folder name (parent of 'Published') from dpath.
+    -- E.g. /home/rg/Drive/Media/2025/Lisbon/Published → Lisbon
+    -- Step 1: strip the last path component (Published) to get parent_path
+    -- Step 2: extract the last segment of parent_path
+    -- SQLite trick: RTRIM(s, REPLACE(s,'/',''')) strips all non-'/' chars from the
+    -- right, yielding everything up to and including the last '/'; REPLACE then
+    -- removes that prefix, leaving the final segment.
+    SELECT
+        dpath,
+        REPLACE(
+            parent_path,
+            RTRIM(parent_path, REPLACE(parent_path, '/', '')),
+            ''
+        ) AS folder_name
+    FROM (
+        SELECT
+            dpath,
+            SUBSTR(
+                RTRIM(dpath, REPLACE(dpath, '/', '')),
+                1,
+                LENGTH(RTRIM(dpath, REPLACE(dpath, '/', ''))) - 1
+            ) AS parent_path
+        FROM (SELECT dpath FROM photos UNION SELECT dpath FROM videos)
+    )
+),
+date_range AS (
     SELECT
         photos.dpath,
         MIN(exif.created_at) AS min_date,
@@ -118,9 +144,11 @@ SELECT
     (
       select target from media_metadata_table
       where src = media.dpath and relation = 'permalink') as id,
-    (
-      select target from media_metadata_table
-      where src = media.dpath and relation = 'title') as name,
+    COALESCE(
+      NULLIF((select target from media_metadata_table
+              where src = media.dpath and relation = 'title'), ''),
+      folder_names.folder_name
+    ) as name,
       media.dpath,
       coalesce(photo_count.photos, 0) as photos_count,
       coalesce(video_count.videos, 0) as videos_count,
@@ -154,6 +182,8 @@ LEFT JOIN (
 ) video_count ON media.dpath = video_count.dpath
 LEFT JOIN date_range
   ON media.dpath = date_range.dpath
+LEFT JOIN folder_names
+  ON media.dpath = folder_names.dpath
 LEFT JOIN cover_photos
   ON media.dpath = cover_photos.dpath
 LEFT JOIN encoded_photos thumbnail_lossy

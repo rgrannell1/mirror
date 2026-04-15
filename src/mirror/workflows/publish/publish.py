@@ -147,6 +147,8 @@ def PublishArtifacts(
             PublishStats(builder_inputs),
             PublishTriples(builder_inputs),
             PublishD1(builder_inputs),
+            UpdateAlbumsMarkdown(builder_inputs),
+            UpdatePhotosMarkdown(builder_inputs),
         ]
     )
 

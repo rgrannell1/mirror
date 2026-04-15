@@ -2,6 +2,9 @@
 
 import re
 import csv
+import os
+import tempfile
+from pathlib import Path
 from jsonschema import validate
 
 from collections import defaultdict
@@ -12,6 +15,20 @@ from .database import SqliteDatabase
 from mirror.models.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from typing import TypedDict, Optional
 import json
+
+
+def _atomic_write(path: str, body: str) -> None:
+    """Write body to path atomically: write to a temp file then rename, so the
+    original is never truncated if writing fails mid-way."""
+    dir_ = os.path.dirname(os.path.abspath(path))
+    fd, tmp_path = tempfile.mkstemp(dir=dir_, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(body)
+        os.replace(tmp_path, path)
+    except Exception:
+        os.unlink(tmp_path)
+        raise
 
 
 # Protocols defining how metadata can be communicated to/from other locations
@@ -132,9 +149,13 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
 
         for _dpath, album_data in sorted_albums:
+            if not album_data["embedding"]:
+                continue
+            # Fall back to the folder name (parent of Published/) when no title is set
+            title = album_data["title"] or Path(_dpath).parent.name
             row = [
                 f"![]({album_data['embedding']})",
-                album_data["title"] or "",
+                title,
                 album_data["permalink"] or "",
                 ",".join(album_data["country"]) if album_data["country"] else "",
                 album_data["summary"] or "",
@@ -143,8 +164,7 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
         body = "\n".join(lines) + "\n"
         if output_path is not None:
-            with open(output_path, "w") as handle:
-                handle.write(body)
+            _atomic_write(output_path, body)
         else:
             print(body, end="")
 
@@ -158,7 +178,10 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
         with open(self.fpath, "r") as file:
             reader = csv.reader(file, delimiter="|")
-            headers = next(reader)[1:-1]
+            try:
+                headers = next(reader)[1:-1]
+            except StopIteration:
+                raise ValueError(f"albums metadata file is empty: {self.fpath}") from None
 
             try:
                 if headers[0].strip() != "embedding":
@@ -166,7 +189,10 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             except IndexError:
                 raise ValueError(f"Invalid header in Markdown table: {headers}")
 
-            next(reader)
+            try:
+                next(reader)
+            except StopIteration:
+                raise ValueError(f"albums metadata file is missing separator row: {self.fpath}") from None
 
             album_data = db.album_data_view()
 
@@ -230,7 +256,13 @@ class MarkdownTablePhotoMetadataWriter:
 
         for summary in db.photo_metadata_summary_view().list():
             if not summary.name:
-                raise ValueError(f"Photo missing an album name: {summary.url}")
+                if not summary.fpath:
+                    raise ValueError(f"Photo missing an album name and fpath: {summary.url}")
+                # Fall back to the folder name two levels up from the photo file
+                # e.g. .../AlbumName/Published/photo.jpg → AlbumName
+                summary.name = Path(summary.fpath).parent.parent.name
+                if not summary.name:
+                    raise ValueError(f"Could not derive album name from fpath: {summary.fpath}")
 
             url = summary.url
             if url not in merged_data:
@@ -242,6 +274,7 @@ class MarkdownTablePhotoMetadataWriter:
                     "places": set(),
                     "description": summary.description or "",
                     "subjects": set(),
+                    "covers": set(),
                 }
 
             ref = merged_data[url]
@@ -252,6 +285,8 @@ class MarkdownTablePhotoMetadataWriter:
                 ref["places"].update(summary.places)
             if summary.subjects:
                 ref["subjects"].update(summary.subjects)
+            if summary.covers:
+                ref["covers"].update(summary.covers)
 
             if summary.description and not ref["description"]:
                 ref["description"] = summary.description
@@ -270,7 +305,7 @@ class MarkdownTablePhotoMetadataWriter:
                     ",".join(sorted(data["places"])),
                     data["description"],
                     ",".join(sorted(data["subjects"])),
-                    "",
+                    ",".join(sorted(data["covers"])),
                 ]
             )
 
@@ -282,8 +317,7 @@ class MarkdownTablePhotoMetadataWriter:
 
         body = "\n".join(lines) + "\n"
         if output_path is not None:
-            with open(output_path, "w") as handle:
-                handle.write(body)
+            _atomic_write(output_path, body)
         else:
             print(body, end="")
 
@@ -299,12 +333,18 @@ class MarkdownTablePhotoMetadataReader:
 
         with open(self.fpath, "r") as file:
             reader = csv.reader(file, delimiter="|")
-            headers = next(reader)[1:-1]
+            try:
+                headers = next(reader)[1:-1]
+            except StopIteration:
+                raise ValueError(f"photos metadata file is empty: {self.fpath}") from None
 
             if headers[0].strip() != "embedding":
                 raise ValueError("Invalid header in Markdown table")
 
-            next(reader)
+            try:
+                next(reader)
+            except StopIteration:
+                raise ValueError(f"photos metadata file is missing separator row: {self.fpath}") from None
 
             unique_urls = set()
             unique_covers = set()
