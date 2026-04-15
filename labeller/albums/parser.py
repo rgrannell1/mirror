@@ -58,4 +58,4 @@ def load_albums(path: Path) -> list[AlbumRow]:
         row = _parse_row(stripped, line_number)
         if row is not None:
             rows.append(row)
-    return rows
+    return sorted(rows, key=lambda row: row.title.lower())
