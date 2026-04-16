@@ -78,9 +78,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/7a16940e40.webp) | Slovenia | Other | ⭐⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/25ba4fc7ae.webp) | Slovenia | Wildlife | ⭐ | urn:ró:place:10 |  | urn:ró:bird:anas-platyrhynchos |  |
 | ![](https://photos-cdn.rgrannell.xyz/4efda4b045.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:12 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b21d536ee5.webp) | Slovenia | Wildlife | ⭐⭐⭐ |  |  | urn:ró:amphibian:proteus-anguinus |  |
-| ![](https://photos-cdn.rgrannell.xyz/44acd6efc4.webp) | Slovenia | Wildlife | ⭐⭐⭐ |  |  | urn:ró:amphibian:proteus-anguinus |  |
-| ![](https://photos-cdn.rgrannell.xyz/f179702f3e.webp) | Slovenia | Wildlife | ⭐⭐⭐ |  |  | urn:ró:amphibian:proteus-anguinus |  |
+| ![](https://photos-cdn.rgrannell.xyz/b21d536ee5.webp) | Slovenia | Wildlife | ⭐⭐⭐ | urn:ró:place:118 |  | urn:ró:amphibian:proteus-anguinus |  |
+| ![](https://photos-cdn.rgrannell.xyz/44acd6efc4.webp) | Slovenia | Wildlife | ⭐⭐⭐ | urn:ró:place:118 |  | urn:ró:amphibian:proteus-anguinus |  |
+| ![](https://photos-cdn.rgrannell.xyz/f179702f3e.webp) | Slovenia | Wildlife | ⭐⭐⭐ | urn:ró:place:118 |  | urn:ró:amphibian:proteus-anguinus |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9c19a58ef.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1f268e7f9b.webp) | Slovenia | Landscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0634d42bb.webp) | Switzerland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:7 |  |  |  |
