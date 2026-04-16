@@ -11,4 +11,5 @@ PRESET_FILTERS: list[tuple[str, Callable[[VideoRow], bool]]] = [
     ("No description", lambda video: not video.description.strip()),
     ("Has rating", lambda video: bool(video.rating.strip())),
     ("No rating", lambda video: not video.rating.strip()),
+    ("No genre", lambda video: not video.genre.strip()),
 ]
