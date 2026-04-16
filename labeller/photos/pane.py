@@ -100,7 +100,6 @@ class PhotoPane(Widget):
         Binding("r", "random_photo", "Random"),
         Binding("a", "repeat_edit", "Repeat last edit"),
         Binding("o", "open_image", "Open image"),
-        Binding("l", "label_image", "Label image"),
     ]
 
     DEFAULT_CSS = """

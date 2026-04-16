@@ -229,6 +229,36 @@ class VideoPane(Widget):
         else:
             self.app.notify(f"No local file found for {url}", severity="warning")
 
+    _IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+
+    def action_label_image(self) -> None:
+        video = self._state.current_video
+        url = video.cover.strip() or video.thumbnail_url
+        raw_fpath = fpath_for_url(url)
+        from pathlib import Path
+        fpath = raw_fpath if raw_fpath and Path(raw_fpath).suffix.lower() in self._IMAGE_SUFFIXES else None
+        self.app.notify("Asking Google Vision...", timeout=3)
+        self.run_worker(
+            lambda: self._fetch_labels(fpath, url),
+            exclusive=False,
+            thread=True,
+        )
+
+    def _fetch_labels(self, fpath: str | None, url: str) -> None:
+        from rich.markup import escape
+        from labeller.photos.vision import label_image
+        try:
+            labels = label_image(fpath, url)
+        except Exception as exc:
+            self.app.call_from_thread(self.app.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
+            return
+        if not labels:
+            self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")
+            return
+        text = escape("  •  ".join(labels[:6]))
+        self.app.call_from_thread(self.app.copy_to_clipboard, "  •  ".join(labels[:6]))
+        self.app.call_from_thread(self.app.notify, text, timeout=12)
+
     def action_play_video(self) -> None:
         fpath = fpath_for_url(self._state.current_video.thumbnail_url)
         if not fpath:

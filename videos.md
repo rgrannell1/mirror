@@ -13,7 +13,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e04f717e01.webp) | Bath | Other | ⭐⭐⭐⭐ | urn:ró:place:9 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/708e0f3dba.webp) | Berlin | Wildlife | ⭐⭐ | urn:ró:place:65 |  | urn:ró:mammal:ailurus-fulgens |  |
 | ![](https://photos-cdn.rgrannell.xyz/789e210734.webp) | Berlin | Other | ⭐⭐ | urn:ró:place:63 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/43f84cde73.webp) | Boston | Wildlife | ⭐⭐⭐ | urn:ró:place:100 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/43f84cde73.webp) | Boston | Wildlife | ⭐⭐⭐ | urn:ró:place:100 |  | urn:ró:fish:heteroconger-hassi |  |
 | ![](https://photos-cdn.rgrannell.xyz/ea93e34959.webp) | Bray Air Show | Other | ⭐⭐⭐ | urn:ró:place:44 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e5091e7f08.webp) | Bray Air Show | Other | ⭐⭐⭐⭐⭐ | urn:ró:place:44 |  | urn:ró:plane:saab-37-viggen |  |
 | ![](https://photos-cdn.rgrannell.xyz/df424e6c09.webp) | Bray Air Show | Other | ⭐⭐⭐⭐ | urn:ró:place:44 |  |  |  |
@@ -24,9 +24,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/7fd11537cf.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
 | ![](https://photos-cdn.rgrannell.xyz/1022332c5c.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
 | ![](https://photos-cdn.rgrannell.xyz/81f6494533.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
-| ![](https://photos-cdn.rgrannell.xyz/5d77756e59.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 | They were not happy to see me, I moved on quickly after |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/26c9d0bf38.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4c2065a6aa.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5d77756e59.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 | They were not happy to see me, I moved on quickly after | urn:ró:bird:larus-argentatus |  |
+| ![](https://photos-cdn.rgrannell.xyz/26c9d0bf38.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:larus-argentatus |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c2065a6aa.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:phoca-vitulina |  |
 | ![](https://photos-cdn.rgrannell.xyz/a3ea9723e0.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:sciurus-carolinensis |  |
 | ![](https://photos-cdn.rgrannell.xyz/9c83a09306.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens |  |
 | ![](https://photos-cdn.rgrannell.xyz/be2534937b.webp) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus |  |
@@ -35,35 +35,35 @@
 | ![](https://photos-cdn.rgrannell.xyz/11a592ba1e.webp) | Düsseldorf & Amsterdam | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:82 |  | urn:ró:bird:psittacula-krameri |  |
 | ![](https://photos-cdn.rgrannell.xyz/dfaefdd84a.webp) | Edinburgh | Museum | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/699969604b.webp) | Edinburgh | Museum | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ee68253825.webp) | Galway & Salthill | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ee68253825.webp) | Galway & Salthill | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:bird:anas-platyrhynchos |  |
 | ![](https://photos-cdn.rgrannell.xyz/cf5b7dc463.webp) | Granada |  |  |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/05a22c6d3c.webp) | Howth | Wildlife | ⭐⭐⭐ | urn:ró:place:8 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/df2aac1ead.webp) | Howth | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:8 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/05a22c6d3c.webp) | Howth | Wildlife | ⭐⭐⭐ | urn:ró:place:8 |  | urn:ró:mammal:halichoerus-grypus |  |
+| ![](https://photos-cdn.rgrannell.xyz/df2aac1ead.webp) | Howth | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:8 |  | urn:ró:bird:larus-argentatus |  |
 | ![](https://photos-cdn.rgrannell.xyz/948ae65add.webp) | Howth |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0c31a85c8.webp) | Howth |  |  |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/7d19ebde2c.webp) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:85 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7d19ebde2c.webp) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:leucogeranus-leucogeranus |  |
 | ![](https://photos-cdn.rgrannell.xyz/4f047a0b3b.webp) | Ireland's Eye | Landscape | ⭐⭐⭐ | urn:ró:place:8 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b691012e44.webp) | Lisbon | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:126 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b691012e44.webp) | Lisbon | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:126 |  | urn:ró:mammal:hylobates-lar?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/9ca9ef8bdd.webp) | Lisbon | Other | ⭐⭐⭐ | urn:ró:place:123 | It was hard to sleep... |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/234a8df785.webp) | London | Wildlife | ⭐⭐ | urn:ró:place:94 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/376160632d.webp) | London | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8e09156a2a.webp) | London | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/60b7f7bbb9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:79 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/10e1478fbb.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/41f8c2bbe9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2a1b702b52.webp) | London Zoo |  |  |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8ddeeba513.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a68984c544.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/29f1f3538d.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/234a8df785.webp) | London | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:spheniscus-demersus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/376160632d.webp) | London | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:aonyx-cinereus |  |
+| ![](https://photos-cdn.rgrannell.xyz/8e09156a2a.webp) | London | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:aonyx-cinereus |  |
+| ![](https://photos-cdn.rgrannell.xyz/60b7f7bbb9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/10e1478fbb.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:aythya-americana?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/41f8c2bbe9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:gallinula-chloropus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/2a1b702b52.webp) | London Zoo |  |  |  |  | urn:ró:bird:psittacus-erithacus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/8ddeeba513.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:nycticebus-javanicus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/a68984c544.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:nycticebus-javanicus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/29f1f3538d.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:accipiter-cooperii?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/bf29d571a9.webp) | Madison & Chicago | Other | ⭐ | urn:ró:place:88 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3c5fa45b0c.webp) | Madison & Chicago | Wildlife | ⭐⭐ | urn:ró:place:84 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/39bf239978.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:84 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/40abe74e36.webp) | Madrid | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:136 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/dd45a9717d.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3c5fa45b0c.webp) | Madison & Chicago | Wildlife | ⭐⭐ | urn:ró:place:84 |  | urn:ró:bird:branta-leucopsis |  |
+| ![](https://photos-cdn.rgrannell.xyz/39bf239978.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:84 |  | urn:ró:bird:archilochus-colubris?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/40abe74e36.webp) | Madrid | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:bird:ciconia-ciconia |  |
+| ![](https://photos-cdn.rgrannell.xyz/dd45a9717d.webp) | Madrid | Wildlife | ⭐⭐⭐ | urn:ró:place:136 |  | urn:ró:mammal:pteronura-brasiliensis?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/af0087f19b.webp) | Naples & Pompeii | Other | ⭐⭐⭐⭐ | urn:ró:place:30 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/1bb61f1fc0.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4f3867e0f5.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus |  |
-| ![](https://photos-cdn.rgrannell.xyz/1f89fb6533.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus |  |
+| ![](https://photos-cdn.rgrannell.xyz/1bb61f1fc0.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/4f3867e0f5.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/1f89fb6533.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/703af021f4.webp) | Phoenix Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:14 |  | urn:ró:mammal:dama-dama |  |
 | ![](https://photos-cdn.rgrannell.xyz/b15a79aa25.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:mammal:cervus-elaphus |  |
 | ![](https://photos-cdn.rgrannell.xyz/3bb4aecba3.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:mammal:cervus-elaphus |  |

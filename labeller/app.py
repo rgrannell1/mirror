@@ -31,6 +31,7 @@ class LabellerApp(App):
 
     BINDINGS = [
         Binding("q", "quit", "Quit"),
+        Binding("l", "label_image", "Label image"),
     ]
 
     def __init__(self, **kwargs) -> None:
@@ -49,6 +50,13 @@ class LabellerApp(App):
             with TabPane("Albums", id="albums"):
                 yield AlbumPane(places=self._places)
         yield Footer()
+
+    def action_label_image(self) -> None:
+        active = self.query_one(TabbedContent).active
+        if active == "photos":
+            self.query_one(PhotoPane).action_label_image()
+        elif active == "videos":
+            self.query_one(VideoPane).action_label_image()
 
     def on_mount(self) -> None:
         self.query_one(PhotoPane).query_one("FieldTable").focus()
