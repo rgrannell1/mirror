@@ -38,6 +38,7 @@ def MirrorWorkflow(
                 "force_recompute_mosaic": input.get("force_recompute_mosaic", False),
                 "force_upload_images": input.get("force_upload_images", False),
                 "force_upload_videos": input.get("force_upload_videos", False),
+                "force_roles": input.get("force_roles"),
                 "upload_images": input.get("upload_images"),
                 "upload_videos": input.get("upload_videos"),
             },

@@ -54,44 +54,56 @@ RATING_OPTIONS = ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐
 
 
 class CyclingSuggester(Suggester):
-    """Base suggester that tracks all matches so callers can cycle through them.
+    """Base suggester with separate ghost-text and cycling state.
 
-    Subclasses implement `_compute_matches(value)`.  `cycle(query, delta)`
-    advances the internal index and returns the new suggestion string so the
-    caller can push it straight into `Input._suggestion`.
+    Ghost text (`get_suggestion`) only fires for prefix matches, so Textual's
+    ``suggestion[len(value):]`` rendering always shows a sensible suffix.
+
+    Cycling (`cycle`) keeps its own ``_cycle_base`` / ``_cycle_matches`` /
+    ``_cycle_index`` state that is independent of the ghost-text path, so
+    programmatic value replacements by FieldTable don't reset the cycle.
     """
 
     def __init__(self) -> None:
         super().__init__(use_cache=False, case_sensitive=False)
+        # Ghost-text state
         self._last_query: str = ""
-        self._matches: list[str] = []
-        self._index: int = 0
+        self._prefix_matches: list[str] = []
+        # Cycling state (independent — not touched by get_suggestion)
+        self._cycle_base: str = ""
+        self._cycle_matches: list[str] = []
+        self._cycle_index: int = -1
 
     def _compute_matches(self, value: str) -> list[str]:
         raise NotImplementedError
 
-    def _refresh_if_needed(self, value: str) -> None:
-        if value != self._last_query:
-            self._last_query = value
-            self._matches = self._compute_matches(value)
-            self._index = 0
-
     async def get_suggestion(self, value: str) -> str | None:
         if not value:
-            self._matches = []
-            self._index = 0
             self._last_query = ""
+            self._prefix_matches = []
             return None
-        self._refresh_if_needed(value)
-        return self._matches[self._index] if self._matches else None
+        if value != self._last_query:
+            self._last_query = value
+            lower = value.casefold()
+            all_matches = self._compute_matches(value)
+            self._prefix_matches = [m for m in all_matches if m.casefold().startswith(lower)]
+        return self._prefix_matches[0] if self._prefix_matches else None
 
-    def cycle(self, query: str, delta: int) -> str | None:
-        """Advance the match index by *delta* (wraps) and return the suggestion."""
-        self._refresh_if_needed(query)
-        if not self._matches:
+    def cycle(self, base_query: str, delta: int) -> str | None:
+        """Cycle through all matches (prefix + infix) for *base_query*.
+
+        Cycling state is keyed on *base_query* so repeated calls with the same
+        query continue where they left off even if the input value has been
+        replaced by a previous cycle step.
+        """
+        if base_query != self._cycle_base:
+            self._cycle_base = base_query
+            self._cycle_matches = self._compute_matches(base_query)
+            self._cycle_index = -1
+        if not self._cycle_matches:
             return None
-        self._index = (self._index + delta) % len(self._matches)
-        return self._matches[self._index]
+        self._cycle_index = (self._cycle_index + delta) % len(self._cycle_matches)
+        return self._cycle_matches[self._cycle_index]
 
 
 class GenreSuggester(CyclingSuggester):
@@ -302,6 +314,12 @@ class FieldTable(Widget, can_focus=True):
         self._row = None
         self._field_index: int = 0
         self._edit_mode: bool = False
+        # Tracks the query that started the current cycle session so repeated
+        # up/down presses continue from where they left off.
+        self._cycle_base_query: str | None = None
+        # True while we're programmatically replacing inp.value during cycling
+        # so on_input_changed doesn't clear _cycle_base_query.
+        self._cycling_in_progress: bool = False
 
     # ------------------------------------------------------------------
     # Composition — rows are created once and never removed
@@ -424,6 +442,13 @@ class FieldTable(Widget, can_focus=True):
         self.post_message(SaveRequested(value=value))
         event.stop()
 
+    def on_input_changed(self, event: Input.Changed) -> None:
+        # Programmatic replacements during cycling must not reset the cycle.
+        if self._cycling_in_progress:
+            self._cycling_in_progress = False
+        else:
+            self._cycle_base_query = None
+
     def on_key(self, event) -> None:
         if event.key == "escape" and self._edit_mode:
             self.post_message(EditCancelled())
@@ -435,7 +460,12 @@ class FieldTable(Widget, can_focus=True):
             except Exception:
                 return
             if isinstance(inp.suggester, CyclingSuggester) and inp.value:
+                if self._cycle_base_query is None:
+                    self._cycle_base_query = inp.value
                 delta = -1 if event.key == "up" else 1
-                new_suggestion = inp.suggester.cycle(inp.value, delta)
-                inp._suggestion = new_suggestion or ""
+                new_suggestion = inp.suggester.cycle(self._cycle_base_query, delta)
+                if new_suggestion is not None:
+                    self._cycling_in_progress = True
+                    inp.value = new_suggestion
+                    inp.cursor_position = len(new_suggestion)
                 event.stop()

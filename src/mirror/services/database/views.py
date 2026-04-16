@@ -11,6 +11,8 @@ from mirror.commons.tables import (
     PHOTO_METADATA_SUMMARY,
     PHOTO_METADATA_VIEW,
     VIDEO_DATA_VIEW,
+    VIDEO_METADATA_SUMMARY,
+    VIDEO_METADATA_VIEW,
 )
 
 
@@ -22,6 +24,8 @@ def refresh_dependent_views(conn: sqlite3.Connection) -> None:
     """
     conn.execute("DROP VIEW IF EXISTS view_photo_metadata_summary")
     conn.execute("DROP VIEW IF EXISTS view_photo_metadata")
+    conn.execute("DROP VIEW IF EXISTS view_video_metadata_summary")
+    conn.execute("DROP VIEW IF EXISTS view_video_metadata")
     conn.execute("DROP VIEW IF EXISTS view_photo_data")
     conn.execute("DROP VIEW IF EXISTS view_video_data")
     conn.execute("DROP VIEW IF EXISTS view_album_data")
@@ -32,4 +36,6 @@ def refresh_dependent_views(conn: sqlite3.Connection) -> None:
     conn.execute(VIDEO_DATA_VIEW)
     conn.execute(PHOTO_METADATA_VIEW)
     conn.execute(PHOTO_METADATA_SUMMARY)
+    conn.execute(VIDEO_METADATA_VIEW)
+    conn.execute(VIDEO_METADATA_SUMMARY)
     conn.commit()

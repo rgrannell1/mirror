@@ -18,6 +18,7 @@ class UploadOpts(TypedDict, total=False):
     force_recompute_mosaic: bool
     force_upload_images: bool
     force_upload_videos: bool
+    force_roles: list[str] | None
     upload_images: bool | None
     upload_videos: bool | None
 
@@ -45,6 +46,11 @@ def list_photos_without_contrasting_grey(db: SqliteDatabase, force_recompute: bo
 
 def list_photos_without_upload(db: SqliteDatabase, force_upload: bool = False) -> Iterator[str]:
     photos = db.photos_table()
+
+    if force_upload:
+        yield from photos.list()
+        return
+
     encoded_photos_table = db.encoded_photos_table()
 
     for fpath in photos.list():

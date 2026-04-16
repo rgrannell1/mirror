@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING, Iterator
 
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
+from mirror.data.things import country_slug_to_urn
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -98,37 +99,12 @@ ranked AS (
 SELECT fpath, listing_type FROM ranked WHERE rank = 1
 """
 
-COUNTRY_COVER_QUERY = """
-WITH country_photos AS (
-    SELECT
-        ph.fpath,
-        vps.rating,
-        vps.genre
-    FROM photos p
-    JOIN phashes ph ON p.fpath = ph.fpath
-    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
-    JOIN view_album_data vad ON p.dpath = vad.dpath
-    WHERE vad.flags IS NOT NULL AND vad.flags != '' AND vad.flags NOT LIKE '%,%'
-),
-ranked AS (
-    SELECT
-        fpath,
-        ROW_NUMBER() OVER (
-            ORDER BY
-                CASE WHEN lower(genre) LIKE '%landscape%' THEN 0 ELSE 1 END ASC,
-                rating DESC
-        ) AS rank
-    FROM country_photos
-)
-SELECT fpath, 'country' AS listing_type FROM ranked WHERE rank = 1
-"""
-
 
 class ListingCoverReader:
     """Selects one representative cover photo per top-level listing type.
 
     For subject-based types (bird, mammal, etc.) the highest-rated photo is
-    chosen.  For place and country the best landscape photo is preferred,
+    chosen.  For places the best landscape photo is preferred,
     falling back to highest-rated if no landscape exists.
 
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:listing:<type>
@@ -136,11 +112,6 @@ class ListingCoverReader:
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for fpath, listing_type in db.conn.execute(LISTING_COVER_QUERY).fetchall():
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
-            listing_urn = f"urn:ró:listing:{listing_type}"
-            yield SemanticTriple(photo_urn, "cover", listing_urn)
-
-        for fpath, listing_type in db.conn.execute(COUNTRY_COVER_QUERY).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             listing_urn = f"urn:ró:listing:{listing_type}"
             yield SemanticTriple(photo_urn, "cover", listing_urn)
@@ -164,7 +135,7 @@ WITH all_candidates AS (
     -- Country photos derived from single-country album flags
     SELECT
         ph.fpath,
-        'urn:ró:country:' || replace(lower(vad.flags), ' ', '-') AS thing_urn,
+        'urn:ró:place:' || replace(lower(vad.flags), ' ', '-') AS thing_urn,
         vps.rating,
         0 AS is_explicit
     FROM photos p
@@ -197,7 +168,14 @@ class ThingCoverReader:
     """
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        slug_map = country_slug_to_urn()
         for fpath, thing_urn in db.conn.execute(THING_COVER_QUERY).fetchall():
+            # The SQL constructs country URNs as slug-based (e.g. urn:ró:place:ireland);
+            # resolve these to their canonical numeric URNs.
+            urn_id = thing_urn.split(":")[-1]
+            if not urn_id.isdigit():
+                slug = urn_id
+                thing_urn = slug_map.get(slug, thing_urn)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
 
@@ -206,6 +184,7 @@ class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         # TODO I don't get this logic.
 
+        slug_map = country_slug_to_urn()
         photos = list(db.photo_data_table().list())
 
         for album in db.album_data_view().list():
@@ -215,8 +194,7 @@ class PhotosCountryReader:
             for photo in photos:
                 if photo.album_id == album.id:
                     source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
-                    country = album.flags[0]
-                    country_id = country.lower().replace(" ", "-")
-                    country_urn = f"urn:ró:country:{country_id}"
-
-                    yield SemanticTriple(source, "country", country_urn)
+                    slug = album.flags[0].lower().replace(" ", "-")
+                    place_urn = slug_map.get(slug)
+                    if place_urn:
+                        yield SemanticTriple(source, "country", place_urn)

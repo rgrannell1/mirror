@@ -79,15 +79,15 @@ class CDN:
             else:
                 raise
 
-    def upload_photo(self, encoded_data: PhotoContent, role: str, format: str = "webp") -> str:
+    def upload_photo(self, encoded_data: PhotoContent, role: str, format: str = "webp", force: bool = False) -> str:
         """Upload an image to the CDN bucket. Return a CDN link"""
         prefix = deterministic_hash_str(encoded_data.hash() + role)
 
         name = f"{prefix}.{format}"
 
-        if not self.has_object(name):
+        if force or not self.has_object(name):
             print(f"Uploading {name} to CDN")
-            self.upload(name, encoded_data.content)
+            self.upload(name, encoded_data.content, mime_type=f"image/{format}")
 
         return self.url(name)
 

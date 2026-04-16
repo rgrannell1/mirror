@@ -13,6 +13,7 @@ from typing import Iterator, Protocol
 from mirror.models.album import AlbumMetadataModel
 from .database import SqliteDatabase
 from mirror.models.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
+from mirror.models.video import VideoMetadataSummaryModel
 from typing import TypedDict, Optional
 import json
 
@@ -392,6 +393,131 @@ class MarkdownTablePhotoMetadataReader:
                     raise
 
                 yield PhotoMetadataSummaryModel(
+                    url=url,
+                    name=title,
+                    genre=genre_list,
+                    rating=rating_value,
+                    places=places_list,
+                    description=description_value,
+                    subjects=subjects_list,
+                    covers=covers,
+                )
+
+
+class MarkdownTableVideoMetadataWriter:
+    def write_video_metadata(self, db: SqliteDatabase, *, output_path: str | None = None) -> None:
+        headers = ["embedding", "name", "genre", "rating", "places", "description", "subjects", "cover"]
+
+        db.video_metadata_table()
+        db.video_metadata_summary_view()
+
+        merged_data: dict[str, dict] = {}
+
+        for summary in db.video_metadata_summary_view().list():
+            url = summary.url
+            if url not in merged_data:
+                merged_data[url] = {
+                    "url": url,
+                    "name": summary.name or "",
+                    "genre": set(),
+                    "rating": summary.rating or "",
+                    "places": set(),
+                    "description": summary.description or "",
+                    "subjects": set(),
+                    "covers": set(),
+                }
+
+            ref = merged_data[url]
+
+            if summary.genre:
+                ref["genre"].update(summary.genre)
+            if summary.places:
+                ref["places"].update(summary.places)
+            if summary.subjects:
+                ref["subjects"].update(summary.subjects)
+            if summary.covers:
+                ref["covers"].update(summary.covers)
+
+            if summary.description and not ref["description"]:
+                ref["description"] = summary.description
+
+            if summary.rating and not ref["rating"]:
+                ref["rating"] = summary.rating
+
+        rows = []
+        for url, data in merged_data.items():
+            rows.append(
+                [
+                    f"![]({url})",
+                    data["name"],
+                    ",".join(sorted(data["genre"])),
+                    data["rating"],
+                    ",".join(sorted(data["places"])),
+                    data["description"],
+                    ",".join(sorted(data["subjects"])),
+                    ",".join(sorted(data["covers"])),
+                ]
+            )
+
+        lines: list[str] = []
+        lines.append("| " + " | ".join(headers) + " |")
+        lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
+        for row in rows:
+            lines.append("| " + " | ".join(row) + " |")
+
+        body = "\n".join(lines) + "\n"
+        if output_path is not None:
+            _atomic_write(output_path, body)
+        else:
+            print(body, end="")
+
+
+class MarkdownTableVideoMetadataReader:
+    fpath: str
+
+    def __init__(self, fpath: str):
+        self.fpath = fpath
+
+    def read_video_metadata(self, db: SqliteDatabase) -> Iterator[VideoMetadataSummaryModel]:
+        """Read video metadata from a Markdown table"""
+
+        with open(self.fpath, "r") as file:
+            reader = csv.reader(file, delimiter="|")
+            try:
+                headers = next(reader)[1:-1]
+            except StopIteration:
+                raise ValueError(f"videos metadata file is empty: {self.fpath}") from None
+
+            if headers[0].strip() != "embedding":
+                raise ValueError("Invalid header in Markdown table")
+
+            try:
+                next(reader)
+            except StopIteration:
+                raise ValueError(f"videos metadata file is missing separator row: {self.fpath}") from None
+
+            unique_urls = set()
+
+            for row in reader:
+                if len(row) < 8:
+                    continue
+                row = [cell.strip() for cell in row]
+
+                _, embedding, title, genre, rating, places, description, subjects, cover, _ = row
+
+                url = embedding[4:-1]
+                if url in unique_urls:
+                    raise ValueError(f"Duplicate video poster URL in metadata: {url}")
+                unique_urls.add(url)
+
+                covers = re.split(r"\s*,\s*", cover) if cover else []
+                genre_list = re.split(r"\s*,\s*", genre) if genre else []
+                places_list = re.split(r"\s*,\s*", places) if places else []
+                rating_value = rating if rating else None
+                subjects_list = re.split(r"\s*,\s*", subjects) if subjects else []
+                description_value = description or ""
+
+                yield VideoMetadataSummaryModel(
                     url=url,
                     name=title,
                     genre=genre_list,

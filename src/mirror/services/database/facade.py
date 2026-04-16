@@ -16,7 +16,7 @@ from mirror.services.database.photos import (
     PhotosTable,
 )
 from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
-from mirror.services.database.videos import EncodedVideosTable, VideoDataTable, VideosTable
+from mirror.services.database.videos import EncodedVideosTable, VideoDataTable, VideoMetadataTable, VideoMetadataSummaryView, VideosTable
 
 
 class SqliteDatabase:
@@ -40,6 +40,8 @@ class SqliteDatabase:
         self.conn.execute("drop view if exists view_video_data")
         self.conn.execute("drop view if exists view_photo_metadata")
         self.conn.execute("drop view if exists view_photo_metadata_summary")
+        self.conn.execute("drop view if exists view_video_metadata")
+        self.conn.execute("drop view if exists view_video_metadata_summary")
         self.conn.commit()
 
     def refresh_dependent_views(self) -> None:
@@ -96,6 +98,12 @@ class SqliteDatabase:
 
     def photo_metadata_view(self):
         return PhotoMetadataView(self.conn)
+
+    def video_metadata_table(self):
+        return VideoMetadataTable(self.conn)
+
+    def video_metadata_summary_view(self):
+        return VideoMetadataSummaryView(self.conn)
 
     def album_contents_view(self):
         return AlbumContentsView(self.conn)

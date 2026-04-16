@@ -10,9 +10,9 @@ from zahir import Await, Context, spec, WorkflowOutputEvent
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.d1 import D1Builder
 from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
-from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
+from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH, DEFAULT_VIDEOS_MARKDOWN_PATH
 from mirror.services.database import SqliteDatabase
-from mirror.services.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter
+from mirror.services.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter, MarkdownTableVideoMetadataWriter
 from mirror.workflows.publish.utils import (
     atom_feed,
     atom_media,
@@ -111,6 +111,18 @@ def UpdatePhotosMarkdown(
 
 
 @spec()
+def UpdateVideosMarkdown(
+    context: Context,
+    input: PublishArtifactBundleInput,
+    dependencies: dict,
+) -> Generator[WorkflowOutputEvent]:
+    markdown_path = input["videos_markdown_path"]
+    db = SqliteDatabase(DATABASE_PATH)
+    MarkdownTableVideoMetadataWriter().write_video_metadata(db, output_path=markdown_path)
+    yield WorkflowOutputEvent({"artifact": "videos_md", "path": markdown_path})
+
+
+@spec()
 def PublishD1(
     context: Context,
     input: PublishArtifactBundleInput,
@@ -138,6 +150,7 @@ def PublishArtifacts(
         "publication_id": pid,
         "albums_markdown_path": input.get("albums_markdown_path", DEFAULT_ALBUMS_MARKDOWN_PATH),
         "photos_markdown_path": input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH),
+        "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
     yield Await(
@@ -149,6 +162,7 @@ def PublishArtifacts(
             PublishD1(builder_inputs),
             UpdateAlbumsMarkdown(builder_inputs),
             UpdatePhotosMarkdown(builder_inputs),
+            UpdateVideosMarkdown(builder_inputs),
         ]
     )
 

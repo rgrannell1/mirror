@@ -11,6 +11,7 @@ class PublishArtifactsInput(TypedDict, total=False):
     output_dir: Required[str]
     albums_markdown_path: NotRequired[str]
     photos_markdown_path: NotRequired[str]
+    videos_markdown_path: NotRequired[str]
 
 
 class PublishArtifactBundleInput(TypedDict):
@@ -20,3 +21,4 @@ class PublishArtifactBundleInput(TypedDict):
     publication_id: str
     albums_markdown_path: str
     photos_markdown_path: str
+    videos_markdown_path: str

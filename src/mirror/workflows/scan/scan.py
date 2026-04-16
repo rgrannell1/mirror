@@ -17,6 +17,7 @@ from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECT
 from mirror.workflows.scan.utils import (
     DEFAULT_ALBUMS_MARKDOWN_PATH,
     DEFAULT_PHOTOS_MARKDOWN_PATH,
+    DEFAULT_VIDEOS_MARKDOWN_PATH,
     ScanOpts,
     list_geonames_from_metadata,
     list_media,
@@ -25,7 +26,7 @@ from mirror.workflows.scan.utils import (
     list_unsaved_phashes,
     read_geonames_wikidata_ids,
 )
-from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
+from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader, MarkdownTableVideoMetadataReader
 from mirror.data.wikidata import WikidataClient
 from mirror.services.database import SqliteDatabase
 from mirror.services.vault_sync import VaultIndexSync
@@ -220,6 +221,35 @@ def ReadPhotos(
 
 
 @spec()
+def ReadVideos(
+    context: Context,
+    input: dict,
+    dependencies={},
+) -> Generator[JobOutputEvent]:
+    """Read video metadata from markdown file and store in database"""
+    markdown_path = input.get("markdown_path", "videos.md")
+    db = SqliteDatabase(DATABASE_PATH)
+
+    video_reader = MarkdownTableVideoMetadataReader(markdown_path)
+
+    count = 0
+    for md in video_reader.read_video_metadata(db):
+        fpath = db.encoded_photos_table().fpath_from_url(md.url)
+        if not fpath:
+            continue
+
+        db.video_metadata_table().add_summary(fpath, md)
+        count += 1
+
+    yield JobOutputEvent(
+        {
+            "count": count,
+            "status": "videos_loaded",
+        }
+    )
+
+
+@spec()
 def ScanMedia(
     context: Context,
     input: ScanOpts,
@@ -243,6 +273,13 @@ def ScanMedia(
         ReadPhotos(
             {
                 "markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH,
+            },
+        )
+    )
+    yield Await(
+        ReadVideos(
+            {
+                "markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH,
             },
         )
     )

@@ -80,11 +80,14 @@ def UploadPhoto(
     cdn = CDN()
     db = SqliteDatabase(DATABASE_PATH)
 
+    force = input.get("force", False)
+
     with cdn_limit:
         uploaded_url = cdn.upload_photo(
             encoded_data=PhotoEncoder.encode(fpath, role, params),
             role=role,
             format=params["format"],  # type: ignore
+            force=force,
         )
         encoded_photos_table = db.encoded_photos_table()
         encoded_photos_table.add(fpath, uploaded_url, role, params["format"])
@@ -111,6 +114,7 @@ def UploadMissingPhotos(
 ) -> Generator[JobInstance]:
     fpath = input["fpath"]
     force = input.get("force", False)
+    force_roles = set(input.get("force_roles") or [])
 
     db = SqliteDatabase(DATABASE_PATH)
     encoded_photos_table = db.encoded_photos_table()
@@ -122,14 +126,15 @@ def UploadMissingPhotos(
     cdn_limit = ConcurrencyLimit(2, 1, context, semaphore_id="global_photo_cdn_limit")
 
     for role, params in IMAGE_ENCODINGS.items():
-        if role in published_roles:
+        role_forced = force or role in force_roles
+        if role in published_roles and not role_forced:
             continue
 
         # only generate social-cards for album covers, for the moment
         if "+cover" not in fpath and role == "social_card":
             continue
 
-        yield UploadPhoto({"fpath": fpath, "role": role, "params": params}, {"cdn_limit": cdn_limit}, once=not force)
+        yield UploadPhoto({"fpath": fpath, "role": role, "params": params, "force": role_forced}, {"cdn_limit": cdn_limit}, once=not role_forced)
 
 
 @spec()
@@ -242,6 +247,7 @@ def UploadMedia(
     force_recompute_mosaic = input.get("force_recompute_mosaic", False)
     force_upload_images = input.get("force_upload_images", False)
     force_upload_videos = input.get("force_upload_videos", False)
+    force_roles = input.get("force_roles") or []
     upload_images = input.get("upload_images")
     upload_videos = input.get("upload_videos")
 
@@ -252,8 +258,8 @@ def UploadMedia(
         yield ComputeImageMosaic({"fpath": fpath, "force": force_recompute_mosaic})
 
     if upload_images:
-        for fpath in list_photos_without_upload(db, force_upload_images):
-            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images})
+        for fpath in list_photos_without_upload(db, force_upload_images or bool(force_roles)):
+            yield UploadMissingPhotos({"fpath": fpath, "force": force_upload_images, "force_roles": force_roles})
 
     if upload_videos:
         for fpath in list_videos_without_upload(db, force_upload_videos):

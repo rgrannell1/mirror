@@ -355,6 +355,91 @@ create view if not exists view_photo_metadata_summary as
     order by name;
 """
 
+VIDEO_METADATA_TABLE = """
+create table if not exists video_metadata_table (
+  fpath    text not null,
+  src_type text not null,
+  relation text not null,
+  target   text,
+
+  primary key (fpath, src_type, relation, target)
+);
+"""
+
+VIDEO_METADATA_VIEW = """
+create view if not exists view_video_metadata as
+  select * from (with aggregated as (
+    select
+      fpath,
+      coalesce(group_concat(case when relation = 'style' then target end, ', '), '') as genre,
+      coalesce(group_concat(case when relation = 'rating' then target end, ', '), '') as rating,
+      coalesce(group_concat(case when relation = 'location' then target end, ', '), '') as places,
+      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '') as description,
+      coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects,
+      coalesce(group_concat(case when relation = 'cover' then target end, ', '), '') as covers
+    from
+      video_metadata_table
+    where
+      relation in ('style', 'rating', 'location', 'summary', 'subject', 'cover')
+    group by
+      fpath
+  )
+
+  select * from aggregated
+
+  union all
+
+  select
+    v.fpath,
+    '' as genre,
+    '' as rating,
+    '' as places,
+    '' as description,
+    '' as subjects,
+    '' as covers
+  from
+    videos v
+  left join aggregated a on v.fpath = a.fpath
+  where
+    a.fpath is null);
+"""
+
+VIDEO_METADATA_SUMMARY = """
+create view if not exists view_video_metadata_summary as
+    with video_information as (
+      select
+          video_metadata_table_agg.fpath,
+          genre,
+          rating,
+          places,
+          description,
+          subjects,
+          covers
+      from
+          view_video_metadata as video_metadata_table_agg
+    )
+    select
+      video_information.fpath as fpath,
+      encoded_photos.url as url,
+      view_album_data.name as name,
+      genre,
+      rating,
+      places,
+      video_information.description as description,
+      subjects,
+      covers
+    from
+      video_information
+    inner join videos on
+      video_information.fpath = videos.fpath
+    inner join view_album_data on
+      view_album_data.dpath = videos.dpath
+    inner join encoded_photos on
+      video_information.fpath = encoded_photos.fpath
+      and encoded_photos.role = 'video_thumbnail_webp'
+    order by name;
+"""
+
 GEONAME_TABLE = """
 create table if not exists geonames (
   id      text not null primary key,

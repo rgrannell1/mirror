@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 import os
-from typing import List
+from typing import List, Optional
 
 from mirror.models.mirror_types import IModel
 
@@ -57,6 +57,37 @@ class VideoModel(IModel):
             video_url_720p=video_url_720p,
             video_url_480p=video_url_480p,
             poster_url=poster_url,
+        )
+
+
+@dataclass
+class VideoMetadataSummaryModel(IModel):
+    """Video metadata summary model — mirrors PhotoMetadataSummaryModel."""
+
+    url: str
+    name: str
+    genre: List[str]
+    rating: Optional[str]
+    places: List[str]
+    description: Optional[str]
+    subjects: List[str]
+    covers: List[str]
+    fpath: Optional[str] = None
+
+    @classmethod
+    def from_row(cls, row: List) -> "VideoMetadataSummaryModel":
+        (fpath, url, name, genre, rating, places, description, subjects, covers) = row
+
+        return VideoMetadataSummaryModel(
+            url=url,
+            name=name,
+            fpath=fpath,
+            genre=genre.split(",") if genre else [],
+            rating=rating,
+            places=places.split(",") if places else [],
+            description=description,
+            subjects=subjects.split(",") if subjects else [],
+            covers=covers.split(",") if covers else [],
         )
 
 

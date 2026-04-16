@@ -17,11 +17,13 @@ from mirror.commons.constants import KnownRelations
 
 DEFAULT_ALBUMS_MARKDOWN_PATH = "albums.md"
 DEFAULT_PHOTOS_MARKDOWN_PATH = "photos.md"
+DEFAULT_VIDEOS_MARKDOWN_PATH = "videos.md"
 
 
 class ScanOpts(TypedDict, total=False):
     albums_markdown_path: str
     photos_markdown_path: str
+    videos_markdown_path: str
     force_rescan: bool
 
 
