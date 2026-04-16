@@ -51,7 +51,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/60b7f7bbb9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:gallinula-chloropus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/10e1478fbb.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:aythya-americana?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/41f8c2bbe9.webp) | London Wetland Centre | Wildlife | ⭐⭐⭐ | urn:ró:place:79 |  | urn:ró:bird:gallinula-chloropus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/2a1b702b52.webp) | London Zoo |  |  |  |  | urn:ró:bird:psittacus-erithacus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/2a1b702b52.webp) | London Zoo |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8ddeeba513.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:nycticebus-javanicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a68984c544.webp) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:nycticebus-javanicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/29f1f3538d.webp) | Madison & Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:86 |  | urn:ró:bird:accipiter-cooperii?context=wild |  |
