@@ -213,8 +213,9 @@ class PlaceFeatureCoverReader:
 
         place_to_photos: dict[str, list[tuple]] = {}
         for fpath, rating, genre, place_urn in rows:
-            place_to_photos.setdefault(place_urn, []).append((fpath, rating or 0, genre or ""))
+            place_to_photos.setdefault(place_urn, []).append((fpath, rating.count("⭐") if rating else 0, genre or ""))
 
+        all_candidates: list[tuple] = []
         for feature_urn, place_urns in feature_to_places.items():
             candidates = [photo for urn in place_urns for photo in place_to_photos.get(urn, [])]
             if not candidates:
@@ -225,8 +226,17 @@ class PlaceFeatureCoverReader:
                 key=lambda row: (0 if "landscape" in row[2].lower() else 1, -row[1]),
             )[0]
 
+            all_candidates.append(best)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(best[0])}"
             yield SemanticTriple(photo_urn, "cover", feature_urn)
+
+        if all_candidates:
+            listing_best = sorted(
+                all_candidates,
+                key=lambda row: (0 if "landscape" in row[2].lower() else 1, -row[1]),
+            )[0]
+            listing_photo_urn = f"urn:ró:photo:{deterministic_hash_str(listing_best[0])}"
+            yield SemanticTriple(listing_photo_urn, "cover", "urn:ró:listing:place_feature")
 
 
 class PhotosCountryReader:

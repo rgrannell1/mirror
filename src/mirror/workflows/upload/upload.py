@@ -19,6 +19,7 @@ from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import PhotoEncoder
+from mirror.commons.exceptions import InvalidVideoDimensionsException
 
 from zahir import (
     JobInstance,
@@ -170,7 +171,12 @@ def UploadVideo(
     db = SqliteDatabase(DATABASE_PATH)
 
     with cdn_limit:
-        encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
+        try:
+            encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
+        except InvalidVideoDimensionsException:
+            yield JobOutputEvent({"fpath": fpath, "role": role})
+            return
+
         yield Await(
             SqliteDependency(
                 DATABASE_PATH,
