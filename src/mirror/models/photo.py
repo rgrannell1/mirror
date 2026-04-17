@@ -54,6 +54,7 @@ class PhotoModel(IModel):
     full_image: str
     png_url: str
     mid_image_lossy_url: str
+    preview_jpeg_url: str
     created_at: int  # todo is this type correct? Schema validate
     phash: str
 
@@ -75,6 +76,7 @@ class PhotoModel(IModel):
             png_url,
             full_image,
             mid_image_lossy_url,
+            preview_jpeg_url,
             created_at,
             phash,
         ) = row
@@ -89,6 +91,7 @@ class PhotoModel(IModel):
             full_image=full_image,
             png_url=png_url,
             mid_image_lossy_url=mid_image_lossy_url,
+            preview_jpeg_url=preview_jpeg_url,
             created_at=created_at,
             phash=phash,
         )

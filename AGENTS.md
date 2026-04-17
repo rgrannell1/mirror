@@ -65,6 +65,16 @@ Album and photo identity flows from `albums.md` → `media_metadata_table` → v
 
 **Null-id risk**: if `view_album_data` returns a row with `id = NULL` (dpath present in `photos` but no matching permalink in `media_metadata_table`), `AlbumTriples` will emit `urn:ró:album:None` and `PhotoTriples` will emit photos with `album_id = None` — both cause frontend parse failures. Guard: always run `ReadAlbums` before `PublishTriples`, or add `if album.id is None: continue` in `AlbumTriples.read()`.
 
+## Cover Triples
+
+Three readers emit `photo → cover → target` triples used by the frontend to display representative images:
+
+- **`ListingCoverReader`** — one cover per top-level listing type (bird, mammal, reptile, amphibian, fish, insect, plane, train, car, place). For places, prefers landscape genre photos then falls back to highest-rated. All other types use highest-rated only. Target URN: `urn:ró:listing:<type>`.
+
+- **`ThingCoverReader`** — one cover per individual thing (a specific bird, place, etc.). Explicit `cover` relations in `photo_metadata_table` take priority; otherwise highest-rated photo referencing that thing via `subject` or `location` is used. Target URN: `urn:ró:<type>:<id>`.
+
+- **`PlaceFeatureCoverReader`** — one cover per place feature (castle, beach, volcano, etc.). Loads the feature→places mapping from `things.toml`, queries the DB for all photos whose `location` is one of those places, then picks the best per feature (landscape preferred, then highest-rated). Target URN: `urn:ró:place_feature:<id>`.
+
 ## Adding a New Album
 
 1. Add folder under `PHOTO_DIRECTORY` with `Published/` media; one filename must contain `+cover`

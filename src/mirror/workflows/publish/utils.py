@@ -20,6 +20,7 @@ from mirror.data.semantic_triples import (
     ListingCoverReader,
     PhotoTriples,
     PhotosCountryReader,
+    PlaceFeatureCoverReader,
     ThingCoverReader,
     VideosReader,
 )
@@ -280,6 +281,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         AlbumBannerReader(),
         ListingCoverReader(),
         ThingCoverReader(),
+        PlaceFeatureCoverReader(),
         AnimalFirstSeenReader(),
     ]
     seen: set[int] = set()

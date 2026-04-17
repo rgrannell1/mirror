@@ -7,6 +7,19 @@ from mirror.data.types import SemanticTriple
 
 
 @cache
+def place_feature_to_places(things_file: str = "things.toml") -> dict[str, list[str]]:
+    """Return mapping of place_feature URN → list of place URNs with that feature."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    mapping: dict[str, list[str]] = {}
+    for place in data.get("places", []):
+        for feature_urn in place.get("features", []):
+            mapping.setdefault(feature_urn, []).append(place["id"])
+    return mapping
+
+
+@cache
 def country_slug_to_urn(things_file: str = "things.toml") -> dict[str, str]:
     """Return a mapping of slugified country name → place URN for country-type places.
 

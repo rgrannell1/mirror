@@ -206,9 +206,10 @@ create view if not exists view_photo_data as
     coalesce(thumbnail_lossy.url, null) as thumbnail_url,
     coalesce(thumbnail_data.url, null) as thumbnail_mosaic_url,
     coalesce(mosaic_colours.url, null) as mosaic_colours,
-    coalesce(full_image_png.url, null) as png_url,
+    coalesce(mid_image_png_photo.url, null) as png_url,
     coalesce(full_image.url, null) as full_image,
     coalesce(mid_image_lossy.url, null) as mid_image_lossy,
+    coalesce(preview_jpeg_photo.url, null) as preview_jpeg_url,
     coalesce(exif.created_at, null) as created_at,
     coalesce(phashes.phash, null) as phash
   from photos
@@ -220,13 +221,15 @@ create view if not exists view_photo_data as
     on photos.fpath = thumbnail_data.fpath and thumbnail_data.role = 'thumbnail_data_url'
   left join encoded_photos full_image
     on photos.fpath = full_image.fpath and full_image.role = 'full_image_lossless'
-  left join encoded_photos full_image_png
-    on photos.fpath = full_image_png.fpath and full_image_png.role = 'full_image_png'
+  left join encoded_photos mid_image_png_photo
+    on photos.fpath = mid_image_png_photo.fpath and mid_image_png_photo.role = 'mid_image_png'
 
   left join encoded_photos mid_image_lossy
     on photos.fpath = mid_image_lossy.fpath and mid_image_lossy.role = 'mid_image_lossy'
 
 
+  left join encoded_photos preview_jpeg_photo
+    on photos.fpath = preview_jpeg_photo.fpath and preview_jpeg_photo.role = 'preview_jpeg'
   left join encoded_photos mosaic_colours
     on photos.fpath = mosaic_colours.fpath and mosaic_colours.role = 'thumbnail_mosaic'
   left join exif

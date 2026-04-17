@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING, Iterator
 
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
-from mirror.data.things import country_slug_to_urn
+from mirror.data.things import country_slug_to_urn, place_feature_to_places
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -22,6 +22,7 @@ class PhotoTriples:
             yield SemanticTriple(source, "thumbnail_url", short_cdn_url(photo.thumbnail_url))
             yield SemanticTriple(source, "png_url", short_cdn_url(photo.png_url))
             yield SemanticTriple(source, "mid_image_lossy_url", short_cdn_url(photo.mid_image_lossy_url))
+            yield SemanticTriple(source, "preview_jpeg_url", short_cdn_url(photo.preview_jpeg_url))
             yield SemanticTriple(source, "mosaic_colours", photo.mosaic_colours)
             yield SemanticTriple(source, "full_image", short_cdn_url(photo.full_image))
             yield SemanticTriple(source, "created_at", str(int(photo.get_ctime().timestamp() * 1000)))
@@ -178,6 +179,54 @@ class ThingCoverReader:
                 thing_urn = slug_map.get(slug, thing_urn)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
+
+
+class PlaceFeatureCoverReader:
+    """Selects one cover photo per place_feature (castle, beach, volcano, etc.).
+
+    Loads the feature→places mapping from things.toml, queries the DB for all
+    photos at those places, then picks the best per feature (landscape preferred,
+    then highest-rated).
+
+    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:place_feature:<feature-id>
+    """
+
+    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        feature_to_places = place_feature_to_places()
+
+        all_place_urns = list({urn for urns in feature_to_places.values() for urn in urns})
+        if not all_place_urns:
+            return
+
+        placeholders = ",".join("?" * len(all_place_urns))
+        rows = db.conn.execute(
+            f"""
+            SELECT ph.fpath, vps.rating, vps.genre, pmt.target
+            FROM photo_metadata_table pmt
+            JOIN phashes ph ON pmt.phash = ph.phash
+            JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+            WHERE pmt.relation = 'location'
+              AND pmt.target IN ({placeholders})
+            """,
+            all_place_urns,
+        ).fetchall()
+
+        place_to_photos: dict[str, list[tuple]] = {}
+        for fpath, rating, genre, place_urn in rows:
+            place_to_photos.setdefault(place_urn, []).append((fpath, rating or 0, genre or ""))
+
+        for feature_urn, place_urns in feature_to_places.items():
+            candidates = [photo for urn in place_urns for photo in place_to_photos.get(urn, [])]
+            if not candidates:
+                continue
+
+            best = sorted(
+                candidates,
+                key=lambda row: (0 if "landscape" in row[2].lower() else 1, -row[1]),
+            )[0]
+
+            photo_urn = f"urn:ró:photo:{deterministic_hash_str(best[0])}"
+            yield SemanticTriple(photo_urn, "cover", feature_urn)
 
 
 class PhotosCountryReader:
