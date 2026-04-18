@@ -5,7 +5,7 @@ import csv
 import os
 import tempfile
 from pathlib import Path
-from jsonschema import validate
+from jsonschema import validate, ValidationError
 
 from collections import defaultdict
 from typing import Iterator, Protocol
@@ -223,9 +223,9 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
 
                 try:
                     validate(item, AlbumMetadataModel.schema())
-                except Exception:
+                except ValidationError as err:
                     print(json.dumps(item, indent=2))
-                    raise
+                    raise ValueError(str(err.message)) from None
 
                 src = item.get("fpath")
 
@@ -387,10 +387,10 @@ class MarkdownTablePhotoMetadataReader:
 
                 try:
                     validate(item, PhotoMetadataSummaryModel.schema())
-                except Exception:
+                except ValidationError as err:
                     print("failing instance")
                     print(json.dumps(item, indent=2))
-                    raise
+                    raise ValueError(str(err.message)) from None
 
                 yield PhotoMetadataSummaryModel(
                     url=url,

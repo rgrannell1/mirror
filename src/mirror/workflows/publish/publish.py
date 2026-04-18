@@ -10,9 +10,17 @@ from zahir import Await, Context, spec, WorkflowOutputEvent
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.d1 import D1Builder
 from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
-from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH, DEFAULT_VIDEOS_MARKDOWN_PATH
+from mirror.workflows.scan.utils import (
+    DEFAULT_ALBUMS_MARKDOWN_PATH,
+    DEFAULT_PHOTOS_MARKDOWN_PATH,
+    DEFAULT_VIDEOS_MARKDOWN_PATH,
+)
 from mirror.services.database import SqliteDatabase
-from mirror.services.metadata import MarkdownAlbumMetadataWriter, MarkdownTablePhotoMetadataWriter, MarkdownTableVideoMetadataWriter
+from mirror.services.metadata import (
+    MarkdownAlbumMetadataWriter,
+    MarkdownTablePhotoMetadataWriter,
+    MarkdownTableVideoMetadataWriter,
+)
 from mirror.workflows.publish.utils import (
     atom_feed,
     atom_media,

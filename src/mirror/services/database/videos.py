@@ -4,7 +4,14 @@ import os
 import sqlite3
 from typing import Iterator, List
 
-from mirror.commons.tables import ENCODED_VIDEO_TABLE, VIDEO_DATA_VIEW, VIDEO_METADATA_SUMMARY, VIDEO_METADATA_TABLE, VIDEO_METADATA_VIEW, VIDEOS_TABLE
+from mirror.commons.tables import (
+    ENCODED_VIDEO_TABLE,
+    VIDEO_DATA_VIEW,
+    VIDEO_METADATA_SUMMARY,
+    VIDEO_METADATA_TABLE,
+    VIDEO_METADATA_VIEW,
+    VIDEOS_TABLE,
+)
 from mirror.models.video import EncodedVideoModel, VideoMetadataSummaryModel, VideoModel
 
 

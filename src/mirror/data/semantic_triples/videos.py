@@ -19,9 +19,7 @@ class VideosReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         # Build a lookup of fpath → video metadata rows
         metadata_by_fpath: dict[str, list] = {}
-        for row in db.conn.execute(
-            "select fpath, relation, target from video_metadata_table"
-        ):
+        for row in db.conn.execute("select fpath, relation, target from video_metadata_table"):
             fpath, relation, target = row
             metadata_by_fpath.setdefault(fpath, []).append((relation, target))
 

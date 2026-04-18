@@ -24,11 +24,7 @@ def load_places() -> dict[str, str]:
         return {}
     with open(THINGS_PATH, "rb") as fh:
         data = tomllib.load(fh)
-    return {
-        entry["name"]: entry["id"]
-        for entry in data.get("places", [])
-        if "name" in entry and "id" in entry
-    }
+    return {entry["name"]: entry["id"] for entry in data.get("places", []) if "name" in entry and "id" in entry}
 
 
 def load_subjects() -> dict[str, str]:
@@ -45,6 +41,7 @@ def load_subjects() -> dict[str, str]:
             if "name" in entry and "id" in entry:
                 result[entry["name"]] = entry["id"]
     return result
+
 
 _FIELD_ROW_ID_PREFIX = "field-row-"
 _EDIT_INPUT_ID = "edit-input"
@@ -116,7 +113,11 @@ class GenreSuggester(CyclingSuggester):
     def _compute_matches(self, value: str) -> list[str]:
         lower = value.casefold()
         prefix = [genre for genre in sorted(self._genres) if genre.casefold().startswith(lower)]
-        infix = [genre for genre in sorted(self._genres) if lower in genre.casefold() and not genre.casefold().startswith(lower)]
+        infix = [
+            genre
+            for genre in sorted(self._genres)
+            if lower in genre.casefold() and not genre.casefold().startswith(lower)
+        ]
         return prefix + infix
 
 
@@ -134,7 +135,11 @@ class UrnSuggester(CyclingSuggester):
     def _compute_matches(self, value: str) -> list[str]:
         lower = value.casefold()
         prefix = [f"{name} [ {urn} ]" for name, urn in self._entries if name.casefold().startswith(lower)]
-        infix = [f"{name} [ {urn} ]" for name, urn in self._entries if lower in name.casefold() and not name.casefold().startswith(lower)]
+        infix = [
+            f"{name} [ {urn} ]"
+            for name, urn in self._entries
+            if lower in name.casefold() and not name.casefold().startswith(lower)
+        ]
         return prefix + infix
 
 

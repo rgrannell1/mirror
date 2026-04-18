@@ -12,7 +12,7 @@ from textual.widgets import Label
 
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer
-from labeller.widgets import FieldTable, ImageFrame
+from labeller.widgets import ImageFrame
 
 from .filters import PRESET_FILTERS
 from .parser import PhotoRow, load_photos
@@ -28,6 +28,7 @@ class PhotoFilterProvider(Provider):
 
     async def search(self, query: str) -> Hits:
         from textual.widgets import TabbedContent
+
         if self.app.query_one(TabbedContent).active != "photos":
             return
 
@@ -51,9 +52,7 @@ class PhotoFilterProvider(Provider):
                 yield Hit(
                     score=score,
                     match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred)
-                    )(),
+                    command=(lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred))(),
                     help=preset_label.lower(),
                 )
 
@@ -81,9 +80,7 @@ class PhotoFilterProvider(Provider):
                     score=score,
                     match_display=matcher.highlight(namespaced),
                     command=(
-                        lambda name=album_name: lambda: pane._apply_filter(
-                            name, lambda photo, n=name: photo.name == n
-                        )
+                        lambda name=album_name: lambda: pane._apply_filter(name, lambda photo, n=name: photo.name == n)
                     )(),
                     help=album_name,
                 )
@@ -162,6 +159,7 @@ class PhotoPane(Widget):
             return
         field, value = self.app.last_edit
         from .parser import EDITABLE_COLUMNS
+
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for photos", severity="warning")
             return
@@ -218,6 +216,7 @@ class PhotoPane(Widget):
     def _fetch_labels(self, fpath: str | None, url: str) -> None:
         from rich.markup import escape
         from .vision import label_image
+
         try:
             labels = label_image(fpath, url)
         except Exception as exc:

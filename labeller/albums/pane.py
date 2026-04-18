@@ -32,6 +32,7 @@ class AlbumFilterProvider(Provider):
 
     async def search(self, query: str) -> Hits:
         from textual.widgets import TabbedContent
+
         if self.app.query_one(TabbedContent).active != "albums":
             return
 
@@ -55,9 +56,7 @@ class AlbumFilterProvider(Provider):
                 yield Hit(
                     score=score,
                     match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred)
-                    )(),
+                    command=(lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred))(),
                     help=preset_label.lower(),
                 )
 
@@ -159,6 +158,7 @@ class AlbumPane(Widget):
 
     def action_open_image(self) -> None:
         from labeller.opener import fpath_for_url, open_in_viewer
+
         url = self._state.current_album.thumbnail_url
         fpath = fpath_for_url(url)
         if fpath:

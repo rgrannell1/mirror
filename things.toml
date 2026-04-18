@@ -339,6 +339,20 @@ features = [
 ]
 
 [[places]]
+id = "urn:ró:place:172"
+longitude = -6.2546
+latitude = 53.3415
+name = "National Gallery of Ireland"
+wikipedia = "https://en.wikipedia.org/wiki/National_Gallery_of_Ireland"
+in = [
+    "urn:ró:place:148",
+    "urn:ró:place:15",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
+[[places]]
 id = "urn:ró:place:19"
 longitude = -6.267
 latitude = 53.342

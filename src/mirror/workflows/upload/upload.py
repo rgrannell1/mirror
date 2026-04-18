@@ -135,7 +135,11 @@ def UploadMissingPhotos(
         if "+cover" not in fpath and role == "social_card":
             continue
 
-        yield UploadPhoto({"fpath": fpath, "role": role, "params": params, "force": role_forced}, {"cdn_limit": cdn_limit}, once=not role_forced)
+        yield UploadPhoto(
+            {"fpath": fpath, "role": role, "params": params, "force": role_forced},
+            {"cdn_limit": cdn_limit},
+            once=not role_forced,
+        )
 
 
 @spec()
@@ -216,11 +220,13 @@ def UploadMissingVideos(
         if role in published_roles:
             continue
 
-        yield Await(UploadVideo(
-            {"fpath": fpath, "role": role, "params": params},
-            {"cdn_limit": cdn_limit, "oom_limit": oom_limit},
-            once=not force,
-        ))
+        yield Await(
+            UploadVideo(
+                {"fpath": fpath, "role": role, "params": params},
+                {"cdn_limit": cdn_limit, "oom_limit": oom_limit},
+                once=not force,
+            )
+        )
 
     yield Await(
         SqliteDependency(
@@ -235,9 +241,11 @@ def UploadMissingVideos(
     ) = 4 then 'satisfied' else 'impossible' end as status
     """,
             (fpath,),
-        ).message({
-            DependencyState.IMPOSSIBLE: f"No videos uploaded for {fpath}",
-        })
+        ).message(
+            {
+                DependencyState.IMPOSSIBLE: f"No videos uploaded for {fpath}",
+            }
+        )
     )
 
 

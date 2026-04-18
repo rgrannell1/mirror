@@ -16,7 +16,13 @@ from mirror.services.database.photos import (
     PhotosTable,
 )
 from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
-from mirror.services.database.videos import EncodedVideosTable, VideoDataTable, VideoMetadataTable, VideoMetadataSummaryView, VideosTable
+from mirror.services.database.videos import (
+    EncodedVideosTable,
+    VideoDataTable,
+    VideoMetadataTable,
+    VideoMetadataSummaryView,
+    VideosTable,
+)
 
 
 class SqliteDatabase:

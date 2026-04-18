@@ -3,7 +3,14 @@
 from .albums import AlbumTriples
 from .exif import ExifTriplesReader
 from .first_seen import AnimalFirstSeenReader
-from .photos import AlbumBannerReader, ListingCoverReader, PhotoTriples, PhotosCountryReader, PlaceFeatureCoverReader, ThingCoverReader
+from .photos import (
+    AlbumBannerReader,
+    ListingCoverReader,
+    PhotoTriples,
+    PhotosCountryReader,
+    PlaceFeatureCoverReader,
+    ThingCoverReader,
+)
 from .videos import VideosReader
 
 __all__ = [

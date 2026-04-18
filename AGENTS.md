@@ -1,5 +1,6 @@
 
 - Please read /home/rg/Code/zahir for context about the workflow engine, especially the readme.
+- Workflow errors are logged to `zahir_logs/latest.stderr` in the mirror project root.
 - `LocalScope().scan(path)` auto-discovers all `@spec()` and `Dependency` subclasses under a directory — use this instead of manually listing specs in `LocalScope(specs=[...])`.
 - No single letter variables. Err for exceptions, idx for indices.
 - Use `sqlite` CLI command, not `sqlite3`

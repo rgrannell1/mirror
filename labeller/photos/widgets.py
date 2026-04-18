@@ -5,7 +5,16 @@ from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import Input
 
-from labeller.widgets import FieldRow, FieldTable, GenreSuggester, RatingSelector, UrnSuggester, _EDIT_INPUT_ID, _FIELD_ROW_ID_PREFIX, _RATING_SELECTOR_ID
+from labeller.widgets import (
+    FieldRow,
+    FieldTable,
+    GenreSuggester,
+    RatingSelector,
+    UrnSuggester,
+    _EDIT_INPUT_ID,
+    _FIELD_ROW_ID_PREFIX,
+    _RATING_SELECTOR_ID,
+)
 
 from .parser import EDITABLE_COLUMNS
 

@@ -118,3 +118,4 @@
 | ![](https://photos-cdn.rgrannell.xyz/287bcb370c.webp) | National Archaeological Museum | man-26 | Spain | I was recovering from surgery at the time, so it took a few attempts to actually see this museum (and see it briefly) |
 | ![](https://photos-cdn.rgrannell.xyz/e31693fa3f.webp) | River Dodder | river-dodder-26 | Ireland | The first blue-sky of 2026. I went for a walk hoping to see kingfishers and otters. As expected, I didn't find any, but it was a nice walk regardless |
 | ![](https://photos-cdn.rgrannell.xyz/4202e1eabf.webp) | Toledo | toledo-26 | Spain |  |
+| ![](https://photos-cdn.rgrannell.xyz/1cc63cc027.webp) | William Blake Exhibit | william-blake-26 | urn:ró:place:148 |  |

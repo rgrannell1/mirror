@@ -40,6 +40,7 @@ def label_image(fpath: str | None, url: str | None) -> list[str]:
         }
     elif url:
         import requests
+
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         image_part = {

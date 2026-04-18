@@ -26,7 +26,11 @@ from mirror.workflows.scan.utils import (
     list_unsaved_phashes,
     read_geonames_wikidata_ids,
 )
-from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader, MarkdownTableVideoMetadataReader
+from mirror.services.metadata import (
+    MarkdownAlbumMetadataReader,
+    MarkdownTablePhotoMetadataReader,
+    MarkdownTableVideoMetadataReader,
+)
 from mirror.data.wikidata import WikidataClient
 from mirror.services.database import SqliteDatabase
 from mirror.services.vault_sync import VaultIndexSync

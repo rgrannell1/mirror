@@ -1,8 +1,6 @@
-
 import argparse
 import logging
 import multiprocessing
-import sys
 from pathlib import Path
 
 from mirror.workflows.workflow import MirrorWorkflow
@@ -11,7 +9,6 @@ logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
 from zahir import LocalScope, LocalWorkflow, MemoryContext, SQLiteJobRegistry
-from zahir.events import JobIrrecoverableEvent, JobImpossibleEvent
 
 
 def main():
@@ -37,16 +34,18 @@ def main():
         job_registry=job_registry,
     )
 
-    start = MirrorWorkflow({
-        "upload_images": args.upload_images,
-        "upload_videos": args.upload_videos,
-        "force_recompute_grey": args.force_recompute_grey,
-        "force_recompute_mosaic": args.force_recompute_mosaic,
-        "force_upload_images": args.force_upload_images,
-        "force_upload_videos": args.force_upload_videos,
-        "force_roles": args.force_roles,
-        "publish_d1": args.publish_d1,
-    })
+    start = MirrorWorkflow(
+        {
+            "upload_images": args.upload_images,
+            "upload_videos": args.upload_videos,
+            "force_recompute_grey": args.force_recompute_grey,
+            "force_recompute_mosaic": args.force_recompute_mosaic,
+            "force_upload_images": args.force_upload_images,
+            "force_upload_videos": args.force_upload_videos,
+            "force_roles": args.force_roles,
+            "publish_d1": args.publish_d1,
+        }
+    )
     for event in LocalWorkflow(context, max_workers=15).run(start):
         print(event)
 
