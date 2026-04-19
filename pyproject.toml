@@ -3,7 +3,7 @@ name = "mirror"
 version = "0.1.0"
 description = "Media asset management and publishing workflow engine"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
   "boto3",
   "botocore",
@@ -14,22 +14,28 @@ dependencies = [
   "levenshtein",
   "numpy",
   "opencv-python",
-  "Pillow",
+  "Pillow>=12.0.0",
   "python-dotenv",
   "PyYAML",
   "requests",
   "sqlean.py",
   "xmltodict",
-  "feedgen",
   "markdown",
   "tomli-w",
   "typeguard",
+  "feedgen",
   "psutil",
-  "zahir @ file:///home/rg/Code/zahir",
-  "google-generativeai",
+  "zahir2 @ file:///home/rg/Code/zahir2",
+  "tertius @ file:///home/rg/Code/tertius",
+  "orbis @ file:///home/rg/Code/orbis",
   "textual>=8.2.3",
   "rich-pixels>=3.0.1",
   "textual-image>=0.11.0",
+]
+
+[project.optional-dependencies]
+labeller = [
+  "google-generativeai",
 ]
 
 [tool.ruff]
@@ -67,6 +73,10 @@ indent-width = 4
 
 [tool.ruff.lint.per-file-ignores]
 "src/mirror/commons/__init__.py" = ["F403", "F405"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project.scripts]
 mirror = "mirror.cli:main"

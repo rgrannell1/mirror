@@ -3,38 +3,26 @@
 from __future__ import annotations
 
 import subprocess
-from typing import Generator
+from collections.abc import Generator
+from typing import Any
 
-from zahir import Await, Context, spec
+from zahir.core.evaluate import JobContext
 
 from mirror.commons.config import WEBSITE_DIRECTORY
 
 
-@spec()
-def BuildSource(
-    context: Context,
-    input: dict,
-    dependencies: dict,
-) -> Generator:
+def build_source(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     subprocess.run(["rs", "dev", "--build-only"], cwd=WEBSITE_DIRECTORY, check=True)
+    return None
     yield
 
 
-@spec()
-def PublishD1Remote(
-    context: Context,
-    input: dict,
-    dependencies: dict,
-) -> Generator:
+def publish_d1_remote(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     subprocess.run(["rs", "deploy"], cwd=WEBSITE_DIRECTORY, check=True)
+    return None
     yield
 
 
-@spec()
-def BuildWebsite(
-    context: Context,
-    input: dict,
-    dependencies: dict,
-) -> Generator[Await]:
-    yield Await(BuildSource())
-    yield Await(PublishD1Remote())
+def build_website(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
+    yield ctx.scope.build_source({})
+    yield ctx.scope.publish_d1_remote({})

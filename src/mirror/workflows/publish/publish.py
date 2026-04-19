@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import os
-from typing import Generator
+from collections.abc import Generator
+from typing import Any
 
-from zahir import Await, Context, spec, WorkflowOutputEvent
+from zahir.core.evaluate import JobContext
+from zahir.core.effects import EAwaitAll
 
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.d1 import D1Builder
@@ -22,8 +24,6 @@ from mirror.services.metadata import (
     MarkdownTableVideoMetadataWriter,
 )
 from mirror.workflows.publish.utils import (
-    atom_feed,
-    atom_media,
     env_content,
     publication_id,
     remove_artifacts,
@@ -32,40 +32,25 @@ from mirror.workflows.publish.utils import (
 )
 
 
-@spec()
-def PublishEnv(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def publish_env(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     path = os.path.join(output_dir, "env.json")
 
     with open(path, "w") as f:
         f.write(env_content(pid))
-    yield WorkflowOutputEvent({"artifact": "env"})
+
+    return {"artifact": "env"}
+    yield
 
 
-@spec()
-def PublishAtom(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
-    output_dir = input["output_dir"]
-    db = SqliteDatabase(DATABASE_PATH)
-    atom_feed(atom_media(db), output_dir)
-
-    yield WorkflowOutputEvent({"artifact": "atom"})
+def publish_atom(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
+    # atom feed generation requires feedgen/lxml — not yet available on Python 3.15
+    return {"artifact": "atom", "skipped": True}
+    yield
 
 
-@spec()
-def PublishStats(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def publish_stats(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     db = SqliteDatabase(DATABASE_PATH)
@@ -74,15 +59,11 @@ def PublishStats(
     with open(path, "w") as f:
         f.write(stats_content(db))
 
-    yield WorkflowOutputEvent({"artifact": "stats"})
+    return {"artifact": "stats"}
+    yield
 
 
-@spec()
-def PublishTriples(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def publish_triples(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     db = SqliteDatabase(DATABASE_PATH)
@@ -91,68 +72,49 @@ def PublishTriples(
     with open(path, "w") as f:
         f.write(triples_content(db))
 
-    yield WorkflowOutputEvent({"artifact": "triples"})
+    return {"artifact": "triples"}
+    yield
 
 
-@spec()
-def UpdateAlbumsMarkdown(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def update_albums_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     markdown_path = input["albums_markdown_path"]
     db = SqliteDatabase(DATABASE_PATH)
     MarkdownAlbumMetadataWriter().write_album_metadata(db, output_path=markdown_path)
-    yield WorkflowOutputEvent({"artifact": "albums_md", "path": markdown_path})
+    return {"artifact": "albums_md", "path": markdown_path}
+    yield
 
 
-@spec()
-def UpdatePhotosMarkdown(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def update_photos_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     markdown_path = input["photos_markdown_path"]
     db = SqliteDatabase(DATABASE_PATH)
     MarkdownTablePhotoMetadataWriter().write_photo_metadata(db, output_path=markdown_path)
-    yield WorkflowOutputEvent({"artifact": "photos_md", "path": markdown_path})
+    return {"artifact": "photos_md", "path": markdown_path}
+    yield
 
 
-@spec()
-def UpdateVideosMarkdown(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def update_videos_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     markdown_path = input["videos_markdown_path"]
     db = SqliteDatabase(DATABASE_PATH)
     MarkdownTableVideoMetadataWriter().write_video_metadata(db, output_path=markdown_path)
-    yield WorkflowOutputEvent({"artifact": "videos_md", "path": markdown_path})
+    return {"artifact": "videos_md", "path": markdown_path}
+    yield
 
 
-@spec()
-def PublishD1(
-    context: Context,
-    input: PublishArtifactBundleInput,
-    dependencies: dict,
-) -> Generator[WorkflowOutputEvent]:
+def publish_d1(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     db = SqliteDatabase(DATABASE_PATH)
     D1Builder(db).build()
-    yield WorkflowOutputEvent({"artifact": "d1"})
+    return {"artifact": "d1"}
+    yield
 
 
-@spec()
-def PublishArtifacts(
-    context: Context,
-    input: PublishArtifactsInput,
-    dependencies: dict,
-) -> Generator[Await | WorkflowOutputEvent]:
+def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
 
     SqliteDatabase(DATABASE_PATH).refresh_dependent_views()
 
     pid = publication_id()
     remove_artifacts(output_dir)
+
     builder_inputs: PublishArtifactBundleInput = {
         "output_dir": output_dir,
         "publication_id": pid,
@@ -161,17 +123,14 @@ def PublishArtifacts(
         "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
-    yield Await(
-        [
-            PublishEnv(builder_inputs),
-            # PublishAtom(builder_inputs),
-            PublishStats(builder_inputs),
-            PublishTriples(builder_inputs),
-            PublishD1(builder_inputs),
-            UpdateAlbumsMarkdown(builder_inputs),
-            UpdatePhotosMarkdown(builder_inputs),
-            UpdateVideosMarkdown(builder_inputs),
-        ]
-    )
+    yield EAwaitAll([
+        ctx.scope.publish_env(builder_inputs),
+        ctx.scope.publish_stats(builder_inputs),
+        ctx.scope.publish_triples(builder_inputs),
+        ctx.scope.publish_d1(builder_inputs),
+        ctx.scope.update_albums_markdown(builder_inputs),
+        ctx.scope.update_photos_markdown(builder_inputs),
+        ctx.scope.update_videos_markdown(builder_inputs),
+    ])
 
-    yield WorkflowOutputEvent({"publication_id": pid})
+    return {"publication_id": pid}

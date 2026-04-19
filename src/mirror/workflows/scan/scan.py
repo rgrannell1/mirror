@@ -2,16 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Generator
+from collections.abc import Generator
+from typing import Any
 
-from zahir import (
-    Await,
-    Context,
-    JobInstance,
-    JobOutputEvent,
-    spec,
-    WorkflowOutputEvent,
-)
+from zahir.core.evaluate import JobContext
+from zahir.core.effects import EAwaitAll
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.workflows.scan.utils import (
@@ -39,19 +34,11 @@ from mirror.commons.urn import parse_mirror_urn
 from mirror.models.video import Video
 
 
-@spec()
-def MediaScan(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobOutputEvent | Await]:
+def media_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Scan media files in the vault and index them in the database"""
     dpath = input.get("dpath", PHOTO_DIRECTORY)
 
     db = SqliteDatabase(DATABASE_PATH)
-
-    # db.delete_views()  # TEMPORARILY DISABLED: may be causing encoded_videos to disappear
-
     db.refresh_dependent_views()
 
     phash_table = db.phashes_table()
@@ -61,7 +48,6 @@ def MediaScan(
 
     current_fpaths = set()
 
-    # Index all media files
     for entry in list_media(dpath):
         if isinstance(entry, Photo):
             photos_table.add(entry.fpath)
@@ -70,22 +56,16 @@ def MediaScan(
             videos_table.add(entry.fpath)
             current_fpaths.add(entry.fpath)
 
-    # Remove stale photo rows, without touching videos (video deletion is known-broken).
     VaultIndexSync(db).remove_deleted_photos(current_fpaths)
 
-    # Add exif data and phashes
     exif_table.add_many(list_unsaved_exifs(db, dpath))
     phash_table.add_many(list_unsaved_phashes(db, dpath))
 
-    yield JobOutputEvent({"complete": True})
+    return {"complete": True}
+    yield
 
 
-@spec()
-def GeonamesScan(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobInstance | JobOutputEvent]:
+def geonames_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Scan geonames from external API and store in database"""
     if not GEONAMES_USERNAME:
         raise ValueError("GEONAMES_USERNAME environment variable not set")
@@ -97,7 +77,6 @@ def GeonamesScan(
 
     geoname_client = GeonameClient(GEONAMES_USERNAME)
 
-    # Yield individual geoname lookup tasks
     for geoname_urn in list_geonames_from_metadata(db):
         parsed = parse_mirror_urn(geoname_urn)
         gid = parsed["id"]
@@ -109,22 +88,17 @@ def GeonamesScan(
         if res:
             geoname_table.add(gid, res)
 
-    yield JobOutputEvent({"complete": True})
+    return {"complete": True}
+    yield
 
 
-@spec()
-def WikidataScan(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobOutputEvent]:
+def wikidata_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Scan WikiData for geonames and binomials"""
     db = SqliteDatabase(DATABASE_PATH)
     wikidata_client = WikidataClient()
     wikidata_table = db.wikidata_table()
     binomials_wikidata_table = db.binomials_wikidata_id_table()
 
-    # Process geonames wikidata IDs
     for triple in read_geonames_wikidata_ids(db):
         qid = triple.target
 
@@ -138,7 +112,6 @@ def WikidataScan(
 
         wikidata_table.add(qid, res)
 
-    # Process binomials
     for binomial in list_unsaved_binomials(db):
         res = wikidata_client.get_by_binomial(binomial)
         if not res:
@@ -146,63 +119,42 @@ def WikidataScan(
             continue
 
         qid = res["id"]
-
         binomials_wikidata_table.add(binomial, qid)
         wikidata_table.add(qid, res)
 
-    yield JobOutputEvent({"complete": True})
+    return {"complete": True}
+    yield
 
 
-@spec()
-def ReadAlbums(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobOutputEvent]:
+def read_albums(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Read album metadata from markdown file and store in database"""
     markdown_path = input.get("markdown_path", "albums.md")
     db = SqliteDatabase(DATABASE_PATH)
 
     album_reader = MarkdownAlbumMetadataReader(markdown_path)
 
-    # Clear existing album metadata
     db.conn.execute("delete from media_metadata_table where src_type = 'album'")
 
-    # Read and store album metadata
     count = 0
     for item in album_reader.list_album_metadata(db):
         db.conn.execute(
-            """
-            insert or replace into media_metadata_table (src, src_type, relation, target)
-            values (?, ?, ?, ?)
-        """,
+            "insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)",
             (item.src, "album", item.relation, item.target),
         )
         count += 1
 
     db.conn.commit()
-
-    yield JobOutputEvent(
-        {
-            "count": count,
-            "status": "albums_loaded",
-        }
-    )
+    return {"count": count, "status": "albums_loaded"}
+    yield
 
 
-@spec()
-def ReadPhotos(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobOutputEvent]:
+def read_photos(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Read photo metadata from markdown file and store in database"""
     markdown_path = input.get("markdown_path", "photos.md")
     db = SqliteDatabase(DATABASE_PATH)
 
     photo_reader = MarkdownTablePhotoMetadataReader(markdown_path)
 
-    # Read and store photo metadata
     count = 0
     for md in photo_reader.read_photo_metadata(db):
         fpath = db.encoded_photos_table().fpath_from_url(md.url)
@@ -216,20 +168,11 @@ def ReadPhotos(
         db.photo_metadata_table().add_summary(phash, md)
         count += 1
 
-    yield JobOutputEvent(
-        {
-            "count": count,
-            "status": "photos_loaded",
-        }
-    )
+    return {"count": count, "status": "photos_loaded"}
+    yield
 
 
-@spec()
-def ReadVideos(
-    context: Context,
-    input: dict,
-    dependencies={},
-) -> Generator[JobOutputEvent]:
+def read_videos(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Read video metadata from markdown file and store in database"""
     markdown_path = input.get("markdown_path", "videos.md")
     db = SqliteDatabase(DATABASE_PATH)
@@ -245,48 +188,20 @@ def ReadVideos(
         db.video_metadata_table().add_summary(fpath, md)
         count += 1
 
-    yield JobOutputEvent(
-        {
-            "count": count,
-            "status": "videos_loaded",
-        }
-    )
+    return {"count": count, "status": "videos_loaded"}
+    yield
 
 
-@spec()
-def ScanMedia(
-    context: Context,
-    input: ScanOpts,
-    dependencies={},
-) -> Generator[Await | WorkflowOutputEvent]:
+def scan_media(ctx: JobContext, input: ScanOpts) -> Generator[Any, Any, None]:
     """Top-level scan orchestration workflow"""
     dpath = PHOTO_DIRECTORY
 
-    # First scan all media files
-    yield MediaScan({"dpath": dpath})
+    yield ctx.scope.media_scan({"dpath": dpath})
 
-    # Read metadata from markdown files
-    yield Await(
-        ReadAlbums(
-            {
-                "markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH,
-            },
-        )
-    )
-    yield Await(
-        ReadPhotos(
-            {
-                "markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH,
-            },
-        )
-    )
-    yield Await(
-        ReadVideos(
-            {
-                "markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH,
-            },
-        )
-    )
+    yield EAwaitAll([
+        ctx.scope.read_albums({"markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH}),
+        ctx.scope.read_photos({"markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH}),
+        ctx.scope.read_videos({"markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH}),
+    ])
 
-    # Then scan external data sources
-    yield WikidataScan()
+    yield ctx.scope.wikidata_scan({})
