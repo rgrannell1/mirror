@@ -5,7 +5,7 @@ from collections.abc import Generator
 from typing import Any
 
 from zahir.core.evaluate import JobContext
-from zahir.core.effects import EAwaitAll
+from zahir.core.effects import EAwait
 from zahir.core.dependencies.concurrency import concurrency_dependency
 from zahir.core.dependencies.resources import resource_dependency
 from zahir.core.dependencies.sqlite import sqlite_dependency
@@ -108,7 +108,7 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
         effects.append(ctx.scope.upload_photo({"fpath": fpath, "role": role, "params": params, "force": role_forced}))
 
     if effects:
-        yield EAwaitAll(effects)
+        yield EAwait(effects)
 
 
 def upload_video_thumbnail(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
@@ -195,14 +195,14 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
         for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey)
     ]
     if grey_effects:
-        yield EAwaitAll(grey_effects)
+        yield EAwait(grey_effects)
 
     mosaic_effects = [
         ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic})
         for fpath in list_photos_without_mosaic(db, force_recompute_mosaic)
     ]
     if mosaic_effects:
-        yield EAwaitAll(mosaic_effects)
+        yield EAwait(mosaic_effects)
 
     if upload_images:
         photo_effects = [
@@ -210,7 +210,7 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
             for fpath in list_photos_without_upload(db, force_upload_images or bool(force_roles))
         ]
         if photo_effects:
-            yield EAwaitAll(photo_effects)
+            yield EAwait(photo_effects)
 
     if upload_videos:
         for fpath in list_videos_without_upload(db, force_upload_videos):

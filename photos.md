@@ -866,6 +866,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e8eae361fe.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:35 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5bac97e10d.webp) | Naples & Pompeii | Museum | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/89ba9576f7.webp) | Naples & Pompeii | Cityscape | ⭐⭐⭐ | urn:ró:place:30 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dd5afd35ac.webp) | Naples & Pompeii | Landscape | ⭐⭐⭐ | urn:ró:place:35 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/967c528be9.webp) | National Archaeological Museum | Museum | ⭐⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a744c27b2e.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3c42ee4bdb.webp) | National Archaeological Museum | Museum | ⭐⭐ | urn:ró:place:145 |  |  |  |

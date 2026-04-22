@@ -6,7 +6,7 @@ from collections.abc import Generator
 from typing import Any
 
 from zahir.core.evaluate import JobContext
-from zahir.core.effects import EAwaitAll
+from zahir.core.effects import EAwait
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.workflows.scan.utils import (
@@ -198,7 +198,7 @@ def scan_media(ctx: JobContext, input: ScanOpts) -> Generator[Any, Any, None]:
 
     yield ctx.scope.media_scan({"dpath": dpath})
 
-    yield EAwaitAll([
+    yield EAwait([
         ctx.scope.read_albums({"markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH}),
         ctx.scope.read_photos({"markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH}),
         ctx.scope.read_videos({"markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH}),

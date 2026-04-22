@@ -4,7 +4,7 @@ import multiprocessing
 
 from zahir.core.evaluate import JobContext, evaluate
 from zahir.progress_bar.progress_bar import with_progress
-from zahir.progress_bar.telemetry import make_telemetry
+from zahir.core.telemetry import make_telemetry
 
 from mirror.workflows.scan.scan import (
     geonames_scan,

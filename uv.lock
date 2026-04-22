@@ -26,6 +26,19 @@ wheels = [
 ]
 
 [[package]]
+name = "bookman"
+version = "0.1.0"
+source = { editable = "../sand" }
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=9.0.3" },
+    { name = "ruff", specifier = ">=0.15.11" },
+]
+
+[[package]]
 name = "boto3"
 version = "1.35.88"
 source = { registry = "https://pypi.org/simple" }
@@ -545,6 +558,7 @@ name = "mirror"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "bookman" },
     { name = "boto3" },
     { name = "botocore" },
     { name = "dateparser" },
@@ -580,6 +594,7 @@ labeller = [
 
 [package.metadata]
 requires-dist = [
+    { name = "bookman", editable = "../sand" },
     { name = "boto3" },
     { name = "botocore" },
     { name = "dateparser" },
@@ -592,7 +607,7 @@ requires-dist = [
     { name = "markdown" },
     { name = "numpy" },
     { name = "opencv-python" },
-    { name = "orbis", directory = "../orbis" },
+    { name = "orbis", editable = "../orbis" },
     { name = "pillow", specifier = ">=12.0.0" },
     { name = "psutil" },
     { name = "python-dotenv" },
@@ -600,13 +615,13 @@ requires-dist = [
     { name = "requests" },
     { name = "rich-pixels", specifier = ">=3.0.1" },
     { name = "sqlean-py" },
-    { name = "tertius", directory = "../tertius" },
+    { name = "tertius", editable = "../tertius" },
     { name = "textual", specifier = ">=8.2.3" },
     { name = "textual-image", specifier = ">=0.11.0" },
     { name = "tomli-w" },
     { name = "typeguard" },
     { name = "xmltodict" },
-    { name = "zahir2", directory = "../zahir2" },
+    { name = "zahir2", editable = "../zahir2" },
 ]
 provides-extras = ["labeller"]
 
@@ -636,7 +651,7 @@ wheels = [
 [[package]]
 name = "orbis"
 version = "0.1.0"
-source = { directory = "../orbis" }
+source = { editable = "../orbis" }
 
 [package.metadata]
 
@@ -1065,7 +1080,7 @@ wheels = [
 [[package]]
 name = "tertius"
 version = "0.1.0"
-source = { directory = "../tertius" }
+source = { editable = "../tertius" }
 dependencies = [
     { name = "pyzmq" },
 ]
@@ -1077,6 +1092,7 @@ requires-dist = [{ name = "pyzmq", specifier = ">=26.0.0" }]
 dev = [
     { name = "hypothesis", specifier = ">=6.152.1" },
     { name = "orbis", editable = "../orbis" },
+    { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
 ]
@@ -1225,7 +1241,7 @@ wheels = [
 [[package]]
 name = "zahir2"
 version = "0.1.0"
-source = { directory = "../zahir2" }
+source = { editable = "../zahir2" }
 dependencies = [
     { name = "psutil" },
     { name = "rich" },
@@ -1239,6 +1255,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "bookman", editable = "../sand" },
     { name = "orbis", directory = "../orbis" },
     { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest" },

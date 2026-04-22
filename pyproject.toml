@@ -25,9 +25,10 @@ dependencies = [
   "typeguard",
   "feedgen",
   "psutil",
-  "zahir2 @ file:///home/rg/Code/zahir2",
-  "tertius @ file:///home/rg/Code/tertius",
-  "orbis @ file:///home/rg/Code/orbis",
+  "zahir2",
+  "bookman",
+  "tertius",
+  "orbis",
   "textual>=8.2.3",
   "rich-pixels>=3.0.1",
   "textual-image>=0.11.0",
@@ -86,3 +87,9 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.uv.sources]
+zahir2 = { path = "/home/rg/Code/zahir2", editable = true }
+tertius = { path = "/home/rg/Code/tertius", editable = true }
+orbis = { path = "/home/rg/Code/orbis", editable = true }
+bookman = { path = "/home/rg/Code/sand", editable = true }
