@@ -1,7 +1,7 @@
 from collections.abc import Generator
 from typing import Any
 
-from zahir.core.evaluate import JobContext
+from zahir import JobContext
 
 from mirror.commons.config import OUTPUT_DIRECTORY
 from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH

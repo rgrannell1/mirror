@@ -4,11 +4,7 @@ import subprocess
 from collections.abc import Generator
 from typing import Any
 
-from zahir.core.evaluate import JobContext
-from zahir.core.effects import EAwait
-from zahir.core.dependencies.concurrency import concurrency_dependency
-from zahir.core.dependencies.resources import resource_dependency
-from zahir.core.dependencies.sqlite import sqlite_dependency
+from zahir import EAwait, JobContext, concurrency_dependency, resource_dependency, sqlite_dependency
 
 from mirror.services.cdn import CDN
 from mirror.workflows.upload.utils import (

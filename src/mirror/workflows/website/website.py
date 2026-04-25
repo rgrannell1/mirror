@@ -6,7 +6,7 @@ import subprocess
 from collections.abc import Generator
 from typing import Any
 
-from zahir.core.evaluate import JobContext
+from zahir import JobContext
 
 from mirror.commons.config import WEBSITE_DIRECTORY
 

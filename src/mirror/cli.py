@@ -2,9 +2,7 @@ import argparse
 import logging
 import multiprocessing
 
-from zahir.core.evaluate import JobContext, evaluate
-from zahir.progress_bar.progress_bar import with_progress
-from zahir.core.telemetry import make_telemetry
+from zahir import evaluate, with_progress, make_telemetry
 
 from mirror.workflows.scan.scan import (
     geonames_scan,
@@ -72,10 +70,6 @@ SCOPE = {
 }
 
 
-class MirrorContext(JobContext):
-    handler_wrappers = (make_telemetry(),)
-
-
 def main():
     """Execute the mirror media pipeline"""
 
@@ -105,6 +99,6 @@ def main():
     }
 
     for _ in with_progress(
-        evaluate("mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, context=MirrorContext)
+        evaluate("mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()])
     ):
         pass

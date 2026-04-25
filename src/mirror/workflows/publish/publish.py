@@ -6,8 +6,7 @@ import os
 from collections.abc import Generator
 from typing import Any
 
-from zahir.core.evaluate import JobContext
-from zahir.core.effects import EAwait
+from zahir import EAwait, JobContext
 
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.d1 import D1Builder

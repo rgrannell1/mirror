@@ -5,8 +5,7 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from zahir.core.evaluate import JobContext
-from zahir.core.effects import EAwait
+from zahir import EAwait, JobContext
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.workflows.scan.utils import (
