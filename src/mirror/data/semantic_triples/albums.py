@@ -7,7 +7,6 @@ import markdown  # type: ignore
 
 from mirror.commons.dates import date_range
 from mirror.commons.utils import short_cdn_url
-from mirror.data.things import country_slug_to_urn
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -46,13 +45,7 @@ class AlbumTriples:
 
             description = markdown.markdown(album.description) if album.description else ""
 
-            slug_map = country_slug_to_urn()
-            countries = []
-            for flag in album.flags:
-                slug = flag.lower().replace(" ", "-")
-                place_urn = slug_map.get(slug)
-                if place_urn:
-                    countries.append(place_urn)
+            countries = [flag for flag in album.flags if flag.startswith("urn:")]
 
             if album.id is None:
                 continue

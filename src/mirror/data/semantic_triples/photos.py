@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING, Iterator
 
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
-from mirror.data.things import country_slug_to_urn, place_feature_to_places
+from mirror.data.things import place_feature_to_places
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -133,10 +133,10 @@ WITH all_candidates AS (
 
     UNION ALL
 
-    -- Country photos derived from single-country album flags
+    -- Country photos derived from single-country album flags (flags are now place URNs)
     SELECT
         ph.fpath,
-        'urn:ró:place:' || replace(lower(vad.flags), ' ', '-') AS thing_urn,
+        vad.flags AS thing_urn,
         vps.rating,
         0 AS is_explicit
     FROM photos p
@@ -169,14 +169,7 @@ class ThingCoverReader:
     """
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        slug_map = country_slug_to_urn()
         for fpath, thing_urn in db.conn.execute(THING_COVER_QUERY).fetchall():
-            # The SQL constructs country URNs as slug-based (e.g. urn:ró:place:ireland);
-            # resolve these to their canonical numeric URNs.
-            urn_id = thing_urn.split(":")[-1]
-            if not urn_id.isdigit():
-                slug = urn_id
-                thing_urn = slug_map.get(slug, thing_urn)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
 
@@ -241,19 +234,17 @@ class PlaceFeatureCoverReader:
 
 class PhotosCountryReader:
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        # TODO I don't get this logic.
-
-        slug_map = country_slug_to_urn()
         photos = list(db.photo_data_table().list())
 
         for album in db.album_data_view().list():
             if len(album.flags) != 1:
                 continue
 
+            place_urn = album.flags[0]
+            if not place_urn.startswith("urn:"):
+                continue
+
             for photo in photos:
                 if photo.album_id == album.id:
                     source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
-                    slug = album.flags[0].lower().replace(" ", "-")
-                    place_urn = slug_map.get(slug)
-                    if place_urn:
-                        yield SemanticTriple(source, "country", place_urn)
+                    yield SemanticTriple(source, "country", place_urn)

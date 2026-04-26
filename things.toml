@@ -2363,6 +2363,19 @@ in = [
     "urn:ró:place:142",
 ]
 
+[[places]]
+id = "urn:ró:place:173"
+longitude = -6.0457
+latitude = 52.9797
+name = "East Coast Nature Reserve"
+wikipedia = "https://en.wikipedia.org/wiki/East_Coast_Nature_Reserve"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:nature reserve",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -3162,6 +3175,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/merlin"
 
 [[birds]]
 id = "urn:ró:bird:turdus-viscivorus"
+name = "Mistle Thrush"
 birdwatch_url = "https://birdwatchireland.ie/birds/mistle-thrush"
 
 [[birds]]
@@ -3464,6 +3478,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/teal"
 
 [[birds]]
 id = "urn:ró:bird:passer-montanus"
+name = "Eurasian Tree Sparrow"
 birdwatch_url = "https://birdwatchireland.ie/birds/tree-sparrow"
 
 [[birds]]

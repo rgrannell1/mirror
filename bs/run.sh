@@ -1,2 +1,2 @@
 #!/bin/bash
-uv run mirror "$@"
+uv run mirror --publish-d1 "$@"
