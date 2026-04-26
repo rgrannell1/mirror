@@ -28,29 +28,30 @@ def label_image(fpath: str | None, url: str | None) -> list[str]:
     Tries the local file path first; falls back to fetching the URL.
     Returns an empty list if no source is available or on API error.
     """
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types
 
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-    model = genai.GenerativeModel("gemini-2.5-flash")
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
     if fpath and Path(fpath).exists():
-        image_part = {
-            "mime_type": _mime_type(fpath),
-            "data": Path(fpath).read_bytes(),
-        }
+        image_part = types.Part.from_bytes(
+            data=Path(fpath).read_bytes(),
+            mime_type=_mime_type(fpath),
+        )
     elif url:
         import requests
 
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        image_part = {
-            "mime_type": response.headers.get("content-type", "image/jpeg").split(";")[0],
-            "data": response.content,
-        }
+        mime = response.headers.get("content-type", "image/jpeg").split(";")[0]
+        image_part = types.Part.from_bytes(data=response.content, mime_type=mime)
     else:
         return []
 
-    result = model.generate_content([PROMPT, image_part])
+    result = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[PROMPT, image_part],
+    )
     raw = result.text.strip()
     return [tag.strip() for tag in raw.split(",") if tag.strip()]
 

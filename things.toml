@@ -4283,6 +4283,14 @@ name = "Eastern Tiger Swallowtail"
 id = "urn:ró:insect:pararge-aegeria"
 name = "Speckled Wood"
 
+[[insects]]
+id = "urn:ró:insect:aglais-io"
+name = "Peacock Butterfly"
+
+[[insects]]
+id = "urn:ró:insect:vanessa-atalanta"
+name = "Red Admiral"
+
 [[birds]]
 id = "urn:ró:bird:aegypius-monachus"
 name = "Cinereous Vulture"
