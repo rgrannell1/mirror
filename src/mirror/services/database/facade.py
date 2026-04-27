@@ -39,6 +39,16 @@ class SqliteDatabase:
         # Not too long to wait
         self.conn.execute("PRAGMA busy_timeout=5000;")
 
+    def close(self) -> None:
+        """Close the underlying SQLite connection."""
+        self.conn.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+
     def delete_views(self) -> None:
         self.conn.execute("drop view if exists view_album_contents")
         self.conn.execute("drop view if exists view_album_data")

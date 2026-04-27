@@ -1,8 +1,13 @@
 import argparse
+import json
 import logging
 import multiprocessing
+from collections.abc import Generator, Iterable
+from typing import Any
 
-from zahir import evaluate, with_progress, make_telemetry
+from bookman.bookman_types import Cumulative, Delta
+from bookman.events import Event
+from zahir import evaluate, make_telemetry, with_progress
 
 from mirror.workflows.scan.scan import (
     geonames_scan,
@@ -71,6 +76,29 @@ SCOPE = {
 }
 
 
+def serialize_value(value: Any) -> Any:
+    """Convert a bookman Primitive value to a JSON-serialisable form."""
+    if value is None:
+        return None
+    if isinstance(value, (Delta, Cumulative)):
+        return {"type": type(value).__name__, "value": value.value}
+    return value
+
+
+def event_to_dict(event: Event) -> dict:
+    """Convert a bookman Event to a JSON-serialisable dict."""
+    return {"at": event.at, "until": event.until, "dims": event.dims, "kind": event.kind, "value": serialize_value(event.value)}
+
+
+def record_events(events: Iterable[Any], path: str) -> Generator[Any, None, None]:
+    """Wrap an event iterable, writing each bookman Event as a JSON line to path."""
+    with open(path, "w") as fh:
+        for event in events:
+            if isinstance(event, Event):
+                fh.write(json.dumps(event_to_dict(event)) + "\n")
+            yield event
+
+
 def main():
     """Execute the mirror media pipeline"""
 
@@ -100,6 +128,9 @@ def main():
     }
 
     for _ in with_progress(
-        evaluate("mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()])
+        record_events(
+            evaluate("mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]),
+            "latest.jsonl",
+        )
     ):
         pass

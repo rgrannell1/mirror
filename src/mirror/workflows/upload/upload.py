@@ -27,11 +27,10 @@ from mirror.commons.exceptions import InvalidVideoDimensionsException
 def compute_contrasting_grey(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    db = SqliteDatabase(DATABASE_PATH)
-    icons = db.photo_icon_table()
-
-    grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
-    icons.add(fpath, grey_value)
+    with SqliteDatabase(DATABASE_PATH) as db:
+        icons = db.photo_icon_table()
+        grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
+        icons.add(fpath, grey_value)
 
     return None
     yield
@@ -40,12 +39,11 @@ def compute_contrasting_grey(ctx: JobContext, input: PhotoJobInput) -> Generator
 def compute_image_mosaic(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    db = SqliteDatabase(DATABASE_PATH)
-    encoded_photos_table = db.encoded_photos_table()
-
-    for role, params in MOSAIC_ENCODINGS.items():
-        colours = PhotoEncoder.encode_image_colours(fpath, params["width"], params["height"])
-        encoded_photos_table.add(fpath, "".join(colours), role, "custom")
+    with SqliteDatabase(DATABASE_PATH) as db:
+        encoded_photos_table = db.encoded_photos_table()
+        for role, params in MOSAIC_ENCODINGS.items():
+            colours = PhotoEncoder.encode_image_colours(fpath, params["width"], params["height"])
+            encoded_photos_table.add(fpath, "".join(colours), role, "custom")
 
     return None
     yield
@@ -64,15 +62,14 @@ def upload_photo(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     yield from concurrency_dependency(_PHOTO_CDN_LIMIT, limit=2)
 
     cdn = CDN()
-    db = SqliteDatabase(DATABASE_PATH)
-
-    uploaded_url = cdn.upload_photo(
-        encoded_data=PhotoEncoder.encode(fpath, role, params),
-        role=role,
-        format=params["format"],
-        force=force,
-    )
-    db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
+    with SqliteDatabase(DATABASE_PATH) as db:
+        uploaded_url = cdn.upload_photo(
+            encoded_data=PhotoEncoder.encode(fpath, role, params),
+            role=role,
+            format=params["format"],
+            force=force,
+        )
+        db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
 
     yield from sqlite_dependency(
         DATABASE_PATH,
@@ -88,10 +85,9 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
     force = input.get("force", False)
     force_roles = set(input.get("force_roles") or [])
 
-    db = SqliteDatabase(DATABASE_PATH)
-    encoded_photos_table = db.encoded_photos_table()
+    with SqliteDatabase(DATABASE_PATH) as db:
+        encodings = list(db.encoded_photos_table().list_for_file(fpath))
 
-    encodings = list(encoded_photos_table.list_for_file(fpath))
     published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
 
     effects = []
@@ -112,9 +108,8 @@ def upload_video_thumbnail(ctx: JobContext, input: dict) -> Generator[Any, Any, 
     encoded_path = input["encoded_path"]
 
     cdn = CDN()
-    db = SqliteDatabase(DATABASE_PATH)
-
-    publish_video_thumbnail(cdn, db, fpath, encoded_path)
+    with SqliteDatabase(DATABASE_PATH) as db:
+        publish_video_thumbnail(cdn, db, fpath, encoded_path)
 
     return {"fpath": fpath}
     yield
@@ -129,12 +124,11 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     yield from resource_dependency("memory", max_percent=65)
 
     cdn = CDN()
-    db = SqliteDatabase(DATABASE_PATH)
-
-    try:
-        encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
-    except InvalidVideoDimensionsException:
-        return {"fpath": fpath, "role": role}
+    with SqliteDatabase(DATABASE_PATH) as db:
+        try:
+            encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
+        except InvalidVideoDimensionsException:
+            return {"fpath": fpath, "role": role}
 
     yield from sqlite_dependency(
         DATABASE_PATH,
@@ -151,10 +145,9 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
 def upload_missing_videos(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    db = SqliteDatabase(DATABASE_PATH)
-    encoded_videos_table = db.encoded_videos_table()
+    with SqliteDatabase(DATABASE_PATH) as db:
+        encodings = list(db.encoded_videos_table().list_for_file(fpath))
 
-    encodings = list(encoded_videos_table.list_for_file(fpath))
     published_roles = {enc.role for enc in encodings}
 
     for role, params in VIDEO_ENCODINGS:
@@ -176,8 +169,6 @@ def upload_missing_videos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
 
 
 def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None]:
-    db = SqliteDatabase(DATABASE_PATH)
-
     force_recompute_grey = input.get("force_recompute_grey", False)
     force_recompute_mosaic = input.get("force_recompute_mosaic", False)
     force_upload_images = input.get("force_upload_images", False)
@@ -186,28 +177,28 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
     upload_images = input.get("upload_images")
     upload_videos = input.get("upload_videos")
 
-    grey_effects = [
-        ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey})
-        for fpath in list_photos_without_contrasting_grey(db, force_recompute_grey)
-    ]
+    with SqliteDatabase(DATABASE_PATH) as db:
+        grey_fpaths = list(list_photos_without_contrasting_grey(db, force_recompute_grey))
+        mosaic_fpaths = list(list_photos_without_mosaic(db, force_recompute_mosaic))
+        photo_fpaths = list(list_photos_without_upload(db, force_upload_images or bool(force_roles))) if upload_images else []
+        video_fpaths = list(list_videos_without_upload(db, force_upload_videos)) if upload_videos else []
+
+    grey_effects = [ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey}) for fpath in grey_fpaths]
     if grey_effects:
         yield EAwait(grey_effects)
 
-    mosaic_effects = [
-        ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic})
-        for fpath in list_photos_without_mosaic(db, force_recompute_mosaic)
-    ]
+    mosaic_effects = [ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic}) for fpath in mosaic_fpaths]
     if mosaic_effects:
         yield EAwait(mosaic_effects)
 
     if upload_images:
         photo_effects = [
             ctx.scope.upload_missing_photos({"fpath": fpath, "force": force_upload_images, "force_roles": force_roles})
-            for fpath in list_photos_without_upload(db, force_upload_images or bool(force_roles))
+            for fpath in photo_fpaths
         ]
         if photo_effects:
             yield EAwait(photo_effects)
 
     if upload_videos:
-        for fpath in list_videos_without_upload(db, force_upload_videos):
+        for fpath in video_fpaths:
             yield ctx.scope.upload_missing_videos({"fpath": fpath, "force": force_upload_videos})
