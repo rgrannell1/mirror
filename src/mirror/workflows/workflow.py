@@ -19,10 +19,8 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
             "albums_markdown_path": albums_markdown_path,
             "photos_markdown_path": photos_markdown_path,
         })
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001
         print(f"WARNING: scan_media failed, continuing to publish: {err}")
-
-    print("uploading media")
 
     yield ctx.scope.upload_media({
         "force_recompute_grey": input.get("force_recompute_grey", False),

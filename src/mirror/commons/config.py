@@ -1,6 +1,7 @@
 """Configuration used by the project."""
 
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()

@@ -1,8 +1,8 @@
 """Photo-related tables and views."""
 
 import os
-import string
 import sqlite3
+import string
 from typing import Iterator, List, Optional
 
 from mirror.commons.tables import (
@@ -144,7 +144,9 @@ class ExifTable:
 
     def add(self, exif: PhotoExifData) -> None:
         self.conn.execute(
-            "insert or ignore into exif (fpath, created_at, f_stop, focal_length, model, exposure_time, iso, width, height) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "insert or ignore into exif"
+            " (fpath, created_at, f_stop, focal_length, model, exposure_time, iso, width, height)"
+            " values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 exif.fpath,
                 exif.created_at,

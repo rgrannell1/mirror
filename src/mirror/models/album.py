@@ -1,12 +1,13 @@
 """Photo albums"""
 
+import json
+import os
 from dataclasses import dataclass
 from functools import lru_cache
-import os
 from typing import Any, Iterator, List
+
 from mirror.commons.config import ALBUM_METADATA_FILE
 from mirror.models.mirror_types import IModel
-import json
 
 
 class Album:
@@ -78,7 +79,7 @@ class AlbumMetadataModel(IModel):
     @classmethod
     @lru_cache
     def schema(cls) -> dict[str, Any]:
-        with open(ALBUM_METADATA_FILE, "r") as f:
+        with open(ALBUM_METADATA_FILE) as f:
             return json.load(f)
 
 

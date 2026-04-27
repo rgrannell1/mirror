@@ -1,7 +1,8 @@
-import tomllib
-from typing import Iterator
-from pathlib import Path
 from functools import cache
+from pathlib import Path
+from typing import Iterator
+
+import tomllib
 
 from mirror.data.types import SemanticTriple
 
@@ -51,7 +52,7 @@ class ThingsReader:
     def to_triples(self, item: dict) -> Iterator[SemanticTriple]:
         src = item["id"]
 
-        for relation in item.keys():
+        for relation in item:
             if relation == "id":
                 continue
 

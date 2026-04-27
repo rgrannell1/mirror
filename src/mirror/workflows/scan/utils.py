@@ -4,16 +4,15 @@ from __future__ import annotations
 
 from typing import Iterator, TypedDict
 
+from mirror.commons.constants import KnownRelations
+from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.types import SemanticTriple
-from mirror.services.database import SqliteDatabase
 from mirror.models.exif import ExifReader, PhotoExifData
 from mirror.models.media import IMedia
+from mirror.models.phash import PhashData, PHashReader
 from mirror.models.photo import Photo
-from mirror.models.phash import PHashReader, PhashData
+from mirror.services.database import SqliteDatabase
 from mirror.services.vault import MediaVault
-from mirror.data.geoname import GeonameMetadataReader
-from mirror.commons.constants import KnownRelations
-
 
 DEFAULT_ALBUMS_MARKDOWN_PATH = "albums.md"
 DEFAULT_PHOTOS_MARKDOWN_PATH = "photos.md"
@@ -39,8 +38,7 @@ def list_media(dpath: str) -> Iterator[IMedia]:
         if len(covers) > 1:
             raise ValueError(f"Album {album.dpath} has multiple cover photos, using the first one")
 
-        for media in album.media():
-            yield media
+        yield from album.media()
 
 
 def list_unsaved_exifs(db: SqliteDatabase, dpath: str) -> Iterator[PhotoExifData]:
@@ -76,7 +74,7 @@ def list_geonames_from_metadata(db: SqliteDatabase) -> Iterator[str]:
     """Return all geoname URNs from the photo metadata"""
 
     photo_metadata_table = db.photo_metadata_table()
-    geonames = set(md.target for md in photo_metadata_table.list_by_target_type("geoname"))
+    geonames = {md.target for md in photo_metadata_table.list_by_target_type("geoname")}
     return iter(geonames)
 
 
@@ -98,7 +96,7 @@ def list_unsaved_binomials(db: SqliteDatabase) -> Iterator[str]:
     # subtract the set of stored binomials from the ones in our photos
     unsaved_binomials = set(list_photo_binomials(db))
 
-    for binomial, qid in binomials_wikidata_table.list():
+    for binomial, _qid in binomials_wikidata_table.list():
         if binomial in unsaved_binomials:
             unsaved_binomials.remove(binomial)
 

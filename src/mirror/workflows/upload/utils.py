@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from typing import TypedDict
-from typing import Generator, Iterator
+from typing import Generator, Iterator, TypedDict
 
-from mirror.services.cdn import CDN
 from mirror.commons.constants import IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
+from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import VideoEncoder
 
@@ -58,7 +57,7 @@ def list_photos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
         published_roles = {enc.role for enc in encodings}
 
         needs_upload = False
-        for role, params in IMAGE_ENCODINGS.items():
+        for role, _params in IMAGE_ENCODINGS.items():
             if role in published_roles:
                 continue
 
@@ -81,7 +80,7 @@ def list_videos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
         published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
         needs_upload = False
 
-        for role, params in VIDEO_ENCODINGS:
+        for role, _params in VIDEO_ENCODINGS:
             if role in published_roles:
                 continue
 
@@ -127,11 +126,11 @@ def publish_video_encoding(cdn, db, fpath, role, params):
 
 
 def publish_video_thumbnail(cdn, db, fpath, encoded_path):
-    THUMBNAIL_FORMAT = "webp"
-    THUMBNAIL_ROLE = "video_thumbnail_webp"
+    thumbnail_format = "webp"
+    thumbnail_role = "video_thumbnail_webp"
     encoded_thumbnail = VideoEncoder.encode_thumbnail(
-        encoded_path, {"format": THUMBNAIL_FORMAT, "quality": 85, "method": 6}
+        encoded_path, {"format": thumbnail_format, "quality": 85, "method": 6}
     )
 
-    thumbnail_url = cdn.upload_photo(encoded_data=encoded_thumbnail, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT)
-    db.encoded_photos_table().add(fpath=fpath, url=thumbnail_url, role=THUMBNAIL_ROLE, format=THUMBNAIL_FORMAT)
+    thumbnail_url = cdn.upload_photo(encoded_data=encoded_thumbnail, role=thumbnail_role, format=thumbnail_format)
+    db.encoded_photos_table().add(fpath=fpath, url=thumbnail_url, role=thumbnail_role, format=thumbnail_format)

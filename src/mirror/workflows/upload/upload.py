@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-import subprocess
 from collections.abc import Generator
 from typing import Any
 
 from zahir import EAwait, JobContext, concurrency_dependency, resource_dependency, sqlite_dependency
 
+from mirror.commons.config import DATABASE_PATH
+from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
+from mirror.commons.exceptions import InvalidVideoDimensionsError
 from mirror.services.cdn import CDN
+from mirror.services.database import SqliteDatabase
+from mirror.services.encoder import PhotoEncoder
 from mirror.workflows.upload.utils import (
     PhotoJobInput,
     UploadOpts,
@@ -17,11 +21,6 @@ from mirror.workflows.upload.utils import (
     publish_video_encoding,
     publish_video_thumbnail,
 )
-from mirror.commons.config import DATABASE_PATH
-from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
-from mirror.services.database import SqliteDatabase
-from mirror.services.encoder import PhotoEncoder
-from mirror.commons.exceptions import InvalidVideoDimensionsException
 
 
 def compute_contrasting_grey(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
@@ -59,7 +58,7 @@ def upload_photo(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     params = input["params"]
     force = input.get("force", False)
 
-    yield from concurrency_dependency(_PHOTO_CDN_LIMIT, limit=2)
+    yield from concurrency_dependency(_PHOTO_CDN_LIMIT, limit=6)
 
     cdn = CDN()
     with SqliteDatabase(DATABASE_PATH) as db:
@@ -73,7 +72,9 @@ def upload_photo(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
 
     yield from sqlite_dependency(
         DATABASE_PATH,
-        "select case when exists(select 1 from encoded_photos where fpath = ? and role = ? and url = ?) then 'satisfied' else 'impossible' end as status",
+        "select case when exists("
+        "select 1 from encoded_photos where fpath = ? and role = ? and url = ?"
+        ") then 'satisfied' else 'impossible' end as status",
         (fpath, role, uploaded_url),
     )
 
@@ -120,19 +121,21 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     role = input["role"]
     params = input["params"]
 
-    yield from concurrency_dependency(_VIDEO_CDN_LIMIT, limit=1)
+    yield from concurrency_dependency(_VIDEO_CDN_LIMIT, limit=2)
     yield from resource_dependency("memory", max_percent=65)
 
     cdn = CDN()
     with SqliteDatabase(DATABASE_PATH) as db:
         try:
             encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
-        except InvalidVideoDimensionsException:
+        except InvalidVideoDimensionsError:
             return {"fpath": fpath, "role": role}
 
     yield from sqlite_dependency(
         DATABASE_PATH,
-        "select case when exists(select 1 from encoded_videos where fpath = ? and role = ? and url is not null and url != '') then 'satisfied' else 'impossible' end as status",
+        "select case when exists("
+        "select 1 from encoded_videos where fpath = ? and role = ? and url is not null and url != ''"
+        ") then 'satisfied' else 'impossible' end as status",
         (fpath, role),
     )
 
@@ -180,14 +183,20 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
     with SqliteDatabase(DATABASE_PATH) as db:
         grey_fpaths = list(list_photos_without_contrasting_grey(db, force_recompute_grey))
         mosaic_fpaths = list(list_photos_without_mosaic(db, force_recompute_mosaic))
-        photo_fpaths = list(list_photos_without_upload(db, force_upload_images or bool(force_roles))) if upload_images else []
+        photo_fpaths = (
+            list(list_photos_without_upload(db, force_upload_images or bool(force_roles))) if upload_images else []
+        )
         video_fpaths = list(list_videos_without_upload(db, force_upload_videos)) if upload_videos else []
 
-    grey_effects = [ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey}) for fpath in grey_fpaths]
+    grey_effects = [
+        ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey}) for fpath in grey_fpaths
+    ]
     if grey_effects:
         yield EAwait(grey_effects)
 
-    mosaic_effects = [ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic}) for fpath in mosaic_fpaths]
+    mosaic_effects = [
+        ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic}) for fpath in mosaic_fpaths
+    ]
     if mosaic_effects:
         yield EAwait(mosaic_effects)
 

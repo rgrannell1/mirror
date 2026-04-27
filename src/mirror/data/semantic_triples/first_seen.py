@@ -45,7 +45,7 @@ class AnimalFirstSeenReader:
     """Emits  urn:ró:<animal>:<id>  first_seen  <unix-ms>  for every animal
     that appears as a photo subject, using the earliest EXIF timestamp."""
 
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    def read(self, db: SqliteDatabase) -> Iterator[SemanticTriple]:
         # Track canonical URNs we've already emitted so that subjects with
         # different query-string variants (e.g. ?context=wild) don't produce
         # duplicate triples with different timestamps.

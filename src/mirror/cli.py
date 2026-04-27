@@ -9,6 +9,17 @@ from bookman.bookman_types import Cumulative, Delta
 from bookman.events import Event
 from zahir import evaluate, make_telemetry, with_progress
 
+from mirror.workflows.publish.publish import (
+    publish_artifacts,
+    publish_atom,
+    publish_d1,
+    publish_env,
+    publish_stats,
+    publish_triples,
+    update_albums_markdown,
+    update_photos_markdown,
+    update_videos_markdown,
+)
 from mirror.workflows.scan.scan import (
     geonames_scan,
     media_scan,
@@ -27,17 +38,6 @@ from mirror.workflows.upload.upload import (
     upload_photo,
     upload_video,
     upload_video_thumbnail,
-)
-from mirror.workflows.publish.publish import (
-    publish_artifacts,
-    publish_atom,
-    publish_d1,
-    publish_env,
-    publish_stats,
-    publish_triples,
-    update_albums_markdown,
-    update_photos_markdown,
-    update_videos_markdown,
 )
 from mirror.workflows.website.website import build_source, publish_d1_remote
 from mirror.workflows.workflow import mirror_workflow
@@ -87,7 +87,13 @@ def serialize_value(value: Any) -> Any:
 
 def event_to_dict(event: Event) -> dict:
     """Convert a bookman Event to a JSON-serialisable dict."""
-    return {"at": event.at, "until": event.until, "dims": event.dims, "kind": event.kind, "value": serialize_value(event.value)}
+    return {
+        "at": event.at,
+        "until": event.until,
+        "dims": event.dims,
+        "kind": event.kind,
+        "value": serialize_value(event.value),
+    }
 
 
 def record_events(events: Iterable[Any], path: str) -> Generator[Any, None, None]:
@@ -127,10 +133,8 @@ def main():
         "publish_d1": args.publish_d1,
     }
 
-    for _ in with_progress(
-        record_events(
-            evaluate("mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]),
-            "latest.jsonl",
-        )
-    ):
+    events = evaluate(
+        "mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]
+    )
+    for _ in with_progress(record_events(events, "latest.jsonl")):
         pass

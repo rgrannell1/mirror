@@ -1,6 +1,7 @@
 import json
-import tomllib
 from typing import TYPE_CHECKING, Iterator
+
+import tomllib
 
 if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
@@ -28,7 +29,8 @@ class UnescoReader:
                 id = unesco_urn.split(":")[-1]
                 unesco_ids.add(id)
 
-        unesco_data = json.load(open(self.data_file, "r", encoding="utf-8"))
+        with open(self.data_file, encoding="utf-8") as fh:
+            unesco_data = json.load(fh)
 
         for unesco_site in unesco_data:
             id_no = unesco_site["id_no"]

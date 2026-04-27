@@ -3,17 +3,18 @@
 import boto3  # type: ignore
 import boto3.session  # type: ignore
 import botocore  # type: ignore
+
 from mirror.commons.config import (
     PHOTOS_URL,
-    SPACES_REGION,
-    SPACES_ENDPOINT_URL,
-    SPACES_BUCKET,
     SPACES_ACCESS_KEY_ID,
+    SPACES_BUCKET,
+    SPACES_ENDPOINT_URL,
+    SPACES_REGION,
     SPACES_SECRET_KEY,
 )
 from mirror.commons.constants import VIDEO_CONTENT_TYPE
-from mirror.models.photo import PhotoContent
 from mirror.commons.utils import deterministic_hash_str
+from mirror.models.photo import PhotoContent
 
 
 class CDN:
@@ -86,7 +87,6 @@ class CDN:
         name = f"{prefix}.{format}"
 
         if force or not self.has_object(name):
-            print(f"Uploading {name} to CDN")
             self.upload(name, encoded_data.content, mime_type=f"image/{format}")
 
         return self.url(name)
@@ -100,7 +100,6 @@ class CDN:
             raise ValueError(f"Refusing to upload unencoded content {name}")
 
         if not self.has_object(name):
-            print(f"Uploading {name} to CDN")
             self.storage_client.upload_file(
                 Filename=encoded_path,
                 Bucket=SPACES_BUCKET,

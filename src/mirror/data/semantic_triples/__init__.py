@@ -6,8 +6,8 @@ from .first_seen import AnimalFirstSeenReader
 from .photos import (
     AlbumBannerReader,
     ListingCoverReader,
-    PhotoTriples,
     PhotosCountryReader,
+    PhotoTriples,
     PlaceFeatureCoverReader,
     ThingCoverReader,
 )

@@ -1,7 +1,8 @@
 """Video rows → semantic triples for publish."""
 
-import markdown
 from typing import TYPE_CHECKING, Iterator, Set
+
+import markdown
 
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
 from mirror.data.photo_relations import parse_style

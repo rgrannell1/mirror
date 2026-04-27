@@ -1,5 +1,4 @@
-from typing import List, Optional, Protocol, Tuple, Type, TypeVar, TypedDict
-
+from typing import List, Optional, Protocol, Tuple, Type, TypedDict, TypeVar
 
 T = TypeVar("T", bound="IModel")
 

@@ -1,21 +1,21 @@
 """A file for dealing with metadata for albums and photos"""
 
-import re
 import csv
+import json
 import os
+import re
 import tempfile
-from pathlib import Path
-from jsonschema import validate, ValidationError
-
 from collections import defaultdict
-from typing import Iterator, Protocol
+from pathlib import Path
+from typing import Iterator, Optional, Protocol, TypedDict
+
+from jsonschema import ValidationError, validate
 
 from mirror.models.album import AlbumMetadataModel
-from .database import SqliteDatabase
 from mirror.models.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from mirror.models.video import VideoMetadataSummaryModel
-from typing import TypedDict, Optional
-import json
+
+from .database import SqliteDatabase
 
 
 def _atomic_write(path: str, body: str) -> None:
@@ -177,7 +177,7 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         self.fpath = fpath
 
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
-        with open(self.fpath, "r") as file:
+        with open(self.fpath) as file:
             reader = csv.reader(file, delimiter="|")
             try:
                 headers = next(reader)[1:-1]
@@ -187,8 +187,8 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             try:
                 if headers[0].strip() != "embedding":
                     raise ValueError("Invalid header in Markdown table")
-            except IndexError:
-                raise ValueError(f"Invalid header in Markdown table: {headers}")
+            except IndexError as err:
+                raise ValueError(f"Invalid header in Markdown table: {headers}") from err
 
             try:
                 next(reader)
@@ -332,7 +332,7 @@ class MarkdownTablePhotoMetadataReader:
     def read_photo_metadata(self, db: SqliteDatabase) -> Iterator[PhotoMetadataSummaryModel]:
         """Read photo metadata from a Markdown table"""
 
-        with open(self.fpath, "r") as file:
+        with open(self.fpath) as file:
             reader = csv.reader(file, delimiter="|")
             try:
                 headers = next(reader)[1:-1]
@@ -481,7 +481,7 @@ class MarkdownTableVideoMetadataReader:
     def read_video_metadata(self, db: SqliteDatabase) -> Iterator[VideoMetadataSummaryModel]:
         """Read video metadata from a Markdown table"""
 
-        with open(self.fpath, "r") as file:
+        with open(self.fpath) as file:
             reader = csv.reader(file, delimiter="|")
             try:
                 headers = next(reader)[1:-1]

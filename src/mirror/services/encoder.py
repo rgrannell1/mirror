@@ -1,22 +1,24 @@
 """Encode video and images"""
 
+import contextlib
 import io
 import os
+from typing import Dict, Optional, Tuple
+
+import cv2
+import ffmpeg
+from PIL import Image, ImageOps
+
 from mirror.commons.constants import (
     THUMBNAIL_HEIGHT,
     THUMBNAIL_WIDTH,
     VIDEO_THUMBNAIL_FORMAT,
 )
-import cv2
-import ffmpeg
 from mirror.commons.exceptions import (
-    InvalidVideoDimensionsException,
-    VideoReadException,
-    VideoResolutionLookupException,
+    InvalidVideoDimensionsError,
+    VideoReadError,
+    VideoResolutionLookupError,
 )
-from PIL import Image, ImageOps
-
-from typing import Dict, Optional, Tuple
 from mirror.models.photo import PhotoContent
 
 
@@ -33,30 +35,30 @@ class PhotoEncoder:
         """
 
         lab = Image.open(fpath).convert("RGB").convert("LAB")
-        L, _, __ = lab.split()
+        lightness_band, _, __ = lab.split()
 
-        width, height = L.size
-        top_right = L.crop((7 * width // 8, 0, width, height // 8))
+        width, height = lightness_band.size
+        top_right = lightness_band.crop((7 * width // 8, 0, width, height // 8))
 
         pixels = list(top_right.getdata())
-        avg_lightness = sum(pixels) / len(pixels)  # 0–255, proportional to L*
+        avg_lightness = sum(pixels) / len(pixels)  # 0-255, proportional to L*
 
         # Use true midpoint as threshold; always push at least 110 units away
         # to guarantee ~43 L* units of perceptual separation.
         # The old 80% threshold + 60% delta could produce only ~20 L* units
         # of separation for mid-bright images (e.g. avg=200 → target=255, delta=55).
-        CONTRAST_DELTA = 110
+        contrast_delta = 110
         if avg_lightness <= 128:
-            target_lightness = min(255, int(avg_lightness) + CONTRAST_DELTA)
+            target_lightness = min(255, int(avg_lightness) + contrast_delta)
         else:
-            target_lightness = max(0, int(avg_lightness) - CONTRAST_DELTA)
+            target_lightness = max(0, int(avg_lightness) - contrast_delta)
 
         # Build a neutral Lab colour with that L (a=128, b=128 is neutral axis)
-        L_img = Image.new("L", (1, 1), int(target_lightness))
+        lightness_img = Image.new("L", (1, 1), int(target_lightness))
         a_img = Image.new("L", (1, 1), 128)
         b_img = Image.new("L", (1, 1), 128)
 
-        rgb_pixel = Image.merge("LAB", (L_img, a_img, b_img)).convert("RGB").getpixel((0, 0))
+        rgb_pixel = Image.merge("LAB", (lightness_img, a_img, b_img)).convert("RGB").getpixel((0, 0))
 
         # averaging channels to get a grey
         grey = int(round(sum(rgb_pixel) / 3))
@@ -76,7 +78,7 @@ class PhotoEncoder:
 
             # getdata() returns pixels in row-major order (left-to-right, top-to-bottom),
             # which matches the frontend's row * cols + col placement
-            return ["#{:02X}{:02X}{:02X}".format(r, g, b) for r, g, b in smaller.getdata()]
+            return [f"#{r:02X}{g:02X}{b:02X}" for r, g, b in smaller.getdata()]
 
     @classmethod
     def encode(cls, fpath: str, role: str, params: Dict) -> PhotoContent:
@@ -122,13 +124,13 @@ class VideoEncoder:
 
         actual_width, actual_height = cls.resolution(fpath)
         if actual_width and actual_height and width and height and (actual_width < width or actual_height < height):
-            raise InvalidVideoDimensionsException(f"Video {fpath} is too small to encode")
+            raise InvalidVideoDimensionsError(f"Video {fpath} is too small to encode")
 
-        VIDEO_CODEC = "libx264"
+        video_codec = "libx264"
 
         input_args: Dict = {}
         kwargs = {
-            "vcodec": VIDEO_CODEC,
+            "vcodec": video_codec,
             "video_bitrate": video_bitrate,
             "strict": "-2",
             "movflags": "+faststart",
@@ -150,10 +152,8 @@ class VideoEncoder:
         os.makedirs(os.path.dirname(output_fpath), exist_ok=True)
 
         # prevent accidental upload of old file
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(output_fpath)
-        except FileNotFoundError:
-            pass
 
         (ffmpeg.input(fpath, **input_args).output(output_fpath, **kwargs).run())
 
@@ -173,7 +173,7 @@ class VideoEncoder:
 
             return width, height
 
-        raise VideoResolutionLookupException(f"Failed to determine resolution of {fpath}")
+        raise VideoResolutionLookupError(f"Failed to determine resolution of {fpath}")
 
     @classmethod
     def encode_thumbnail(cls, fpath: str, params: Dict, width=THUMBNAIL_WIDTH, height=THUMBNAIL_HEIGHT) -> PhotoContent:
@@ -182,7 +182,7 @@ class VideoEncoder:
         try:
             ret, frame = loaded.read()
             if not ret:
-                raise VideoReadException(f"Failed to read frame from {fpath}")
+                raise VideoReadError(f"Failed to read frame from {fpath}")
 
             img_bytes = cv2.imencode(VIDEO_THUMBNAIL_FORMAT, frame)[1].tobytes()
 

@@ -8,6 +8,17 @@ from typing import Any
 from zahir import EAwait, JobContext
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
+from mirror.commons.urn import parse_mirror_urn
+from mirror.data.wikidata import WikidataClient
+from mirror.models.photo import Photo
+from mirror.models.video import Video
+from mirror.services.database import SqliteDatabase
+from mirror.services.metadata import (
+    MarkdownAlbumMetadataReader,
+    MarkdownTablePhotoMetadataReader,
+    MarkdownTableVideoMetadataReader,
+)
+from mirror.services.vault_sync import VaultIndexSync
 from mirror.workflows.scan.utils import (
     DEFAULT_ALBUMS_MARKDOWN_PATH,
     DEFAULT_PHOTOS_MARKDOWN_PATH,
@@ -20,17 +31,6 @@ from mirror.workflows.scan.utils import (
     list_unsaved_phashes,
     read_geonames_wikidata_ids,
 )
-from mirror.services.metadata import (
-    MarkdownAlbumMetadataReader,
-    MarkdownTablePhotoMetadataReader,
-    MarkdownTableVideoMetadataReader,
-)
-from mirror.data.wikidata import WikidataClient
-from mirror.services.database import SqliteDatabase
-from mirror.services.vault_sync import VaultIndexSync
-from mirror.models.photo import Photo
-from mirror.commons.urn import parse_mirror_urn
-from mirror.models.video import Video
 
 
 def media_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:

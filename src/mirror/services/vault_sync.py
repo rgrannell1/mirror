@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Set
-
 from mirror.services.database import SqliteDatabase
 
 
@@ -13,7 +11,7 @@ class VaultIndexSync:
     def __init__(self, db: SqliteDatabase) -> None:
         self.db = db
 
-    def remove_deleted_photos(self, fpaths: Set[str]) -> None:
+    def remove_deleted_photos(self, fpaths: set[str]) -> None:
         """
         Remove rows for photos not in ``fpaths``.
 
@@ -35,7 +33,7 @@ class VaultIndexSync:
             icons_table.delete(fpath)
             encoded_photos_table.delete(fpath)
 
-    def remove_deleted_files(self, fpaths: Set[str]) -> None:
+    def remove_deleted_files(self, fpaths: set[str]) -> None:
         """Remove photo and video rows absent from ``fpaths``, plus orphaned thumbnail rows."""
         for fpath in self.db.photos_table().list():
             if fpath not in fpaths:

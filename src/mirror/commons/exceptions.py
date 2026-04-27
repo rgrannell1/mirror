@@ -1,13 +1,13 @@
 """Custom exceptions"""
 
 
-class InvalidVideoDimensionsException(Exception):
+class InvalidVideoDimensionsError(Exception):
     pass
 
 
-class VideoResolutionLookupException(Exception):
+class VideoResolutionLookupError(Exception):
     pass
 
 
-class VideoReadException(Exception):
+class VideoReadError(Exception):
     pass

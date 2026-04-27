@@ -6,8 +6,8 @@ if TYPE_CHECKING:
 import markdown
 
 from mirror.commons.constants import URN_PREFIX
-from mirror.data.types import SemanticTriple
 from mirror.commons.utils import deterministic_hash_str
+from mirror.data.types import SemanticTriple
 
 # Track style names we've already seen to avoid duplicate name triples
 style_names: Set[str] = set()

@@ -5,34 +5,33 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
-from typing import Any, Iterator, List
+from typing import Any, Iterator
 
 from dateutil import tz
 
 from mirror.commons.config import PHOTOS_URL
+from mirror.commons.urn import is_mirror_urn, parse_mirror_urn
+from mirror.commons.utils import deterministic_hash_str
 from mirror.data.geoname import GeonameMetadataReader
+from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.semantic_triples import (
-    AlbumTriples,
     AlbumBannerReader,
+    AlbumTriples,
     AnimalFirstSeenReader,
     ExifTriplesReader,
     ListingCoverReader,
-    PhotoTriples,
     PhotosCountryReader,
+    PhotoTriples,
     PlaceFeatureCoverReader,
     ThingCoverReader,
     VideosReader,
 )
-from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.things import ThingsReader
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
-from mirror.commons.urn import is_mirror_urn, parse_mirror_urn
-from mirror.services.database import SqliteDatabase
 from mirror.models.photo import PhotoMetadataModel
-from mirror.commons.utils import deterministic_hash_str
-
+from mirror.services.database import SqliteDatabase
 
 # CURIE prefixes for triples (https://en.wikipedia.org/wiki/CURIE)
 CURIE = {
@@ -71,7 +70,7 @@ def validate_stats(data: dict) -> None:
         raise ValueError("broken countries count")
 
 
-def _count_type(type_name: str, subjects: List[PhotoMetadataModel]) -> int:
+def _count_type(type_name: str, subjects: list[PhotoMetadataModel]) -> int:
     unique = set()
     for subject in subjects:
         value = subject.target
@@ -83,7 +82,7 @@ def _count_type(type_name: str, subjects: List[PhotoMetadataModel]) -> int:
     return len(unique)
 
 
-def _count_unesco_sites(places: List[PhotoMetadataModel], db: SqliteDatabase) -> int:
+def _count_unesco_sites(places: list[PhotoMetadataModel], db: SqliteDatabase) -> int:
     unesco_places = set()
     for thing in ThingsReader().read(db):
         if thing.relation == "features" and thing.target == "urn:ró:place_feature:unesco":
@@ -150,7 +149,7 @@ def _camel_case(value: str) -> str:
     return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
 
-def _process_triple(triple: SemanticTriple) -> List[list]:
+def _process_triple(triple: SemanticTriple) -> list[list]:
     return [[_simplify_curie(triple.source), _camel_case(triple.relation), _simplify_curie(triple.target)]]
 
 

@@ -1,13 +1,13 @@
 """Retrieve EXIF information from photo files"""
 
+import warnings
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Dict, Optional
-import warnings
+
+from PIL import ExifTags, Image
 
 from mirror.commons.constants import EXIF_ATTR_ASSOCIATIONS
-from PIL import Image, ExifTags
-
 from mirror.models.mirror_types import IModel
 
 
@@ -59,7 +59,7 @@ class ExifReader:
 
                 img = Image.open(fpath)
                 exif_data = img._getexif()  # type: ignore
-        except BaseException:
+        except Exception:  # noqa: BLE001
             return {}
 
         if not exif_data:
@@ -93,6 +93,6 @@ class ExifReader:
 
         try:
             return PhotoExifData(**data, fpath=fpath)  # type: ignore
-        except Exception:
+        except (TypeError, ValueError):
             # GoPro image / other no-exif images I'm given
             return None

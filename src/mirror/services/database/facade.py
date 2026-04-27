@@ -7,22 +7,22 @@ from mirror.services.database.knowledge import BinomialsWikidataIdTable, Geoname
 from mirror.services.database.photos import (
     EncodedPhotosTable,
     ExifTable,
+    PhashesTable,
     PhotoDataView,
     PhotoIconTable,
     PhotoMetadataSummaryView,
     PhotoMetadataTable,
     PhotoMetadataView,
-    PhashesTable,
     PhotosTable,
 )
-from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
 from mirror.services.database.videos import (
     EncodedVideosTable,
     VideoDataTable,
-    VideoMetadataTable,
     VideoMetadataSummaryView,
+    VideoMetadataTable,
     VideosTable,
 )
+from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
 
 
 class SqliteDatabase:

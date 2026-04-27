@@ -1,11 +1,11 @@
 """A file for interacting with photos"""
 
-from dataclasses import dataclass
-from datetime import datetime, timezone
-from functools import lru_cache
 import hashlib
 import json
 import os
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from functools import lru_cache
 from typing import Any, List
 
 from mirror.commons.config import PHOTO_METADATA_FILE
@@ -61,7 +61,7 @@ class PhotoModel(IModel):
     def get_ctime(self) -> datetime:
         try:
             return datetime.strptime(str(self.created_at), "%Y:%m:%d %H:%M:%S").replace(tzinfo=timezone.utc)
-        except Exception:
+        except ValueError:
             return datetime.fromtimestamp(os.path.getmtime(self.fpath), tz=timezone.utc)
 
     @classmethod
@@ -160,5 +160,5 @@ class PhotoMetadataSummaryModel(IModel):
     @classmethod
     @lru_cache
     def schema(cls) -> dict[str, Any]:
-        with open(PHOTO_METADATA_FILE, "r") as f:
+        with open(PHOTO_METADATA_FILE) as f:
             return json.load(f)

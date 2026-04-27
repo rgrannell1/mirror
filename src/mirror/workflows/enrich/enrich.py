@@ -1,4 +1,5 @@
 from typing import Generator, Iterator, TypedDict
+
 from zahir import Await, Context, DependencyGroup, JobOutputEvent, WorkflowOutputEvent, spec
 
 from mirror.workflows.enrich.utils import read_things
@@ -15,7 +16,7 @@ class PlaceType(TypedDict):
 
 
 @spec(args=PlaceType, output=PlaceType)
-def EnrichPlace(
+def enrich_place(
     context: Context,
     input: PlaceType,
     dependencies: DependencyGroup,
@@ -26,11 +27,11 @@ def EnrichPlace(
 
 
 @spec()
-def EnrichData(
+def enrich_data(
     context: Context,
     input,
     dependencies: DependencyGroup,
 ) -> Generator[Await | WorkflowOutputEvent]:
     things = list(read_things("things.toml"))
 
-    yield Await([EnrichPlace({"place": thing}) for thing in filter_things("place", things)])
+    yield Await([enrich_place({"place": thing}) for thing in filter_things("place", things)])

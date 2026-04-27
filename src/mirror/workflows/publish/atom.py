@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime, timezone
-from typing import List, TypedDict
+from typing import TypedDict
 
 from feedgen.feed import FeedGenerator
 
@@ -120,12 +120,12 @@ def _atom_video_entry(video: VideoModel, summary: VideoMetadataSummaryModel | No
     }
 
 
-def atom_media(db: SqliteDatabase) -> List[AtomEntry]:
+def atom_media(db: SqliteDatabase) -> list[AtomEntry]:
     """Collect photos and videos for the Atom feed, sorted newest-first."""
     names = _build_name_lookup(db)
     photo_summaries = {summary.fpath: summary for summary in db.photo_metadata_summary_view().list()}
     video_summaries = {summary.fpath: summary for summary in db.video_metadata_summary_view().list()}
-    entries: List[AtomEntry] = [
+    entries: list[AtomEntry] = [
         _atom_video_entry(video, video_summaries.get(video.fpath), names) for video in db.video_data_table().list()
     ]
     entries += [
@@ -135,17 +135,17 @@ def atom_media(db: SqliteDatabase) -> List[AtomEntry]:
     return entries
 
 
-def _atom_paginate(entries: List[AtomEntry], page_size: int) -> List[List[AtomEntry]]:
+def _atom_paginate(entries: list[AtomEntry], page_size: int) -> list[list[AtomEntry]]:
     return [entries[idx : idx + page_size] for idx in range(0, len(entries), page_size)]
 
 
-def _atom_page_filename(entries: List[AtomEntry]) -> str:
+def _atom_page_filename(entries: list[AtomEntry]) -> str:
     ids = ",".join(entry["id"] for entry in entries)
     hash_suffix = deterministic_hash_str(ids)[:8]
     return f"atom-page-{hash_suffix}.xml"
 
 
-def _atom_page_url(entries: List[AtomEntry]) -> str:
+def _atom_page_url(entries: list[AtomEntry]) -> str:
     return f"{ATOM_BASE_URL}/manifest/atom/{_atom_page_filename(entries)}"
 
 
@@ -160,7 +160,7 @@ def _atom_make_feed(self_url: str, next_url: str | None) -> FeedGenerator:
     return fg
 
 
-def _atom_populate_entries(fg: FeedGenerator, entries: List[AtomEntry]) -> None:
+def _atom_populate_entries(fg: FeedGenerator, entries: list[AtomEntry]) -> None:
     """Add entries to a feed and set the feed's updated timestamp."""
     for entry in entries:
         fe = fg.add_entry()
@@ -172,7 +172,7 @@ def _atom_populate_entries(fg: FeedGenerator, entries: List[AtomEntry]) -> None:
     fg.updated(max(entry["created_at"] for entry in entries))
 
 
-def _atom_write_page(entries: List[AtomEntry], next_entries: List[AtomEntry] | None, output_dir: str) -> None:
+def _atom_write_page(entries: list[AtomEntry], next_entries: list[AtomEntry] | None, output_dir: str) -> None:
     self_url = _atom_page_url(entries)
     next_url = _atom_page_url(next_entries) if next_entries is not None else None
     fg = _atom_make_feed(self_url, next_url)
@@ -181,7 +181,7 @@ def _atom_write_page(entries: List[AtomEntry], next_entries: List[AtomEntry] | N
     fg.atom_file(file_path)
 
 
-def atom_feed(entries: List[AtomEntry], output_dir: str) -> None:
+def atom_feed(entries: list[AtomEntry], output_dir: str) -> None:
     """Write Atom feed index and paginated sub-pages to output_dir."""
     if not entries:
         return

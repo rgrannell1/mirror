@@ -1,7 +1,7 @@
 """A class for interacting with videos"""
 
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
 from typing import List, Optional
 
 from mirror.models.mirror_types import IModel

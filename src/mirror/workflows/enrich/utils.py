@@ -1,6 +1,7 @@
 from pathlib import Path
-import tomllib
 from typing import Iterator
+
+import tomllib
 
 
 def read_things(fpath: str) -> Iterator:
@@ -14,5 +15,4 @@ def read_things(fpath: str) -> Iterator:
         data = tomllib.load(f)
 
     for block in data.values():
-        for item in block:
-            yield item
+        yield from block

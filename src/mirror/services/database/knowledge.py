@@ -88,5 +88,4 @@ class BinomialsWikidataIdTable:
     def list(self) -> Iterator[tuple[str, str]]:
         query = "select binomial, qid from binomials_wikidata_id"
 
-        for row in self.conn.execute(query):
-            yield row
+        yield from self.conn.execute(query)

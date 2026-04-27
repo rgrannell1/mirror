@@ -1,8 +1,9 @@
 import json
-import requests
-import xmltodict
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, Iterator, List
+
+import requests
+import xmltodict
 
 if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
@@ -19,7 +20,7 @@ class GeonameClient:
         res = requests.get(f"http://secure.geonames.org/get?geonameId={id}&username={self.username}")
         xpars = xmltodict.parse(res.text)
 
-        return xpars["geoname"] if "geoname" in xpars else None
+        return xpars.get("geoname", None)
 
 
 @dataclass

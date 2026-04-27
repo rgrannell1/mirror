@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 MOSAIC_WIDTH = 2
 MOSAIC_HEIGHT = 2
 THUMBNAIL_WIDTH = 400
