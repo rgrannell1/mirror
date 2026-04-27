@@ -9,8 +9,9 @@ from typing import List, TypedDict
 from feedgen.feed import FeedGenerator
 
 from mirror.commons.utils import deterministic_hash_str
-from mirror.models.photo import PhotoModel
-from mirror.models.video import VideoModel
+from mirror.data.things import ThingsReader
+from mirror.models.photo import PhotoMetadataSummaryModel, PhotoModel
+from mirror.models.video import VideoMetadataSummaryModel, VideoModel
 from mirror.services.database import SqliteDatabase
 
 # Base URL for the published site
@@ -30,30 +31,106 @@ class AtomEntry(TypedDict):
     content_html: str
 
 
-def _atom_photo_entry(photo: PhotoModel) -> AtomEntry:
+def _build_name_lookup(db: SqliteDatabase) -> dict[str, str]:
+    """Map thing URNs to human-readable names from things.toml."""
+    return {triple.source: triple.target for triple in ThingsReader().read(db) if triple.relation == "name"}
+
+
+def _resolve_names(urns: list[str], names: dict[str, str]) -> list[str]:
+    """Resolve a list of URNs to human-readable names, dropping any not in the lookup."""
+    return [names[urn] for urn in urns if urn in names]
+
+
+def _atom_entry_title(description: str, subjects: list[str], album_name: str, fallback: str) -> str:
+    """Pick the most meaningful title: per-item description > subject names > album name."""
+    if description:
+        return description
+    if subjects:
+        return ", ".join(subjects)
+    return album_name or fallback
+
+
+def _atom_photo_content_html(
+    photo: PhotoModel, summary: PhotoMetadataSummaryModel | None, names: dict[str, str]
+) -> str:
+    parts = [f'<img src="{photo.mid_image_lossy_url}"/>']
+    if summary is not None:
+        if summary.description:
+            parts.append(f"<p>{summary.description}</p>")
+        places = _resolve_names(summary.places, names)
+        if places:
+            parts.append(f"<p>{', '.join(places)}</p>")
+        subjects = _resolve_names(summary.subjects, names)
+        if subjects:
+            parts.append(f"<p>{', '.join(subjects)}</p>")
+        if summary.rating:
+            parts.append(f"<p>{summary.rating}</p>")
+    return "\n".join(parts)
+
+
+def _atom_video_content_html(
+    video: VideoModel, summary: VideoMetadataSummaryModel | None, names: dict[str, str]
+) -> str:
+    parts = [f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>']
+    if video.description:
+        parts.append(f"<p>{video.description}</p>")
+    if summary is not None:
+        places = _resolve_names(summary.places, names)
+        if places:
+            parts.append(f"<p>{', '.join(places)}</p>")
+        subjects = _resolve_names(summary.subjects, names)
+        if subjects:
+            parts.append(f"<p>{', '.join(subjects)}</p>")
+        if summary.rating:
+            parts.append(f"<p>{summary.rating}</p>")
+    return "\n".join(parts)
+
+
+def _atom_photo_entry(photo: PhotoModel, summary: PhotoMetadataSummaryModel | None, names: dict[str, str]) -> AtomEntry:
+    subjects = _resolve_names(summary.subjects if summary else [], names)
+    title = _atom_entry_title(
+        summary.description if summary else "",
+        subjects,
+        summary.name if summary else "",
+        "Photo",
+    )
     return {
         "id": photo.thumbnail_url,
         "created_at": photo.get_ctime(),
         "url": photo.thumbnail_url,
-        "title": "Photo",
-        "content_html": f'<img src="{photo.mid_image_lossy_url}"/>',
+        "title": title,
+        "content_html": _atom_photo_content_html(photo, summary, names),
     }
 
 
-def _atom_video_entry(video: VideoModel) -> AtomEntry:
+def _atom_video_entry(video: VideoModel, summary: VideoMetadataSummaryModel | None, names: dict[str, str]) -> AtomEntry:
+    subjects = _resolve_names(summary.subjects if summary else [], names)
+    title = _atom_entry_title(
+        video.description,
+        subjects,
+        summary.name if summary else "",
+        "Video",
+    )
     return {
         "id": video.poster_url,
         "created_at": datetime.fromtimestamp(os.path.getmtime(video.fpath), tz=timezone.utc),
         "url": video.video_url_unscaled,
-        "title": "Video",
-        "content_html": f'<video controls><source src="{video.video_url_1080p}" type="video/mp4"></video>',
+        "title": title,
+        "content_html": _atom_video_content_html(video, summary, names),
     }
 
 
 def atom_media(db: SqliteDatabase) -> List[AtomEntry]:
     """Collect photos and videos for the Atom feed, sorted newest-first."""
-    entries: List[AtomEntry] = [_atom_video_entry(video) for video in db.video_data_table().list()]
-    entries += [_atom_photo_entry(photo) for photo in db.photo_data_table().list()]
+    names = _build_name_lookup(db)
+    photo_summaries = {summary.fpath: summary for summary in db.photo_metadata_summary_view().list()}
+    video_summaries = {summary.fpath: summary for summary in db.video_metadata_summary_view().list()}
+    entries: List[AtomEntry] = [
+        _atom_video_entry(video, video_summaries.get(video.fpath), names) for video in db.video_data_table().list()
+    ]
+    entries += [
+        _atom_photo_entry(photo, photo_summaries.get(photo.fpath), names) for photo in db.photo_data_table().list()
+    ]
     entries.sort(key=lambda entry: entry["created_at"], reverse=True)
     return entries
 
