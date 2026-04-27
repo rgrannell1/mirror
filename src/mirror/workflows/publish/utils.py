@@ -197,7 +197,7 @@ def _count_type(type_name: str, subjects: List[PhotoMetadataModel]) -> int:
 def _count_unesco_sites(places: List[PhotoMetadataModel], db: SqliteDatabase) -> int:
     unesco_places = set()
     for thing in ThingsReader().read(db):
-        if thing.relation == "feature" and thing.target == "urn:ró:place_feature:unesco":
+        if thing.relation == "features" and thing.target == "urn:ró:place_feature:unesco":
             unesco_places.add(thing.source)
     return len({p.target for p in places if p.target in unesco_places})
 

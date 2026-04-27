@@ -2106,8 +2106,6 @@ features = [
 
 [[places]]
 id = "urn:ró:place:144"
-longitude = 0
-latitude = 0
 name = "The United Kingdom"
 in = [
     "urn:ró:place:142",
@@ -2135,8 +2133,6 @@ id = "urn:ró:place:146"
 name = "Mallorca"
 flag = "🇪🇸"
 wikipedia = "https://en.wikipedia.org/wiki/Mallorca"
-longitude = 2.75
-latitude = 39.583333333333336
 in = [
     "urn:ró:place:164",
     "urn:ró:place:142",
@@ -2151,8 +2147,6 @@ id = "urn:ró:place:147"
 name = "Tenerife"
 flag = "🇮🇨"
 wikipedia = "https://en.wikipedia.org/wiki/Tenerife"
-longitude = -16.583333333333332
-latitude = 28.25
 in = [
     "urn:ró:place:164",
     "urn:ró:place:142",
@@ -2167,8 +2161,6 @@ id = "urn:ró:place:148"
 name = "Ireland"
 flag = "🇮🇪"
 wikipedia = "https://en.wikipedia.org/wiki/Ireland"
-longitude = -8.24389
-latitude = 53.41291
 in = [
     "urn:ró:place:142",
 ]
@@ -2181,8 +2173,6 @@ id = "urn:ró:place:149"
 name = "Slovenia"
 flag = "🇸🇮"
 wikipedia = "https://en.wikipedia.org/wiki/Slovenia"
-longitude = 14.9955
-latitude = 46.1512
 in = [
     "urn:ró:place:142",
 ]
@@ -2195,8 +2185,6 @@ id = "urn:ró:place:150"
 name = "England"
 flag = "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
 wikipedia = "https://en.wikipedia.org/wiki/England"
-longitude = -0.1275
-latitude = 51.50722222222222
 in = [
     "urn:ró:place:142",
     "urn:ró:place:144",
@@ -2210,8 +2198,6 @@ id = "urn:ró:place:151"
 name = "Lanzarote"
 flag = "🇮🇨"
 wikipedia = "https://en.wikipedia.org/wiki/Lanzarote"
-longitude = -13.5
-latitude = 29.0
 in = [
     "urn:ró:place:164",
     "urn:ró:place:142",
