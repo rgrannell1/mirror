@@ -22,6 +22,7 @@ from mirror.services.metadata import (
     MarkdownTablePhotoMetadataWriter,
     MarkdownTableVideoMetadataWriter,
 )
+from mirror.workflows.publish.atom import atom_feed, atom_media
 from mirror.workflows.publish.utils import (
     env_content,
     publication_id,
@@ -44,8 +45,11 @@ def publish_env(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator
 
 
 def publish_atom(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
-    # atom feed generation requires feedgen/lxml — not yet available on Python 3.15
-    return {"artifact": "atom", "skipped": True}
+    output_dir = input["output_dir"]
+    db = SqliteDatabase(DATABASE_PATH)
+    media = atom_media(db)
+    atom_feed(media, output_dir)
+    return {"artifact": "atom"}
     yield
 
 
@@ -122,14 +126,16 @@ def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generato
         "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
-    yield EAwait([
-        ctx.scope.publish_env(builder_inputs),
-        ctx.scope.publish_stats(builder_inputs),
-        ctx.scope.publish_triples(builder_inputs),
-        ctx.scope.publish_d1(builder_inputs),
-        ctx.scope.update_albums_markdown(builder_inputs),
-        ctx.scope.update_photos_markdown(builder_inputs),
-        ctx.scope.update_videos_markdown(builder_inputs),
-    ])
+    yield EAwait(
+        [
+            ctx.scope.publish_env(builder_inputs),
+            ctx.scope.publish_stats(builder_inputs),
+            ctx.scope.publish_triples(builder_inputs),
+            ctx.scope.publish_d1(builder_inputs),
+            ctx.scope.update_albums_markdown(builder_inputs),
+            ctx.scope.update_photos_markdown(builder_inputs),
+            ctx.scope.update_videos_markdown(builder_inputs),
+        ]
+    )
 
     return {"publication_id": pid}
