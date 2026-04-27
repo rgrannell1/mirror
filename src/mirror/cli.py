@@ -25,6 +25,7 @@ from mirror.workflows.upload.upload import (
 )
 from mirror.workflows.publish.publish import (
     publish_artifacts,
+    publish_atom,
     publish_d1,
     publish_env,
     publish_stats,
@@ -33,7 +34,7 @@ from mirror.workflows.publish.publish import (
     update_photos_markdown,
     update_videos_markdown,
 )
-from mirror.workflows.website.website import build_source, build_website, publish_d1_remote
+from mirror.workflows.website.website import build_source, publish_d1_remote
 from mirror.workflows.workflow import mirror_workflow
 
 logging.basicConfig(level=logging.INFO, force=True)
@@ -57,6 +58,7 @@ SCOPE = {
     "upload_missing_videos": upload_missing_videos,
     "upload_media": upload_media,
     "publish_env": publish_env,
+    "publish_atom": publish_atom,
     "publish_stats": publish_stats,
     "publish_triples": publish_triples,
     "publish_d1": publish_d1,
@@ -66,7 +68,6 @@ SCOPE = {
     "publish_artifacts": publish_artifacts,
     "build_source": build_source,
     "publish_d1_remote": publish_d1_remote,
-    "build_website": build_website,
 }
 
 

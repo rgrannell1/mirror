@@ -1,7 +1,8 @@
+import os
 from collections.abc import Generator
 from typing import Any
 
-from zahir import JobContext
+from zahir import JobContext, check_file_dependency
 
 from mirror.commons.config import OUTPUT_DIRECTORY
 from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
@@ -35,11 +36,17 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
 
     print("publishing artifacts")
 
-    yield ctx.scope.publish_artifacts({
+    result = yield ctx.scope.publish_artifacts({
         "output_dir": manifest_output_dir,
         "albums_markdown_path": albums_markdown_path,
         "photos_markdown_path": photos_markdown_path,
     })
 
+    yield ctx.scope.build_source({})
+
+    pid = result["publication_id"]
+    tribbles_expanded_path = os.path.join(manifest_output_dir, f"tribbles-expanded.{pid}.txt")
+    yield from check_file_dependency(tribbles_expanded_path)
+
     if input.get("publish_d1"):
-        yield ctx.scope.build_website({})
+        yield ctx.scope.publish_d1_remote({})

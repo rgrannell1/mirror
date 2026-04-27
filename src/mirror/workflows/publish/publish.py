@@ -129,6 +129,7 @@ def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generato
     yield EAwait(
         [
             ctx.scope.publish_env(builder_inputs),
+            ctx.scope.publish_atom(builder_inputs),
             ctx.scope.publish_stats(builder_inputs),
             ctx.scope.publish_triples(builder_inputs),
             ctx.scope.publish_d1(builder_inputs),
