@@ -3,7 +3,7 @@
 from textual.widget import Widget
 from textual.widgets import Input
 
-from labeller.widgets import FieldTable, UrnSuggester, _EDIT_INPUT_ID
+from labeller.widgets import _EDIT_INPUT_ID, FieldTable, UrnSuggester
 
 from .parser import EDITABLE_COLUMNS
 

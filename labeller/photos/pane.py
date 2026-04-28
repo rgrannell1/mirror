@@ -215,6 +215,7 @@ class PhotoPane(Widget):
 
     def _fetch_labels(self, fpath: str | None, url: str) -> None:
         from rich.markup import escape
+
         from .vision import label_image
 
         try:

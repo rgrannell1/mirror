@@ -1,9 +1,9 @@
 """Reusable Textual widgets: ImageFrame, RatingSelector, FieldRow, and FieldTable."""
 
-import tomllib
 from collections.abc import Callable
 from pathlib import Path
 
+import tomllib
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.markup import escape

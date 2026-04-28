@@ -13,7 +13,7 @@ from textual.widgets import Label
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.widgets import FieldTable, ImageFrame
 
-from .parser import AlbumRow, load_albums, EDITABLE_COLUMNS
+from .parser import EDITABLE_COLUMNS, AlbumRow, load_albums
 from .state import AlbumState
 from .widgets import AlbumFieldTable
 from .writer import save_album_row

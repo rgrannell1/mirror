@@ -95,7 +95,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [tool.uv.sources]
-zahir2 = { path = "/home/rg/Code/zahir2", editable = true }
+zahir2 = { path = "/home/rg/Code/zahir", editable = true }
 tertius = { path = "/home/rg/Code/tertius", editable = true }
 orbis = { path = "/home/rg/Code/orbis", editable = true }
-bookman = { path = "/home/rg/Code/sand", editable = true }
+bookman = { path = "/home/rg/Code/bookman", editable = true }

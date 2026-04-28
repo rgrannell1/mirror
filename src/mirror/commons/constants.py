@@ -36,9 +36,9 @@ MOSAIC_ENCODINGS = {
 # - full_image_png: a png image so I can share images to Signal and other non-webp apps
 IMAGE_ENCODINGS = {
     "thumbnail_lossy": {
-        "format": "webp",
-        "quality": 85,
-        "method": 6,
+        "format": "avif",
+        "quality": 50,
+        "subsampling": "4:4:4",
         "width": THUMBNAIL_WIDTH,
         "height": THUMBNAIL_HEIGHT,
     },

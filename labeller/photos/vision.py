@@ -3,7 +3,6 @@
 import os
 from pathlib import Path
 
-
 PROMPT = (
     "Identify the main subject of this image for photo tagging purposes. "
     "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "

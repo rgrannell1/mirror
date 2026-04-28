@@ -51,7 +51,7 @@ create table if not exists encoded_photos (
   role        text not null,
   url         text not null,
 
-  primary key (fpath, mimetype, role)
+  primary key (fpath, role)
 );
 """
 
