@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from zahir import EAwait, JobContext, concurrency_dependency, resource_dependency, sqlite_dependency
+from zahir import JobContext, await_all, concurrency_dependency, resource_dependency, sqlite_dependency
 
 from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
@@ -101,7 +101,7 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
         effects.append(ctx.scope.upload_photo({"fpath": fpath, "role": role, "params": params, "force": role_forced}))
 
     if effects:
-        yield EAwait(effects)
+        yield await_all(effects)
 
 
 def upload_video_thumbnail(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
@@ -192,13 +192,13 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
         ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey}) for fpath in grey_fpaths
     ]
     if grey_effects:
-        yield EAwait(grey_effects)
+        yield await_all(grey_effects)
 
     mosaic_effects = [
         ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic}) for fpath in mosaic_fpaths
     ]
     if mosaic_effects:
-        yield EAwait(mosaic_effects)
+        yield await_all(mosaic_effects)
 
     if upload_images:
         photo_effects = [
@@ -206,7 +206,7 @@ def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None
             for fpath in photo_fpaths
         ]
         if photo_effects:
-            yield EAwait(photo_effects)
+            yield await_all(photo_effects)
 
     if upload_videos:
         for fpath in video_fpaths:

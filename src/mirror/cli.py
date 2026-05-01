@@ -96,12 +96,24 @@ def event_to_dict(event: Event) -> dict:
     }
 
 
-def record_events(events: Iterable[Any], path: str) -> Generator[Any, None, None]:
-    """Wrap an event iterable, writing each bookman Event as a JSON line to path."""
-    with open(path, "w") as fh:
+def is_job_fail_end(event: Event) -> bool:
+    """Return True if this event is a job_fail span end (carries the error message)."""
+    dims = event.dims
+    return "job_fail" in dims.get("tag", []) and "end" in dims.get("phase", [])
+
+
+def record_events(events: Iterable[Any], path: str, error_path: str) -> Generator[Any, None, None]:
+    """Wrap an event iterable, writing each bookman Event as a JSON line to path.
+
+    Error events (job_fail) are additionally written as plain text to error_path.
+    """
+    with open(path, "w") as jsonl_fh, open(error_path, "w") as err_fh:
         for event in events:
             if isinstance(event, Event):
-                fh.write(json.dumps(event_to_dict(event)) + "\n")
+                jsonl_fh.write(json.dumps(event_to_dict(event)) + "\n")
+                if is_job_fail_end(event) and event.value is not None:
+                    fn = (event.dims.get("fn") or ["unknown"])[0]
+                    err_fh.write(f"{fn}: {event.value}\n")
             yield event
 
 
@@ -136,5 +148,5 @@ def main():
     events = evaluate(
         "mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]
     )
-    for _ in with_progress(record_events(events, "latest.jsonl")):
+    for _ in with_progress(record_events(events, "latest.jsonl", "latest.error")):
         pass

@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from zahir import EAwait, JobContext
+from zahir import JobContext, await_all
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.commons.urn import parse_mirror_urn
@@ -196,7 +196,7 @@ def scan_media(ctx: JobContext, input: ScanOpts) -> Generator[Any, Any, None]:
 
     yield ctx.scope.media_scan({"dpath": dpath})
 
-    yield EAwait([
+    yield await_all([
         ctx.scope.read_albums({"markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH}),
         ctx.scope.read_photos({"markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH}),
         ctx.scope.read_videos({"markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH}),

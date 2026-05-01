@@ -6,7 +6,7 @@ import os
 from collections.abc import Generator
 from typing import Any
 
-from zahir import EAwait, JobContext
+from zahir import JobContext, await_all
 
 from mirror.commons.config import DATABASE_PATH
 from mirror.services.d1 import D1Builder
@@ -131,7 +131,7 @@ def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generato
         "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
-    yield EAwait(
+    yield await_all(
         [
             ctx.scope.publish_env(builder_inputs),
             ctx.scope.publish_atom(builder_inputs),
