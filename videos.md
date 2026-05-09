@@ -85,6 +85,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/1f268e7f9b.webp) | Slovenia | Landscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0634d42bb.webp) | Switzerland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:7 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d5b0fe1ef7.webp) | Switzerland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:7 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f00588965b.webp) | Tenerife |  |  |  | "The Internationale", sung on Labour Day |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7e608e0ad0.webp) | Tenerife |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c6a7227aa9.webp) | Tenerife |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/294271bc4d.webp) | Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:86 |  | urn:ró:mammal:oryctolagus-cuniculus |  |
 | ![](https://photos-cdn.rgrannell.xyz/ee7828e706.webp) | Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:84 |  | urn:ró:bird:hirundo-rustica |  |
 | ![](https://photos-cdn.rgrannell.xyz/daa8dfbbc5.webp) | Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:85 |  |  |  |

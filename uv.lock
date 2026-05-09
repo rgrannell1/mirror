@@ -599,6 +599,7 @@ dependencies = [
     { name = "dateparser" },
     { name = "feedgen" },
     { name = "ffmpeg-python" },
+    { name = "google-genai" },
     { name = "imagehash" },
     { name = "jsonschema" },
     { name = "levenshtein" },
@@ -626,9 +627,6 @@ dependencies = [
 dev = [
     { name = "vulture" },
 ]
-labeller = [
-    { name = "google-genai" },
-]
 
 [package.metadata]
 requires-dist = [
@@ -638,7 +636,7 @@ requires-dist = [
     { name = "dateparser" },
     { name = "feedgen" },
     { name = "ffmpeg-python" },
-    { name = "google-genai", marker = "extra == 'labeller'" },
+    { name = "google-genai" },
     { name = "imagehash" },
     { name = "jsonschema" },
     { name = "levenshtein" },
@@ -662,7 +660,7 @@ requires-dist = [
     { name = "xmltodict" },
     { name = "zahir2", editable = "../zahir" },
 ]
-provides-extras = ["labeller", "dev"]
+provides-extras = ["dev"]
 
 [[package]]
 name = "numpy"
@@ -1279,6 +1277,7 @@ dev = [
     { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
+    { name = "pytest-timeout", specifier = ">=2.4.0" },
     { name = "vulture" },
 ]
 
@@ -1460,6 +1459,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bookman", editable = "../bookman" },
+    { name = "mypy", specifier = ">=1.20.2" },
     { name = "orbis", editable = "../orbis" },
     { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest" },

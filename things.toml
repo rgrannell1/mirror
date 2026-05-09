@@ -2362,6 +2362,62 @@ features = [
     "urn:ró:place_feature:nature reserve",
 ]
 
+[[places]]
+id = "urn:ró:place:174"
+longitude = -16.2519
+latitude = 28.4636
+name = "Santa Cruz de Tenerife"
+wikipedia = "https://en.wikipedia.org/wiki/Santa_Cruz_de_Tenerife"
+in = [
+    "urn:ró:place:147",
+    "urn:ró:place:164",
+]
+features = [
+    "urn:ró:place_feature:city",
+]
+
+[[places]]
+id = "urn:ró:place:175"
+longitude = -16.2516
+latitude = 28.4699
+name = "Museum of Nature and Archaeology"
+wikipedia = "https://en.wikipedia.org/wiki/Museum_of_Nature_and_Man"
+in = [
+    "urn:ró:place:174",
+    "urn:ró:place:147",
+    "urn:ró:place:164",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
+[[places]]
+id = "urn:ró:place:176"
+longitude = -16.7248
+latitude = 28.0573
+name = "Playa de las Américas"
+wikipedia = "https://en.wikipedia.org/wiki/Playa_de_las_Am%C3%A9ricas"
+in = [
+    "urn:ró:place:147",
+]
+features = [
+    "urn:ró:place_feature:beach",
+    "urn:ró:place_feature:town",
+]
+
+[[places]]
+id = "urn:ró:place:177"
+longitude = 2.6502
+latitude = 39.5696
+name = "Palma de Mallorca"
+wikipedia = "https://en.wikipedia.org/wiki/Palma,_Mallorca"
+in = [
+    "urn:ró:place:146",
+]
+features = [
+    "urn:ró:place_feature:city",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -2412,6 +2468,13 @@ contains_album = [
     "urn:ró:album:toledo-26",
     "urn:ró:album:madrid-city-26",
     "urn:ró:album:man-26",
+]
+
+[[trips]]
+id = "urn:ró:trip:6"
+contains_album = [
+    "urn:ró:album:anaga-26",
+    "urn:ró:album:tenerife-26",
 ]
 
 # Ordered edges for drawing travel maps (id, source, destination); order is significant
@@ -2558,6 +2621,18 @@ id = "urn:ró:transfer:23"
 source = "urn:ró:place:35"
 destination = "urn:ró:place:30"
 mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:24"
+source = "urn:ró:place:174"
+destination = "urn:ró:place:176"
+mode = "bus"
+
+[[transfers]]
+id = "urn:ró:transfer:25"
+source = "urn:ró:place:176"
+destination = "urn:ró:place:0"
+mode = "bus"
 
 [[transfers]]
 id = "urn:ró:transfer:24"
@@ -4213,68 +4288,68 @@ name = "Green Iguana"
 id = "urn:ró:reptile:podarcis-sicula"
 name = "Italian Wall Lizard"
 
-[[insects]]
-id = "urn:ró:insect:sphex-pensylvanicus"
+[[arthropods]]
+id = "urn:ró:arthropod:sphex-pensylvanicus"
 name = "Great Black Wasp"
 
-[[insects]]
-id = "urn:ró:insect:tyria-jacobaeae"
+[[arthropods]]
+id = "urn:ró:arthropod:tyria-jacobaeae"
 name = "Cinnabar Moth"
 
-[[insects]]
-id = "urn:ró:insect:anthocharis-cardamines"
+[[arthropods]]
+id = "urn:ró:arthropod:anthocharis-cardamines"
 name = "Orange-tip"
 
-[[insects]]
-id = "urn:ró:insect:apis-mellifera"
+[[arthropods]]
+id = "urn:ró:arthropod:apis-mellifera"
 name = "Western Honey Bee"
 
-[[insects]]
-id = "urn:ró:insect:bombus-lapidarius"
+[[arthropods]]
+id = "urn:ró:arthropod:bombus-lapidarius"
 name = "Red-tailed Bumblebee"
 
-[[insects]]
-id = "urn:ró:insect:bombus-terrestris"
+[[arthropods]]
+id = "urn:ró:arthropod:bombus-terrestris"
 name = "Buff-tailed Bumblebee"
 
-[[insects]]
-id = "urn:ró:insect:calliptamus-italicus"
+[[arthropods]]
+id = "urn:ró:arthropod:calliptamus-italicus"
 name = "Italian Locust"
 
-[[insects]]
-id = "urn:ró:insect:coccinella-septempunctata"
+[[arthropods]]
+id = "urn:ró:arthropod:coccinella-septempunctata"
 name = "Seven-spot Ladybird"
 
-[[insects]]
-id = "urn:ró:insect:crocothemis-erythraea"
+[[arthropods]]
+id = "urn:ró:arthropod:crocothemis-erythraea"
 name = "Scarlet Darter"
 
-[[insects]]
-id = "urn:ró:insect:danaus-plexippus"
+[[arthropods]]
+id = "urn:ró:arthropod:danaus-plexippus"
 name = "Monarch"
 
-[[insects]]
-id = "urn:ró:insect:episyrphus-balteatus"
+[[arthropods]]
+id = "urn:ró:arthropod:episyrphus-balteatus"
 name = "Marmalade Hoverfly"
 
-[[insects]]
-id = "urn:ró:insect:papilio-cresphontes"
+[[arthropods]]
+id = "urn:ró:arthropod:papilio-cresphontes"
 name = "Giant Swallowtail"
 
-[[insects]]
-id = "urn:ró:insect:papilio-glaucus"
+[[arthropods]]
+id = "urn:ró:arthropod:papilio-glaucus"
 name = "Eastern Tiger Swallowtail"
 
-[[insects]]
-id = "urn:ró:insect:pararge-aegeria"
+[[arthropods]]
+id = "urn:ró:arthropod:pararge-aegeria"
 name = "Speckled Wood"
 
-[[insects]]
-id = "urn:ró:insect:aglais-io"
+[[arthropods]]
+id = "urn:ró:arthropod:aglais-io"
 name = "Peacock Butterfly"
 
-[[insects]]
-id = "urn:ró:insect:vanessa-atalanta"
+[[arthropods]]
+id = "urn:ró:arthropod:vanessa-atalanta"
 name = "Red Admiral"
 
 [[birds]]
@@ -4448,3 +4523,127 @@ name = "Shinkansen"
 [[trains]]
 id = "urn:ró:train:siemens-mireo"
 name = "Siemens Mireo"
+
+[[trains]]
+id = "urn:ró:train:unknown"
+name = "Unknown Train"
+
+[[birds]]
+id = "urn:ró:bird:anthus-berthelotii"
+name = "Berthelot's Pipit"
+
+[[birds]]
+id = "urn:ró:bird:calonectris-borealis"
+name = "Cory's Shearwater"
+
+[[birds]]
+id = "urn:ró:bird:unknown"
+name = "Unknown Bird"
+
+[[amphibians]]
+id = "urn:ró:amphibian:andrias-davidianus"
+name = "Chinese Giant Salamander"
+
+[[amphibians]]
+id = "urn:ró:amphibian:dryophytes-cinereus"
+name = "American Green Tree Frog"
+
+[[amphibians]]
+id = "urn:ró:amphibian:notophthalmus-viridescens"
+name = "Eastern Newt"
+
+[[amphibians]]
+id = "urn:ró:amphibian:proteus-anguinus"
+name = "Olm"
+
+[[arthropods]]
+id = "urn:ró:arthropod:amegilla-canifrons"
+name = "Amegilla Bee"
+
+[[arthropods]]
+id = "urn:ró:arthropod:lasius-niger"
+name = "Black Garden Ant"
+
+[[arthropods]]
+id = "urn:ró:arthropod:sicus-ferrugineus"
+name = "Ferruginous Thick-headed Fly"
+
+[[arthropods]]
+id = "urn:ró:arthropod:unknown"
+name = "Unknown Insect"
+
+[[mammals]]
+id = "urn:ró:mammal:zalophus-wollebaeki"
+name = "Galápagos Sea Lion"
+
+[[mammals]]
+id = "urn:ró:mammal:globicephala-macrorhynchus"
+name = "Short-finned Pilot Whale"
+
+[[mammals]]
+id = "urn:ró:mammal:globicephala-melas"
+name = "Long-finned Pilot Whale"
+
+[[mammals]]
+id = "urn:ró:mammal:unknown"
+name = "Unknown Mammal"
+
+[[cars]]
+id = "urn:ró:car:unknown"
+name = "Unknown Car"
+
+[[arthropods]]
+id = "urn:ró:arthropod:grapsus-grapsus"
+name = "Sally Lightfoot Crab"
+
+[[arthropods]]
+id = "urn:ró:arthropod:grapsus-adscensionis"
+name = "Atlantic Sally Lightfoot Crab"
+
+[[ctenophores]]
+id = "urn:ró:ctenophore:pleurobrachia-pileus"
+name = "Sea Gooseberry"
+
+[[boats]]
+id = "urn:ró:boat:unknown"
+name = "Unknown Boat"
+
+[[helicopters]]
+id = "urn:ró:helicopter:eurocopter-ec135-p2"
+name = "Eurocopter EC135 P2"
+
+[[helicopters]]
+id = "urn:ró:helicopter:airbus-helicopter-h135"
+name = "Airbus H135"
+
+[[helicopters]]
+id = "urn:ró:helicopter:sikorsky-s-92a"
+name = "Sikorsky S-92A"
+
+[[helicopters]]
+id = "urn:ró:helicopter:unknown"
+name = "Unknown Helicopter"
+
+[[spacecraft]]
+id = "urn:ró:spacecraft:apollo-one"
+name = "Apollo 1"
+
+[[spacecraft]]
+id = "urn:ró:spacecraft:sputnik"
+name = "Sputnik"
+
+[[spacecraft]]
+id = "urn:ró:spacecraft:v2"
+name = "V-2 Rocket"
+
+[[spacecraft]]
+id = "urn:ró:spacecraft:unknown"
+name = "Unknown Spacecraft"
+
+[[persons]]
+id = "urn:ró:person:me"
+name = "Róisín Grannell"
+
+[[reptiles]]
+id = "urn:ró:reptile:unknown"
+name = "Unknown Reptile"

@@ -35,8 +35,10 @@
       "description": "List of places this photo was taken. This includes the country, city, type of location, and specific instance of location."
     },
     "rating": {
-      "type": "string",
-      "enum": ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
+      "anyOf": [
+        { "type": "string", "enum": ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"] },
+        { "type": "null" }
+      ],
       "description": "Rating of the photo, represented by stars."
     },
     "subjects": {
