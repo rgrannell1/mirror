@@ -204,22 +204,30 @@ class PhotoPane(Widget):
             self.app.notify(f"No local file found for {url}", severity="warning")
 
     def action_label_image(self) -> None:
-        url = self._state.current_photo.thumbnail_url
+        photo = self._state.current_photo
+        url = photo.thumbnail_url
         fpath = fpath_for_url(url)
+        album_title = photo.name.strip() or None
+        place_names = self._resolve_place_names(photo.places)
         self.app.notify("Asking Google Vision...", timeout=3)
         self.run_worker(
-            lambda: self._fetch_labels(fpath, url),
+            lambda: self._fetch_labels(fpath, url, album_title, place_names),
             exclusive=False,
             thread=True,
         )
 
-    def _fetch_labels(self, fpath: str | None, url: str) -> None:
+    def _resolve_place_names(self, places_field: str) -> list[str]:
+        urn_to_name = {urn: name for name, urn in self._places_urns.items()}
+        urns = [token.strip() for token in places_field.split() if token.strip()]
+        return [urn_to_name[urn] for urn in urns if urn in urn_to_name]
+
+    def _fetch_labels(self, fpath: str | None, url: str, album_title: str | None, place_names: list[str]) -> None:
         from rich.markup import escape
 
         from .vision import label_image
 
         try:
-            labels = label_image(fpath, url)
+            labels = label_image(fpath, url, album_title=album_title, place_names=place_names)
         except Exception as exc:
             self.app.call_from_thread(self.app.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
             return

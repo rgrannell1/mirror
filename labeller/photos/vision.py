@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-PROMPT = (
+BASE_PROMPT = (
     "Identify the main subject of this image for photo tagging purposes. "
     "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "
     "where <category> is one of: bird, mammal, insect, fish, reptile, amphibian, and <latin-binomial> is the "
@@ -21,7 +21,22 @@ PROMPT = (
 )
 
 
-def label_image(fpath: str | None, url: str | None) -> list[str]:
+def build_prompt(album_title: str | None, place_names: list[str]) -> str:
+    """Build a prompt with optional album and place context prepended."""
+    context_parts = []
+    if album_title:
+        context_parts.append(f"Album: {album_title}")
+    if place_names:
+        context_parts.append(f"Location: {', '.join(place_names)}")
+    if not context_parts:
+        return BASE_PROMPT
+    context = " | ".join(context_parts)
+    return f"Context — {context}.\n\n{BASE_PROMPT}"
+
+
+def label_image(
+    fpath: str | None, url: str | None, album_title: str | None = None, place_names: list[str] | None = None
+) -> list[str]:
     """Return identification tags for an image using Gemini vision.
 
     Tries the local file path first; falls back to fetching the URL.
@@ -47,9 +62,10 @@ def label_image(fpath: str | None, url: str | None) -> list[str]:
     else:
         return []
 
+    prompt = build_prompt(album_title, place_names or [])
     result = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=[PROMPT, image_part],
+        contents=[prompt, image_part],
     )
     raw = result.text.strip()
     return [tag.strip() for tag in raw.split(",") if tag.strip()]
