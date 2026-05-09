@@ -62,6 +62,8 @@ Three readers emit `photo → cover → target` triples used by the frontend to 
 
 - **`ThingCoverReader`** — one cover per individual thing (a specific bird, place, etc.). Explicit `cover` relations in `photo_metadata_table` take priority; otherwise highest-rated photo referencing that thing via `subject` or `location` is used. Target URN: `urn:ró:<type>:<id>`.
 
+**Explicit cover assignments**: the `cover` column in `photos.md` accepts a comma-separated list of `urn:ró:` URNs. Each URN names the thing this photo should be the explicit cover for (e.g. `urn:ró:bird:corvus-corax`). These are stored as `relation='cover'` rows in `photo_metadata_table` and take priority over auto-detected covers in `ThingCoverReader`. The column is currently empty in all rows — all covers are auto-detected from ratings and genre.
+
 - **`PlaceFeatureCoverReader`** — one cover per place feature (castle, beach, volcano, etc.). Loads the feature→places mapping from `things.toml`, queries the DB for all photos whose `location` is one of those places, then picks the best per feature (landscape preferred, then highest-rated). Target URN: `urn:ró:place_feature:<id>`.
 
 ## Adding a New Album

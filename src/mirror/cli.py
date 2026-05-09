@@ -10,6 +10,7 @@ from bookman.events import Event
 from zahir import evaluate, make_telemetry, with_progress
 
 from mirror.commons import config
+from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
 from mirror.workflows.fetch.fetch import (
     fetch_copy_file,
     fetch_find_filtered,
@@ -58,6 +59,9 @@ logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
 SCOPE = {
+    "copy_workflow": copy_workflow,
+    "copy_into_library": copy_into_library,
+    "copy_open_nautilus": copy_open_nautilus,
     "fetch_workflow": fetch_workflow,
     "fetch_resolve_dates": fetch_resolve_dates,
     "fetch_find_filtered": fetch_find_filtered,
@@ -153,12 +157,20 @@ def main():
 
     subparsers = parser.add_subparsers(dest="command")
 
+    copy_parser = subparsers.add_parser("copy", help="Copy a recent raw import into the managed library")
+    copy_parser.add_argument(
+        "-n", dest="nth", type=int, default=1, metavar="N", help="Nth most recent import (default: 1)"
+    )
+
     fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
     fetch_parser.add_argument(
         "--from", dest="date_from", required=True, metavar="DATE", help='Start date, e.g. "today" or "two days ago"'
     )
     fetch_parser.add_argument(
-        "--to", dest="date_to", default="today", metavar="DATE",
+        "--to",
+        dest="date_to",
+        default="today",
+        metavar="DATE",
         help='End date, e.g. "today" or "2026-05-09" (default: today)',
     )
     fetch_parser.add_argument(
@@ -170,6 +182,18 @@ def main():
     )
 
     args = parser.parse_args()
+
+    if args.command == "copy":
+        title = input("Album title: ").strip()
+        if not title:
+            raise SystemExit("Album title is required")
+        copy_input = {"title": title, "nth": args.nth}
+        copy_events = evaluate(
+            "copy_workflow", (copy_input,), scope=SCOPE, n_workers=4, handler_wrappers=[make_telemetry()]
+        )
+        for _ in with_progress(record_events(copy_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
+            pass
+        return
 
     if args.command == "fetch":
         fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
