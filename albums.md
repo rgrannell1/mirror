@@ -121,4 +121,5 @@
 | ![](https://photos-cdn.rgrannell.xyz/0791d7a678.avif) | River Dodder | river-dodder-26 | urn:ró:place:148 | The first blue-sky of 2026. I went for a walk hoping to see kingfishers and otters. As expected, I didn't find any, but it was a nice walk regardless |
 | ![](https://photos-cdn.rgrannell.xyz/3afa490d25.avif) | Tenerife | tenerife-26 | urn:ró:place:147 | Mount Teide remains astonishingly beautiful. This time it was cloudy, which was bad for star-watching but gave beautiful sunsets. |
 | ![](https://photos-cdn.rgrannell.xyz/84c23870f0.avif) | Toledo | toledo-26 | urn:ró:place:164 |  |
+| ![](https://photos-cdn.rgrannell.xyz/d59abaf86f.avif) | Wicklow | wicklow-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0615b337a.avif) | William Blake Exhibit | william-blake-26 | urn:ró:place:148 |  |

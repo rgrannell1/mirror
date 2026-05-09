@@ -1326,6 +1326,23 @@
 | ![](https://photos-cdn.rgrannell.xyz/5cc93da597.avif) | West Ireland | Landscape | ⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1d50bfe114.avif) | West Ireland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:148 | kylemore abbey reflected in a lake. framed by lakeside vegetation, with a forest in the background |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6c4bd0ed7c.avif) | West Ireland | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d076d8c12a.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:179 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9ea60de5b8.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:insect:celastrina-argiolus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/7771d7f88d.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d33748b7f2.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c5faf503aa.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d59abaf86f.avif) | Wicklow | Landscape | ⭐⭐⭐⭐ | urn:ró:place:179 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/92b5096cfb.avif) | Wicklow | Other | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/969de192ff.avif) | Wicklow | Cityscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3bfaac6278.avif) | Wicklow | Cityscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3d2dcca4f8.avif) | Wicklow | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:178 |  | urn:ró:bird:saxicola-rubicola?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/b90427a8f9.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c19301436.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5b2e69f30e.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:bird:fringilla-coelebs?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/39b0ee0046.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/385602e085.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/01563073c9.avif) | Wicklow | Wildlife | ⭐⭐ | urn:ró:place:179 |  | urn:ró:insect:chloromyia-formosa?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/05d0dbbc17.avif) | Wicklow | Cityscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ef5df6bd03.avif) | William Blake Exhibit | Museum | ⭐⭐⭐ | urn:ró:place:172 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0615b337a.avif) | William Blake Exhibit | Museum | ⭐⭐⭐ | urn:ró:place:172 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b46d1c1879.avif) | William Blake Exhibit | Museum | ⭐⭐⭐ | urn:ró:place:172 |  |  |  |
