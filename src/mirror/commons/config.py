@@ -34,3 +34,12 @@ ALBUM_METADATA_FILE = os.path.join(_SCHEMA_DIR, "album_metadata.json")
 PHOTO_METADATA_FILE = os.path.join(_SCHEMA_DIR, "photo_metadata.json")
 
 GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
+
+# Path to the badger binary (local build has --json-progress; system package does not)
+BADGER_PATH = os.getenv("BADGER_PATH", f"{HOME}/Code/badger/badger")
+
+# Default camera DCIM path when connected via USB
+CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM", f"/media/{os.getenv('USER', 'rg')}/PROGRADE/DCIM")
+
+# Staging directory for camera imports before badger clustering
+RAW_MEDIA_DIRECTORY = os.getenv("RAW_MEDIA_DIRECTORY", f"{HOME}/RawMedia")

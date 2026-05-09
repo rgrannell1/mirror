@@ -9,6 +9,18 @@ from bookman.bookman_types import Cumulative, Delta
 from bookman.events import Event
 from zahir import evaluate, make_telemetry, with_progress
 
+from mirror.commons import config
+from mirror.workflows.fetch.fetch import (
+    fetch_copy_file,
+    fetch_find_filtered,
+    fetch_media_clustering,
+    fetch_open_nautilus,
+    fetch_photo_clustering,
+    fetch_raw_clustering,
+    fetch_resolve_dates,
+    fetch_run_badger,
+    fetch_workflow,
+)
 from mirror.workflows.publish.publish import (
     publish_artifacts,
     publish_atom,
@@ -46,6 +58,15 @@ logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
 SCOPE = {
+    "fetch_workflow": fetch_workflow,
+    "fetch_resolve_dates": fetch_resolve_dates,
+    "fetch_find_filtered": fetch_find_filtered,
+    "fetch_copy_file": fetch_copy_file,
+    "fetch_run_badger": fetch_run_badger,
+    "fetch_photo_clustering": fetch_photo_clustering,
+    "fetch_media_clustering": fetch_media_clustering,
+    "fetch_raw_clustering": fetch_raw_clustering,
+    "fetch_open_nautilus": fetch_open_nautilus,
     "mirror_workflow": mirror_workflow,
     "scan_media": scan_media,
     "media_scan": media_scan,
@@ -129,7 +150,35 @@ def main():
     parser.add_argument("--force-upload-videos", dest="force_upload_videos", action="store_true", default=False)
     parser.add_argument("--force-roles", dest="force_roles", nargs="+", default=None, metavar="ROLE")
     parser.add_argument("--publish-d1", dest="publish_d1", action="store_true", default=False)
+
+    subparsers = parser.add_subparsers(dest="command")
+
+    fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
+    fetch_parser.add_argument(
+        "--from", dest="date_from", required=True, metavar="DATE", help='Start date, e.g. "today" or "two days ago"'
+    )
+    fetch_parser.add_argument(
+        "--to", dest="date_to", default="today", metavar="DATE",
+        help='End date, e.g. "today" or "2026-05-09" (default: today)',
+    )
+    fetch_parser.add_argument(
+        "--camera",
+        dest="camera",
+        default=config.CAMERA_DCIM_DEFAULT,
+        metavar="PATH",
+        help="Path to camera DCIM directory",
+    )
+
     args = parser.parse_args()
+
+    if args.command == "fetch":
+        fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
+        fetch_events = evaluate(
+            "fetch_workflow", (fetch_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]
+        )
+        for _ in with_progress(record_events(fetch_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
+            pass
+        return
 
     if multiprocessing.get_start_method() != "fork":
         multiprocessing.set_start_method("fork", force=True)

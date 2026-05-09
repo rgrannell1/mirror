@@ -370,7 +370,7 @@ class MarkdownTablePhotoMetadataReader:
 
                 genre_list = re.split(r"\s*,\s*", genre) if genre else []
                 places_list = re.split(r"\s*,\s*", places) if places else []
-                rating_value = rating if rating else None
+                rating_value = rating or None
                 subjects_list = re.split(r"\s*,\s*", subjects) if subjects else []
                 description_value = description or ""
 
