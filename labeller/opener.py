@@ -14,6 +14,18 @@ def fpath_for_url(url: str) -> str | None:
     return db.encoded_photos_table().fpath_from_url(url)
 
 
+def webp_url_for_url(url: str) -> str:
+    """Return the thumbnail_webp CDN URL for the photo at url, falling back to url if not found."""
+    db = SqliteDatabase(str(DB_PATH))
+    fpath = db.encoded_photos_table().fpath_from_url(url)
+    if fpath is None:
+        return url
+    for enc in db.encoded_photos_table().list_for_file(fpath):
+        if enc.role == "thumbnail_webp":
+            return enc.url
+    return url
+
+
 def open_in_viewer(fpath: str) -> None:
     """Open a file in the OS default viewer (non-blocking)."""
     subprocess.Popen(["xdg-open", fpath])

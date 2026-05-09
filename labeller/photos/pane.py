@@ -11,7 +11,7 @@ from textual.widget import Widget
 from textual.widgets import Label
 
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
-from labeller.opener import fpath_for_url, open_in_viewer
+from labeller.opener import fpath_for_url, open_in_viewer, webp_url_for_url
 from labeller.widgets import ImageFrame
 
 from .filters import PRESET_FILTERS
@@ -286,7 +286,7 @@ class PhotoPane(Widget):
 
     def _refresh_all(self) -> None:
         photo = self._state.current_photo
-        self.query_one(ImageFrame).update_photo(photo.thumbnail_url)
+        self.query_one(ImageFrame).update_photo(webp_url_for_url(photo.thumbnail_url))
         field_table = self.query_one(PhotoFieldTable)
         field_table.update_row(photo)
         field_table.update_field_index(self._state.field_index)
