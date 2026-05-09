@@ -2418,6 +2418,35 @@ features = [
     "urn:ró:place_feature:city",
 ]
 
+[[places]]
+id = "urn:ró:place:178"
+longitude = -6.0442
+latitude = 52.9786
+name = "Wicklow Town"
+wikipedia = "https://en.wikipedia.org/wiki/Wicklow_(town)"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:town",
+]
+
+[[places]]
+id = "urn:ró:place:179"
+longitude = -6.1167
+latitude = 52.9333
+name = "National Botanic Gardens Kilmacurragh"
+wikipedia = "https://en.wikipedia.org/wiki/Kilmacurragh"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:garden",
+]
+near = [
+    "urn:ró:place:178",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
