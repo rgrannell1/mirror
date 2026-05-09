@@ -37,8 +37,15 @@ MOSAIC_ENCODINGS = {
 IMAGE_ENCODINGS = {
     "thumbnail_lossy": {
         "format": "avif",
-        "quality": 50,
+        "quality": 90,
         "subsampling": "4:4:4",
+        "width": THUMBNAIL_WIDTH,
+        "height": THUMBNAIL_HEIGHT,
+    },
+    # WebP thumbnail for TUI viewers that don't support avif
+    "thumbnail_webp": {
+        "format": "webp",
+        "lossless": True,
         "width": THUMBNAIL_WIDTH,
         "height": THUMBNAIL_HEIGHT,
     },
