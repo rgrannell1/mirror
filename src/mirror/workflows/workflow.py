@@ -41,6 +41,7 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
     })
 
     yield ctx.scope.build_source({})
+    yield ctx.scope.run_integration_tests({})
 
     pid = result["publication_id"]
     tribbles_expanded_path = os.path.join(manifest_output_dir, f"tribbles-expanded.{pid}.txt")

@@ -17,6 +17,12 @@ def build_source(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     yield
 
 
+def run_integration_tests(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
+    subprocess.run(["rs", "integration_test", "--quiet"], cwd=WEBSITE_DIRECTORY, check=True)
+    return None
+    yield
+
+
 def publish_d1_remote(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     subprocess.run(["rs", "deploy"], cwd=WEBSITE_DIRECTORY, check=True)
     return None
