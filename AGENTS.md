@@ -1,5 +1,6 @@
 @/home/rg/Agents/AGENTS.md
 @/home/rg/Agents/agents.python.md
+@/home/rg/Agents/agents.zahir.md
 @/home/rg/Code/mirror/design.md
 
 - Please read /home/rg/Code/zahir for context about the workflow engine, especially the readme.
