@@ -465,7 +465,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/10b31295f0.avif) | East Coast Nature Reserve | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:173 |  | urn:ró:mammal:cervus-nippon?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:173 |  | urn:ró:mammal:cervus-nippon?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/cb99b271ed.avif) | East Coast Nature Reserve | Wildlife | ⭐⭐⭐ | urn:ró:place:173 |  | urn:ró:mammal:cervus-nippon?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/8523044bcd.avif) | East Coast Nature Reserve | Wildlife | ⭐ | urn:ró:place:173 | My clearest kingfisher photo. | urn:ró:bird:alcedo-atthis |  |
+| ![](https://photos-cdn.rgrannell.xyz/8523044bcd.avif) | East Coast Nature Reserve | Wildlife | ⭐ | urn:ró:place:173 | My clearest kingfisher photo. | urn:ró:bird:alcedo-atthis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/33927be6bb.avif) | East Coast Nature Reserve | Wildlife | ⭐⭐⭐ | urn:ró:place:173 |  | urn:ró:mammal:bos-taurus |  |
 | ![](https://photos-cdn.rgrannell.xyz/c1291b1a06.avif) | Edinburgh | Cityscape | ⭐⭐⭐ | urn:ró:place:71 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5b80803d08.avif) | Edinburgh | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:72 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
