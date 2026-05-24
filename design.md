@@ -8,9 +8,55 @@ Mirror is a media asset management and publishing pipeline for a photography web
 uv run mirror          # Run the full pipeline
 uv run ruff check src  # Lint
 uv run ruff format src # Format
+rs install             # Install mirror into the venv
 ```
 
 No test suite exists in this repo.
+
+## CLI
+
+### `mirror fetch` — import from camera
+
+```sh
+mirror fetch --from DATE [--to DATE] [--camera PATH]
+```
+
+- `--from DATE` *(required)* — start date; natural language (`"today"`, `"two days ago"`) or ISO (`"2026-05-20"`)
+- `--to DATE` — end date (default: `"today"`)
+- `--camera PATH` — DCIM directory (default: `config.CAMERA_DCIM_DEFAULT`)
+
+Copies matching files to a staging directory, runs `badger` to cluster them, then opens the result in Nautilus.
+
+### `mirror copy` — move import into library
+
+```sh
+mirror copy [-n N]
+```
+
+- `-n N` — nth most recent staging import to move (default: `1`)
+
+Prompts for an album title, then moves files into the managed library under `PHOTO_DIRECTORY`.
+
+### `mirror` — full pipeline flags
+
+| Flag | Effect |
+|---|---|
+| `--no-upload-images` | Skip image uploads |
+| `--no-upload-videos` | Skip video uploads |
+| `--force-recompute-grey` | Recompute contrasting grey for all photos |
+| `--force-recompute-mosaic` | Recompute mosaic colours for all photos |
+| `--force-upload-images` | Re-upload images even if already uploaded |
+| `--force-upload-videos` | Re-upload videos even if already uploaded |
+| `--force-roles ROLE …` | Force recompute specific roles |
+| `--publish-d1` | Publish triples to Cloudflare D1 |
+
+### Typical camera import flow
+
+```sh
+mirror fetch --from "today"   # 1. copy from camera → staging, cluster with badger
+mirror copy                   # 2. move staging → library (prompts for album title)
+uv run mirror                 # 3. scan, upload, publish
+```
 
 ## Workflow Architecture
 
