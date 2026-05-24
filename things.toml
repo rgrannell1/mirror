@@ -4821,6 +4821,7 @@ name = "Unknown Reptile"
 [[birds]]
 id = "urn:ró:bird:linaria-cannabina"
 name = "Linnet"
+birdwatch_url = "https://birdwatchireland.ie/birds/linnet"
 
 [[insects]]
 id = "urn:ró:insect:celastrina-argiolus"
