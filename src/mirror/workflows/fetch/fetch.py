@@ -144,7 +144,7 @@ def parse_badger_progress(line: str) -> dict | None:
 def fetch_run_badger(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Run badger, firing one semaphore per file as each is clustered."""
     dest = input["dest"]
-    src_glob = str(Path(dest) / "**" / "*")
+    src_glob = str(Path(dest) / "*")
 
     proc = subprocess.Popen(
         [BADGER_PATH, "cluster", "--from", src_glob, "--to", dest, "--yes", "--json-progress"],
