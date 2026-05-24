@@ -12,7 +12,9 @@ from pathlib import Path
 from typing import Any
 
 import dateparser
-from zahir import ESetSemaphore, JobContext, await_all, concurrency_dependency, semaphore_dependency
+from zahir import JobContext, await_all, concurrency_dependency, semaphore_dependency
+from zahir.core.constants import DependencyState
+from zahir.core.effects import ESetState
 
 from mirror.commons.config import BADGER_PATH, RAW_MEDIA_DIRECTORY
 from mirror.commons.constants import SUPPORTED_IMAGE_EXTENSIONS
@@ -84,9 +86,9 @@ def copy_single_file(src: Path, dest_root: Path) -> None:
 
 
 def signal_range(name_prefix: str, start: int, end: int) -> Generator[Any, Any, None]:
-    """Yield ESetSemaphore for indices [start, end), satisfying each."""
+    """Yield ESetState for indices [start, end), satisfying each semaphore."""
     for idx in range(start, end):
-        yield ESetSemaphore(f"{name_prefix}_{idx}", "satisfied")
+        yield ESetState(name=f"{name_prefix}_{idx}", value=DependencyState.SATISFIED)
 
 
 # --- zahir specs ---

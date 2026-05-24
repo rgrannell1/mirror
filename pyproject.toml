@@ -35,12 +35,27 @@ dependencies = [
   "google-genai",
 ]
 
+[project.scripts]
+mirror = "mirror.cli:main"
+
 [project.optional-dependencies]
 dev = [
   "vulture",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+tertius = { path = "../tertius", editable = true }
+orbis = { path = "../orbis", editable = true }
+bookman = { path = "../bookman", editable = true }
+zahir2 = { path = "../zahir", editable = true }
+
 [tool.ruff]
+line-length = 130
+preview = true
 exclude = [
     ".bzr",
     ".direnv",
@@ -70,30 +85,12 @@ exclude = [
     "venv",
 ]
 
-line-length = 120
-indent-width = 4
-
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "UP", "B", "C4", "BLE", "SIM", "RUF"]
+select = ["E", "F", "I", "N", "UP", "B", "C4", "BLE", "SIM", "RUF", "PLR", "PLC", "C"]
 
-[tool.ruff.lint.per-file-ignores]
-"src/mirror/commons/__init__.py" = ["F403", "F405"]
+[tool.ruff.lint.pylint]
+max-statements = 14
+max-args = 4
 
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project.scripts]
-mirror = "mirror.cli:main"
-[tool.setuptools]
-package-dir = { "" = "src" }
-
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.uv.sources]
-zahir2 = { path = "/home/rg/Code/zahir", editable = true }
-tertius = { path = "/home/rg/Code/tertius", editable = true }
-orbis = { path = "/home/rg/Code/orbis", editable = true }
-bookman = { path = "/home/rg/Code/bookman", editable = true }
+[tool.ruff.lint.mccabe]
+max-complexity = 7
