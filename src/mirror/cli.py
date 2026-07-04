@@ -7,7 +7,7 @@ from typing import Any
 
 from bookman.bookman_types import Cumulative, Delta
 from bookman.events import Event
-from zahir import evaluate, make_telemetry, with_progress
+from zahir import evaluate, make_telemetry, setup, with_progress
 
 from mirror.commons import config
 from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
@@ -190,7 +190,11 @@ def main():
             raise SystemExit("Album title is required")
         copy_input = {"title": title, "nth": args.nth}
         copy_events = evaluate(
-            "copy_workflow", (copy_input,), scope=SCOPE, n_workers=4, handler_wrappers=[make_telemetry()]
+            setup(n_workers=4),
+            "copy_workflow",
+            (copy_input,),
+            scope=SCOPE,
+            handler_wrappers=[make_telemetry()],
         )
         for _ in with_progress(record_events(copy_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
             pass
@@ -199,7 +203,11 @@ def main():
     if args.command == "fetch":
         fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
         fetch_events = evaluate(
-            "fetch_workflow", (fetch_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]
+            setup(n_workers=15),
+            "fetch_workflow",
+            (fetch_input,),
+            scope=SCOPE,
+            handler_wrappers=[make_telemetry()],
         )
         for _ in with_progress(record_events(fetch_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
             pass
@@ -220,7 +228,11 @@ def main():
     }
 
     events = evaluate(
-        "mirror_workflow", (workflow_input,), scope=SCOPE, n_workers=15, handler_wrappers=[make_telemetry()]
+        setup(n_workers=15),
+        "mirror_workflow",
+        (workflow_input,),
+        scope=SCOPE,
+        handler_wrappers=[make_telemetry()],
     )
     for _ in with_progress(record_events(events, "latest.jsonl", "latest.error")):
         pass

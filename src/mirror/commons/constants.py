@@ -74,7 +74,24 @@ IMAGE_ENCODINGS = {
     },
     "social_card": {"format": "webp", "quality": 85, "method": 6, "width": 1200, "height": 630},
     "preview_jpeg": {"format": "jpeg", "quality": 80, "width": 800, "height": 600},
+    # High-res hero for full-width page banners (about/albums). Larger than
+    # mid_image so it stays sharp on wide/4K displays; only generated for the
+    # source files in BANNER_SOURCE_FILES (see SELECTIVE_ROLE_FILTERS).
+    "banner": {
+        "format": "webp",
+        "quality": 80,
+        "method": 6,
+        "width": 2560,
+        "height": 1920,
+    },
 }
+
+# Source files used as full-width page banners. The `banner` rendition above is
+# only generated for these, so we don't produce a 2560px hero for every photo.
+BANNER_SOURCE_FILES = frozenset({
+    "/home/rg/Drive/Media/2022/Cranes/Published/79_535.JPG",  # /albums page banner
+    "/home/rg/Drive/Media/2017/Kerry with Friends/Published/P1290572.jpg",  # /about page banner
+})
 
 # How should we encode our videos? Currently uses unscaled + various
 # scaling of libx264 encoding

@@ -16,14 +16,14 @@ class PhotoExifData(IModel):
     """Exif data for a photo"""
 
     fpath: str
-    created_at: Optional[str]
-    f_stop: Optional[str]
-    focal_length: Optional[str]
-    model: Optional[str]
-    exposure_time: Optional[str]
-    iso: Optional[str]
-    width: Optional[str]
-    height: Optional[str]
+    created_at: Optional[str] = None
+    f_stop: Optional[str] = None
+    focal_length: Optional[str] = None
+    model: Optional[str] = None
+    exposure_time: Optional[str] = None
+    iso: Optional[str] = None
+    width: Optional[str] = None
+    height: Optional[str] = None
 
     @classmethod
     def from_row(cls, row: list) -> "PhotoExifData":
@@ -91,8 +91,11 @@ class ExifReader:
             else:
                 data[dict_key] = str(exif_data[exif_key])
 
-        try:
-            return PhotoExifData(**data, fpath=fpath)  # type: ignore
-        except (TypeError, ValueError):
-            # GoPro image / other no-exif images I'm given
+        # No recognised EXIF tags at all (GoPro / other no-exif images) — skip.
+        # A file with *some* tags still yields a row: missing fields default to
+        # None, so a present created_at is never lost just because width/height
+        # (or another tag) are absent.
+        if not data:
             return None
+
+        return PhotoExifData(fpath=fpath, **data)  # type: ignore

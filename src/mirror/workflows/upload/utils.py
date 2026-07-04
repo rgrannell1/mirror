@@ -6,6 +6,7 @@ from mirror.commons.constants import IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_EN
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import VideoEncoder
+from mirror.workflows.upload.selective import is_role_skipped
 
 
 class PhotoJobInput(TypedDict):
@@ -61,8 +62,7 @@ def list_photos_without_upload(db: SqliteDatabase, force_upload: bool = False) -
             if role in published_roles:
                 continue
 
-            # only generate social-cards for album covers, for the moment
-            if "+cover" not in fpath and role == "social_card":
+            if is_role_skipped(role, fpath):
                 continue
 
             needs_upload = True

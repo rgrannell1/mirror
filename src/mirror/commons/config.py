@@ -39,7 +39,7 @@ GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
 BADGER_PATH = os.getenv("BADGER_PATH", f"{HOME}/Code/badger/badger")
 
 # Default camera DCIM path when connected via USB
-CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM", f"/media/{os.getenv('USER', 'rg')}/PROGRADE/DCIM")
+CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM", f"/run/media/{os.getenv('USER', 'rg')}/PROGRADE/DCIM")
 
 # Staging directory for camera imports before badger clustering
 RAW_MEDIA_DIRECTORY = os.getenv("RAW_MEDIA_DIRECTORY", f"{HOME}/RawMedia")

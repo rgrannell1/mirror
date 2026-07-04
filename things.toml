@@ -2447,6 +2447,54 @@ near = [
     "urn:ró:place:178",
 ]
 
+[[places]]
+id = "urn:ró:place:180"
+longitude = -6.5918
+latitude = 53.3818
+name = "Maynooth"
+short_name = "Maynooth"
+wikipedia = "https://en.wikipedia.org/wiki/Maynooth"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:town",
+]
+
+[[places]]
+id = "urn:ró:place:181"
+longitude = -6.598973
+latitude = 53.311715
+name = "Straffan Steam Museum"
+short_name = "Steam Museum"
+wikipedia = "https://en.wikipedia.org/wiki/Steam_Museum,_Straffan"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+near = [
+    "urn:ró:place:180",
+]
+
+[[places]]
+id = "urn:ró:place:182"
+longitude = -6.598973
+latitude = 53.311715
+name = "Lodge Park Walled Gardens"
+short_name = "Lodge Park"
+wikipedia = "https://en.wikipedia.org/wiki/Steam_Museum,_Straffan"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:garden",
+]
+near = [
+    "urn:ró:place:181",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -4838,3 +4886,56 @@ name = "Cattle"
 [[mammals]]
 id = "urn:ró:mammal:cervus-nippon"
 name = "Sika Deer"
+
+
+[[years]]
+id = "urn:ró:year:2012"
+recap = "The start of my photography. I had an Olympus XZ-1 and a bridge camera; both of which I loved and neither of which were really great cameras. I didn't take many pictures this year; a few cliche waterfall-but-slow-shutter pictures not fit for upload."
+
+[[years]]
+id = "urn:ró:year:2013"
+recap = "I started to capture pictures of the interesting places I visited. It's also the first year I took a passable photo."
+
+[[years]]
+id = "urn:ró:year:2015"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2016"
+recap = "A big year for me. I started travelling; while sitting in a cafe in Amsterdam a pride parade passed by. Not long afterwards I came out as transgender. I also started taking wildlife photos, a niche I've preferred since then."
+
+[[years]]
+id = "urn:ró:year:2017"
+recap = "Lots of travel, especially around Ireland."
+
+[[years]]
+id = "urn:ró:year:2018"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2019"
+recap = "I was indoors for most of 2019, as was everyone else."
+
+[[years]]
+id = "urn:ró:year:2020"
+recap = "Another pandemic year."
+
+[[years]]
+id = "urn:ró:year:2021"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2022"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2023"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2024"
+recap = ""
+
+[[years]]
+id = "urn:ró:year:2025"
+recap = ""

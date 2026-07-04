@@ -11,6 +11,7 @@ from mirror.commons.exceptions import InvalidVideoDimensionsError
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import PhotoEncoder
+from mirror.workflows.upload.selective import is_role_skipped
 from mirror.workflows.upload.utils import (
     PhotoJobInput,
     UploadOpts,
@@ -96,7 +97,7 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
         role_forced = force or role in force_roles
         if role in published_roles and not role_forced:
             continue
-        if "+cover" not in fpath and role == "social_card":
+        if is_role_skipped(role, fpath):
             continue
         effects.append(ctx.scope.upload_photo({"fpath": fpath, "role": role, "params": params, "force": role_forced}))
 

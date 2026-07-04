@@ -41,6 +41,7 @@ mirror = "mirror.cli:main"
 [project.optional-dependencies]
 dev = [
   "vulture",
+  "pytest",
 ]
 
 [build-system]
@@ -52,6 +53,11 @@ tertius = { path = "../tertius", editable = true }
 orbis = { path = "../orbis", editable = true }
 bookman = { path = "../bookman", editable = true }
 zahir2 = { path = "../zahir", editable = true }
+
+[tool.pytest.ini_options]
+# src-layout: let tests import `mirror` without an editable install step
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 130
@@ -87,6 +93,10 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "C4", "BLE", "SIM", "RUF", "PLR", "PLC", "C"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests assert against literal expected values — magic-value checks add noise.
+"tests/*" = ["PLR2004"]
 
 [tool.ruff.lint.pylint]
 max-statements = 14
