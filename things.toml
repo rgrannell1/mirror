@@ -4887,6 +4887,34 @@ name = "Cattle"
 id = "urn:ró:mammal:cervus-nippon"
 name = "Sika Deer"
 
+[[birds]]
+id = "urn:ró:bird:accipiter-cooperii"
+name = "Cooper's Hawk"
+
+[[birds]]
+id = "urn:ró:bird:archilochus-colubris"
+name = "Ruby-throated Hummingbird"
+
+[[birds]]
+id = "urn:ró:bird:aythya-americana"
+name = "Redhead"
+
+[[insects]]
+id = "urn:ró:insect:halyzia-sedecimguttata"
+name = "Orange Ladybird"
+
+[[insects]]
+id = "urn:ró:insect:vespula-vulgaris"
+name = "Common Wasp"
+
+[[mammals]]
+id = "urn:ró:mammal:nycticebus-javanicus"
+name = "Javan Slow Loris"
+
+[[mammals]]
+id = "urn:ró:mammal:pteronura-brasiliensis"
+name = "Giant Otter"
+
 
 [[years]]
 id = "urn:ró:year:2012"

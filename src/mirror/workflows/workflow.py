@@ -14,13 +14,15 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
     photos_markdown_path = input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH)
     manifest_output_dir = input.get("manifest_output_dir", OUTPUT_DIRECTORY)
 
+    scan_ok = True
     try:
         yield ctx.scope.scan_media({
             "albums_markdown_path": albums_markdown_path,
             "photos_markdown_path": photos_markdown_path,
         })
     except Exception as err:  # noqa: BLE001
-        print(f"WARNING: scan_media failed, continuing to publish: {err}")
+        scan_ok = False
+        print(f"WARNING: scan_media failed: {err}")
 
     yield ctx.scope.upload_media({
         "force_recompute_grey": input.get("force_recompute_grey", False),
@@ -31,6 +33,24 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
         "upload_images": input.get("upload_images"),
         "upload_videos": input.get("upload_videos"),
     })
+
+    if not scan_ok:
+        # scan loads albums.md/photos.md into the DB via read_albums/read_photos. If it failed the
+        # DB is stale, and write_metadata rewrites the whole markdown file from the DB — which would
+        # silently overwrite the human-edited ratings. Bail out before any destructive write or
+        # publish; resume the run once scan is fixed.
+        print("scan failed: skipping metadata rewrite and publish to avoid overwriting albums.md/photos.md from a stale database")
+        return
+
+    # Phase A (ungated): rewrite albums.md/photos.md so freshly-indexed photos become labellable.
+    yield ctx.scope.write_metadata({
+        "output_dir": manifest_output_dir,
+        "albums_markdown_path": albums_markdown_path,
+        "photos_markdown_path": photos_markdown_path,
+    })
+
+    # Gate: block outward publication if the metadata is not publish-ready.
+    yield ctx.scope.audit_media({})
 
     print("publishing artifacts")
 

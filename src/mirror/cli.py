@@ -9,6 +9,7 @@ from bookman.bookman_types import Cumulative, Delta
 from bookman.events import Event
 from zahir import evaluate, make_telemetry, setup, with_progress
 
+from mirror.audit import audit_media, run_audit_command
 from mirror.commons import config
 from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
 from mirror.workflows.fetch.fetch import (
@@ -32,6 +33,7 @@ from mirror.workflows.publish.publish import (
     update_albums_markdown,
     update_photos_markdown,
     update_videos_markdown,
+    write_metadata,
 )
 from mirror.workflows.scan.scan import (
     geonames_scan,
@@ -72,6 +74,7 @@ SCOPE = {
     "fetch_raw_clustering": fetch_raw_clustering,
     "fetch_open_nautilus": fetch_open_nautilus,
     "mirror_workflow": mirror_workflow,
+    "audit_media": audit_media,
     "scan_media": scan_media,
     "media_scan": media_scan,
     "geonames_scan": geonames_scan,
@@ -95,6 +98,7 @@ SCOPE = {
     "update_albums_markdown": update_albums_markdown,
     "update_photos_markdown": update_photos_markdown,
     "update_videos_markdown": update_videos_markdown,
+    "write_metadata": write_metadata,
     "publish_artifacts": publish_artifacts,
     "build_source": build_source,
     "run_integration_tests": run_integration_tests,
@@ -159,9 +163,9 @@ def main():
     subparsers = parser.add_subparsers(dest="command")
 
     copy_parser = subparsers.add_parser("copy", help="Copy a recent raw import into the managed library")
-    copy_parser.add_argument(
-        "-n", dest="nth", type=int, default=1, metavar="N", help="Nth most recent import (default: 1)"
-    )
+    copy_parser.add_argument("-n", dest="nth", type=int, default=1, metavar="N", help="Nth most recent import (default: 1)")
+
+    subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
 
     fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
     fetch_parser.add_argument(
@@ -199,6 +203,9 @@ def main():
         for _ in with_progress(record_events(copy_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
             pass
         return
+
+    if args.command == "audit":
+        raise SystemExit(run_audit_command())
 
     if args.command == "fetch":
         fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}

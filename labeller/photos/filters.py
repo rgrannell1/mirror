@@ -10,13 +10,14 @@ _ANIMAL_PREFIXES = ("urn:ró:bird:", "urn:ró:mammal:")
 def _animal_without_context(photo: PhotoRow) -> bool:
     """True if any subject is a bird/mammal URN that lacks a ?context= qualifier."""
     for subject in photo.subjects.split():
-        if any(subject.startswith(prefix) for prefix in _ANIMAL_PREFIXES):
-            if "?context=" not in subject:
-                return True
+        is_animal = any(subject.startswith(prefix) for prefix in _ANIMAL_PREFIXES)
+        if is_animal and "?context=" not in subject:
+            return True
     return False
 
 
 PRESET_FILTERS: list[tuple[str, Callable[[PhotoRow], bool]]] = [
+    ("No rating", lambda photo: not photo.rating.strip()),
     ("Has description", lambda photo: bool(photo.description.strip())),
     ("Has subjects", lambda photo: bool(photo.subjects.strip())),
     ("No subjects", lambda photo: not photo.subjects.strip()),

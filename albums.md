@@ -1,14 +1,18 @@
 | embedding | title | permalink | country | summary |
 | --- | --- | --- | --- | --- |
 | ![](https://photos-cdn.rgrannell.xyz/1d50bfe114.avif) | West Ireland | west-ireland-12 | urn:ró:place:148 |  |
+| ![](https://photos-cdn.rgrannell.xyz/7bd9f69540.avif) | Galway |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/599845c5da.avif) | Menlo Castle | menlo-13 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/37f93bdfc4.avif) | Skellig Micheal | skellig-micheal-13 | urn:ró:place:148 | Skellig Micheal is rocky crag off the cost of Kerry. It's a UNESCO World Heritage Site with a large (and fairly tame) puffin population. I personally think it's the most beautiful place in Ireland. |
 | ![](https://photos-cdn.rgrannell.xyz/86de92150e.avif) | Aran Islands | aran-islands-15 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/2dd551d820.avif) | University of Galway | university-of-galway-16 | urn:ró:place:148 |  |
+| ![](https://photos-cdn.rgrannell.xyz/b5ec32445f.avif) | Handel's Messiah | messiah-16 |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/877c84c119.avif) | Roundstone | roundstone-16 | urn:ró:place:148 | These photos are from a trip though Connemara to Roundstone. I was using a bridge camera, so the image quality (and corrective editing) is questionable |
 | ![](https://photos-cdn.rgrannell.xyz/fa45969940.avif) | Cliffs of Moher | cliffs-of-moher-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/d7be1dce7e.avif) | Emo Court | laois-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0c824a13b.avif) | Munich | munich-16 | urn:ró:place:155 |  |
+| ![](https://photos-cdn.rgrannell.xyz/cfe4423dd0.avif) | Pride |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3937694186.avif) | Terryland Park | terryland-park-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/b4c858f452.avif) | River Corrib | river-corrib-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ea7e45600.avif) | Galway Boat Festival | boat-festival-17 | urn:ró:place:148 |  |

@@ -3,7 +3,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/860336aa58.avif) | Anaga | Landscape | ⭐⭐⭐ | urn:ró:place:0 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d49a6d0128.avif) | Anaga | Landscape | ⭐⭐ | urn:ró:place:0 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c22f9c70ae.avif) | Anaga | Wildlife | ⭐⭐ | urn:ró:place:0 |  | urn:ró:bird:corvus-corax?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/6db74e2081.avif) | Anaga |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6db74e2081.avif) | Anaga | Landscape | ⭐⭐⭐ | urn:ró:place:0 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b177da2fcf.avif) | Anaga | Landscape | ⭐⭐ | urn:ró:place:0 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/522d430392.avif) | Anaga | Landscape | ⭐⭐⭐ | urn:ró:place:0 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8962285f1c.avif) | Anaga Rural Park | Landscape | ⭐⭐⭐ | urn:ró:place:0 |  |  |  |
@@ -525,6 +525,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/7480634060.avif) | Fota Wildlife, Cork | Wildlife | ⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:giraffa-camelopardalis?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/eea46067de.avif) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:bird:anas-platyrhynchos?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8702c5906a.avif) | Fota Wildlife, Cork | Wildlife | ⭐⭐⭐ | urn:ró:place:70 |  | urn:ró:mammal:notamacropus-rufogriseus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/7bd9f69540.avif) | Galway | Cityscape | ⭐⭐⭐ | urn:ró:place:93 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0c05b77aba.avif) | Galway & Salthill | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:bird:anas-platyrhynchos?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/1b89c26ff7.avif) | Galway & Salthill | Wildlife | ⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:bird:anas-platyrhynchos?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f9be797464.avif) | Galway & Salthill | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:93 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
@@ -539,6 +540,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/348deef2d9.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f771d7abfb.avif) | Galway Docks | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  urn:ró:bird:chroicocephalus-ridibundus,larus-canus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0ab40ce61.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eeae99b6ee.avif) | Glenveagh National Park | Landscape | ⭐⭐⭐ | urn:ró:place:101 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a2914a2c46.avif) | Glenveagh National Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:101 |  | urn:ró:bird:erithacus-rubecula?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/967aa25f32.avif) | Glenveagh National Park | Landscape | ⭐⭐⭐ | urn:ró:place:101 |  |  |  |
@@ -593,7 +595,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/6799cacdeb.avif) | Grand Canal, Dublin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:91 |  | urn:ró:bird:ardea-cinerea?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e8ce9107f9.avif) | Grand Canal, Dublin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:91 |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/d3abd8d0eb.avif) | Hamburg & Lübeck | Other | ⭐⭐⭐⭐ | urn:ró:place:60 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a306b11bcb.avif) | Hamburg & Lübeck |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a306b11bcb.avif) | Hamburg & Lübeck | Museum | ⭐⭐⭐⭐ | urn:ró:place:58 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eaf0553f08.avif) | Hamburg & Lübeck | Museum | ⭐⭐ | urn:ró:place:59 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/cf53271c98.avif) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/cb72fe066d.avif) | Hamburg & Lübeck | Cityscape | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
@@ -609,7 +611,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/78eee91d06.avif) | Hamburg & Lübeck | Museum | ⭐⭐ | urn:ró:place:59 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e28ab7eed2.avif) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:59 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b545f8b99.avif) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/6b559e6be1.avif) | Hamburg & Lübeck |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6b559e6be1.avif) | Hamburg & Lübeck | Museum | ⭐⭐⭐ | urn:ró:place:58 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b5ec32445f.avif) | Handel's Messiah | Other | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1645ef3812.avif) | Howth | Wildlife | ⭐⭐ | urn:ró:place:8 |  | urn:ró:arthropod:coccinella-septempunctata?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/449ded860a.avif) | Howth | Landscape | ⭐⭐⭐ | urn:ró:place:8 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/aa9deb9033.avif) | Howth | Wildlife | ⭐⭐ | urn:ró:place:8 |  | urn:ró:bird:corvus-corax?context=wild |  |
@@ -880,6 +883,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/26812457ff.avif) | Mount Teide | Astrophotography | ⭐⭐ | urn:ró:place:45 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/293012cba6.avif) | Mount Teide | Astrophotography | ⭐⭐⭐⭐ | urn:ró:place:45 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3822e5e486.avif) | Mount Teide | Astrophotography | ⭐⭐ | urn:ró:place:45 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/395ca42441.avif) | Munich | Museum | ⭐⭐⭐⭐ | urn:ró:place:58 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/388953f507.avif) | Munich | Museum | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d1ce77dd38.avif) | Munich | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/78148b7223.avif) | Munich | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:107 |  |  |  |
@@ -994,6 +998,15 @@
 | ![](https://photos-cdn.rgrannell.xyz/1135471257.avif) | Phoenix Park, Dublin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:14 |  | urn:ró:bird:anas-platyrhynchos?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e98f3fb376.avif) | Phoenix Park, Dublin | Wildlife | ⭐⭐⭐ | urn:ró:place:14 |  | urn:ró:bird:troglodytes-troglodytes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/091272e993.avif) | Phoenix Park, Dublin | Wildlife | ⭐⭐⭐ | urn:ró:place:14 |  | urn:ró:bird:troglodytes-troglodytes?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/a15c70e332.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/cfe4423dd0.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/79b61211b4.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/03641dba7f.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a224f9da9f.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/25f14dfae2.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a573a35b87.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/6d68b0c23a.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/94da06f49b.avif) | Pride | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3eb562d97b.avif) | Puerto de la Cruz |  | ⭐⭐⭐⭐ | urn:ró:place:2 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/873b94305b.avif) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:2 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9093391765.avif) | Puerto de la Cruz | Cityscape | ⭐⭐⭐ | urn:ró:place:2 |  |  |  |
@@ -1178,11 +1191,13 @@
 | ![](https://photos-cdn.rgrannell.xyz/840817ca57.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/920f803cee.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b051dc8a11.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/82dda3738e.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c53b89615.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 | little skellig, surrounded by the ocean. looking towards ireland. |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/37f93bdfc4.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f485d09f90.avif) | Skellig Micheal | Landscape | ⭐⭐⭐⭐ | urn:ró:place:102 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/984b7ab28b.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/74bfa08667.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:102 | gannets and other seabirds in flight | urn:ró:bird:morus-bassanus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/189e76390f.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:102 | a puffin taking flight off a rock. ocean in background | urn:ró:bird:fratercula-arctica?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/c20dc810ed.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica |  |
 | ![](https://photos-cdn.rgrannell.xyz/fb18c741eb.avif) | Sliebh Bloom Mountains | Wildlife | ⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:mammal:equus-caballus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/146e37f654.avif) | Sliebh Bloom Mountains | Wildlife | ⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:mammal:equus-caballus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/352edc551a.avif) | Slovenia | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
@@ -1356,7 +1371,9 @@
 | ![](https://photos-cdn.rgrannell.xyz/e0fa83ea29.avif) | University of Galway | Cityscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ab8b35c4cc.avif) | University of Galway | Cityscape | ⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1cba02b4bb.avif) | University of Galway | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c5d911e155.avif) | West Ireland | Landscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5cc93da597.avif) | West Ireland | Landscape | ⭐⭐ | urn:ró:place:148 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0fa07f69fa.avif) | West Ireland | Landscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1d50bfe114.avif) | West Ireland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:148 | kylemore abbey reflected in a lake. framed by lakeside vegetation, with a forest in the background |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6c4bd0ed7c.avif) | West Ireland | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d076d8c12a.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:179 |  |  |  |

@@ -114,6 +114,34 @@ def publish_d1(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[
     yield
 
 
+def write_metadata(ctx: JobContext, input: PublishArtifactsInput) -> Generator[Any, Any, dict]:
+    """Rewrite the human-editable markdown metadata files from the database.
+
+    Runs before the audit gate: newly-indexed photos must surface in photos.md so they become
+    labellable. The audit must never block the step that lets you clear the audit's findings.
+    """
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.refresh_dependent_views()
+
+    builder_inputs: PublishArtifactBundleInput = {
+        "output_dir": input["output_dir"],
+        "publication_id": publication_id(),
+        "albums_markdown_path": input.get("albums_markdown_path", DEFAULT_ALBUMS_MARKDOWN_PATH),
+        "photos_markdown_path": input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH),
+        "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
+    }
+
+    yield await_all(
+        [
+            ctx.scope.update_albums_markdown(builder_inputs),
+            ctx.scope.update_photos_markdown(builder_inputs),
+            ctx.scope.update_videos_markdown(builder_inputs),
+        ]
+    )
+
+    return {"complete": True}
+
+
 def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
 
@@ -138,9 +166,6 @@ def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generato
             ctx.scope.publish_stats(builder_inputs),
             ctx.scope.publish_triples(builder_inputs),
             ctx.scope.publish_d1(builder_inputs),
-            ctx.scope.update_albums_markdown(builder_inputs),
-            ctx.scope.update_photos_markdown(builder_inputs),
-            ctx.scope.update_videos_markdown(builder_inputs),
         ]
     )
 
