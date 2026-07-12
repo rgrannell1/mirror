@@ -1,8 +1,8 @@
 | embedding | title | permalink | country | summary |
 | --- | --- | --- | --- | --- |
 | ![](https://photos-cdn.rgrannell.xyz/1d50bfe114.avif) | West Ireland | west-ireland-12 | urn:ró:place:148 |  |
-| ![](https://photos-cdn.rgrannell.xyz/7bd9f69540.avif) | Galway |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7bd9f69540.avif) | Galway | galway-13 | urn:ró:place:148 |  |
+| ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough | glendalough-13 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/599845c5da.avif) | Menlo Castle | menlo-13 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/37f93bdfc4.avif) | Skellig Micheal | skellig-micheal-13 | urn:ró:place:148 | Skellig Micheal is rocky crag off the cost of Kerry. It's a UNESCO World Heritage Site with a large (and fairly tame) puffin population. I personally think it's the most beautiful place in Ireland. |
 | ![](https://photos-cdn.rgrannell.xyz/86de92150e.avif) | Aran Islands | aran-islands-15 | urn:ró:place:148 |  |
@@ -12,7 +12,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/fa45969940.avif) | Cliffs of Moher | cliffs-of-moher-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/d7be1dce7e.avif) | Emo Court | laois-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0c824a13b.avif) | Munich | munich-16 | urn:ró:place:155 |  |
-| ![](https://photos-cdn.rgrannell.xyz/cfe4423dd0.avif) | Pride |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/cfe4423dd0.avif) | Pride | pride-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3937694186.avif) | Terryland Park | terryland-park-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/b4c858f452.avif) | River Corrib | river-corrib-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ea7e45600.avif) | Galway Boat Festival | boat-festival-17 | urn:ró:place:148 |  |
@@ -118,6 +118,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/1ab487e871.avif) | Toledo | toledo-25 | urn:ró:place:164 | Toledo is a beautiful hilltop city not far from Madrid. It has a history of religious diversity, with synagogues, mosques, and churches built in the same city (and with architectural styles overlapping in interesting ways in Sinagoga del Tránsito). My picture of the city and the Alcázar was taken by frantically running off the tourist bus, grabbing a few hasty photos from a nearby wall, and running back to the bus before I was stranded. |
 | ![](https://photos-cdn.rgrannell.xyz/7c55d475a2.avif) | Zaragoza | zaragoza-25 | urn:ró:place:164 | Zaragoza has some of the northmost examples of Islamic architecture in Spain. Several buildings in the city are included in the UNESCO heritage site "Mujédar Architecture of Aragon" |
 | ![](https://photos-cdn.rgrannell.xyz/860336aa58.avif) | Anaga | anaga-26 | urn:ró:place:147 |  |
+| ![](https://photos-cdn.rgrannell.xyz/dbd937ce0f.avif) | Casino Model Rail Museum | casino-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/223cf8ffd4.avif) | Chester Beatty | chester-beatty-june-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/401e77fdd8.avif) | Chester Beatty | chester-beatty-26 | urn:ró:place:148 | Still my favourite Irish musuem :) |
 | ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | Ireland |  |

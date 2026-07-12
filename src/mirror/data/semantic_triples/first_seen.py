@@ -8,16 +8,15 @@ from typing import TYPE_CHECKING, Iterator
 
 import ffmpeg
 
-from mirror.commons.constants import DATE_FORMAT
+from mirror.commons.constants import ANIMAL_TYPES, DATE_FORMAT
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
 
-# Animal types whose first-seen timestamps are worth pre-computing.
-ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
-
-_PHOTO_TYPE_FILTERS = " OR ".join(f"pmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES)
+_PHOTO_TYPE_FILTERS = " OR ".join(
+    f"pmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES
+)
 
 # Earliest EXIF capture time per photographed animal subject.
 ANIMAL_PHOTO_FIRST_SEEN_QUERY = f"""
@@ -33,7 +32,9 @@ WHERE pmt.relation = 'subject'
 GROUP BY pmt.target
 """
 
-_VIDEO_TYPE_FILTERS = " OR ".join(f"vmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES)
+_VIDEO_TYPE_FILTERS = " OR ".join(
+    f"vmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES
+)
 
 # Every video subject; the capture time is read from the file, not the database.
 ANIMAL_VIDEO_SUBJECT_QUERY = f"""
@@ -122,7 +123,8 @@ class AnimalFirstSeenReader:
     appears as a photo or video subject, using the earliest capture time across
     both. Photos use EXIF; videos use the container creation_time (mtime fallback)."""
 
-    def read(self, db: SqliteDatabase) -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: SqliteDatabase) -> Iterator[SemanticTriple]:
         earliest: dict[str, int] = {}
 
         _read_photo_first_seen(db, earliest)

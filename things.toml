@@ -2495,6 +2495,19 @@ near = [
     "urn:ró:place:181",
 ]
 
+[[places]]
+id = "urn:ró:place:183"
+longitude = -6.158326
+latitude = 53.450634
+name = "Casino Model Railway Museum"
+wikipedia = "https://en.wikipedia.org/wiki/Casino_Model_Railway_Museum"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -2918,6 +2931,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/canada-goose"
 id = "urn:ró:bird:bubulcus-ibis"
 name = "Cattle Egret"
 birdwatch_url = "https://birdwatchireland.ie/birds/cattle-egret"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:fringilla-coelebs"
@@ -2933,6 +2947,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/chiffchaff"
 id = "urn:ró:bird:pyrrhocorax-pyrrhocorax"
 name = "Red-billed Chough"
 birdwatch_url = "https://birdwatchireland.ie/birds/chough"
+target = "true"
 
 [[birds]]
 id = "urn:ró:bird:periparus-ater"
@@ -3008,6 +3023,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/crossbill"
 id = "urn:ró:bird:cuculus-canorus"
 name = "Cuckoo"
 birdwatch_url = "https://birdwatchireland.ie/birds/cuckoo"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:calidris-ferruginea"
@@ -3233,6 +3249,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/herring-gull"
 id = "urn:ró:bird:corvus-cornix"
 name = "Hooded Crow"
 birdwatch_url = "https://birdwatchireland.ie/birds/hooded-crow"
+target = "true"
 
 [[birds]]
 id = "urn:ró:bird:delichon-urbicum"
@@ -3263,6 +3280,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/jackdaw"
 id = "urn:ró:bird:garrulus-glandarius"
 name = "Eurasian Jay"
 birdwatch_url = "https://birdwatchireland.ie/birds/jay"
+target = "true"
 
 [[birds]]
 id = "urn:ró:bird:falco-tinnunculus"
@@ -3273,6 +3291,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/kestrel"
 id = "urn:ró:bird:alcedo-atthis"
 name = "Kingfisher"
 birdwatch_url = "https://birdwatchireland.ie/birds/kingfisher"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:calidris-canutus"
@@ -3283,6 +3302,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/knot"
 id = "urn:ró:bird:vanellus-vanellus"
 name = "Northern Lapwing"
 birdwatch_url = "https://birdwatchireland.ie/birds/lapwing"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:hydrobates-leucorhous"
@@ -3313,6 +3333,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/linnet"
 id = "urn:ró:bird:egretta-garzetta"
 name = "Little Egret"
 birdwatch_url = "https://birdwatchireland.ie/birds/little-egret"
+target = "true"
 
 [[birds]]
 id = "urn:ró:bird:tachybaptus-ruficollis"
@@ -3458,6 +3479,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/pochard"
 id = "urn:ró:bird:fratercula-arctica"
 name = "Atlantic Puffin"
 birdwatch_url = "https://birdwatchireland.ie/birds/puffin"
+target = "true"
 
 [[birds]]
 id = "urn:ró:bird:calidris-maritima"
@@ -3733,6 +3755,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/swallow"
 id = "urn:ró:bird:apus-apus"
 name = "Common Swift"
 birdwatch_url = "https://birdwatchireland.ie/birds/swift"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:anas-crecca"
@@ -4381,6 +4404,7 @@ name = "Ring-tailed Lemur"
 [[mammals]]
 id = "urn:ró:mammal:lutra-lutra"
 name = "Eurasian Otter"
+nemesis = "true"
 
 [[mammals]]
 id = "urn:ró:mammal:lycaon-pictus"
@@ -4743,6 +4767,10 @@ id = "urn:ró:train:siemens-mireo"
 name = "Siemens Mireo"
 
 [[trains]]
+id = "urn:ró:train:cié-071"
+name = "CIÉ 071 Class"
+
+[[trains]]
 id = "urn:ró:train:unknown"
 name = "Unknown Train"
 
@@ -4938,7 +4966,7 @@ recap = "Lots of travel, especially around Ireland."
 
 [[years]]
 id = "urn:ró:year:2018"
-recap = ""
+recap = "In 2018 I left Europe for the first time, though I have to admit I find America is much pleasant (visually) outside its major cities."
 
 [[years]]
 id = "urn:ró:year:2019"
@@ -4946,24 +4974,24 @@ recap = "I was indoors for most of 2019, as was everyone else."
 
 [[years]]
 id = "urn:ró:year:2020"
-recap = "Another pandemic year."
+recap = "Another pandemic year. I did get outside, occassionally, to take some wildlife photos."
 
 [[years]]
 id = "urn:ró:year:2021"
-recap = ""
+recap = "I re-visited America, to the mid-west. Chicago was monumental; as someone used to smaller European cities the _extent_ of the city was jaw-dropping. Despite my pre-conceptions, the biodiversity in the US is impressive; birds of prey, sandhill cranes, hummingbirds and woodpeckers were common. Wildlife was more present than in the parts of Europe i was used to."
 
 [[years]]
 id = "urn:ró:year:2022"
-recap = ""
+recap = "A big year for travel. I visited London (possibly my favourite city, it's impossible to be bored there), and saw more the rural parts of Wisconsin. The visit to the International Crane Foundation was a highlight; they're really charming birds"
 
 [[years]]
 id = "urn:ró:year:2023"
-recap = ""
+recap = "Berlin was a ghost-town when I visited, in the best way. The city was snowed under; I missed virtually every noteworthy sight (the museum's, Aleksanderplatz, dozens other), but I had a good time traipsing around in the snow and visiting Christmas markets."
 
 [[years]]
 id = "urn:ró:year:2024"
-recap = ""
+recap = "I saw some of the most beautiful sights on earth this year. I'm really fond of moorish architecture & islamic tilework; Granada, Seville, and Córdoba were jaw-dropping places."
 
 [[years]]
 id = "urn:ró:year:2025"
-recap = ""
+recap = "A varied year; I saw the old castle in Conwy, Slovenia, a run across Iberia (seeing more moorish architecture), and the rainforests of Anaga in Tenerife."

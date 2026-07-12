@@ -60,7 +60,7 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.ruff]
-line-length = 130
+line-length = 100
 preview = true
 exclude = [
     ".bzr",

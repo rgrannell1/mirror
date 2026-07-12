@@ -9,12 +9,21 @@ last pipeline run and lags edits to albums.md. Rendition checks read live encode
 from collections.abc import Iterator
 from enum import StrEnum
 
+import tomllib
+
 from mirror.audit.audit_types import Check, Finding
 from mirror.commons.config import PHOTO_DIRECTORY
+from mirror.commons.constants import ANIMAL_TYPES, DEFAULT_THINGS_PATH
 from mirror.services.database import SqliteDatabase
-from mirror.services.metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataReader
+from mirror.services.metadata import (
+    MarkdownAlbumMetadataReader,
+    MarkdownTablePhotoMetadataReader,
+)
 from mirror.services.vault import MediaVault
-from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
+from mirror.workflows.scan.utils import (
+    DEFAULT_ALBUMS_MARKDOWN_PATH,
+    DEFAULT_PHOTOS_MARKDOWN_PATH,
+)
 
 
 class CheckSlug(StrEnum):
@@ -26,6 +35,7 @@ class CheckSlug(StrEnum):
     ALBUM_MISSING_METADATA = "album-missing-metadata"
     PHOTO_MISSING_RATING = "photo-missing-rating"
     PHOTO_MISSING_MAIN_IMAGE = "photo-missing-main-image"
+    ANIMAL_MISSING_NAME = "animal-missing-name"
 
 
 def check_albums_cover(db: SqliteDatabase) -> Iterator[Finding]:
@@ -49,28 +59,44 @@ def check_metadata_parses(db: SqliteDatabase) -> Iterator[Finding]:
     try:
         list(album_reader.list_album_metadata(db))
     except ValueError as err:
-        yield Finding(check=CheckSlug.METADATA_PARSE_ERROR, subject=DEFAULT_ALBUMS_MARKDOWN_PATH, detail=str(err))
+        yield Finding(
+            check=CheckSlug.METADATA_PARSE_ERROR,
+            subject=DEFAULT_ALBUMS_MARKDOWN_PATH,
+            detail=str(err),
+        )
 
     photo_reader = MarkdownTablePhotoMetadataReader(DEFAULT_PHOTOS_MARKDOWN_PATH)
     try:
         list(photo_reader.read_photo_metadata(db))
     except ValueError as err:
-        yield Finding(check=CheckSlug.METADATA_PARSE_ERROR, subject=DEFAULT_PHOTOS_MARKDOWN_PATH, detail=str(err))
+        yield Finding(
+            check=CheckSlug.METADATA_PARSE_ERROR,
+            subject=DEFAULT_PHOTOS_MARKDOWN_PATH,
+            detail=str(err),
+        )
 
 
 def check_photos_missing_phash(db: SqliteDatabase) -> Iterator[Finding]:
     """Photo metadata (ratings, subjects) is keyed by phash, so a photo with no phash can hold no
     metadata and never appears in photos.md or the labeller — usually a symptom of a broken scan."""
-    query = "select p.fpath from photos p where not exists (select 1 from phashes h where h.fpath = p.fpath)"
+    query = """
+    select p.fpath from photos p
+    where not exists (select 1 from phashes h where h.fpath = p.fpath)
+    """
     for row in db.conn.execute(query):
-        detail = "no perceptual hash — cannot hold a rating/subjects; invisible in photos.md and labeller"
+        detail = "no perceptual hash — cannot hold metadata; invisible in photos.md and labeller"
         yield Finding(check=CheckSlug.PHOTO_MISSING_PHASH, subject=row[0], detail=detail)
 
 
 def resolvable_album_dpaths(db: SqliteDatabase) -> set[str]:
-    """Album dpaths for which albums.md yields a permalink — i.e. what ReadAlbums will write."""
+    """Album dpaths for which albums.md yields a non-empty permalink — i.e. what ReadAlbums writes.
+
+    The permalink target must be truthy: a blank permalink cell resolves the dpath but stores an
+    empty id, which makes view_album_data.id null and drops the album (and its photos) from triples.
+    """
     reader = MarkdownAlbumMetadataReader(DEFAULT_ALBUMS_MARKDOWN_PATH)
-    return {row.src for row in reader.list_album_metadata(db) if row.relation == "permalink" and row.src}
+    rows = reader.list_album_metadata(db)
+    return {row.src for row in rows if row.relation == "permalink" and row.src and row.target}
 
 
 def rated_photo_urls(db: SqliteDatabase) -> set[str]:
@@ -80,7 +106,7 @@ def rated_photo_urls(db: SqliteDatabase) -> set[str]:
 
 
 def check_albums_missing_metadata(db: SqliteDatabase) -> Iterator[Finding]:
-    """Albums whose dpath albums.md cannot resolve are dropped from triples with all their photos."""
+    """Report albums dropped from triples because albums.md cannot resolve their dpath."""
     try:
         resolvable = resolvable_album_dpaths(db)
     except ValueError:
@@ -90,7 +116,8 @@ def check_albums_missing_metadata(db: SqliteDatabase) -> Iterator[Finding]:
             continue
         count = album.photos_count
         noun = "photo" if count == 1 else "photos"
-        detail = f"albums.md yields no permalink (missing row or stale embedding url) — album and its {count} {noun} dropped"
+        reason = "albums.md has no permalink id (blank, missing, or stale url)"
+        detail = f"{reason} — album and its {count} {noun} dropped"
         yield Finding(check=CheckSlug.ALBUM_MISSING_METADATA, subject=album.dpath, detail=detail)
 
 
@@ -114,6 +141,38 @@ def check_photos_missing_main_image(db: SqliteDatabase) -> Iterator[Finding]:
             continue
         detail = "no mid_image_lossy rendition — image broken on site (not yet uploaded?)"
         yield Finding(check=CheckSlug.PHOTO_MISSING_MAIN_IMAGE, subject=photo.fpath, detail=detail)
+
+
+def read_named_things() -> set[str]:
+    """Read URNs with non-empty names from the thing definitions."""
+    with open(DEFAULT_THINGS_PATH, "rb") as conn:
+        data = tomllib.load(conn)
+    return {
+        item["id"]
+        for items in data.values()
+        for item in items
+        if item.get("id") and item.get("name")
+    }
+
+
+def referenced_animals(db: SqliteDatabase) -> set[str]:
+    """Read distinct canonical animal URNs from photo and video metadata."""
+    query = """
+    select target from photo_metadata_table
+    union
+    select target from video_metadata_table
+    """
+    prefixes = tuple(f"urn:ró:{animal_type}:" for animal_type in ANIMAL_TYPES)
+    targets = (row[0] for row in db.conn.execute(query) if row[0] and row[0].startswith(prefixes))
+    return {target.split("?", 1)[0] for target in targets}
+
+
+def check_animals_missing_names(db: SqliteDatabase) -> Iterator[Finding]:
+    """Referenced animal URNs need a non-empty name in things.toml."""
+    named_things = read_named_things()
+    for animal_urn in sorted(referenced_animals(db) - named_things):
+        detail = "no non-empty name definition in things.toml"
+        yield Finding(check=CheckSlug.ANIMAL_MISSING_NAME, subject=animal_urn, detail=detail)
 
 
 CHECKS: list[Check] = [
@@ -146,5 +205,10 @@ CHECKS: list[Check] = [
         slug=CheckSlug.PHOTO_MISSING_MAIN_IMAGE,
         description="Photo missing its main rendition",
         run=check_photos_missing_main_image,
+    ),
+    Check(
+        slug=CheckSlug.ANIMAL_MISSING_NAME,
+        description="Referenced animal has no name definition",
+        run=check_animals_missing_names,
     ),
 ]

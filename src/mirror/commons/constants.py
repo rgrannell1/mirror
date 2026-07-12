@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 MOSAIC_WIDTH = 2
@@ -9,6 +10,12 @@ MOSAIC_HEIGHT = 2
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
+
+# Animal URN nouns which need name definitions in things.toml.
+ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
+
+# Canonical source of names for things published as triples.
+DEFAULT_THINGS_PATH = Path("things.toml")
 
 # Attr-Exif property associations
 # these are the exif attributes we care about
