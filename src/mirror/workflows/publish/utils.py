@@ -26,7 +26,7 @@ from mirror.data.semantic_triples import (
     ThingCoverReader,
     VideosReader,
 )
-from mirror.data.things import ThingsReader
+from mirror.data.things import ThingsReader, WildlifeReader
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
@@ -162,6 +162,7 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         VideosReader(),
         GeonameMetadataReader(),
         ThingsReader(),
+        WildlifeReader(),
         UnescoReader(),
         WikidataMetadataReader(),
         PhotoRelationsReader(),

@@ -1,0 +1,3280 @@
+# Irish wildlife life-list catalogue. Generated from IRBC/NPWS + GBIF.
+# Species spine for the life-list page; nemesis = listed here, no photo.
+
+[[birds]]
+id = "urn:ró:bird:branta-bernicla"
+name = "Brent goose"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:branta-ruficollis"
+name = "Red-breasted goose"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:branta-canadensis"
+name = "Canada goose"
+status = "rare"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:branta-leucopsis"
+name = "Barnacle goose"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:branta-hutchinsii"
+name = "Cackling goose"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anser-caerulescens"
+name = "Snow goose"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:anser-anser"
+name = "Greylag goose"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:anser-fabalis"
+name = "Taiga bean goose"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anser-brachyrhynchus"
+name = "Pink-footed goose"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:anser-serrirostris"
+name = "Tundra bean goose"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anser-albifrons"
+name = "Greater white-fronted goose"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:anser-erythropus"
+name = "Lesser white-fronted goose"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-olor"
+name = "Mute swan"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-columbianus"
+name = "Bewick's swan"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:cygnus-cygnus"
+name = "Whooper swan"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:tadorna-tadorna"
+name = "Common shelduck"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:tadorna-ferruginea"
+name = "Ruddy shelduck"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:aix-galericulata"
+name = "Mandarin duck"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:sibirionetta-formosa"
+name = "Baikal teal"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:spatula-querquedula"
+name = "Garganey"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:spatula-discors"
+name = "Blue-winged teal"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:spatula-clypeata"
+name = "Northern shoveler"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:mareca-strepera"
+name = "Gadwall"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:mareca-penelope"
+name = "Eurasian wigeon"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:mareca-americana"
+name = "American wigeon"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:anas-platyrhynchos"
+name = "Mallard"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:anas-rubripes"
+name = "American black duck"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:anas-acuta"
+name = "Northern pintail"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:anas-crecca"
+name = "Eurasian teal"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:anas-carolinensis"
+name = "Green-winged teal"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:netta-rufina"
+name = "Red-crested pochard"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:aythya-americana"
+name = "Redhead"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:aythya-ferina"
+name = "Common pochard"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:aythya-nyroca"
+name = "Ferruginous duck"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:aythya-collaris"
+name = "Ring-necked duck"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:aythya-fuligula"
+name = "Tufted duck"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:aythya-marila"
+name = "Greater scaup"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:aythya-affinis"
+name = "Lesser scaup"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:somateria-spectabilis"
+name = "King eider"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:somateria-mollissima"
+name = "Common eider"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-perspicillata"
+name = "Surf scoter"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-fusca"
+name = "Velvet scoter"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-deglandi"
+name = "White-winged scoter"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-nigra"
+name = "Common scoter"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:melanitta-americana"
+name = "Black scoter"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:clangula-hyemalis"
+name = "Long-tailed duck"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:bucephala-albeola"
+name = "Bufflehead"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:bucephala-clangula"
+name = "Common goldeneye"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:bucephala-islandica"
+name = "Barrow's goldeneye"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:mergellus-albellus"
+name = "Smew"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:lophodytes-cucullatus"
+name = "Hooded merganser"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:mergus-merganser"
+name = "Goosander"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:mergus-serrator"
+name = "Red-breasted merganser"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:oxyura-jamaicensis"
+name = "Ruddy duck"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:tetrao-urogallus"
+name = "Western capercaillie"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:lagopus-scotica"
+name = "Red grouse"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:perdix-perdix"
+name = "Grey partridge"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:coturnix-coturnix"
+name = "Common quail"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:phasianus-colchicus"
+name = "Common pheasant"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:caprimulgus-europaeus"
+name = "European nightjar"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:chordeiles-minor"
+name = "Common nighthawk"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:hirundapus-caudacutus"
+name = "White-throated needletail"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:chaetura-pelagica"
+name = "Chimney swift"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:tachymarptis-melba"
+name = "Alpine swift"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:apus-apus"
+name = "Common swift"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:apus-pallidus"
+name = "Pallid swift"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:apus-affinis"
+name = "Little swift"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:otis-tarda"
+name = "Great bustard"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:tetrax-tetrax"
+name = "Little bustard"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:clamator-glandarius"
+name = "Great spotted cuckoo"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:coccyzus-americanus"
+name = "Yellow-billed cuckoo"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:coccyzus-erythropthalmus"
+name = "Black-billed cuckoo"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:cuculus-canorus"
+name = "Common cuckoo"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:syrrhaptes-paradoxus"
+name = "Pallas's sandgrouse"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:columba-livia"
+name = "Rock dove"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:columba-oenas"
+name = "Stock dove"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:columba-palumbus"
+name = "Common wood pigeon"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:streptopelia-turtur"
+name = "European turtle dove"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:streptopelia-decaocto"
+name = "Eurasian collared dove"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:zenaida-macroura"
+name = "Mourning dove"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:rallus-aquaticus"
+name = "Water rail"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:crex-crex"
+name = "Corn crake"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:porzana-carolina"
+name = "Sora"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:porzana-porzana"
+name = "Spotted crake"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:gallinula-chloropus"
+name = "Common moorhen"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:fulica-atra"
+name = "Eurasian coot"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:fulica-americana"
+name = "American coot"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:porphyrio-alleni"
+name = "Allen's gallinule"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:porphyrio-martinica"
+name = "Purple gallinule"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:zapornia-pusilla"
+name = "Baillon's crake"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:zapornia-parva"
+name = "Little crake"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:antiogne-canadensis"
+name = "Sandhill crane"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:grus-grus"
+name = "Common crane"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:tachybaptus-ruficollis"
+name = "Little grebe"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:podilymbus-podiceps"
+name = "Pied-billed grebe"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-grisegena"
+name = "Red-necked grebe"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-cristatus"
+name = "Great crested grebe"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-auritus"
+name = "Slavonian grebe"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:podiceps-nigricollis"
+name = "Black-necked grebe"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:burhinus-oedicnemus"
+name = "Eurasian stone-curlew"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:haematopus-ostralegus"
+name = "Eurasian oystercatcher"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:himantopus-himantopus"
+name = "Black-winged stilt"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:recurvirostra-avosetta"
+name = "Pied avocet"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:vanellus-vanellus"
+name = "Northern lapwing"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:vanellus-gregarius"
+name = "Sociable lapwing"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-apricaria"
+name = "European golden plover"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-dominica"
+name = "American golden plover"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-fulva"
+name = "Pacific golden plover"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:pluvialis-squatarola"
+name = "Grey plover"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-hiaticula"
+name = "Common ringed plover"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-semipalmatus"
+name = "Semipalmated plover"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-dubius"
+name = "Little ringed plover"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-vociferus"
+name = "Killdeer"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-alexandrinus"
+name = "Kentish plover"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-mongolus"
+name = "Lesser sand plover"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-leschenaultii"
+name = "Greater sand plover"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:charadrius-morinellus"
+name = "Eurasian dotterel"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:bartramia-longicauda"
+name = "Upland sandpiper"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:numenius-phaeopus"
+name = "Eurasian whimbrel"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:numenius-borealis"
+name = "Eskimo curlew"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:numenius-arquata"
+name = "Eurasian curlew"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:limosa-lapponica"
+name = "Bar-tailed godwit"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:limosa-limosa"
+name = "Black-tailed godwit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:limosa-haemastica"
+name = "Hudsonian godwit"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:arenaria-interpres"
+name = "Ruddy turnstone"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:calidris-tenuirostris"
+name = "Great knot"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:calidris-canutus"
+name = "Red knot"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:calidris-pugnax"
+name = "Ruff"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:calidris-falcinellus"
+name = "Broad-billed sandpiper"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:calidris-acuminata"
+name = "Sharp-tailed sandpiper"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:calidris-himantopus"
+name = "Stilt sandpiper"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:calidris-ferruginea"
+name = "Curlew sandpiper"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:calidris-temminckii"
+name = "Temminck's stint"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:calidris-subminuta"
+name = "Long-toed stint"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:calidris-ruficollis"
+name = "Red-necked stint"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:calidris-alba"
+name = "Sanderling"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:calidris-alpina"
+name = "Dunlin"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:calidris-maritima"
+name = "Purple sandpiper"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:calidris-bairdii"
+name = "Baird's sandpiper"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:calidris-minuta"
+name = "Little stint"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:calidris-minutilla"
+name = "Least sandpiper"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:calidris-fuscicollis"
+name = "White-rumped sandpiper"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:calidris-subruficollis"
+name = "Buff-breasted sandpiper"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:calidris-melanotos"
+name = "Pectoral sandpiper"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:calidris-pusilla"
+name = "Semipalmated sandpiper"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:calidris-mauri"
+name = "Western sandpiper"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:limnodromus-scolopaceus"
+name = "Long-billed dowitcher"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:limnodromus-griseus"
+name = "Short-billed dowitcher"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:scolopax-rusticola"
+name = "Eurasian woodcock"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:lymnocryptes-minimus"
+name = "Jack snipe"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:gallinago-media"
+name = "Great snipe"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:gallinago-gallinago"
+name = "Common snipe"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:gallinago-delicata"
+name = "Wilson's snipe"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:xenus-cinereus"
+name = "Terek sandpiper"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phalaropus-tricolor"
+name = "Wilson's phalarope"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phalaropus-lobatus"
+name = "Red-necked phalarope"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:phalaropus-fulicarius"
+name = "Grey phalarope"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:actitis-hypoleucos"
+name = "Common sandpiper"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:actitis-macularia"
+name = "Spotted sandpiper"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:tringa-ochropus"
+name = "Green sandpiper"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:tringa-solitaria"
+name = "Solitary sandpiper"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:tringa-flavipes"
+name = "Lesser yellowlegs"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:tringa-totanus"
+name = "Common redshank"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:tringa-stagnatilis"
+name = "Marsh sandpiper"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:tringa-glareola"
+name = "Wood sandpiper"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:tringa-erythropus"
+name = "Spotted redshank"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:tringa-nebularia"
+name = "Common greenshank"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:tringa-melanoleuca"
+name = "Greater yellowlegs"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:cursorius-cursor"
+name = "Cream-coloured courser"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:glareola-pratincola"
+name = "Collared pratincole"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:glareola-nordmanni"
+name = "Black-winged pratincole"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:rissa-tridactyla"
+name = "Black-legged kittiwake"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:pagophila-eburnea"
+name = "Ivory gull"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:xema-sabini"
+name = "Sabine's gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:chroicocephalus-philadelphia"
+name = "Bonaparte's gull"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:chroicocephalus-ridibundus"
+name = "Black-headed gull"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:hydrocoloeus-minutus"
+name = "Little gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:rhodostethia-rosea"
+name = "Ross's gull"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:leucophaeus-atricilla"
+name = "Laughing gull"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:leucophaeus-pipixcan"
+name = "Franklin's gull"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:ichthyaetus-melanocephalus"
+name = "Mediterranean gull"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:larus-canus"
+name = "Common gull"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:larus-delawarensis"
+name = "Ring-billed gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:larus-marinus"
+name = "Great black-backed gull"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:larus-glaucescens"
+name = "Glaucous-winged gull"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:larus-hyperboreus"
+name = "Glaucous gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:larus-glaucoides"
+name = "Iceland gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:larus-argentatus"
+name = "European herring gull"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:larus-smithsonianus"
+name = "American herring gull"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:larus-vegae"
+name = "Vega gull"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:larus-cachinnans"
+name = "Caspian gull"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:larus-michahellis"
+name = "Yellow-legged gull"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:larus-schistisagus"
+name = "Slaty-backed gull"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:larus-fuscus"
+name = "Lesser black-backed gull"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:gelochelidon-nilotica"
+name = "Gull-billed tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:hydroprogne-caspia"
+name = "Caspian tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:thalasseus-maximus"
+name = "Royal tern"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:thalasseus-bengalensis"
+name = "Lesser crested tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:thalasseus-sandvicensis"
+name = "Sandwich tern"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:thalasseus-elegans"
+name = "Elegant tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:sternula-albifrons"
+name = "Little tern"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:onychoprion-fuscatus"
+name = "Sooty tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:sterna-dougallii"
+name = "Roseate tern"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:sterna-hirundo"
+name = "Common tern"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:sterna-paradisaea"
+name = "Arctic tern"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:sterna-forsteri"
+name = "Forster's tern"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:chlidonias-hybridus"
+name = "Whiskered tern"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:chlidonias-leucopterus"
+name = "White-winged tern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:chlidonias-niger"
+name = "Black tern"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:stercorarius-skua"
+name = "Great skua"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:stercorarius-pomarinus"
+name = "Pomarine skua"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:stercorarius-parasiticus"
+name = "Arctic skua"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:stercorarius-longicaudus"
+name = "Long-tailed skua"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:alle-alle"
+name = "Little auk"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:uria-lomvia"
+name = "Brünnich's guillemot"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:uria-aalge"
+name = "Common guillemot"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:alca-torda"
+name = "Razorbill"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:pinguinus-impennis"
+name = "Great auk"
+status = "regular"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:cepphus-grylle"
+name = "Black guillemot"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:fratercula-arctica"
+name = "Atlantic puffin"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:gavia-stellata"
+name = "Red-throated diver"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:gavia-arctica"
+name = "Black-throated diver"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:gavia-pacifica"
+name = "Pacific diver"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:gavia-immer"
+name = "Great northern diver"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:gavia-adamsii"
+name = "White-billed diver"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:oceanites-oceanicus"
+name = "Wilson's storm petrel"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:thalassarche-melanophris"
+name = "Black-browed albatross"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:hydrobates-pelagicus"
+name = "European storm petrel"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:hydrobates-monorhis"
+name = "Swinhoe's storm petrel"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:hydrobates-leucorhous"
+name = "Leach's storm petrel"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:macronectes-giganteus"
+name = "Southern giant petrel"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:fulmarus-glacialis"
+name = "Northern fulmar"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:pterodroma-madeira"
+name = "Zino's petrel"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:pterodroma-feae"
+name = "Fea's petrel"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:pterodroma-cahow"
+name = "Bermuda petrel"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:procellaria-aequinoctialis"
+name = "White-chinned petrel"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:calonectris-diomedea"
+name = "Scopoli's shearwater"
+status = "rare"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:calonectris-borealis"
+name = "Cory's shearwater"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:ardenna-griseus"
+name = "Sooty shearwater"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:ardenna-tenuirostris"
+name = "Short-tailed shearwater"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:ardenna-gravis"
+name = "Great shearwater"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-puffinus"
+name = "Manx shearwater"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-yelkouan"
+name = "Yelkouan shearwater"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-mauretanicus"
+name = "Balearic shearwater"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:puffinus-baroli"
+name = "Barolo shearwater"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:bulweria-bulwerii"
+name = "Bulwer's petrel"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:ciconia-nigra"
+name = "Black stork"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:ciconia-ciconia"
+name = "White stork"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:morus-bassanus"
+name = "Northern gannet"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:sula-leucogaster"
+name = "Brown booby"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phalacrocorax-carbo"
+name = "Great cormorant"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:gulosus-aristotelis"
+name = "European shag"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:nannopterum-auritum"
+name = "Double-crested cormorant"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:plegadis-falcinellus"
+name = "Glossy ibis"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:platalea-leucorodia"
+name = "Eurasian spoonbill"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:botaurus-stellaris"
+name = "Eurasian bittern"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:botaurus-lentiginosus"
+name = "American bittern"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:ixobrychus-minutus"
+name = "Little bittern"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:nycticorax-nycticorax"
+name = "Black-crowned night heron"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:butorides-virescens"
+name = "Green heron"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:ardeola-ralloides"
+name = "Squacco heron"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:bubulcus-ibis"
+name = "Western cattle egret"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:ardea-cinerea"
+name = "Grey heron"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:ardea-purpurea"
+name = "Purple heron"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:ardea-alba"
+name = "Great egret"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:egretta-caerulea"
+name = "Little blue heron"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:egretta-garzetta"
+name = "Little egret"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:pandion-haliaetus"
+name = "Osprey"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:pernis-apivorus"
+name = "European honey buzzard"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:gyps-fulvus"
+name = "Griffon vulture"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:clanga-clanga"
+name = "Greater spotted eagle"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:aquila-chrysaetos"
+name = "Golden eagle"
+status = "rare"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:accipiter-nisus"
+name = "Eurasian sparrowhawk"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:accipiter-gentilis"
+name = "Eurasian goshawk"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:circus-aeruginosus"
+name = "Western marsh harrier"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:circus-cyaneus"
+name = "Hen harrier"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:circus-hudsonius"
+name = "Northern harrier"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:circus-macrourus"
+name = "Pallid harrier"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:circus-pygargus"
+name = "Montagu's harrier"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:milvus-milvus"
+name = "Red kite"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:milvus-migrans"
+name = "Black kite"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:haliaeetus-albicilla"
+name = "White-tailed eagle"
+status = "rare"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:haliaeetus-leucocephalus"
+name = "Bald eagle"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:buteo-lagopus"
+name = "Rough-legged buzzard"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:buteo-buteo"
+name = "Common buzzard"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:tyto-alba"
+name = "Western barn owl"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:otus-scops"
+name = "Eurasian scops owl"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:bubo-scandiacus"
+name = "Snowy owl"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:athene-noctua"
+name = "Little owl"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:asio-otus"
+name = "Long-eared owl"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:asio-flammeus"
+name = "Short-eared owl"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:upupa-epops"
+name = "Eurasian hoopoe"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:coracias-garrulus"
+name = "European roller"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:alcedo-atthis"
+name = "Common kingfisher"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:megaceryle-alcyon"
+name = "Belted kingfisher"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:merops-apiaster"
+name = "European bee-eater"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:jynx-torquilla"
+name = "Eurasian wryneck"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:sphyrapicus-varius"
+name = "Yellow-bellied sapsucker"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:dendrocopos-major"
+name = "Great spotted woodpecker"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:picus-viridis"
+name = "Eurasian green woodpecker"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:falco-naumanni"
+name = "Lesser kestrel"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:falco-tinnunculus"
+name = "Common kestrel"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:falco-vespertinus"
+name = "Red-footed falcon"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:falco-columbarius"
+name = "Merlin"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:falco-subbuteo"
+name = "Eurasian hobby"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:falco-rusticolus"
+name = "Gyrfalcon"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:falco-peregrinus"
+name = "Peregrine falcon"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:tyrannus-tyrannus"
+name = "Eastern kingbird"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:lanius-cristatus"
+name = "Brown shrike"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:lanius-collurio"
+name = "Red-backed shrike"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:lanius-isabellinus"
+name = "Isabelline shrike"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:lanius-minor"
+name = "Lesser grey shrike"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:lanius-excubitor"
+name = "Great grey shrike"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:lanius-senator"
+name = "Woodchat shrike"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:vireo-philadelphicus"
+name = "Philadelphia vireo"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:vireo-olivaceus"
+name = "Red-eyed vireo"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:oriolus-oriolus"
+name = "Eurasian golden oriole"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:garrulus-glandarius"
+name = "Eurasian jay"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:pica-pica"
+name = "Eurasian magpie"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:pyrrhocorax-pyrrhocorax"
+name = "Red-billed chough"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:corvus-monedula"
+name = "Eurasian jackdaw"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:corvus-frugilegus"
+name = "Rook"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:corvus-corone"
+name = "Carrion crow"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:corvus-cornix"
+name = "Hooded crow"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:corvus-corax"
+name = "Northern raven"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:bombycilla-garrulus"
+name = "Bohemian waxwing"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:bombycilla-cedrorum"
+name = "Cedar waxwing"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:periparus-ater"
+name = "Coal tit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:poecile-palustris"
+name = "Marsh tit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:cyanistes-caeruleus"
+name = "Eurasian blue tit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:parus-major"
+name = "Great tit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:remiz-pendulinus"
+name = "Eurasian penduline tit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:panurus-biarmicus"
+name = "Bearded reedling"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:lullula-arborea"
+name = "Wood lark"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:alauda-arvensis"
+name = "Eurasian skylark"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:eremophila-alpestris"
+name = "Horned lark"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:calandrella-brachydactyla"
+name = "Greater short-toed lark"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:riparia-riparia"
+name = "Sand martin"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:hirundo-rustica"
+name = "Barn swallow"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:delichon-urbicum"
+name = "Common house martin"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:cecropis-daurica"
+name = "Red-rumped swallow"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:petrochelidon-pyrrhonota"
+name = "American cliff swallow"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:cettia-cetti"
+name = "Cetti's warbler"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:aegithalos-caudatus"
+name = "Long-tailed tit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-sibilatrix"
+name = "Wood warbler"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-bonelli"
+name = "Western Bonelli's warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-humei"
+name = "Hume's leaf warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-inornatus"
+name = "Yellow-browed warbler"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-proregulus"
+name = "Pallas's leaf warbler"
+status = "regular"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-schwarzi"
+name = "Radde's warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-fuscatus"
+name = "Dusky warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-trochilus"
+name = "Willow warbler"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-collybita"
+name = "Common chiffchaff"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-ibericus"
+name = "Iberian chiffchaff"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-trochiloides"
+name = "Greenish warbler"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phylloscopus-borealis"
+name = "Arctic warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-arundinaceus"
+name = "Great reed warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-paludicola"
+name = "Aquatic warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-schoenobaenus"
+name = "Sedge warbler"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-agricola"
+name = "Paddyfield warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-dumetorum"
+name = "Blyth's reed warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-scirpaceus"
+name = "Eurasian reed warbler"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:acrocephalus-palustris"
+name = "Marsh warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:iduna-caligata"
+name = "Booted warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:iduna-rama"
+name = "Sykes's warbler"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:iduna-pallida"
+name = "Eastern olivaceous warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:hippolais-polyglotta"
+name = "Melodious warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:hippolais-icterina"
+name = "Icterine warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:helopsaltes-certhiola"
+name = "Pallas's grasshopper warbler"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:locustella-luscinioides"
+name = "Savi's warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:locustella-naevia"
+name = "Common grasshopper warbler"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:cisticola-juncidis"
+name = "Zitting cisticola"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-atricapilla"
+name = "Eurasian blackcap"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:sylvia-borin"
+name = "Garden warbler"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:curruca-nisoria"
+name = "Barred warbler"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:curruca-curruca"
+name = "Lesser whitethroat"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:curruca-melanocephala"
+name = "Sardinian warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:curruca-cantillans"
+name = "Eastern subalpine warbler"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:curruca-communis"
+name = "Common whitethroat"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:curruca-undata"
+name = "Dartford warbler"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:regulus-ignicapillus"
+name = "Common firecrest"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:regulus-regulus"
+name = "Goldcrest"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:corthylio-calendula"
+name = "Ruby-crowned kinglet"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:troglodytes-troglodytes"
+name = "Eurasian wren"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:certhia-familiaris"
+name = "Eurasian treecreeper"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:dumetella-carolinensis"
+name = "Grey catbird"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:pastor-roseus"
+name = "Rosy starling"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:sturnus-vulgaris"
+name = "Common starling"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:geokichla-sibirica"
+name = "Siberian thrush"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:zoothera-aurea"
+name = "White's thrush"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:catharus-fuscescens"
+name = "Veery"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:catharus-minimus"
+name = "Grey-cheeked thrush"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:catharus-ustulatus"
+name = "Swainson's thrush"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:catharus-guttatus"
+name = "Hermit thrush"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:turdus-torquatus"
+name = "Ring ouzel"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:turdus-merula"
+name = "Eurasian blackbird"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:turdus-pilaris"
+name = "Fieldfare"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:turdus-iliacus"
+name = "Redwing"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:turdus-philomelos"
+name = "Song thrush"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:turdus-viscivorus"
+name = "Mistle thrush"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:turdus-migratorius"
+name = "American robin"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:cercotrichas-galactotes"
+name = "Rufous-tailed scrub robin"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:muscicapa-striata"
+name = "Spotted flycatcher"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:erithacus-rubecula"
+name = "European robin"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:luscinia-svecica"
+name = "Bluethroat"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:luscinia-luscinia"
+name = "Thrush nightingale"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:luscinia-megarhynchos"
+name = "Common nightingale"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:tarsiger-cyanurus"
+name = "Red-flanked bluetail"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:ficedula-albicilla"
+name = "Taiga flycatcher"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:ficedula-parva"
+name = "Red-breasted flycatcher"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:ficedula-hypoleuca"
+name = "European pied flycatcher"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:ficedula-albicollis"
+name = "Collared flycatcher"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:phoenicurus-ochruros"
+name = "Black redstart"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:phoenicurus-phoenicurus"
+name = "Common redstart"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:monticola-saxatilis"
+name = "Common rock thrush"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-rubetra"
+name = "Whinchat"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-rubicola"
+name = "European stonechat"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:saxicola-maurus"
+name = "Siberian stonechat"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-oenanthe"
+name = "Northern wheatear"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-isabellina"
+name = "Isabelline wheatear"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-deserti"
+name = "Desert wheatear"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-hispanica"
+name = "Western black-eared wheatear"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:oenanthe-pleschanka"
+name = "Pied wheatear"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:cinclus-cinclus"
+name = "White-throated dipper"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:passer-domesticus"
+name = "House sparrow"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:passer-montanus"
+name = "Tree sparrow"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:prunella-modularis"
+name = "Dunnock"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-flava"
+name = "Western yellow wagtail"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-tschutschensis"
+name = "Eastern yellow wagtail"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-citreola"
+name = "Citrine wagtail"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-cinerea"
+name = "Grey wagtail"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:motacilla-alba"
+name = "White wagtail"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:anthus-richardi"
+name = "Richard's pipit"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anthus-campestris"
+name = "Tawny pipit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anthus-pratensis"
+name = "Meadow pipit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:anthus-trivialis"
+name = "Tree pipit"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:anthus-hodgsoni"
+name = "Olive-backed pipit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anthus-gustavi"
+name = "Pechora pipit"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:anthus-cervinus"
+name = "Red-throated pipit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anthus-rubescens"
+name = "Buff-bellied pipit"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:anthus-spinoletta"
+name = "Water pipit"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:anthus-petrosus"
+name = "European rock pipit"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:fringilla-coelebs"
+name = "Eurasian chaffinch"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:fringilla-montifringilla"
+name = "Brambling"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:coccothraustes-coccothraustes"
+name = "Hawfinch"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:pyrrhula-pyrrhula"
+name = "Eurasian bullfinch"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:carpodacus-erythrinus"
+name = "Common rosefinch"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:chloris-chloris"
+name = "European greenfinch"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:linaria-flavirostris"
+name = "Twite"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:linaria-cannabina"
+name = "Common linnet"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:acanthis-flammea"
+name = "Common redpoll"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:acanthis-cabaret"
+name = "Lesser redpoll"
+status = "regular"
+
+[[birds]]
+id = "urn:ró:bird:acanthis-hornemanni"
+name = "Arctic redpoll"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:loxia-curvirostra"
+name = "Red crossbill"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:loxia-leucoptera"
+name = "Two-barred crossbill"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:carduelis-carduelis"
+name = "European goldfinch"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:serinus-serinus"
+name = "European serin"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:spinus-spinus"
+name = "Eurasian siskin"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:calcarius-lapponicus"
+name = "Lapland longspur"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:plectrophenax-nivalis"
+name = "Snow bunting"
+status = "regular"
+rarity = "regular"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-melanocephala"
+name = "Black-headed bunting"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-calandra"
+name = "Corn bunting"
+status = "regular"
+rarity = "uncommon"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-citrinella"
+name = "Yellowhammer"
+status = "regular"
+rarity = "common"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-leucocephalos"
+name = "Pine bunting"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-hortulana"
+name = "Ortolan bunting"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-cirlus"
+name = "Cirl bunting"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-pusilla"
+name = "Little bunting"
+status = "regular"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-rustica"
+name = "Rustic bunting"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-aureola"
+name = "Yellow-breasted bunting"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:emberiza-schoeniclus"
+name = "Common reed bunting"
+status = "regular"
+rarity = "very-common"
+
+[[birds]]
+id = "urn:ró:bird:passerella-iliaca"
+name = "Red fox sparrow"
+status = "rare"
+
+[[birds]]
+id = "urn:ró:bird:junco-hyemalis"
+name = "Dark-eyed junco"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:zonotrichia-leucophrys"
+name = "White-crowned sparrow"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:zonotrichia-albicollis"
+name = "White-throated sparrow"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:dolichonyx-oryzivorus"
+name = "Bobolink"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:icterus-galbula"
+name = "Baltimore oriole"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:seiurus-aurocapilla"
+name = "Ovenbird"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:parkesia-noveboracensis"
+name = "Northern waterthrush"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:vermivora-cyanoptera"
+name = "Blue-winged warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:mniotilta-varia"
+name = "Black-and-white warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:geothlypis-trichas"
+name = "Common yellowthroat"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:setophaga-ruticilla"
+name = "American redstart"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:setophaga-americana"
+name = "Northern parula"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:setophaga-aestiva"
+name = "American yellow warbler"
+status = "rare"
+rarity = "vagrant"
+
+[[birds]]
+id = "urn:ró:bird:setophaga-striata"
+name = "Blackpoll warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:setophaga-coronata"
+name = "Myrtle warbler"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:cardellina-canadensis"
+name = "Canada warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:cardellina-pusilla"
+name = "Wilson's warbler"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:piranga-olivacea"
+name = "Scarlet tanager"
+status = "rare"
+rarity = "scarce"
+
+[[birds]]
+id = "urn:ró:bird:pheucticus-ludovicianus"
+name = "Rose-breasted grosbeak"
+status = "rare"
+rarity = "rare"
+
+[[birds]]
+id = "urn:ró:bird:passerina-cyanea"
+name = "Indigo bunting"
+status = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:notamacropus-rufogriseus"
+name = "Red-necked wallaby"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:sciurus-carolinensis"
+name = "Eastern grey squirrel"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:sciurus-vulgaris"
+name = "Red squirrel"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:clethrionomys-glareolus"
+name = "Bank vole"
+
+[[mammals]]
+id = "urn:ró:mammal:microtus-agrestis"
+name = "Field vole"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:apodemus-sylvaticus"
+name = "Wood mouse"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:mus-musculus"
+name = "House mouse"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:rattus-norvegicus"
+name = "Brown rat"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:rattus-rattus"
+name = "Black rat"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:muscardinus-avellanarius"
+name = "Hazel dormouse"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:myocastor-coypus"
+name = "Nutria"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:lepus-europaeus"
+name = "European hare"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:lepus-timidus"
+name = "Irish hare"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:oryctolagus-cuniculus"
+name = "European rabbit"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:cervus-elaphus"
+name = "Red deer"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:cervus-nippon"
+name = "Sika deer"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:dama-dama"
+name = "European fallow deer"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:capreolus-capreolus"
+name = "Roe deer"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:muntiacus-reevesi"
+name = "Reeves's muntjac"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:erinaceus-europaeus"
+name = "European hedgehog"
+rarity = "very-common"
+
+[[mammals]]
+id = "urn:ró:mammal:crocidura-russula"
+name = "Greater white-toothed shrew"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:sorex-minutus"
+name = "Eurasian pygmy shrew"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:myotis-daubentonii"
+name = "Daubenton's bat"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:myotis-mystacinus"
+name = "Whiskered bat"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:myotis-nattereri"
+name = "Natterer's bat"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:nyctalus-leisleri"
+name = "Lesser noctule"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:pipistrellus-nathusii"
+name = "Nathusius' pipistrelle"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:pipistrellus-pipistrellus"
+name = "Common pipistrelle"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:pipistrellus-pygmaeus"
+name = "Soprano pipistrelle"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:plecotus-auritus"
+name = "Brown long-eared bat"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:rhinolophus-hipposideros"
+name = "Lesser horseshoe bat"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:vulpes-vulpes"
+name = "Red fox"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:lutra-lutra"
+name = "European otter"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:martes-martes"
+name = "European pine marten"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:meles-meles"
+name = "European badger"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:mustela-erminea"
+name = "Irish stoat"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:neogale-vison"
+name = "American mink"
+
+[[mammals]]
+id = "urn:ró:mammal:halichoerus-grypus"
+name = "Grey seal"
+rarity = "very-common"
+
+[[mammals]]
+id = "urn:ró:mammal:phoca-vitulina"
+name = "Common seal"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:cystophora-(mammal)"
+name = "Hooded seal"
+
+[[mammals]]
+id = "urn:ró:mammal:erignathus-barbatus"
+name = "Bearded seal"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:pagophilus-groenlandicus"
+name = "Harp seal"
+
+[[mammals]]
+id = "urn:ró:mammal:pusa-hispida"
+name = "Ringed seal"
+
+[[mammals]]
+id = "urn:ró:mammal:odobenus-rosmarus"
+name = "Walrus"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:balaena-mysticetus"
+name = "Bowhead whale"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:eubalaena-glacialis"
+name = "North Atlantic right whale"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:balaenoptera-acutorostrata"
+name = "Common minke whale"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:balaenoptera-borealis"
+name = "Sei whale"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:balaenoptera-physalus"
+name = "Fin whale"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:balaenoptera-musculus"
+name = "Blue whale"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:megaptera-novaeangliae"
+name = "Humpback whale"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:phocoena-phocoena"
+name = "Harbour porpoise"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:ziphius-cavirostris"
+name = "Cuvier's beaked whale"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:hyperoodon-ampullatus"
+name = "Northern bottlenose whale"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:mesoplodon-bidens"
+name = "Sowerby's beaked whale"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:mesoplodon-europaeus"
+name = "Gervais' beaked whale"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:mesoplodon-mirus"
+name = "True's beaked whale"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:lagenorhynchus-albirostris"
+name = "White-beaked dolphin"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:leucopleurus-acutus"
+name = "Atlantic white-sided dolphin"
+
+[[mammals]]
+id = "urn:ró:mammal:delphinus-delphis"
+name = "Common dolphin"
+rarity = "common"
+
+[[mammals]]
+id = "urn:ró:mammal:tursiops-truncatus"
+name = "Common bottlenose dolphin"
+rarity = "regular"
+
+[[mammals]]
+id = "urn:ró:mammal:stenella-coeruleoalba"
+name = "Striped dolphin"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:grampus-griseus"
+name = "Risso's dolphin"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:globicephala-melas"
+name = "Long-finned pilot whale"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:pseudorca-crassidens"
+name = "False killer whale"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:physeter-macrocephalus"
+name = "Sperm whale"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:kogia-breviceps"
+name = "Pygmy sperm whale"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:delphinapterus-leucas"
+name = "Beluga"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:orcinus-orca"
+name = "Orca"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:canis-lupus"
+name = "Wolf"
+rarity = "rare"
+
+[[mammals]]
+id = "urn:ró:mammal:lynx-lynx"
+name = "Eurasian lynx"
+
+[[mammals]]
+id = "urn:ró:mammal:rangifer-tarandus"
+name = "Reindeer"
+
+[[mammals]]
+id = "urn:ró:mammal:sus-scrofa"
+name = "Wild boar"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:ursus-arctos"
+name = "Brown bear"
+rarity = "scarce"
+
+[[mammals]]
+id = "urn:ró:mammal:megaloceros-giganteus"
+name = "Irish elk"
+rarity = "uncommon"
+
+[[mammals]]
+id = "urn:ró:mammal:mammuthus-primigenius"
+name = "Woolly mammoth"
+rarity = "vagrant"
+
+[[mammals]]
+id = "urn:ró:mammal:crocuta-spelaea"
+name = "Cave hyena"

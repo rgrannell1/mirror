@@ -79,3 +79,13 @@ class ThingsReader:
         for urn_info in data.values():
             for item in urn_info:
                 yield from self.to_triples(item)
+
+
+class WildlifeReader(ThingsReader):
+    """Read the Irish wildlife life-list catalogue (bird/mammal species) as triples.
+
+    Same TOML shape as things.toml: each species item's `id` is its URN and every
+    other key becomes a relation. Provides the species spine for the life-list page."""
+
+    def __init__(self, wildlife_file: str = "wildlife.llm.toml"):
+        super().__init__(wildlife_file)
