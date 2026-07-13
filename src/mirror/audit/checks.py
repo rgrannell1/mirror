@@ -9,17 +9,16 @@ last pipeline run and lags edits to albums.md. Rendition checks read live encode
 from collections.abc import Iterator
 from enum import StrEnum
 
-import tomllib
-
 from mirror.audit.audit_types import Check, Finding
+from mirror.audit.shacl import validate_triples
 from mirror.commons.config import PHOTO_DIRECTORY
-from mirror.commons.constants import ANIMAL_TYPES, DEFAULT_THINGS_PATH
 from mirror.services.database import SqliteDatabase
 from mirror.services.metadata import (
     MarkdownAlbumMetadataReader,
     MarkdownTablePhotoMetadataReader,
 )
 from mirror.services.vault import MediaVault
+from mirror.workflows.publish.utils import read_triples
 from mirror.workflows.scan.utils import (
     DEFAULT_ALBUMS_MARKDOWN_PATH,
     DEFAULT_PHOTOS_MARKDOWN_PATH,
@@ -36,6 +35,7 @@ class CheckSlug(StrEnum):
     PHOTO_MISSING_RATING = "photo-missing-rating"
     PHOTO_MISSING_MAIN_IMAGE = "photo-missing-main-image"
     ANIMAL_MISSING_NAME = "animal-missing-name"
+    TRIPLE_GRAPH_INVALID = "triple-graph-invalid"
 
 
 def check_albums_cover(db: SqliteDatabase) -> Iterator[Finding]:
@@ -143,36 +143,14 @@ def check_photos_missing_main_image(db: SqliteDatabase) -> Iterator[Finding]:
         yield Finding(check=CheckSlug.PHOTO_MISSING_MAIN_IMAGE, subject=photo.fpath, detail=detail)
 
 
-def read_named_things() -> set[str]:
-    """Read URNs with non-empty names from the thing definitions."""
-    with open(DEFAULT_THINGS_PATH, "rb") as conn:
-        data = tomllib.load(conn)
-    return {
-        item["id"]
-        for items in data.values()
-        for item in items
-        if item.get("id") and item.get("name")
-    }
+def check_graph_contract(db: SqliteDatabase) -> Iterator[Finding]:
+    """Validate the exact processed publication triples against the SHACL contract."""
+    yield from validate_triples(list(read_triples(db)))
 
 
-def referenced_animals(db: SqliteDatabase) -> set[str]:
-    """Read distinct canonical animal URNs from photo and video metadata."""
-    query = """
-    select target from photo_metadata_table
-    union
-    select target from video_metadata_table
-    """
-    prefixes = tuple(f"urn:ró:{animal_type}:" for animal_type in ANIMAL_TYPES)
-    targets = (row[0] for row in db.conn.execute(query) if row[0] and row[0].startswith(prefixes))
-    return {target.split("?", 1)[0] for target in targets}
-
-
-def check_animals_missing_names(db: SqliteDatabase) -> Iterator[Finding]:
-    """Referenced animal URNs need a non-empty name in things.toml."""
-    named_things = read_named_things()
-    for animal_urn in sorted(referenced_animals(db) - named_things):
-        detail = "no non-empty name definition in things.toml"
-        yield Finding(check=CheckSlug.ANIMAL_MISSING_NAME, subject=animal_urn, detail=detail)
+def skip_graph_contract(db: SqliteDatabase) -> Iterator[Finding]:
+    """Register the graph rule description without running SHACL twice."""
+    return iter(())
 
 
 CHECKS: list[Check] = [
@@ -209,6 +187,11 @@ CHECKS: list[Check] = [
     Check(
         slug=CheckSlug.ANIMAL_MISSING_NAME,
         description="Referenced animal has no name definition",
-        run=check_animals_missing_names,
+        run=check_graph_contract,
+    ),
+    Check(
+        slug=CheckSlug.TRIPLE_GRAPH_INVALID,
+        description="Published triple graph violates its SHACL contract",
+        run=skip_graph_contract,
     ),
 ]

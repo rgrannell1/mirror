@@ -17,8 +17,9 @@ def audit_media(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
         findings = run_audit(db)
 
     if findings:
-        message = f"publication blocked: {summarise_findings(findings)}; run `mirror audit` for details"
+        summary = summarise_findings(findings)
+        message = f"publication blocked: {summary}; run `mirror audit` for details"
         raise MirrorAuditError(message)
 
-    return {"findings": 0}
+    return {"findings": 0}  # noqa: B901 — zahir jobs return values from generators
     yield

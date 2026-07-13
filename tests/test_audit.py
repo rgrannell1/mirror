@@ -1,48 +1,73 @@
 """Tests for publication audit rules."""
 
-import sqlite3
-from types import SimpleNamespace
-
-from mirror.audit import checks
+from mirror.audit.shacl import validate_triples
 
 
-def make_metadata_db(targets: list[tuple[str, str]]) -> SimpleNamespace:
-    """Build the metadata tables used by the animal-name audit."""
-    conn = sqlite3.connect(":memory:")
-    conn.execute("create table photo_metadata_table (relation text, target text)")
-    conn.execute("create table video_metadata_table (relation text, target text)")
-    for table, target in targets:
-        conn.execute(f"insert into {table} values ('subject', ?)", (target,))
-    return SimpleNamespace(conn=conn)
+def make_valid_triples() -> list[list]:
+    """Build one complete photo and its album."""
+    return [
+        ["[i:photo:one]", "subject", "[i:bird:named]"],
+        ["[i:photo:one]", "albumId", "album-one"],
+        ["[i:photo:one]", "createdAt", "1"],
+        ["[i:photo:one]", "thumbnailUrl", "[photos:one-thumbnail]"],
+        ["[i:photo:one]", "midImageLossyUrl", "[photos:one-mid]"],
+        ["[i:photo:one]", "previewJpegUrl", "[photos:one-preview]"],
+        ["[i:photo:one]", "pngUrl", "[photos:one-png]"],
+        ["[i:photo:one]", "fullImage", "[photos:one-full]"],
+        ["[i:photo:one]", "mosaicColours", "abcdef"],
+        ["[i:photo:one]", "rating", "[i:rating:2]"],
+        ["[i:photo:one]", "location", "[i:geoname:123]"],
+        ["[i:bird:named]", "name", "Named bird"],
+        ["[i:geoname:123]", "name", "Named location"],
+        ["[i:album:album-one]", "name", "Album one"],
+        ["[i:album:album-one]", "photosCount", "1"],
+        ["[i:album:album-one]", "videosCount", "0"],
+        ["[i:album:album-one]", "minDate", "1"],
+        ["[i:album:album-one]", "maxDate", "1"],
+        ["[i:album:album-one]", "dateRange", "Today"],
+        ["[i:album:album-one]", "shortDateRange", "Today"],
+        ["[i:album:album-one]", "thumbnailUrl", "[photos:album-thumbnail]"],
+        ["[i:album:album-one]", "mosaic", "abcdef"],
+        ["[i:album:album-one]", "description", "Description"],
+    ]
 
 
-def test_animals_missing_names_reports_distinct_canonical_urns(tmp_path, monkeypatch) -> None:
-    """Proves referenced animals need one non-empty name definition."""
-    things_path = tmp_path / "things.toml"
-    things_path.write_text(
-        """
-[[birds]]
-id = "urn:ró:bird:named"
-name = "Named bird"
-
-[[mammals]]
-id = "urn:ró:mammal:blank"
-name = ""
-""",
-        encoding="utf-8",
-    )
-    monkeypatch.setattr(checks, "DEFAULT_THINGS_PATH", things_path)
-    db = make_metadata_db([
-        ("photo_metadata_table", "urn:ró:bird:named"),
-        ("photo_metadata_table", "urn:ró:mammal:blank?context=wild"),
-        ("video_metadata_table", "urn:ró:mammal:blank"),
-        ("video_metadata_table", "urn:ró:reptile:missing"),
-        ("video_metadata_table", "urn:ró:plane:not-an-animal"),
+def test_shacl_audit_reports_animal_without_name() -> None:
+    """Proves SHACL audits processed triples without changing their representation."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:observation:two]", "subject", "[i:insect:missing?context=wild]"],
+        ["[i:observation:three]", "subject", "[i:car:not-an-animal]"],
     ])
 
-    findings = list(checks.check_animals_missing_names(db))
+    findings = validate_triples(triples)
 
-    assert [finding.subject for finding in findings] == [
-        "urn:ró:mammal:blank",
-        "urn:ró:reptile:missing",
+    assert [(finding.check, finding.subject) for finding in findings] == [
+        ("animal-missing-name", "urn:ró:insect:missing"),
+        ("triple-graph-invalid", "urn:ró:observation:three"),
     ]
+
+
+def test_shacl_audit_checks_photo_album_and_reference_structure() -> None:
+    """Proves the graph contract checks required fields, values, dates, and album links."""
+    triples = [
+        triple
+        for triple in make_valid_triples()
+        if not (triple[0] == "[i:photo:one]" and triple[1] == "midImageLossyUrl")
+    ]
+    for triple in triples:
+        if triple[:2] == ["[i:photo:one]", "rating"]:
+            triple[2] = "[i:rating:8]"
+        if triple[:2] == ["[i:photo:one]", "albumId"]:
+            triple[2] = "missing-album"
+        if triple[:2] == ["[i:album:album-one]", "maxDate"]:
+            triple[2] = "0"
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {
+        "album minDate must not exceed maxDate",
+        "albumId does not resolve to a named album",
+        "photo is missing required fields: midImageLossyUrl",
+        "rating must be one of urn:ró:rating:0 through urn:ró:rating:4",
+    }

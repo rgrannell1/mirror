@@ -1,0 +1,300 @@
+@prefix audit: <https://photos.rgrannell.xyz/audit/> .
+@prefix relation: <https://photos.rgrannell.xyz/audit/relation/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+audit:animal-missing-name
+    a sh:NodeShape ;
+    sh:targetNode audit:graph ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "no non-empty name definition in things.toml" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this ?value
+            WHERE {
+                ?source relation:subject ?animal .
+                ?animal audit:originalValue ?animal_id .
+                FILTER regex(
+                    str(?animal_id),
+                    "^urn:ró:(bird|mammal|reptile|amphibian|fish|insect):"
+                )
+                FILTER NOT EXISTS {
+                    ?animal relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                BIND (?animal AS ?value)
+            }
+        """ ;
+    ] .
+
+audit:triple-graph-invalid
+    a sh:NodeShape ;
+    sh:targetNode audit:graph ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "photo is missing required fields: {?properties}" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+                (GROUP_CONCAT(?property; separator=", ") AS ?properties)
+            WHERE {
+                ?focus audit:originalValue ?id ; audit:isSource true .
+                FILTER regex(str(?id), "^urn:ró:photo:")
+                {
+                    BIND ("albumId" AS ?property)
+                    BIND (relation:albumId AS ?predicate)
+                } UNION {
+                    BIND ("createdAt" AS ?property)
+                    BIND (relation:createdAt AS ?predicate)
+                } UNION {
+                    BIND ("thumbnailUrl" AS ?property)
+                    BIND (relation:thumbnailUrl AS ?predicate)
+                } UNION {
+                    BIND ("midImageLossyUrl" AS ?property)
+                    BIND (relation:midImageLossyUrl AS ?predicate)
+                } UNION {
+                    BIND ("previewJpegUrl" AS ?property)
+                    BIND (relation:previewJpegUrl AS ?predicate)
+                } UNION {
+                    BIND ("pngUrl" AS ?property)
+                    BIND (relation:pngUrl AS ?predicate)
+                } UNION {
+                    BIND ("fullImage" AS ?property)
+                    BIND (relation:fullImage AS ?predicate)
+                } UNION {
+                    BIND ("mosaicColours" AS ?property)
+                    BIND (relation:mosaicColours AS ?predicate)
+                } UNION {
+                    BIND ("rating" AS ?property)
+                    BIND (relation:rating AS ?predicate)
+                }
+                FILTER NOT EXISTS { ?focus ?predicate ?found . }
+            }
+            GROUP BY $this ?focus
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "album must have exactly one {?property}" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value) ?property
+            WHERE {
+                ?focus audit:originalValue ?id ; audit:isSource true .
+                FILTER regex(str(?id), "^urn:ró:album:")
+                {
+                    BIND ("name" AS ?property)
+                    BIND (relation:name AS ?predicate)
+                } UNION {
+                    BIND ("photosCount" AS ?property)
+                    BIND (relation:photosCount AS ?predicate)
+                } UNION {
+                    BIND ("videosCount" AS ?property)
+                    BIND (relation:videosCount AS ?predicate)
+                } UNION {
+                    BIND ("minDate" AS ?property)
+                    BIND (relation:minDate AS ?predicate)
+                } UNION {
+                    BIND ("maxDate" AS ?property)
+                    BIND (relation:maxDate AS ?predicate)
+                } UNION {
+                    BIND ("dateRange" AS ?property)
+                    BIND (relation:dateRange AS ?predicate)
+                } UNION {
+                    BIND ("shortDateRange" AS ?property)
+                    BIND (relation:shortDateRange AS ?predicate)
+                } UNION {
+                    BIND ("thumbnailUrl" AS ?property)
+                    BIND (relation:thumbnailUrl AS ?predicate)
+                } UNION {
+                    BIND ("mosaic" AS ?property)
+                    BIND (relation:mosaic AS ?predicate)
+                } UNION {
+                    BIND ("description" AS ?property)
+                    BIND (relation:description AS ?predicate)
+                }
+                OPTIONAL { ?focus ?predicate ?found . }
+            }
+            GROUP BY $this ?focus ?property
+            HAVING (COUNT(?found) != 1)
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "album counts and dates must be non-negative integer strings" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus audit:originalValue ?id ; ?predicate ?field_value .
+                FILTER regex(str(?id), "^urn:ró:album:")
+                FILTER (?predicate IN (
+                    relation:photosCount, relation:videosCount,
+                    relation:minDate, relation:maxDate
+                ))
+                FILTER (!regex(str(?field_value), "^[0-9]+$"))
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "album minDate must not exceed maxDate" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus audit:originalValue ?id ;
+                    relation:minDate ?minimum ;
+                    relation:maxDate ?maximum .
+                FILTER regex(str(?id), "^urn:ró:album:")
+                FILTER (xsd:integer(?minimum) > xsd:integer(?maximum))
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "rating must be one of urn:ró:rating:0 through urn:ró:rating:4" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:rating ?rating .
+                OPTIONAL { ?rating audit:originalValue ?rating_id . }
+                FILTER (
+                    !BOUND(?rating_id) ||
+                    !regex(str(?rating_id), "^urn:ró:rating:[0-4]$")
+                )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "albumId does not resolve to a named album" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:albumId ?album_id ; audit:album ?album .
+                FILTER NOT EXISTS {
+                    ?album relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "location must be a named place or geoname resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:location ?target .
+                OPTIONAL { ?target audit:originalValue ?target_id . }
+                OPTIONAL {
+                    ?target relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                FILTER (
+                    !BOUND(?target_id) ||
+                    !regex(str(?target_id), "^urn:ró:(place|geoname):") ||
+                    !BOUND(?name)
+                )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "style must be a named style resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:style ?target .
+                OPTIONAL { ?target audit:originalValue ?target_id . }
+                OPTIONAL {
+                    ?target relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                FILTER (
+                    !BOUND(?target_id) ||
+                    !regex(str(?target_id), "^urn:ró:style:") ||
+                    !BOUND(?name)
+                )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "country must be a named place resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:country ?target .
+                ?focus audit:originalValue ?focus_id .
+                FILTER regex(str(?focus_id), "^urn:ró:(photo|album|video):")
+                OPTIONAL { ?target audit:originalValue ?target_id . }
+                OPTIONAL {
+                    ?target relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                FILTER (
+                    !BOUND(?target_id) ||
+                    !regex(str(?target_id), "^urn:ró:place:") ||
+                    !BOUND(?name)
+                )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "subject must be a named resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:subject ?target .
+                OPTIONAL { ?target audit:originalValue ?target_id . }
+                OPTIONAL {
+                    ?target relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                FILTER (
+                    !BOUND(?target_id) ||
+                    (
+                        !regex(
+                            str(?target_id),
+                            "^urn:ró:(bird|mammal|reptile|amphibian|fish|insect):"
+                        ) &&
+                        !BOUND(?name)
+                    )
+                )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "cover target must be a resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus relation:cover ?target .
+                FILTER NOT EXISTS { ?target audit:originalValue ?target_id . }
+            }
+        """ ;
+    ] .

@@ -41,7 +41,9 @@ class PhotoIconTable:
             conn.commit()
 
     def get_by_fpath(self, fpath: str) -> Optional[str]:
-        for row in self.conn.execute("select grey_value from photo_icons where fpath = ?", (fpath,)):
+        for row in self.conn.execute(
+            "select grey_value from photo_icons where fpath = ?", (fpath,)
+        ):
             return row[0]
         return None
 
@@ -184,7 +186,10 @@ class EncodedPhotosTable:
 
         with self.conn as conn:
             conn.execute(
-                "insert or replace into encoded_photos (fpath, mimetype, role, url) values (?, ?, ?, ?)",
+                """
+                insert or replace into encoded_photos (fpath, mimetype, role, url)
+                values (?, ?, ?, ?)
+                """,
                 (fpath, mimetype, role, url),
             )
             conn.commit()
@@ -228,13 +233,15 @@ class PhotoMetadataTable:
     def list(self) -> Iterator[PhotoMetadataModel]:
         query = """
         select
-            fpath,
+            phashes.fpath,
             relation,
             target
             from photo_metadata_table
-        left join phashes
+        inner join phashes
             on phashes.phash = photo_metadata_table.phash
-        where fpath like '%/Published%'
+        inner join photos
+            on photos.fpath = phashes.fpath
+        where phashes.fpath like '%/Published%'
         """
 
         for row in self.conn.execute(query):
@@ -243,7 +250,9 @@ class PhotoMetadataTable:
     def add(self, phash: str, src_type: str, relation: str, target: str) -> None:
         self.conn.execute(
             """
-            insert or replace into photo_metadata_table (phash, src_type, relation, target) values (?, ?, ?, ?)""",
+            insert or replace into photo_metadata_table (phash, src_type, relation, target)
+            values (?, ?, ?, ?)
+            """,
             (phash, src_type, relation, target),
         )
         self.conn.commit()

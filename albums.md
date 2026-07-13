@@ -121,7 +121,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/dbd937ce0f.avif) | Casino Model Rail Museum | casino-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/223cf8ffd4.avif) | Chester Beatty | chester-beatty-june-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/401e77fdd8.avif) | Chester Beatty | chester-beatty-26 | urn:ró:place:148 | Still my favourite Irish musuem :) |
-| ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | Ireland |  |
+| ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd4ae22b43.avif) | East Coast Nature Reserve | east-coast-nature-26 | urn:ró:place:148 | I was close to photographing a kingfisher, again... |
 | ![](https://photos-cdn.rgrannell.xyz/666396a661.avif) | Madrid | madrid-city-26 | urn:ró:place:164 | I finally got to see the Temple of Debod, after three attempts |
 | ![](https://photos-cdn.rgrannell.xyz/8c7539ca00.avif) | National Archaeological Museum | man-26 | urn:ró:place:164 | I was recovering from surgery at the time, so it took a few attempts to actually see this museum (and see it briefly) |

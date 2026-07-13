@@ -548,7 +548,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/3ea7e45600.avif) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/dc8548000e.avif) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/348deef2d9.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f771d7abfb.avif) | Galway Docks | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  urn:ró:bird:chroicocephalus-ridibundus,larus-canus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/f771d7abfb.avif) | Galway Docks | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  urn:ró:bird:chroicocephalus-ridibundus,urn:ró:bird:larus-canus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0ab40ce61.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eeae99b6ee.avif) | Glenveagh National Park | Landscape | ⭐⭐⭐ | urn:ró:place:101 |  |  |  |
@@ -687,7 +687,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/53d4ec7c99.avif) | Killarney National Park | Wildlife | ⭐⭐ | urn:ró:place:104 |  | urn:ró:bird:falco-tinnunculus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/9e7062a631.avif) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:place:1 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/56debcf694.avif) | La Lagunas | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:1 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a8ccff6380.avif) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:place:1​ |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a8ccff6380.avif) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:place:1 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d4a414ca90.avif) | Lanzarote | Wildlife | ⭐⭐ | urn:ró:place:151 |  | urn:ró:bird:bubulcus-ibis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/2229e2582a.avif) | Lanzarote | Wildlife | ⭐⭐⭐ | urn:ró:place:151 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c25b39e72.avif) | Lanzarote | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:151 |  | urn:ró:bird:streptopelia-decaocto?context=wild |  |
@@ -828,7 +828,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/befb2cc160.avif) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:alopochen-aegyptiaca?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/1deb3c7248.avif) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:phoenicopterus-roseus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/cfb531d298.avif) | London Zoo | Wildlife | ⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:eurypyga-helias?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/5ddd5e848c.avif) | London Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:94 |  |  urn:ró:bird:phoenicopterus-roseus,ardea-cinerea?context=unsure |  |
+| ![](https://photos-cdn.rgrannell.xyz/5ddd5e848c.avif) | London Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:94 |  |  urn:ró:bird:phoenicopterus-roseus,urn:ró:bird:ardea-cinerea?context=unsure |  |
 | ![](https://photos-cdn.rgrannell.xyz/b0f2a4aa4c.avif) | London Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:suricata-suricatta?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/bb97115c90.avif) | London Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:mammal:giraffa-reticulata?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/8f0da11b5d.avif) | London Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:94 |  | urn:ró:bird:psittacus-erithacus?context=captivity |  |
@@ -1034,7 +1034,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/8772bf4fe1.avif) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:2 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/746b10a5d4.avif) | Puerto de la Cruz | Wildlife | ⭐ | urn:ró:place:2 |  | urn:ró:reptile:gallotia-galloti |  |
 | ![](https://photos-cdn.rgrannell.xyz/eed19f4569.avif) | Puerto de la Cruz | Cityscape | ⭐⭐ | urn:ró:place:2 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/ef6dbf002c.avif) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:3​ |  | urn:ró:bird:crax-alberti?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/ef6dbf002c.avif) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:3 |  | urn:ró:bird:crax-alberti?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/8a94f31ba9.avif) | Puerto de la Cruz |  | ⭐⭐⭐ | urn:ró:place:3 |  | urn:ró:bird:bubulcus-ibis?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/8c49e5586c.avif) | Puerto de la Cruz |  | ⭐⭐⭐⭐ | urn:ró:place:3 |  | urn:ró:bird:trichoglossus-ornatus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/e85887696c.avif) | Puerto de la Cruz |  | ⭐⭐ | urn:ró:place:3 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
@@ -1075,8 +1075,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/fa293e8b14.avif) | Rotterdam | Transport | ⭐⭐⭐ | urn:ró:place:74 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/2fe53b3116.avif) | Roundstone | Wildlife | ⭐⭐⭐ | urn:ró:place:112 |  | urn:ró:bird:motacilla-cinerea?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/def872c583.avif) | Roundstone | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:111 |  | urn:ró:bird:numenius-phaeopus?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/857e1b01f1.avif) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:place:156 | an island in a connemara lake |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/877c84c119.avif) | Roundstone | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:156 | statue of the Connemara Giant |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/857e1b01f1.avif) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:place:111 | an island in a connemara lake |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/877c84c119.avif) | Roundstone | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:111 | statue of the Connemara Giant |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f0532609f3.avif) | Roundstone | Landscape | ⭐⭐⭐ | urn:ró:place:111 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/12f56bdf2f.avif) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/e6a3f415f5.avif) | Rutting Season, Killarney | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:80 |  |  |  |
