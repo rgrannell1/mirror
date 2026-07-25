@@ -255,7 +255,8 @@ create view if not exists view_video_data as
   left join view_album_data
     on videos.dpath = view_album_data.dpath
   left join encoded_videos video_url_unscaled
-    on videos.fpath = video_url_unscaled.fpath and video_url_unscaled.role = 'video_libx264_unscaled'
+    on videos.fpath = video_url_unscaled.fpath
+    and video_url_unscaled.role = 'video_libx264_unscaled'
   left join encoded_videos video_url_1080p
     on videos.fpath = video_url_1080p.fpath and video_url_1080p.role = 'video_libx264_1080p'
   left join encoded_videos video_url_720p
@@ -289,7 +290,8 @@ create view if not exists view_photo_metadata as
       coalesce(group_concat(case when relation = 'style' then target end, ', '), '') as genre,
       coalesce(group_concat(case when relation = 'rating' then target end, ', '), '') as rating,
       coalesce(group_concat(case when relation = 'location' then target end, ', '), '') as places,
-      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '') as description,
+      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '')
+        as description,
       coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects,
       coalesce(group_concat(case when relation = 'cover' then target end, ', '), '') as covers
     from
@@ -377,7 +379,8 @@ create view if not exists view_video_metadata as
       coalesce(group_concat(case when relation = 'style' then target end, ', '), '') as genre,
       coalesce(group_concat(case when relation = 'rating' then target end, ', '), '') as rating,
       coalesce(group_concat(case when relation = 'location' then target end, ', '), '') as places,
-      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '') as description,
+      coalesce(group_concat(case when relation = 'summary' then target end, ', '), '')
+        as description,
       coalesce(group_concat(case when relation = 'subject' then target end, ', '), '') as subjects,
       coalesce(group_concat(case when relation = 'cover' then target end, ', '), '') as covers
     from

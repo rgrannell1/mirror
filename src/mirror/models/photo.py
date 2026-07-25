@@ -60,7 +60,8 @@ class PhotoModel(IModel):
 
     def get_ctime(self) -> datetime:
         try:
-            return datetime.strptime(str(self.created_at), "%Y:%m:%d %H:%M:%S").replace(tzinfo=timezone.utc)
+            parsed = datetime.strptime(str(self.created_at), "%Y:%m:%d %H:%M:%S")
+            return parsed.replace(tzinfo=timezone.utc)
         except ValueError:
             return datetime.fromtimestamp(os.path.getmtime(self.fpath), tz=timezone.utc)
 
@@ -128,7 +129,8 @@ class PhotoMetadataModel(IModel):
 
 @dataclass
 class PhotoMetadataSummaryModel(IModel):
-    """Photo metadata summary database model. Provided by tools which give semantic information about
+    """Photo metadata summary database model. Provided by tools which give semantic
+    information about
     metadata"""
 
     url: str

@@ -17,7 +17,9 @@ class GeonameClient:
         self.username = username
 
     def get_by_id(self, id: str) -> dict | None:
-        res = requests.get(f"http://secure.geonames.org/get?geonameId={id}&username={self.username}")
+        res = requests.get(
+            f"http://secure.geonames.org/get?geonameId={id}&username={self.username}"
+        )
         xpars = xmltodict.parse(res.text)
 
         return xpars.get("geoname", None)
@@ -53,7 +55,7 @@ class GeonameModel:
 
     @classmethod
     def from_row(cls, row: List[Any]) -> "GeonameModel":
-        (id, data) = row
+        (_geoname_id, data) = row
         parsed = json.loads(data)
 
         return cls(
@@ -92,7 +94,8 @@ class GeonameMetadataReader:
         for model in geoname_table.list():
             yield from self.to_relations(model)
 
-    def to_relations(self, model: GeonameModel) -> Iterator[SemanticTriple]:
+    @staticmethod
+    def to_relations(model: GeonameModel) -> Iterator[SemanticTriple]:
         """Convert a GeonameModel to PhotoMetadataModel relations"""
 
         fields = [

@@ -65,7 +65,8 @@ class CDN:
 
         return self.url(key)
 
-    def url(self, key: str) -> str:
+    @staticmethod
+    def url(key: str) -> str:
         return f"{PHOTOS_URL}/{key}"
 
     def has_object(self, name: str) -> bool:
@@ -80,7 +81,9 @@ class CDN:
             else:
                 raise
 
-    def upload_photo(self, encoded_data: PhotoContent, role: str, format: str = "webp", force: bool = False) -> str:
+    def upload_photo(
+        self, encoded_data: PhotoContent, role: str, format: str = "webp", force: bool = False
+    ) -> str:
         """Upload an image to the CDN bucket. Return a CDN link"""
         prefix = deterministic_hash_str(encoded_data.hash() + role)
 
@@ -115,8 +118,9 @@ class CDN:
         return self.url(name)
 
     @classmethod
-    def video_name(cls, fpath: str, bitrate: str, width: str, height: str, format: str = "mp4") -> str:
+    def video_name(cls, fpath: str, params: dict, format: str = "mp4") -> str:
         """Return the name of the video in the CDN bucket. It's a deterministic function of
         video parameters"""
 
+        bitrate, width, height = params["bitrate"], params["width"], params["height"]
         return f"{deterministic_hash_str(f'{fpath}{bitrate}{width}{height}')}.{format}"

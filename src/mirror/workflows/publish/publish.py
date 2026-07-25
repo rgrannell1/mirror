@@ -68,7 +68,9 @@ def publish_stats(ctx: JobContext, input: PublishArtifactBundleInput) -> Generat
     yield
 
 
-def publish_triples(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
+def publish_triples(
+    ctx: JobContext, input: PublishArtifactBundleInput
+) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
     pid = input["publication_id"]
     path = os.path.join(output_dir, f"triples.{pid}.json")
@@ -83,7 +85,9 @@ def publish_triples(ctx: JobContext, input: PublishArtifactBundleInput) -> Gener
     yield
 
 
-def update_albums_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
+def update_albums_markdown(
+    ctx: JobContext, input: PublishArtifactBundleInput
+) -> Generator[Any, Any, dict]:
     markdown_path = input["albums_markdown_path"]
     with SqliteDatabase(DATABASE_PATH) as db:
         MarkdownAlbumMetadataWriter().write_album_metadata(db, output_path=markdown_path)
@@ -91,7 +95,9 @@ def update_albums_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -
     yield
 
 
-def update_photos_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
+def update_photos_markdown(
+    ctx: JobContext, input: PublishArtifactBundleInput
+) -> Generator[Any, Any, dict]:
     markdown_path = input["photos_markdown_path"]
     with SqliteDatabase(DATABASE_PATH) as db:
         MarkdownTablePhotoMetadataWriter().write_photo_metadata(db, output_path=markdown_path)
@@ -99,7 +105,9 @@ def update_photos_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -
     yield
 
 
-def update_videos_markdown(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
+def update_videos_markdown(
+    ctx: JobContext, input: PublishArtifactBundleInput
+) -> Generator[Any, Any, dict]:
     markdown_path = input["videos_markdown_path"]
     with SqliteDatabase(DATABASE_PATH) as db:
         MarkdownTableVideoMetadataWriter().write_video_metadata(db, output_path=markdown_path)
@@ -131,13 +139,11 @@ def write_metadata(ctx: JobContext, input: PublishArtifactsInput) -> Generator[A
         "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
-    yield await_all(
-        [
-            ctx.scope.update_albums_markdown(builder_inputs),
-            ctx.scope.update_photos_markdown(builder_inputs),
-            ctx.scope.update_videos_markdown(builder_inputs),
-        ]
-    )
+    yield await_all([
+        ctx.scope.update_albums_markdown(builder_inputs),
+        ctx.scope.update_photos_markdown(builder_inputs),
+        ctx.scope.update_videos_markdown(builder_inputs),
+    ])
 
     return {"complete": True}
 
@@ -159,14 +165,12 @@ def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generato
         "videos_markdown_path": input.get("videos_markdown_path", DEFAULT_VIDEOS_MARKDOWN_PATH),
     }
 
-    yield await_all(
-        [
-            ctx.scope.publish_env(builder_inputs),
-            ctx.scope.publish_atom(builder_inputs),
-            ctx.scope.publish_stats(builder_inputs),
-            ctx.scope.publish_triples(builder_inputs),
-            ctx.scope.publish_d1(builder_inputs),
-        ]
-    )
+    yield await_all([
+        ctx.scope.publish_env(builder_inputs),
+        ctx.scope.publish_atom(builder_inputs),
+        ctx.scope.publish_stats(builder_inputs),
+        ctx.scope.publish_triples(builder_inputs),
+        ctx.scope.publish_d1(builder_inputs),
+    ])
 
     return {"publication_id": pid}

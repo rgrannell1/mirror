@@ -21,6 +21,15 @@ def place_feature_to_places(things_file: str = "things.toml") -> dict[str, list[
 
 
 @cache
+def trip_to_albums(things_file: str = "things.toml") -> dict[str, tuple[str, ...]]:
+    """Return mapping of trip URN → album URNs the trip contains."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {trip["id"]: tuple(trip.get("contains_album", [])) for trip in data.get("trips", [])}
+
+
+@cache
 def country_slug_to_urn(things_file: str = "things.toml") -> dict[str, str]:
     """Return a mapping of slugified country name → place URN for country-type places.
 
@@ -49,14 +58,13 @@ class ThingsReader:
     def __init__(self, things_file: str = "things.toml"):
         self.things_file = things_file
 
-    def to_triples(self, item: dict) -> Iterator[SemanticTriple]:
+    @staticmethod
+    def to_triples(item: dict) -> Iterator[SemanticTriple]:
         src = item["id"]
 
-        for relation in item:
+        for relation, tgt_vals in item.items():
             if relation == "id":
                 continue
-
-            tgt_vals = item[relation]
 
             if isinstance(tgt_vals, list):
                 for val in tgt_vals:
@@ -89,3 +97,8 @@ class WildlifeReader(ThingsReader):
 
     def __init__(self, wildlife_file: str = "wildlife.llm.toml"):
         super().__init__(wildlife_file)
+
+    def to_triples(self, item: dict) -> Iterator[SemanticTriple]:
+        yield from super().to_triples(item)
+        # every catalogue species is Irish; the site reads this marker
+        yield SemanticTriple(source=item["id"], relation="irish", target="true")

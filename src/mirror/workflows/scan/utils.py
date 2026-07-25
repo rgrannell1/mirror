@@ -4,13 +4,16 @@ from __future__ import annotations
 
 from typing import Iterator, TypedDict
 
-from mirror.commons.constants import KnownRelations
+from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID, KnownRelations
+from mirror.commons.utils import is_miscellaneous_dpath
+from mirror.data.binomials import list_photo_binomials
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.types import SemanticTriple
 from mirror.models.exif import ExifReader, PhotoExifData
 from mirror.models.media import IMedia
 from mirror.models.phash import PhashData, PHashReader
 from mirror.models.photo import Photo
+from mirror.models.video import Video
 from mirror.services.database import SqliteDatabase
 from mirror.services.vault import MediaVault
 
@@ -30,10 +33,16 @@ def list_media(dpath: str) -> Iterator[IMedia]:
     """Return all media from the vault directories"""
 
     for album in MediaVault(dpath).albums():
+        # hidden miscellaneous albums have no album page, so need no cover
+        if is_miscellaneous_dpath(album.dpath):
+            yield from album.media()
+            continue
+
         covers = list(album.covers())
 
         if not covers:
-            raise ValueError(f"Album {album.dpath} has no cover photo (a photo with '+cover' in its name)")
+            message = f"Album {album.dpath} has no cover photo (a photo with '+cover' in its name)"
+            raise ValueError(message)
 
         if len(covers) > 1:
             raise ValueError(f"Album {album.dpath} has multiple cover photos, using the first one")
@@ -70,6 +79,72 @@ def list_unsaved_phashes(db: SqliteDatabase, dpath: str) -> Iterator[PhashData]:
                 yield PHashReader.phash(media.fpath)
 
 
+def index_media_files(db: SqliteDatabase, dpath: str) -> set[str]:
+    """Index photos and videos under dpath; return the fpaths seen."""
+    photos_table = db.photos_table()
+    videos_table = db.videos_table()
+
+    current_fpaths = set()
+    for entry in list_media(dpath):
+        if isinstance(entry, Photo):
+            photos_table.add(entry.fpath)
+            current_fpaths.add(entry.fpath)
+        elif isinstance(entry, Video):
+            videos_table.add(entry.fpath)
+            current_fpaths.add(entry.fpath)
+
+    return current_fpaths
+
+
+def scan_geoname_wikidata(db: SqliteDatabase, wikidata_client) -> None:
+    """Fetch WikiData entries referenced by geonames."""
+    wikidata_table = db.wikidata_table()
+
+    for triple in read_geonames_wikidata_ids(db):
+        qid = triple.target
+        if wikidata_table.has(qid):
+            continue
+
+        res = wikidata_client.get_by_id(qid)
+        if not res:
+            wikidata_table.add(qid, None)
+            continue
+
+        wikidata_table.add(qid, res)
+
+
+def scan_binomial_wikidata(db: SqliteDatabase, wikidata_client) -> None:
+    """Fetch WikiData entries for species binomials."""
+    binomials_wikidata_table = db.binomials_wikidata_id_table()
+    wikidata_table = db.wikidata_table()
+
+    for binomial in list_unsaved_binomials(db):
+        res = wikidata_client.get_by_binomial(binomial)
+        if not res:
+            binomials_wikidata_table.add(binomial, None)
+            continue
+
+        qid = res["id"]
+        binomials_wikidata_table.add(binomial, qid)
+        wikidata_table.add(qid, res)
+
+
+def write_miscellaneous_permalinks(db: SqliteDatabase) -> None:
+    """Assign the shared hidden album id to every Miscellaneous dpath."""
+
+    dpath_query = "select distinct dpath from photos union select distinct dpath from videos"
+    rows = db.conn.execute(dpath_query)
+
+    insert_query = """
+    insert or replace into media_metadata_table (src, src_type, relation, target)
+    values (?, 'album', 'permalink', ?)
+    """
+
+    for (dpath,) in rows:
+        if is_miscellaneous_dpath(dpath):
+            db.conn.execute(insert_query, (dpath, MISCELLANEOUS_ALBUM_ID))
+
+
 def list_geonames_from_metadata(db: SqliteDatabase) -> Iterator[str]:
     """Return all geoname URNs from the photo metadata"""
 
@@ -88,8 +163,6 @@ def read_geonames_wikidata_ids(db: SqliteDatabase) -> Iterator[SemanticTriple]:
 
 def list_unsaved_binomials(db: SqliteDatabase) -> Iterator[str]:
     """Return binomials that haven't been looked up in WikiData"""
-
-    from mirror.data.binomials import list_photo_binomials
 
     binomials_wikidata_table = db.binomials_wikidata_id_table()
 

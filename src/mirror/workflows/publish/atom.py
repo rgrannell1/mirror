@@ -33,7 +33,8 @@ class AtomEntry(TypedDict):
 
 def _build_name_lookup(db: SqliteDatabase) -> dict[str, str]:
     """Map thing URNs to human-readable names from things.toml."""
-    return {triple.source: triple.target for triple in ThingsReader().read(db) if triple.relation == "name"}
+    triples = ThingsReader().read(db)
+    return {triple.source: triple.target for triple in triples if triple.relation == "name"}
 
 
 def _resolve_names(urns: list[str], names: dict[str, str]) -> list[str]:
@@ -86,7 +87,9 @@ def _atom_video_content_html(
     return "\n".join(parts)
 
 
-def _atom_photo_entry(photo: PhotoModel, summary: PhotoMetadataSummaryModel | None, names: dict[str, str]) -> AtomEntry:
+def _atom_photo_entry(
+    photo: PhotoModel, summary: PhotoMetadataSummaryModel | None, names: dict[str, str]
+) -> AtomEntry:
     subjects = _resolve_names(summary.subjects if summary else [], names)
     title = _atom_entry_title(
         summary.description if summary else "",
@@ -103,7 +106,9 @@ def _atom_photo_entry(photo: PhotoModel, summary: PhotoMetadataSummaryModel | No
     }
 
 
-def _atom_video_entry(video: VideoModel, summary: VideoMetadataSummaryModel | None, names: dict[str, str]) -> AtomEntry:
+def _atom_video_entry(
+    video: VideoModel, summary: VideoMetadataSummaryModel | None, names: dict[str, str]
+) -> AtomEntry:
     subjects = _resolve_names(summary.subjects if summary else [], names)
     title = _atom_entry_title(
         video.description,
@@ -123,13 +128,17 @@ def _atom_video_entry(video: VideoModel, summary: VideoMetadataSummaryModel | No
 def atom_media(db: SqliteDatabase) -> list[AtomEntry]:
     """Collect photos and videos for the Atom feed, sorted newest-first."""
     names = _build_name_lookup(db)
-    photo_summaries = {summary.fpath: summary for summary in db.photo_metadata_summary_view().list()}
-    video_summaries = {summary.fpath: summary for summary in db.video_metadata_summary_view().list()}
+    photo_rows = db.photo_metadata_summary_view().list()
+    video_rows = db.video_metadata_summary_view().list()
+    photo_summaries = {summary.fpath: summary for summary in photo_rows}
+    video_summaries = {summary.fpath: summary for summary in video_rows}
     entries: list[AtomEntry] = [
-        _atom_video_entry(video, video_summaries.get(video.fpath), names) for video in db.video_data_table().list()
+        _atom_video_entry(video, video_summaries.get(video.fpath), names)
+        for video in db.video_data_table().list()
     ]
     entries += [
-        _atom_photo_entry(photo, photo_summaries.get(photo.fpath), names) for photo in db.photo_data_table().list()
+        _atom_photo_entry(photo, photo_summaries.get(photo.fpath), names)
+        for photo in db.photo_data_table().list()
     ]
     entries.sort(key=lambda entry: entry["created_at"], reverse=True)
     return entries
@@ -172,7 +181,9 @@ def _atom_populate_entries(fg: FeedGenerator, entries: list[AtomEntry]) -> None:
     fg.updated(max(entry["created_at"] for entry in entries))
 
 
-def _atom_write_page(entries: list[AtomEntry], next_entries: list[AtomEntry] | None, output_dir: str) -> None:
+def _atom_write_page(
+    entries: list[AtomEntry], next_entries: list[AtomEntry] | None, output_dir: str
+) -> None:
     self_url = _atom_page_url(entries)
     next_url = _atom_page_url(next_entries) if next_entries is not None else None
     fg = _atom_make_feed(self_url, next_url)

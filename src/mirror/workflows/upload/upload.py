@@ -3,24 +3,31 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from zahir import JobContext, await_all, concurrency_dependency, resource_dependency, sqlite_dependency
+from zahir import (
+    JobContext,
+    await_all,
+    concurrency_dependency,
+    resource_dependency,
+    sqlite_dependency,
+)
 
 from mirror.commons.config import DATABASE_PATH
-from mirror.commons.constants import FULL_SIZED_VIDEO_ROLE, IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
+from mirror.commons.constants import (
+    FULL_SIZED_VIDEO_ROLE,
+    MOSAIC_ENCODINGS,
+    VIDEO_ENCODINGS,
+)
 from mirror.commons.exceptions import InvalidVideoDimensionsError
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import PhotoEncoder
-from mirror.workflows.upload.selective import is_role_skipped
 from mirror.workflows.upload.utils import (
     PhotoJobInput,
     UploadOpts,
-    list_photos_without_contrasting_grey,
-    list_photos_without_mosaic,
-    list_photos_without_upload,
-    list_videos_without_upload,
+    list_upload_work,
     publish_video_encoding,
     publish_video_thumbnail,
+    roles_needing_upload,
 )
 
 
@@ -92,14 +99,12 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
 
     published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
 
+    upload_roles = roles_needing_upload(fpath, published_roles, force, force_roles)
+
     effects = []
-    for role, params in IMAGE_ENCODINGS.items():
-        role_forced = force or role in force_roles
-        if role in published_roles and not role_forced:
-            continue
-        if is_role_skipped(role, fpath):
-            continue
-        effects.append(ctx.scope.upload_photo({"fpath": fpath, "role": role, "params": params, "force": role_forced}))
+    for role, params, role_forced in upload_roles:
+        job_input = {"fpath": fpath, "role": role, "params": params, "force": role_forced}
+        effects.append(ctx.scope.upload_photo(job_input))
 
     if effects:
         yield await_all(effects)
@@ -128,14 +133,15 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     cdn = CDN()
     with SqliteDatabase(DATABASE_PATH) as db:
         try:
-            encoded_path = publish_video_encoding(cdn, db, fpath, role, params)
+            encoded_path = publish_video_encoding(cdn, db, fpath, (role, params))
         except InvalidVideoDimensionsError:
             return {"fpath": fpath, "role": role}
 
     yield from sqlite_dependency(
         DATABASE_PATH,
         "select case when exists("
-        "select 1 from encoded_videos where fpath = ? and role = ? and url is not null and url != ''"
+        "select 1 from encoded_videos where fpath = ? and role = ?"
+        " and url is not null and url != ''"
         ") then 'satisfied' else 'impossible' end as status",
         (fpath, role),
     )
@@ -164,7 +170,8 @@ def upload_missing_videos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
         """select case when (
             select count(distinct role) from encoded_videos
             where fpath = ?
-            and role in ('video_libx264_unscaled', 'video_libx264_1080p', 'video_libx264_720p', 'video_libx264_480p')
+            and role in ('video_libx264_unscaled', 'video_libx264_1080p',
+                         'video_libx264_720p', 'video_libx264_480p')
             and url is not null
             and url != ''
         ) = 4 then 'satisfied' else 'impossible' end as status""",
@@ -172,43 +179,42 @@ def upload_missing_videos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
     )
 
 
-def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None]:
-    force_recompute_grey = input.get("force_recompute_grey", False)
-    force_recompute_mosaic = input.get("force_recompute_mosaic", False)
-    force_upload_images = input.get("force_upload_images", False)
-    force_upload_videos = input.get("force_upload_videos", False)
+def media_upload_effects(ctx: JobContext, input: UploadOpts, work: tuple) -> Generator[list]:
+    """Effect batches for the grey, mosaic, and photo-upload work lists."""
+    grey_fpaths, mosaic_fpaths, photo_fpaths = work
+    force_grey = input.get("force_recompute_grey", False)
+    force_mosaic = input.get("force_recompute_mosaic", False)
+    force_images = input.get("force_upload_images", False)
     force_roles = input.get("force_roles") or []
-    upload_images = input.get("upload_images")
-    upload_videos = input.get("upload_videos")
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        grey_fpaths = list(list_photos_without_contrasting_grey(db, force_recompute_grey))
-        mosaic_fpaths = list(list_photos_without_mosaic(db, force_recompute_mosaic))
-        photo_fpaths = (
-            list(list_photos_without_upload(db, force_upload_images or bool(force_roles))) if upload_images else []
-        )
-        video_fpaths = list(list_videos_without_upload(db, force_upload_videos)) if upload_videos else []
-
-    grey_effects = [
-        ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_recompute_grey}) for fpath in grey_fpaths
+    yield [
+        ctx.scope.compute_contrasting_grey({"fpath": fpath, "force": force_grey})
+        for fpath in grey_fpaths
     ]
-    if grey_effects:
-        yield await_all(grey_effects)
-
-    mosaic_effects = [
-        ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_recompute_mosaic}) for fpath in mosaic_fpaths
+    yield [
+        ctx.scope.compute_image_mosaic({"fpath": fpath, "force": force_mosaic})
+        for fpath in mosaic_fpaths
     ]
-    if mosaic_effects:
-        yield await_all(mosaic_effects)
+    yield [
+        ctx.scope.upload_missing_photos({
+            "fpath": fpath,
+            "force": force_images,
+            "force_roles": force_roles,
+        })
+        for fpath in photo_fpaths
+    ]
 
-    if upload_images:
-        photo_effects = [
-            ctx.scope.upload_missing_photos({"fpath": fpath, "force": force_upload_images, "force_roles": force_roles})
-            for fpath in photo_fpaths
-        ]
-        if photo_effects:
-            yield await_all(photo_effects)
 
-    if upload_videos:
-        for fpath in video_fpaths:
-            yield ctx.scope.upload_missing_videos({"fpath": fpath, "force": force_upload_videos})
+def upload_media(ctx: JobContext, input: UploadOpts) -> Generator[Any, Any, None]:
+    grey_fpaths, mosaic_fpaths, photo_fpaths, video_fpaths = list_upload_work(input)
+
+    batched_work = (grey_fpaths, mosaic_fpaths, photo_fpaths)
+    for effects in media_upload_effects(ctx, input, batched_work):
+        if effects:
+            yield await_all(effects)
+
+    for fpath in video_fpaths:
+        yield ctx.scope.upload_missing_videos({
+            "fpath": fpath,
+            "force": input.get("force_upload_videos", False),
+        })

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Generator, Iterator, TypedDict
 
+from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
@@ -35,7 +36,9 @@ def list_photos_without_mosaic(db: SqliteDatabase, force_recompute: bool = False
             yield fpath
 
 
-def list_photos_without_contrasting_grey(db: SqliteDatabase, force_recompute: bool = False) -> Iterator[str]:
+def list_photos_without_contrasting_grey(
+    db: SqliteDatabase, force_recompute: bool = False
+) -> Iterator[str]:
     photos = db.photos_table()
     icons = db.photo_icon_table()
 
@@ -95,9 +98,9 @@ def is_silent(fpath: str) -> bool:
     return "+silent" not in fpath
 
 
-def publish_video_encoding(cdn, db, fpath, role, params):
-    width, height, bitrate = params["width"], params["height"], params["bitrate"]
-    uploaded_video_name = CDN.video_name(fpath, bitrate, width, height, "webm")
+def publish_video_encoding(cdn, db, fpath, encoding: tuple[str, dict]):
+    role, params = encoding
+    uploaded_video_name = CDN.video_name(fpath, params, "webm")
 
     if cdn.has_object(uploaded_video_name):
         # CDN already has the encoded asset; avoid re-encoding and just update the DB
@@ -108,9 +111,7 @@ def publish_video_encoding(cdn, db, fpath, role, params):
     encoded_path = VideoEncoder.encode(
         fpath=fpath,
         upload_file_name=uploaded_video_name,
-        video_bitrate=bitrate,
-        width=width,
-        height=height,
+        params=params,
         share_audio=is_silent(fpath),
     )
 
@@ -132,5 +133,47 @@ def publish_video_thumbnail(cdn, db, fpath, encoded_path):
         encoded_path, {"format": thumbnail_format, "quality": 85, "method": 6}
     )
 
-    thumbnail_url = cdn.upload_photo(encoded_data=encoded_thumbnail, role=thumbnail_role, format=thumbnail_format)
-    db.encoded_photos_table().add(fpath=fpath, url=thumbnail_url, role=thumbnail_role, format=thumbnail_format)
+    thumbnail_url = cdn.upload_photo(
+        encoded_data=encoded_thumbnail, role=thumbnail_role, format=thumbnail_format
+    )
+    db.encoded_photos_table().add(
+        fpath=fpath, url=thumbnail_url, role=thumbnail_role, format=thumbnail_format
+    )
+
+
+def roles_needing_upload(
+    fpath: str, published_roles: set[str], force: bool, force_roles: set[str]
+) -> Iterator[tuple[str, dict, bool]]:
+    """Image roles still to upload for this file, with each role's force flag."""
+    for role, params in IMAGE_ENCODINGS.items():
+        role_forced = force or role in force_roles
+        if role in published_roles and not role_forced:
+            continue
+
+        if is_role_skipped(role, fpath):
+            continue
+
+        yield role, params, role_forced
+
+
+def list_upload_work(input: UploadOpts) -> tuple[list, list, list, list]:
+    """fpaths needing grey, mosaic, photo-upload, and video-upload work."""
+    photo_force = input.get("force_upload_images", False) or bool(input.get("force_roles"))
+
+    with SqliteDatabase(DATABASE_PATH) as db:
+        grey_fpaths = list(
+            list_photos_without_contrasting_grey(db, input.get("force_recompute_grey", False))
+        )
+        mosaic_fpaths = list(
+            list_photos_without_mosaic(db, input.get("force_recompute_mosaic", False))
+        )
+        photo_fpaths = (
+            list(list_photos_without_upload(db, photo_force)) if input.get("upload_images") else []
+        )
+        video_fpaths = (
+            list(list_videos_without_upload(db, input.get("force_upload_videos", False)))
+            if input.get("upload_videos")
+            else []
+        )
+
+    return grey_fpaths, mosaic_fpaths, photo_fpaths, video_fpaths

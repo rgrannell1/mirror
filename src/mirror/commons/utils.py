@@ -1,9 +1,17 @@
 """Various utility functions."""
 
 import hashlib
+from pathlib import Path
 from typing import Optional
 
 from mirror.commons.config import PHOTOS_URL
+from mirror.commons.constants import MISCELLANEOUS_ALBUM_NAME
+
+
+def is_miscellaneous_dpath(dpath: str) -> bool:
+    """True for a hidden Miscellaneous album folder or its Published subfolder."""
+    path = Path(dpath)
+    return MISCELLANEOUS_ALBUM_NAME in {path.name, path.parent.name}
 
 
 def short_cdn_url(url: Optional[str]) -> str:

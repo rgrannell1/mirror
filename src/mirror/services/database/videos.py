@@ -32,7 +32,8 @@ class VideosTable:
 
     def add(self, fpath: str) -> None:
         dpath = os.path.dirname(fpath)
-        self.conn.execute("insert or ignore into videos (fpath, dpath) values (?, ?)", (fpath, dpath))
+        query = "insert or ignore into videos (fpath, dpath) values (?, ?)"
+        self.conn.execute(query, (fpath, dpath))
         self.conn.commit()
 
     def delete(self, fpath: str) -> None:
@@ -82,7 +83,8 @@ class VideoMetadataTable:
 
     def add(self, fpath: str, src_type: str, relation: str, target: str) -> None:
         self.conn.execute(
-            "insert or replace into video_metadata_table (fpath, src_type, relation, target) values (?, ?, ?, ?)",
+            "insert or replace into video_metadata_table"
+            " (fpath, src_type, relation, target) values (?, ?, ?, ?)",
             (fpath, src_type, relation, target),
         )
         self.conn.commit()

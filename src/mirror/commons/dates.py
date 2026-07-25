@@ -4,6 +4,48 @@ from datetime import datetime
 from typing import Union
 
 
+def parse_flexible_date(value: Union[datetime, int, float, None]) -> datetime | None:
+    """Coerce a datetime or millisecond Unix timestamp into a datetime."""
+    if isinstance(value, datetime):
+        return value
+
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value / 1000)
+
+    return None
+
+
+def short_date_range(min_dt: datetime, max_dt: datetime) -> str:
+    """Abbreviated range, collapsing a shared month and year."""
+    from_str = min_dt.strftime(f"{min_dt.day} %b")
+    to_str = max_dt.strftime(f"{max_dt.day} %b")
+
+    months_equal = min_dt.strftime("%b") == max_dt.strftime("%b")
+    years_equal = min_dt.year == max_dt.year
+
+    if from_str == to_str and years_equal:
+        # e.g "22 Feb 2022"
+        return f"{from_str} {min_dt.year}"
+
+    if months_equal and years_equal:
+        # e.g "22 - 24 Feb 2022"
+        return f"{min_dt.day} - {max_dt.day} {max_dt.strftime('%b')} {min_dt.year}"
+
+    # e.g "22 Feb 2022 - 24 Mar 2023"
+    return f"{from_str} {min_dt.year} - {to_str} {max_dt.year}"
+
+
+def full_date_range(min_dt: datetime, max_dt: datetime) -> str:
+    """Full-format range, collapsing equal endpoints."""
+    from_str = min_dt.strftime(f"{min_dt.day} %b %Y")
+    to_str = max_dt.strftime(f"{max_dt.day} %b %Y")
+
+    if from_str == to_str:
+        return from_str
+
+    return f"{from_str} — {to_str}"
+
+
 def date_range(
     min_date: Union[datetime, int, None],
     max_date: Union[datetime, int, None],
@@ -30,70 +72,14 @@ def date_range(
         >>> date_range(d1, d1, short=False)
         '22 Feb 2022'
     """
-    if not min_date and not max_date:
-        return "unknown date"
+    # Either endpoint falls back to the other when missing
+    parsed_min_date = parse_flexible_date(min_date) or parse_flexible_date(max_date)
+    parsed_max_date = parse_flexible_date(max_date) or parsed_min_date
 
-    # Parse dates - handle both datetime objects and Unix timestamps (in milliseconds)
-    parsed_min_date: datetime
-    parsed_max_date: datetime
-
-    if isinstance(min_date, datetime):
-        parsed_min_date = min_date
-    elif isinstance(min_date, (int, float)):
-        parsed_min_date = datetime.fromtimestamp(min_date / 1000)
-    elif min_date is None:
-        # If min_date is None but max_date exists, use max_date
-        if isinstance(max_date, datetime):
-            parsed_min_date = max_date
-        elif isinstance(max_date, (int, float)):
-            parsed_min_date = datetime.fromtimestamp(max_date / 1000)
-        else:
-            return "unknown date"
-    else:
-        return "unknown date"
-
-    if isinstance(max_date, datetime):
-        parsed_max_date = max_date
-    elif isinstance(max_date, (int, float)):
-        parsed_max_date = datetime.fromtimestamp(max_date / 1000)
-    elif max_date is None:
-        # If max_date is None, use min_date (which we know exists by now)
-        parsed_max_date = parsed_min_date
-    else:
+    if parsed_min_date is None or parsed_max_date is None:
         return "unknown date"
 
     if short:
-        # Extract date components
-        min_day = parsed_min_date.day
-        max_day = parsed_max_date.day
+        return short_date_range(parsed_min_date, parsed_max_date)
 
-        min_month = parsed_min_date.strftime("%b")
-        max_month = parsed_max_date.strftime("%b")
-
-        min_year = parsed_min_date.year
-        max_year = parsed_max_date.year
-
-        from_str = parsed_min_date.strftime(f"{min_day} %b")
-        to_str = parsed_max_date.strftime(f"{max_day} %b")
-
-        months_equal = min_month == max_month
-        years_equal = min_year == max_year
-
-        if from_str == to_str and years_equal:
-            # e.g "22 Feb 2022"
-            return f"{from_str} {min_year}"
-        elif months_equal and years_equal:
-            # e.g "22 - 24 Feb 2022"
-            return f"{min_day} - {max_day} {max_month} {min_year}"
-        else:
-            # e.g "22 Feb 2022 - 24 Mar 2023"
-            return f"{from_str} {min_year} - {to_str} {max_year}"
-    else:
-        # Full format
-        from_str = parsed_min_date.strftime(f"{parsed_min_date.day} %b %Y")
-        to_str = parsed_max_date.strftime(f"{parsed_max_date.day} %b %Y")
-
-        if from_str == to_str:
-            return from_str
-
-        return f"{from_str} — {to_str}"
+    return full_date_range(parsed_min_date, parsed_max_date)

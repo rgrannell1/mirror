@@ -65,6 +65,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/4f3867e0f5.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/1f89fb6533.webp) | Pheasants, Laois | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:phasianus-colchicus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/703af021f4.webp) | Phoenix Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:14 |  | urn:ró:mammal:dama-dama |  |
+| ![](https://photos-cdn.rgrannell.xyz/96eec2e4d2.webp) | RenFair |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/70eb319089.webp) | RenFair |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b15a79aa25.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:mammal:cervus-elaphus |  |
 | ![](https://photos-cdn.rgrannell.xyz/3bb4aecba3.webp) | Rutting Season, Killarney | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:mammal:cervus-elaphus |  |
 | ![](https://photos-cdn.rgrannell.xyz/4919acc223.webp) | Saltee Islands | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:105 |  | urn:ró:bird:fratercula-arctica |  |
@@ -83,6 +85,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/f179702f3e.webp) | Slovenia | Wildlife | ⭐⭐⭐ | urn:ró:place:118 |  | urn:ró:amphibian:proteus-anguinus |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9c19a58ef.webp) | Slovenia | Other | ⭐⭐ | urn:ró:place:10 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/1f268e7f9b.webp) | Slovenia | Landscape | ⭐⭐⭐⭐ | urn:ró:place:10 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/702bbd80aa.webp) | Stradbally Steam Rally |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ef8e21af33.webp) | Stradbally Steam Rally |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b674f1c3c4.webp) | Stradbally Steam Rally |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7f8bea5e31.webp) | Stradbally Steam Rally |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0634d42bb.webp) | Switzerland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:7 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d5b0fe1ef7.webp) | Switzerland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:7 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f00588965b.webp) | Tenerife |  |  |  | "The Internationale", sung on Labour Day |  |  |

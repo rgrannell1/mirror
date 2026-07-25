@@ -25,7 +25,8 @@ from mirror.services.database.videos import (
 from mirror.services.database.views import refresh_dependent_views as rebuild_dependent_views
 
 
-class SqliteDatabase:
+# facade by design: one accessor per table or view, so the method count tracks the schema
+class SqliteDatabase:  # noqa: PLR0904
     """A SQLite database to store information about albums."""
 
     conn: sqlite3.Connection

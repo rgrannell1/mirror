@@ -2,6 +2,7 @@ import argparse
 import json
 import logging
 import multiprocessing
+import os
 from collections.abc import Generator, Iterable
 from typing import Any
 
@@ -11,6 +12,12 @@ from zahir import evaluate, make_telemetry, setup, with_progress
 
 from mirror.audit import audit_media, run_audit_command
 from mirror.commons import config
+from mirror.commons.config import (
+    MIRROR_ERROR_PATH,
+    MIRROR_JSONL_PATH,
+    ZAHIR_JSONL_PATH,
+    ZAHIR_STDERR_PATH,
+)
 from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
 from mirror.workflows.fetch.fetch import (
     fetch_copy_file,
@@ -137,6 +144,7 @@ def record_events(events: Iterable[Any], path: str, error_path: str) -> Generato
 
     Error events (job_fail) are additionally written as plain text to error_path.
     """
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as jsonl_fh, open(error_path, "w") as err_fh:
         for event in events:
             if isinstance(event, Event):
@@ -147,29 +155,45 @@ def record_events(events: Iterable[Any], path: str, error_path: str) -> Generato
             yield event
 
 
-def main():
-    """Execute the mirror media pipeline"""
+def add_pipeline_flags(parser: argparse.ArgumentParser) -> None:
+    """Add the full-pipeline flags to the top-level parser."""
 
-    parser = argparse.ArgumentParser(description="Mirror media pipeline")
-    parser.add_argument("--no-upload-images", dest="upload_images", action="store_false", default=True)
-    parser.add_argument("--no-upload-videos", dest="upload_videos", action="store_false", default=True)
-    parser.add_argument("--force-recompute-grey", dest="force_recompute_grey", action="store_true", default=False)
-    parser.add_argument("--force-recompute-mosaic", dest="force_recompute_mosaic", action="store_true", default=False)
-    parser.add_argument("--force-upload-images", dest="force_upload_images", action="store_true", default=False)
-    parser.add_argument("--force-upload-videos", dest="force_upload_videos", action="store_true", default=False)
-    parser.add_argument("--force-roles", dest="force_roles", nargs="+", default=None, metavar="ROLE")
-    parser.add_argument("--publish-d1", dest="publish_d1", action="store_true", default=False)
+    parser.add_argument("--no-upload-images", dest="upload_images", action="store_false")
+    parser.add_argument("--no-upload-videos", dest="upload_videos", action="store_false")
+    parser.add_argument("--force-recompute-grey", action="store_true")
+    parser.add_argument("--force-recompute-mosaic", action="store_true")
+    parser.add_argument("--force-upload-images", action="store_true")
+    parser.add_argument("--force-upload-videos", action="store_true")
+    parser.add_argument("--force-roles", nargs="+", default=None, metavar="ROLE")
+    parser.add_argument("--publish-d1", action="store_true")
+
+
+def add_subcommands(parser: argparse.ArgumentParser) -> None:
+    """Add the copy, audit, and fetch subcommands to the parser."""
 
     subparsers = parser.add_subparsers(dest="command")
 
-    copy_parser = subparsers.add_parser("copy", help="Copy a recent raw import into the managed library")
-    copy_parser.add_argument("-n", dest="nth", type=int, default=1, metavar="N", help="Nth most recent import (default: 1)")
+    copy_parser = subparsers.add_parser(
+        "copy", help="Copy a recent raw import into the managed library"
+    )
+    copy_parser.add_argument(
+        "-n",
+        dest="nth",
+        type=int,
+        default=1,
+        metavar="N",
+        help="Nth most recent import (default: 1)",
+    )
 
     subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
 
     fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
     fetch_parser.add_argument(
-        "--from", dest="date_from", required=True, metavar="DATE", help='Start date, e.g. "today" or "two days ago"'
+        "--from",
+        dest="date_from",
+        required=True,
+        metavar="DATE",
+        help='Start date, e.g. "today" or "two days ago"',
     )
     fetch_parser.add_argument(
         "--to",
@@ -186,39 +210,52 @@ def main():
         help="Path to camera DCIM directory",
     )
 
-    args = parser.parse_args()
 
-    if args.command == "copy":
-        title = input("Album title: ").strip()
-        if not title:
-            raise SystemExit("Album title is required")
-        copy_input = {"title": title, "nth": args.nth}
-        copy_events = evaluate(
-            setup(n_workers=4),
-            "copy_workflow",
-            (copy_input,),
-            scope=SCOPE,
-            handler_wrappers=[make_telemetry()],
-        )
-        for _ in with_progress(record_events(copy_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
-            pass
-        return
+def build_parser() -> argparse.ArgumentParser:
+    """Construct the mirror argument parser with its subcommands."""
 
-    if args.command == "audit":
-        raise SystemExit(run_audit_command())
+    parser = argparse.ArgumentParser(description="Mirror media pipeline")
+    add_pipeline_flags(parser)
+    add_subcommands(parser)
+    return parser
 
-    if args.command == "fetch":
-        fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
-        fetch_events = evaluate(
-            setup(n_workers=15),
-            "fetch_workflow",
-            (fetch_input,),
-            scope=SCOPE,
-            handler_wrappers=[make_telemetry()],
-        )
-        for _ in with_progress(record_events(fetch_events, "zahir_logs/latest.jsonl", "zahir_logs/latest.stderr")):
-            pass
-        return
+
+def run_workflow(
+    root: str, workflow_input: dict, n_workers: int, log_paths: tuple[str, str]
+) -> None:
+    """Evaluate a workflow root, streaming events to log files with a progress bar."""
+
+    events = evaluate(
+        setup(n_workers=n_workers),
+        root,
+        (workflow_input,),
+        scope=SCOPE,
+        handler_wrappers=[make_telemetry()],
+    )
+    for _ in with_progress(record_events(events, log_paths[0], log_paths[1])):
+        pass
+
+
+def run_copy_command(args: argparse.Namespace) -> None:
+    """Prompt for an album title and run the copy workflow."""
+
+    title = input("Album title: ").strip()
+    if not title:
+        raise SystemExit("Album title is required")
+
+    copy_input = {"title": title, "nth": args.nth}
+    run_workflow("copy_workflow", copy_input, 4, (ZAHIR_JSONL_PATH, ZAHIR_STDERR_PATH))
+
+
+def run_fetch_command(args: argparse.Namespace) -> None:
+    """Run the camera fetch workflow."""
+
+    fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
+    run_workflow("fetch_workflow", fetch_input, 15, (ZAHIR_JSONL_PATH, ZAHIR_STDERR_PATH))
+
+
+def run_pipeline_command(args: argparse.Namespace) -> None:
+    """Run the full mirror pipeline workflow."""
 
     if multiprocessing.get_start_method() != "fork":
         multiprocessing.set_start_method("fork", force=True)
@@ -233,13 +270,23 @@ def main():
         "force_roles": args.force_roles,
         "publish_d1": args.publish_d1,
     }
+    run_workflow("mirror_workflow", workflow_input, 15, (MIRROR_JSONL_PATH, MIRROR_ERROR_PATH))
 
-    events = evaluate(
-        setup(n_workers=15),
-        "mirror_workflow",
-        (workflow_input,),
-        scope=SCOPE,
-        handler_wrappers=[make_telemetry()],
-    )
-    for _ in with_progress(record_events(events, "latest.jsonl", "latest.error")):
-        pass
+
+def main():
+    """Execute the mirror media pipeline"""
+
+    args = build_parser().parse_args()
+
+    if args.command == "copy":
+        run_copy_command(args)
+        return
+
+    if args.command == "audit":
+        raise SystemExit(run_audit_command())
+
+    if args.command == "fetch":
+        run_fetch_command(args)
+        return
+
+    run_pipeline_command(args)

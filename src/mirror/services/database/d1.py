@@ -12,9 +12,12 @@ class SocialCardTable:
         self.conn = conn
         self.conn.execute(SOCIAL_CARD_TABLE)
 
-    def add(self, path: str, description: Optional[str], title: Optional[str], image_url: str) -> None:
+    def add(
+        self, path: str, description: Optional[str], title: Optional[str], image_url: str
+    ) -> None:
         self.conn.execute(
-            "insert or replace into social_cards (path, description, title, image_url) values (?, ?, ?, ?)",
+            "insert or replace into social_cards"
+            " (path, description, title, image_url) values (?, ?, ?, ?)",
             (path, description, title, image_url),
         )
         self.conn.commit()

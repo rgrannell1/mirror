@@ -10,6 +10,53 @@ THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 
+# Sanity bounds on the published country count; outside this range the stats are broken.
+STATS_MIN_COUNTRIES = 10
+STATS_MAX_COUNTRIES = 50
+
+# Contrasting-grey: true midpoint of the 0-255 lightness band.
+LIGHTNESS_MIDPOINT = 128
+
+# Contrasting-grey: minimum lightness separation (~43 L*) guaranteeing visible contrast.
+CONTRAST_DELTA = 110
+
+# URN prefix for albums, as referenced by trips in things.toml.
+ALBUM_URN_PREFIX = "urn:ró:album:"
+
+# Markdown metadata tables: column headers for albums.md.
+ALBUM_TABLE_HEADERS = ("embedding", "title", "permalink", "country", "summary")
+
+# Markdown metadata tables: shared column headers for photos.md and videos.md.
+MEDIA_TABLE_HEADERS = (
+    "embedding",
+    "name",
+    "genre",
+    "rating",
+    "places",
+    "description",
+    "subjects",
+    "cover",
+)
+
+# Minimum pipe-separated cells for a parseable albums.md row.
+ALBUM_ROW_MIN_CELLS = 5
+
+# Minimum pipe-separated cells for a parseable photos.md / videos.md row.
+MEDIA_ROW_MIN_CELLS = 8
+
+# Albums whose thumbnail no longer resolves a dpath; permalink → dpath overrides.
+LEGACY_ALBUM_DPATHS = {
+    "lanzarote-17": "/home/rg/Drive/Media/2017/Lanzarote/Published",
+    "slieve-bloom-20": "/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published",
+    "dublin-zoo-21": "/home/rg/Drive/Media/2021/Dublin Zoo/Published",
+}
+
+# Albums with this folder name are hidden: photos publish, but no album page or albums.md row.
+MISCELLANEOUS_ALBUM_NAME = "Miscellaneous"
+
+# Shared album id given to every Miscellaneous album's photos.
+MISCELLANEOUS_ALBUM_ID = "miscellaneous"
+
 # Animal URN nouns which need name definitions in things.toml.
 ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
 

@@ -8,6 +8,22 @@ if TYPE_CHECKING:
 from mirror.data.types import SemanticTriple
 
 
+def read_things_unesco_ids(things_file: str) -> set[str]:
+    """UNESCO site ids referenced by places in things.toml."""
+    unesco_ids = set()
+
+    with open(things_file, "rb") as conn:
+        places = tomllib.load(conn)
+
+    for place in places["places"]:
+        unesco_urn = place.get("unesco_id")
+
+        if unesco_urn:
+            unesco_ids.add(unesco_urn.split(":")[-1])
+
+    return unesco_ids
+
+
 class UnescoReader:
     things_file: str
     data_file: str
@@ -17,17 +33,7 @@ class UnescoReader:
         self.data_file = data_file
 
     def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        unesco_ids = set()
-
-        with open(self.things_file, "rb") as conn:
-            places = tomllib.load(conn)
-
-        for place in places["places"]:
-            unesco_urn = place.get("unesco_id")
-
-            if unesco_urn:
-                id = unesco_urn.split(":")[-1]
-                unesco_ids.add(id)
+        unesco_ids = read_things_unesco_ids(self.things_file)
 
         with open(self.data_file, encoding="utf-8") as fh:
             unesco_data = json.load(fh)

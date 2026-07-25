@@ -14,8 +14,8 @@ from .photos import (
 from .videos import VideosReader
 
 __all__ = [
-    "AlbumTriples",
     "AlbumBannerReader",
+    "AlbumTriples",
     "AnimalFirstSeenReader",
     "ExifTriplesReader",
     "ListingCoverReader",

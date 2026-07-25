@@ -1,6 +1,7 @@
 """Services - Business logic layer
 
-This module contains service classes for database, CDN, encoding, metadata, and other business logic.
+This module contains service classes for database, CDN, encoding, metadata,
+and other business logic.
 """
 
 from .cdn import CDN
@@ -10,12 +11,12 @@ from .metadata import MarkdownAlbumMetadataReader, MarkdownTablePhotoMetadataRea
 from .vault import MediaVault
 
 __all__ = [
-    "SqliteDatabase",
-    "D1SqliteDatabase",
     "CDN",
-    "PhotoEncoder",
-    "VideoEncoder",
+    "D1SqliteDatabase",
     "MarkdownAlbumMetadataReader",
     "MarkdownTablePhotoMetadataReader",
     "MediaVault",
+    "PhotoEncoder",
+    "SqliteDatabase",
+    "VideoEncoder",
 ]

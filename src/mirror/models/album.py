@@ -8,6 +8,8 @@ from typing import Any, Iterator, List
 
 from mirror.commons.config import ALBUM_METADATA_FILE
 from mirror.models.mirror_types import IModel
+from mirror.models.photo import Photo
+from mirror.models.video import Video
 
 
 class Album:
@@ -27,8 +29,6 @@ class Album:
 
     def covers(self) -> Iterator:
         """Get the cover photo for this album, if it exists"""
-        from mirror.models.photo import Photo
-
         if self.published():
             for fname in os.listdir(self.published_path()):
                 if "+cover" in fname:
@@ -43,9 +43,6 @@ class Album:
 
     def media(self) -> Iterator:
         """Yield all media from the photo-album"""
-        from mirror.models.photo import Photo
-        from mirror.models.video import Video
-
         if not self.published():
             return
 

@@ -9,9 +9,8 @@ from zahir import JobContext, await_all
 
 from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME, PHOTO_DIRECTORY
 from mirror.commons.urn import parse_mirror_urn
+from mirror.data.geoname import GeonameClient
 from mirror.data.wikidata import WikidataClient
-from mirror.models.photo import Photo
-from mirror.models.video import Video
 from mirror.services.database import SqliteDatabase
 from mirror.services.metadata import (
     MarkdownAlbumMetadataReader,
@@ -24,12 +23,13 @@ from mirror.workflows.scan.utils import (
     DEFAULT_PHOTOS_MARKDOWN_PATH,
     DEFAULT_VIDEOS_MARKDOWN_PATH,
     ScanOpts,
+    index_media_files,
     list_geonames_from_metadata,
-    list_media,
-    list_unsaved_binomials,
     list_unsaved_exifs,
     list_unsaved_phashes,
-    read_geonames_wikidata_ids,
+    scan_binomial_wikidata,
+    scan_geoname_wikidata,
+    write_miscellaneous_permalinks,
 )
 
 
@@ -40,25 +40,11 @@ def media_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     with SqliteDatabase(DATABASE_PATH) as db:
         db.refresh_dependent_views()
 
-        phash_table = db.phashes_table()
-        exif_table = db.exif_table()
-        photos_table = db.photos_table()
-        videos_table = db.videos_table()
-
-        current_fpaths = set()
-
-        for entry in list_media(dpath):
-            if isinstance(entry, Photo):
-                photos_table.add(entry.fpath)
-                current_fpaths.add(entry.fpath)
-            elif isinstance(entry, Video):
-                videos_table.add(entry.fpath)
-                current_fpaths.add(entry.fpath)
-
+        current_fpaths = index_media_files(db, dpath)
         VaultIndexSync(db).remove_deleted_photos(current_fpaths)
 
-        exif_table.add_many(list_unsaved_exifs(db, dpath))
-        phash_table.add_many(list_unsaved_phashes(db, dpath))
+        db.exif_table().add_many(list_unsaved_exifs(db, dpath))
+        db.phashes_table().add_many(list_unsaved_phashes(db, dpath))
 
     return {"complete": True}
     yield
@@ -68,8 +54,6 @@ def geonames_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Scan geonames from external API and store in database"""
     if not GEONAMES_USERNAME:
         raise ValueError("GEONAMES_USERNAME environment variable not set")
-
-    from mirror.data.geoname import GeonameClient
 
     geoname_client = GeonameClient(GEONAMES_USERNAME)
 
@@ -96,31 +80,8 @@ def wikidata_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     wikidata_client = WikidataClient()
 
     with SqliteDatabase(DATABASE_PATH) as db:
-        wikidata_table = db.wikidata_table()
-        binomials_wikidata_table = db.binomials_wikidata_id_table()
-
-        for triple in read_geonames_wikidata_ids(db):
-            qid = triple.target
-
-            if wikidata_table.has(qid):
-                continue
-
-            res = wikidata_client.get_by_id(qid)
-            if not res:
-                wikidata_table.add(qid, None)
-                continue
-
-            wikidata_table.add(qid, res)
-
-        for binomial in list_unsaved_binomials(db):
-            res = wikidata_client.get_by_binomial(binomial)
-            if not res:
-                binomials_wikidata_table.add(binomial, None)
-                continue
-
-            qid = res["id"]
-            binomials_wikidata_table.add(binomial, qid)
-            wikidata_table.add(qid, res)
+        scan_geoname_wikidata(db, wikidata_client)
+        scan_binomial_wikidata(db, wikidata_client)
 
     return {"complete": True}
     yield
@@ -134,14 +95,17 @@ def read_albums(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     with SqliteDatabase(DATABASE_PATH) as db:
         db.conn.execute("delete from media_metadata_table where src_type = 'album'")
 
+        insert_query = (
+            "insert or replace into media_metadata_table"
+            " (src, src_type, relation, target) values (?, ?, ?, ?)"
+        )
+
         count = 0
         for item in album_reader.list_album_metadata(db):
-            db.conn.execute(
-                "insert or replace into media_metadata_table (src, src_type, relation, target) values (?, ?, ?, ?)",
-                (item.src, "album", item.relation, item.target),
-            )
+            db.conn.execute(insert_query, (item.src, "album", item.relation, item.target))
             count += 1
 
+        write_miscellaneous_permalinks(db)
         db.conn.commit()
 
     return {"count": count, "status": "albums_loaded"}
@@ -196,10 +160,14 @@ def scan_media(ctx: JobContext, input: ScanOpts) -> Generator[Any, Any, None]:
 
     yield ctx.scope.media_scan({"dpath": dpath})
 
+    albums_md = input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH
+    photos_md = input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH
+    videos_md = input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH
+
     yield await_all([
-        ctx.scope.read_albums({"markdown_path": input.get("albums_markdown_path") or DEFAULT_ALBUMS_MARKDOWN_PATH}),
-        ctx.scope.read_photos({"markdown_path": input.get("photos_markdown_path") or DEFAULT_PHOTOS_MARKDOWN_PATH}),
-        ctx.scope.read_videos({"markdown_path": input.get("videos_markdown_path") or DEFAULT_VIDEOS_MARKDOWN_PATH}),
+        ctx.scope.read_albums({"markdown_path": albums_md}),
+        ctx.scope.read_photos({"markdown_path": photos_md}),
+        ctx.scope.read_videos({"markdown_path": videos_md}),
     ])
 
     yield ctx.scope.wikidata_scan({})

@@ -2508,6 +2508,30 @@ features = [
     "urn:ró:place_feature:museum",
 ]
 
+[[places]]
+id = "urn:ró:place:184"
+longitude = -87.956199
+latitude = 42.496355
+name = "Bristol Renaissance Faire"
+wikipedia = "https://en.wikipedia.org/wiki/Bristol_Renaissance_Faire"
+in = [
+    "urn:ró:place:169",
+    "urn:ró:place:84",
+]
+
+[[places]]
+id = "urn:ró:place:185"
+longitude = -7.153
+latitude = 53.017
+name = "Stradbally"
+wikipedia = "https://en.wikipedia.org/wiki/Stradbally"
+in = [
+    "urn:ró:place:110",
+]
+features = [
+    "urn:ró:place_feature:town",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -2546,6 +2570,7 @@ contains_album = [
 id = "urn:ró:trip:4"
 contains_album = [
     "urn:ró:album:wisconsin-22",
+    "urn:ró:album:renfair-22",
     "urn:ró:album:cranes-22",
     "urn:ró:album:lincoln-park-zoo-22",
     "urn:ró:album:shedd-aquarium-22",
@@ -4899,12 +4924,12 @@ id = "urn:ró:bird:linaria-cannabina"
 name = "Linnet"
 birdwatch_url = "https://birdwatchireland.ie/birds/linnet"
 
-[[insects]]
-id = "urn:ró:insect:celastrina-argiolus"
+[[arthropods]]
+id = "urn:ró:arthropod:celastrina-argiolus"
 name = "Holly Blue"
 
-[[insects]]
-id = "urn:ró:insect:chloromyia-formosa"
+[[arthropods]]
+id = "urn:ró:arthropod:chloromyia-formosa"
 name = "Broad Centurion"
 
 [[mammals]]
@@ -4927,12 +4952,12 @@ name = "Ruby-throated Hummingbird"
 id = "urn:ró:bird:aythya-americana"
 name = "Redhead"
 
-[[insects]]
-id = "urn:ró:insect:halyzia-sedecimguttata"
+[[arthropods]]
+id = "urn:ró:arthropod:halyzia-sedecimguttata"
 name = "Orange Ladybird"
 
-[[insects]]
-id = "urn:ró:insect:vespula-vulgaris"
+[[arthropods]]
+id = "urn:ró:arthropod:vespula-vulgaris"
 name = "Common Wasp"
 
 [[mammals]]

@@ -1,4 +1,4 @@
-"""Copies the most recent raw import folder into the managed library under PHOTO_DIRECTORY/<year>/<title>/."""
+"""Copy the most recent raw import folder into the library at PHOTO_DIRECTORY/<year>/<title>/."""
 
 from __future__ import annotations
 
@@ -28,7 +28,9 @@ def find_nth_raw_folder(nth: int) -> Path:
     if not subdirs:
         raise FileNotFoundError(f"No folders found under {raw_root}")
     if nth > len(subdirs):
-        raise FileNotFoundError(f"Requested import #{nth} but only {len(subdirs)} folder(s) exist under {raw_root}")
+        found = f"only {len(subdirs)} folder(s) exist under {raw_root}"
+        message = f"Requested import #{nth} but {found}"
+        raise FileNotFoundError(message)
 
     return subdirs[nth - 1]
 

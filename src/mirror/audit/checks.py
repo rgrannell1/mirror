@@ -12,6 +12,10 @@ from enum import StrEnum
 from mirror.audit.audit_types import Check, Finding
 from mirror.audit.shacl import validate_triples
 from mirror.commons.config import PHOTO_DIRECTORY
+from mirror.commons.constants import ALBUM_URN_PREFIX
+from mirror.commons.utils import is_miscellaneous_dpath
+from mirror.data.things import trip_to_albums
+from mirror.models.album import AlbumDataModel
 from mirror.services.database import SqliteDatabase
 from mirror.services.metadata import (
     MarkdownAlbumMetadataReader,
@@ -36,12 +40,17 @@ class CheckSlug(StrEnum):
     PHOTO_MISSING_MAIN_IMAGE = "photo-missing-main-image"
     ANIMAL_MISSING_NAME = "animal-missing-name"
     TRIPLE_GRAPH_INVALID = "triple-graph-invalid"
+    ALBUM_OMITTED_FROM_TRIP = "album-omitted-from-trip"
 
 
 def check_albums_cover(db: SqliteDatabase) -> Iterator[Finding]:
     """Each album needs exactly one +cover photo; scan (list_media) hard-aborts otherwise, which
     silently breaks indexing for every album — so this reads the filesystem, not the database."""
     for album in MediaVault(PHOTO_DIRECTORY).albums():
+        # hidden miscellaneous albums are exempt from the cover requirement
+        if is_miscellaneous_dpath(album.dpath):
+            continue
+
         covers = list(album.covers())
         if not covers:
             detail = "no +cover photo — scan aborts here, so nothing after it indexes or publishes"
@@ -114,6 +123,10 @@ def check_albums_missing_metadata(db: SqliteDatabase) -> Iterator[Finding]:
     for album in db.album_data_view().list():
         if album.dpath in resolvable:
             continue
+
+        # miscellaneous albums resolve via the scan-injected shared permalink, not albums.md
+        if is_miscellaneous_dpath(album.dpath):
+            continue
         count = album.photos_count
         noun = "photo" if count == 1 else "photos"
         reason = "albums.md has no permalink id (blank, missing, or stale url)"
@@ -141,6 +154,40 @@ def check_photos_missing_main_image(db: SqliteDatabase) -> Iterator[Finding]:
             continue
         detail = "no mid_image_lossy rendition — image broken on site (not yet uploaded?)"
         yield Finding(check=CheckSlug.PHOTO_MISSING_MAIN_IMAGE, subject=photo.fpath, detail=detail)
+
+
+def trip_date_range(albums: list[AlbumDataModel]) -> tuple[str, str] | None:
+    """Earliest and latest date spanned by a trip's member albums, or None if none are dated."""
+    dated = [album for album in albums if album.min_date and album.max_date]
+    if not dated:
+        return None
+    return min(album.min_date for album in dated), max(album.max_date for album in dated)
+
+
+def find_albums_omitted_from_trips(
+    trips: dict[str, tuple[str, ...]], albums: list[AlbumDataModel]
+) -> Iterator[Finding]:
+    """Albums falling wholly inside a trip's date range but absent from its contains_album list."""
+    by_urn = {f"{ALBUM_URN_PREFIX}{album.id}": album for album in albums if album.id}
+
+    for trip, members in trips.items():
+        span = trip_date_range([by_urn[urn] for urn in members if urn in by_urn])
+        if span is None:
+            continue
+        trip_start, trip_end = span
+
+        for urn, album in by_urn.items():
+            if urn in members or not album.min_date or not album.max_date:
+                continue
+            if album.min_date < trip_start or album.max_date > trip_end:
+                continue
+            detail = f"dated inside {trip} ({trip_start} — {trip_end}) but not in its albums"
+            yield Finding(check=CheckSlug.ALBUM_OMITTED_FROM_TRIP, subject=urn, detail=detail)
+
+
+def check_albums_omitted_from_trips(db: SqliteDatabase) -> Iterator[Finding]:
+    """A trip is a hand-written album list; an album shot mid-trip is easy to forget to add."""
+    yield from find_albums_omitted_from_trips(trip_to_albums(), db.album_data_view().list())
 
 
 def check_graph_contract(db: SqliteDatabase) -> Iterator[Finding]:
@@ -188,6 +235,11 @@ CHECKS: list[Check] = [
         slug=CheckSlug.ANIMAL_MISSING_NAME,
         description="Referenced animal has no name definition",
         run=check_graph_contract,
+    ),
+    Check(
+        slug=CheckSlug.ALBUM_OMITTED_FROM_TRIP,
+        description="Album dated mid-trip but missing from the trip",
+        run=check_albums_omitted_from_trips,
     ),
     Check(
         slug=CheckSlug.TRIPLE_GRAPH_INVALID,

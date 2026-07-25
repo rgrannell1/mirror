@@ -17,7 +17,9 @@ def _iter_binomial_targets_from_photo_metadata(db) -> Iterator[dict]:
 
 
 def list_photo_binomials(db) -> Iterator[str]:
-    """Read distinct species binomials from the photo metadata table. Photos are tagged with `genus-species` labels"""
+    """Read distinct species binomials from the photo metadata table.
+
+    Photos are tagged with `genus-species` labels."""
 
     binomials = set()
     for parsed in _iter_binomial_targets_from_photo_metadata(db):
@@ -33,11 +35,9 @@ def binomial_to_urn(db, binomial: str) -> str | None:
     normalised = binomial.replace(" ", "-").lower()
     for parsed in _iter_binomial_targets_from_photo_metadata(db):
         if parsed["id"] == normalised:
-            return format_mirror_urn(
-                {
-                    "type": parsed["type"],
-                    "id": normalised,
-                }
-            )
+            return format_mirror_urn({
+                "type": parsed["type"],
+                "id": normalised,
+            })
 
     return None

@@ -24,6 +24,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/b2155f4a0f.avif) | Emo Court | emo-court-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/cb3a6262f0.avif) | Ring of Kerry | ring-of-kerry-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/4ca58e6735.avif) | Lanzarote | lanzarote-17 | urn:ró:place:151 |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c18dd88bb.avif) | Stradbally Steam Rally | stradbally-17 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/1ae9fdae58.avif) | Boston | boston-18 | urn:ró:place:169 |  |
 | ![](https://photos-cdn.rgrannell.xyz/9769d1e5af.avif) | London | london-18 | urn:ró:place:150 | One of the stranger residents of london are the pelicans of St. James Park. They were introduced in 1664 by the Russian Ambassador, and since then have surprised tourists by occasionally eating Pigeons |
 | ![](https://photos-cdn.rgrannell.xyz/2ce5c05bb5.avif) | Salthill | salthill-18 | urn:ró:place:148 |  |
@@ -61,6 +62,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/8f0da11b5d.avif) | London Zoo | london-zoo-22 | urn:ró:place:150 |  |
 | ![](https://photos-cdn.rgrannell.xyz/7728836788.avif) | Regent's Park, London | regents-park-22 | urn:ró:place:150 |  |
 | ![](https://photos-cdn.rgrannell.xyz/15cb477566.avif) | Ballyfin Nature Hide | ballyfin-nature-hide-22 | urn:ró:place:148 | During this visit to Ballyfin Nature Hide I managed to get some nice photos of our native [red squirrel](/#/thing/mammal:sciurus-vulgaris). The invasive grey squirrel population is more common in the east, but fortunately it seems that the slower grey squirrels cannot coexist with pine-martens while our red squirrels can |
+| ![](https://photos-cdn.rgrannell.xyz/9db321ba9c.avif) | RenFair | renfair-22 | urn:ró:place:169 |  |
 | ![](https://photos-cdn.rgrannell.xyz/c3d8d69ad0.avif) | Wisconsin | wisconsin-state-24 | urn:ró:place:169 | The biodiversity and presence of nature in Wisconsin was surprising. Practically every lamp-post had a percehd [red-tailed hawk](/#/thing/bird:buteo-jamaicensis), vultures were circling over the fields, and there were several osprey over the lakes. The abundance of nature was enviable from an Irish perspective |
 | ![](https://photos-cdn.rgrannell.xyz/311f6d93d3.avif) | Ballyfin Nature Hide | ballyfin-nature-hide-23 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ca93e4512.avif) | Burr Point | burr-point-23 | urn:ró:place:148,urn:ró:place:160 | Burr Point is the easternmost point of mainland Ireland. |
@@ -121,6 +123,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/dbd937ce0f.avif) | Casino Model Rail Museum | casino-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/223cf8ffd4.avif) | Chester Beatty | chester-beatty-june-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/401e77fdd8.avif) | Chester Beatty | chester-beatty-26 | urn:ró:place:148 | Still my favourite Irish musuem :) |
+| ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | dublin-zoo-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd4ae22b43.avif) | East Coast Nature Reserve | east-coast-nature-26 | urn:ró:place:148 | I was close to photographing a kingfisher, again... |
 | ![](https://photos-cdn.rgrannell.xyz/666396a661.avif) | Madrid | madrid-city-26 | urn:ró:place:164 | I finally got to see the Temple of Debod, after three attempts |

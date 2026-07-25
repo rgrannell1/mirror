@@ -1,4 +1,5 @@
 import json
+from http import HTTPStatus
 from typing import TYPE_CHECKING, Any, Iterator
 
 if TYPE_CHECKING:
@@ -24,7 +25,7 @@ class WikidataClient:
         """Fetches full entity data from Wikidata by QID."""
         url = f"{self.API_ENDPOINT}?action=wbgetentities&ids={id}&format=json&languages=en"
         response = requests.get(url)
-        if response.status_code != 200:
+        if response.status_code != HTTPStatus.OK:
             return None
         return response.json().get("entities", {}).get(id)
 
@@ -40,7 +41,7 @@ class WikidataClient:
         print(f"looking up {name}")
 
         response = requests.get(self.SPARQL_ENDPOINT, headers=headers, params={"query": query})
-        if response.status_code != 200:
+        if response.status_code != HTTPStatus.OK:
             return None
 
         data = response.json()
@@ -102,7 +103,8 @@ class WikidataMetadataReader:
     * taxon information from Wikidata
     """
 
-    def binomial_to_common_name(self, binomial: str, label: str, alias: str) -> str:
+    @staticmethod
+    def binomial_to_common_name(binomial: str, label: str, alias: str) -> str:
         # neither label present; return the binomial
         if not label and not alias:
             return binomial
@@ -126,6 +128,21 @@ class WikidataMetadataReader:
 
         return to_pascal_case(label)
 
+    @staticmethod
+    def common_name_for(binomial: str, qid: str, wikidata_table) -> str | None:
+        """The best common name for a binomial, from its cached WikiData entry."""
+        if not wikidata_table.has(qid):
+            return None
+
+        wikidata_data = wikidata_table.get_by_id(qid)
+        if not wikidata_data:
+            return None
+
+        label = wikidata_data.find_label()
+        alias = wikidata_data.find_alias()
+
+        return WikidataMetadataReader.binomial_to_common_name(binomial, label, alias)
+
     def read_binomial_common_names(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         binomials_table = db.binomials_wikidata_id_table()
         wikidata_table = db.wikidata_table()
@@ -133,17 +150,9 @@ class WikidataMetadataReader:
         binomial_to_qid = {binomial: qid for binomial, qid in binomials_table.list() if qid}
 
         for binomial, qid in binomial_to_qid.items():
-            if not wikidata_table.has(qid):
+            common_name = self.common_name_for(binomial, qid, wikidata_table)
+            if common_name is None:
                 continue
-
-            wikidata_data = wikidata_table.get_by_id(qid)
-            if not wikidata_data:
-                continue
-
-            label = wikidata_data.find_label()
-            alias = wikidata_data.find_alias()
-
-            common_name = self.binomial_to_common_name(binomial, label, alias)
 
             urn = binomial_to_urn(db, binomial)
             if not urn:
@@ -155,7 +164,8 @@ class WikidataMetadataReader:
                 target=common_name,
             )
 
-    def read_wikipedia_urls(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read_wikipedia_urls(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         wikidata_table = db.wikidata_table()
 
         qids_to_urls = {}

@@ -10,6 +10,7 @@ from typing import Any, Iterator
 from dateutil import tz
 
 from mirror.commons.config import PHOTOS_URL
+from mirror.commons.constants import STATS_MAX_COUNTRIES, STATS_MIN_COUNTRIES
 from mirror.commons.urn import is_mirror_urn, parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str
 from mirror.data.geoname import GeonameMetadataReader
@@ -54,9 +55,10 @@ def remove_artifacts(dpath: str) -> None:
     """Remove existing artifact files from the output directory."""
     if not os.path.isdir(dpath):
         return
-    removeable = [f for f in os.listdir(dpath) if any(f.startswith(prefix) for prefix in ARTIFACT_NAMES_CLEAN)]
-    for f in removeable:
-        os.remove(os.path.join(dpath, f))
+
+    for fname in os.listdir(dpath):
+        if any(fname.startswith(prefix) for prefix in ARTIFACT_NAMES_CLEAN):
+            os.remove(os.path.join(dpath, fname))
 
 
 def env_content(publication_id: str) -> str:
@@ -66,7 +68,7 @@ def env_content(publication_id: str) -> str:
 
 def validate_stats(data: dict) -> None:
     countries = data["countries"]
-    if countries < 10 or countries > 50:
+    if countries < STATS_MIN_COUNTRIES or countries > STATS_MAX_COUNTRIES:
         raise ValueError("broken countries count")
 
 
@@ -150,7 +152,9 @@ def _camel_case(value: str) -> str:
 
 
 def _process_triple(triple: SemanticTriple) -> list[list]:
-    return [[_simplify_curie(triple.source), _camel_case(triple.relation), _simplify_curie(triple.target)]]
+    simplified_source = _simplify_curie(triple.source)
+    simplified_target = _simplify_curie(triple.target)
+    return [[simplified_source, _camel_case(triple.relation), simplified_target]]
 
 
 def read_triples(db: SqliteDatabase) -> Iterator[list]:

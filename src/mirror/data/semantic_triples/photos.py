@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING, Iterator
 
+from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
 from mirror.data.things import place_feature_to_places
 from mirror.data.types import SemanticTriple
@@ -10,22 +11,30 @@ if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
 
 
+def photo_row_triples(photo) -> Iterator[SemanticTriple]:
+    """Publishable triples for one photo row."""
+    source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
+    mid_lossy_url = short_cdn_url(photo.mid_image_lossy_url)
+    created_at_ms = str(int(photo.get_ctime().timestamp() * 1000))
+
+    yield SemanticTriple(source, "album_id", photo.album_id)
+    yield SemanticTriple(source, "thumbnail_url", short_cdn_url(photo.thumbnail_url))
+    yield SemanticTriple(source, "png_url", short_cdn_url(photo.png_url))
+    yield SemanticTriple(source, "mid_image_lossy_url", mid_lossy_url)
+    yield SemanticTriple(source, "preview_jpeg_url", short_cdn_url(photo.preview_jpeg_url))
+    yield SemanticTriple(source, "mosaic_colours", photo.mosaic_colours)
+    yield SemanticTriple(source, "full_image", short_cdn_url(photo.full_image))
+    yield SemanticTriple(source, "created_at", created_at_ms)
+
+
 class PhotoTriples:
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for photo in db.photo_data_table().list():
             if photo.album_id is None:
                 continue
 
-            source = f"urn:ró:photo:{deterministic_hash_str(photo.fpath)}"
-
-            yield SemanticTriple(source, "album_id", photo.album_id)
-            yield SemanticTriple(source, "thumbnail_url", short_cdn_url(photo.thumbnail_url))
-            yield SemanticTriple(source, "png_url", short_cdn_url(photo.png_url))
-            yield SemanticTriple(source, "mid_image_lossy_url", short_cdn_url(photo.mid_image_lossy_url))
-            yield SemanticTriple(source, "preview_jpeg_url", short_cdn_url(photo.preview_jpeg_url))
-            yield SemanticTriple(source, "mosaic_colours", photo.mosaic_colours)
-            yield SemanticTriple(source, "full_image", short_cdn_url(photo.full_image))
-            yield SemanticTriple(source, "created_at", str(int(photo.get_ctime().timestamp() * 1000)))
+            yield from photo_row_triples(photo)
 
         for fpath, grey_value in db.photo_icon_table().list():
             source = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
@@ -33,7 +42,8 @@ class PhotoTriples:
 
 
 class AlbumBannerReader:
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         rows = db.conn.execute("""
             SELECT fpath, album_id, mosaic_banner_url
             FROM (
@@ -61,6 +71,10 @@ class AlbumBannerReader:
         """).fetchall()
 
         for fpath, album_id, mosaic_banner_url in rows:
+            # miscellaneous is hidden; no album page exists to show a banner on
+            if album_id == MISCELLANEOUS_ALBUM_ID:
+                continue
+
             photo_source = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             album_source = f"urn:ró:album:{album_id}"
             yield SemanticTriple(photo_source, "mosaic_banner", mosaic_banner_url)
@@ -91,11 +105,17 @@ ranked AS (
         ROW_NUMBER() OVER (
             PARTITION BY listing_type
             ORDER BY
-                CASE WHEN listing_type = 'place' AND lower(genre) LIKE '%landscape%' THEN 0 ELSE 1 END ASC,
+                CASE
+                    WHEN listing_type = 'place' AND lower(genre) LIKE '%landscape%' THEN 0
+                    ELSE 1
+                END ASC,
                 rating DESC
         ) AS rank
     FROM categorised
-    WHERE listing_type IN ('bird', 'mammal', 'reptile', 'amphibian', 'fish', 'insect', 'plane', 'train', 'car', 'place')
+    WHERE listing_type IN (
+        'bird', 'mammal', 'reptile', 'amphibian', 'fish',
+        'insect', 'plane', 'train', 'car', 'place'
+    )
 )
 SELECT fpath, listing_type FROM ranked WHERE rank = 1
 """
@@ -111,7 +131,8 @@ class ListingCoverReader:
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:listing:<type>
     """
 
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for fpath, listing_type in db.conn.execute(LISTING_COVER_QUERY).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             listing_urn = f"urn:ró:listing:{listing_type}"
@@ -168,10 +189,52 @@ class ThingCoverReader:
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<type>:<thing-id>
     """
 
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         for fpath, thing_urn in db.conn.execute(THING_COVER_QUERY).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
+
+
+def landscape_then_rating(candidate: tuple) -> tuple:
+    """Sort key preferring landscape photos, then higher ratings."""
+    stars, genre = candidate[1], candidate[2]
+    return (0 if "landscape" in genre.lower() else 1, -stars)
+
+
+def map_place_photos(db: "SqliteDatabase", place_urns: list[str]) -> dict[str, list[tuple]]:
+    """Group candidate photos (fpath, stars, genre) by their place URN."""
+    placeholders = ",".join("?" * len(place_urns))
+    rows = db.conn.execute(
+        f"""
+        SELECT ph.fpath, vps.rating, vps.genre, pmt.target
+        FROM photo_metadata_table pmt
+        JOIN phashes ph ON pmt.phash = ph.phash
+        JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+        WHERE pmt.relation = 'location'
+          AND pmt.target IN ({placeholders})
+        """,
+        place_urns,
+    ).fetchall()
+
+    place_to_photos: dict[str, list[tuple]] = {}
+    for fpath, rating, genre, place_urn in rows:
+        stars = rating.count("⭐") if rating else 0
+        place_to_photos.setdefault(place_urn, []).append((fpath, stars, genre or ""))
+
+    return place_to_photos
+
+
+def feature_cover_candidates(
+    feature_to_places: dict[str, list[str]], place_to_photos: dict[str, list[tuple]]
+) -> Iterator[tuple[str, tuple]]:
+    """Yield (feature_urn, best photo) for each feature with any candidate photos."""
+    for feature_urn, place_urns in feature_to_places.items():
+        candidates = [photo for urn in place_urns for photo in place_to_photos.get(urn, [])]
+        if not candidates:
+            continue
+
+        yield feature_urn, min(candidates, key=landscape_then_rating)
 
 
 class PlaceFeatureCoverReader:
@@ -184,56 +247,31 @@ class PlaceFeatureCoverReader:
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:place_feature:<feature-id>
     """
 
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         feature_to_places = place_feature_to_places()
 
         all_place_urns = list({urn for urns in feature_to_places.values() for urn in urns})
         if not all_place_urns:
             return
 
-        placeholders = ",".join("?" * len(all_place_urns))
-        rows = db.conn.execute(
-            f"""
-            SELECT ph.fpath, vps.rating, vps.genre, pmt.target
-            FROM photo_metadata_table pmt
-            JOIN phashes ph ON pmt.phash = ph.phash
-            JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
-            WHERE pmt.relation = 'location'
-              AND pmt.target IN ({placeholders})
-            """,
-            all_place_urns,
-        ).fetchall()
-
-        place_to_photos: dict[str, list[tuple]] = {}
-        for fpath, rating, genre, place_urn in rows:
-            place_to_photos.setdefault(place_urn, []).append((fpath, rating.count("⭐") if rating else 0, genre or ""))
+        place_to_photos = map_place_photos(db, all_place_urns)
 
         all_candidates: list[tuple] = []
-        for feature_urn, place_urns in feature_to_places.items():
-            candidates = [photo for urn in place_urns for photo in place_to_photos.get(urn, [])]
-            if not candidates:
-                continue
-
-            best = sorted(
-                candidates,
-                key=lambda row: (0 if "landscape" in row[2].lower() else 1, -row[1]),
-            )[0]
-
+        for feature_urn, best in feature_cover_candidates(feature_to_places, place_to_photos):
             all_candidates.append(best)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(best[0])}"
             yield SemanticTriple(photo_urn, "cover", feature_urn)
 
         if all_candidates:
-            listing_best = sorted(
-                all_candidates,
-                key=lambda row: (0 if "landscape" in row[2].lower() else 1, -row[1]),
-            )[0]
+            listing_best = min(all_candidates, key=landscape_then_rating)
             listing_photo_urn = f"urn:ró:photo:{deterministic_hash_str(listing_best[0])}"
             yield SemanticTriple(listing_photo_urn, "cover", "urn:ró:listing:place_feature")
 
 
 class PhotosCountryReader:
-    def read(self, db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+    @staticmethod
+    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         photos = list(db.photo_data_table().list())
 
         for album in db.album_data_view().list():

@@ -183,6 +183,8 @@ audit:triple-graph-invalid
             SELECT $this (?focus AS ?value)
             WHERE {
                 ?focus relation:albumId ?album_id ; audit:album ?album .
+                # miscellaneous is a hidden album: photos publish without an album node
+                FILTER (str(?album_id) != "miscellaneous")
                 FILTER NOT EXISTS {
                     ?album relation:name ?name .
                     FILTER (strlen(str(?name)) > 0)

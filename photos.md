@@ -406,6 +406,14 @@
 | ![](https://photos-cdn.rgrannell.xyz/d304588f76.avif) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2d5e228b14.avif) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/55a69c18d8.avif) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4969a29cd0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:corvus-monedula?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/ada1eda6d3.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:arthropod:bombus-terrestris?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/76bcd31a12.avif) | Dublin Zoo | Wildlife | ⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:myrmecophaga-tridactyla |  |
+| ![](https://photos-cdn.rgrannell.xyz/176c07e3c0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:larus-argentatus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/1bdf4cbb60.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d42eaa80fa.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/3a0470ddc1.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:larus-argentatus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/515b8433e0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/c05737d9b4.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/b636f0a03e.avif) | Dublin Zoo |  | ⭐ | urn:ró:place:95 |  |  |  |
@@ -548,7 +556,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/3ea7e45600.avif) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/dc8548000e.avif) | Galway Boat Festival | Transport | ⭐⭐⭐⭐ | urn:ró:place:92 |  | urn:ró:boat:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/348deef2d9.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/f771d7abfb.avif) | Galway Docks | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  urn:ró:bird:chroicocephalus-ridibundus,urn:ró:bird:larus-canus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/f771d7abfb.avif) | Galway Docks | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:92 |  |  urn:ró:bird:larus-canus?context=wild,urn:ró:bird:chroicocephalus-ridibundus |  |
 | ![](https://photos-cdn.rgrannell.xyz/a0ab40ce61.avif) | Galway Docks | Cityscape | ⭐⭐⭐⭐⭐ | urn:ró:place:92 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/39325615d5.avif) | Glendalough | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/eeae99b6ee.avif) | Glenveagh National Park | Landscape | ⭐⭐⭐ | urn:ró:place:101 |  |  |  |
@@ -1049,6 +1057,18 @@
 | ![](https://photos-cdn.rgrannell.xyz/7728836788.avif) | Regent's Park, London | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:37 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4bbe327c68.avif) | Regent's Park, London | Wildlife | ⭐⭐ | urn:ró:place:37 |  | urn:ró:mammal:sciurus-carolinensis?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/da4efb44c0.avif) | Regent's Park, London | Wildlife | ⭐⭐⭐ | urn:ró:place:37 |  | urn:ró:bird:psittacula-krameri?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4a2fbe6ea8.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1c0a93ca20.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9db321ba9c.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0e5be3c879.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9186e5fc54.avif) | RenFair | Other | ⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1880e79c2d.avif) | RenFair | Other | ⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/fee71f8c71.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4dd2f6627d.avif) | RenFair | Other | ⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/92ae41df86.avif) | RenFair | Other | ⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f68a3027dd.avif) | RenFair | Other | ⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/112683750b.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/13cd80448b.avif) | RenFair | Other | ⭐⭐⭐⭐ | urn:ró:place:184 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9b9ce3e62c.avif) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5dd81681d8.avif) | Ring of Kerry | Wildlife | ⭐⭐⭐ | urn:ró:place:104 |  | urn:ró:arthropod:unknown?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/5eace8751d.avif) | Ring of Kerry | Landscape | ⭐⭐⭐⭐ | urn:ró:place:104 |  |  |  |
@@ -1249,14 +1269,25 @@
 | ![](https://photos-cdn.rgrannell.xyz/8ef796b645.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/48fa4cc50d.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/21bf0c601c.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/102c756512.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:insect:vespula-vulgaris?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/102c756512.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:arthropod:vespula-vulgaris?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/341b786c08.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b3f272115e.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/456590091a.avif) | Steam Museum & Gardens | Other | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2c40c22e1a.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d4cbb14564.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/a2d84b4ce5.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:insect:halyzia-sedecimguttata?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/a2d84b4ce5.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:arthropod:halyzia-sedecimguttata?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/cdcd55fc95.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5b43551d88.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/188e3429ff.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3648464f32.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4c18dd88bb.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/09d6b22f5f.avif) | Stradbally Steam Rally | Other | ⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5ff65fc004.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b9fe306ae3.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9837a63835.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/66c9b6561f.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7ec9409144.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/75d6ea75eb.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8aa2f27452.avif) | Swifts & Martins | Wildlife | ⭐⭐ | urn:ró:place:148 |  | urn:ró:bird:delichon-urbicum?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/dd4ed91e81.avif) | Swifts & Martins | Wildlife | ⭐⭐ | urn:ró:place:148 |  | urn:ró:bird:apus-apus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/17f8f724e9.avif) | Switzerland | Landscape | ⭐⭐⭐ | urn:ró:place:61 |  |  |  |
@@ -1387,7 +1418,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/1d50bfe114.avif) | West Ireland | Landscape | ⭐⭐⭐⭐ | urn:ró:place:148 | kylemore abbey reflected in a lake. framed by lakeside vegetation, with a forest in the background |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6c4bd0ed7c.avif) | West Ireland | Landscape | ⭐⭐⭐ | urn:ró:place:148 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d076d8c12a.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:179 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/9ea60de5b8.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:insect:celastrina-argiolus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/9ea60de5b8.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:arthropod:celastrina-argiolus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/7771d7f88d.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d33748b7f2.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c5faf503aa.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
@@ -1401,7 +1432,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/5b2e69f30e.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:bird:fringilla-coelebs?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/39b0ee0046.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/385602e085.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/01563073c9.avif) | Wicklow | Wildlife | ⭐⭐ | urn:ró:place:179 |  | urn:ró:insect:chloromyia-formosa?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/01563073c9.avif) | Wicklow | Wildlife | ⭐⭐ | urn:ró:place:179 |  | urn:ró:arthropod:chloromyia-formosa?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/05d0dbbc17.avif) | Wicklow | Cityscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ef5df6bd03.avif) | William Blake Exhibit | Museum | ⭐⭐⭐ | urn:ró:place:172 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/e0615b337a.avif) | William Blake Exhibit | Museum | ⭐⭐⭐ | urn:ró:place:172 |  |  |  |

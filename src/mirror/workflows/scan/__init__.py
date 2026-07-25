@@ -9,11 +9,11 @@ from .scan import (
 )
 
 __all__ = [
-    "media_scan",
     "geonames_scan",
-    "wikidata_scan",
-    "scan_media",
+    "media_scan",
     "read_albums",
     "read_photos",
     "read_videos",
+    "scan_media",
+    "wikidata_scan",
 ]

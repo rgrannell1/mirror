@@ -1,4 +1,4 @@
-"""Fetches photos and videos from a connected camera, clusters them with badger, and opens the result."""
+"""Fetch media from a connected camera, cluster it with badger, and open the result."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from typing import Any
 
 import dateparser
 from zahir import JobContext, await_all, concurrency_dependency, semaphore_dependency
-from zahir.core.constants import DependencyState
+from zahir.core.commons.constants import DependencyState
 from zahir.core.effects import ESetState
 
 from mirror.commons.config import BADGER_PATH, RAW_MEDIA_DIRECTORY
@@ -22,7 +22,9 @@ from mirror.commons.constants import SUPPORTED_IMAGE_EXTENSIONS
 SUPPORTED_VIDEO_EXTENSIONS = (".mp4", ".MP4", ".mov", ".MOV")
 SUPPORTED_RAW_EXTENSIONS = (".rw2", ".RW2", ".raw", ".RAW", ".dng", ".DNG")
 SUPPORTED_EXTENSIONS = (
-    frozenset(SUPPORTED_IMAGE_EXTENSIONS) | frozenset(SUPPORTED_VIDEO_EXTENSIONS) | frozenset(SUPPORTED_RAW_EXTENSIONS)
+    frozenset(SUPPORTED_IMAGE_EXTENSIONS)
+    | frozenset(SUPPORTED_VIDEO_EXTENSIONS)
+    | frozenset(SUPPORTED_RAW_EXTENSIONS)
 )
 
 _PHOTO_EXTS = frozenset(SUPPORTED_IMAGE_EXTENSIONS)
@@ -52,7 +54,8 @@ def find_camera_files(dcim_dir: str) -> list[Path]:
         raise FileNotFoundError(f"Camera DCIM directory not found: {dcim_dir}")
 
     all_files = glob.glob(str(dcim_path / "**" / "*"), recursive=True)
-    return [Path(fpath) for fpath in all_files if Path(fpath).suffix in SUPPORTED_EXTENSIONS and Path(fpath).is_file()]
+    paths = (Path(fpath) for fpath in all_files)
+    return [path for path in paths if path.suffix in SUPPORTED_EXTENSIONS and path.is_file()]
 
 
 def file_date(path: Path) -> date:
@@ -141,18 +144,8 @@ def parse_badger_progress(line: str) -> dict | None:
         return None
 
 
-def fetch_run_badger(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
-    """Run badger, firing one semaphore per file as each is clustered."""
-    dest = input["dest"]
-    src_glob = str(Path(dest) / "*")
-
-    proc = subprocess.Popen(
-        [BADGER_PATH, "cluster", "--from", src_glob, "--to", dest, "--yes", "--json-progress"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
-
+def stream_badger_progress(proc) -> Generator[Any, Any, dict]:
+    """Fire semaphores as badger reports progress; return the final progress counts."""
     prev_photos = prev_videos = prev_raws = 0
     last_progress: dict = {}
 
@@ -170,12 +163,38 @@ def fetch_run_badger(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
         prev_raws = parsed["raws_done"]
         last_progress = parsed
 
-    proc.wait()
+    return last_progress
+
+
+def check_badger_exit(proc) -> None:
+    """Raise when badger exited unsuccessfully, including its stderr."""
     if proc.returncode != 0:
         stderr_out = proc.stderr.read() if proc.stderr else ""  # type: ignore[union-attr]
         raise RuntimeError(f"badger exited {proc.returncode}: {stderr_out.strip()}")
 
+
+def fetch_run_badger(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
+    """Run badger, firing one semaphore per file as each is clustered."""
+    dest = input["dest"]
+    src_glob = str(Path(dest) / "*")
+
+    proc = subprocess.Popen(
+        [BADGER_PATH, "cluster", "--from", src_glob, "--to", dest, "--yes", "--json-progress"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    last_progress = yield from stream_badger_progress(proc)
+
+    proc.wait()
+    check_badger_exit(proc)
+
     # Fallback: satisfy any semaphores not yet signalled (e.g. no progress output)
+    prev_photos = last_progress.get("photos_done", 0)
+    prev_videos = last_progress.get("videos_done", 0)
+    prev_raws = last_progress.get("raws_done", 0)
+
     yield from signal_range("badger_photo", prev_photos, input["photo_count"])
     yield from signal_range("badger_video", prev_videos, input["video_count"])
     yield from signal_range("badger_raw", prev_raws, input["raw_count"])
@@ -214,7 +233,8 @@ def fetch_open_nautilus(ctx: JobContext, input: dict) -> Generator[Any, Any, Non
 
 def fetch_workflow(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     """Orchestrate the full camera import flow."""
-    dates = yield ctx.scope.fetch_resolve_dates({"from_str": input["from_str"], "to_str": input["to_str"]})
+    date_input = {"from_str": input["from_str"], "to_str": input["to_str"]}
+    dates = yield ctx.scope.fetch_resolve_dates(date_input)
 
     found = yield ctx.scope.fetch_find_filtered({
         "from_date": dates["from_date"],
@@ -225,8 +245,7 @@ def fetch_workflow(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     dest = found["dest"]
 
     yield await_all([
-        ctx.scope.fetch_copy_file({"src": src, "dest": dest})
-        for src in found["filtered"]
+        ctx.scope.fetch_copy_file({"src": src, "dest": dest}) for src in found["filtered"]
     ])
 
     badger_input = {
