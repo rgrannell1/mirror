@@ -1,95 +1,78 @@
 """PhotoPane widget and PhotoFilterProvider for the Photos tab."""
 
 import random
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from functools import partial
 from pathlib import Path
+from typing import ClassVar
 
+from rich.markup import escape
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.command import Hit, Hits, Provider
+from textual.command import Hits, Provider
 from textual.widget import Widget
-from textual.widgets import Label
+from textual.widgets import Label, TabbedContent
 
+from labeller.filtering import FilterEntry, iter_hits, match_field
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer, webp_url_for_url
 from labeller.widgets import ImageFrame
 
-from .filters import PRESET_FILTERS
-from .parser import PhotoRow, load_photos
+from .filters import PRESET_FILTERS, failing_audit_urls, photo_fails_audit
+from .parser import EDITABLE_COLUMNS, PhotoRow, load_photos
 from .state import PhotoState
+from .vision import label_image
 from .widgets import PhotoFieldTable
 from .writer import save_photo_row
 
 PHOTOS_PATH = Path(__file__).parent.parent.parent / "photos.md"
 
 
+def apply_audit_filter(pane: "PhotoPane") -> None:
+    """Compute the failing-audit url set fresh, then filter to those photos."""
+    predicate = partial(photo_fails_audit, failing_audit_urls())
+    pane._apply_filter("Fails audit", predicate)
+
+
+def photo_filter_entries(pane: "PhotoPane") -> Iterator[FilterEntry]:
+    """Build the (label, command, help) palette rows for the Photos tab."""
+    all_command = partial(pane._apply_filter, None, None)
+    yield ("All photos", all_command, "Remove filter — show all photos")
+
+    audit_command = partial(apply_audit_filter, pane)
+    yield ("Filter: Fails audit", audit_command, "photos failing photo-level audit checks")
+
+    for preset_label, predicate in PRESET_FILTERS:
+        command = partial(pane._apply_filter, preset_label, predicate)
+        yield (f"Filter: {preset_label}", command, preset_label.lower())
+
+    for genre in sorted(pane._state.known_genres):
+        genre_filter = partial(match_field, "genre", genre)
+        command = partial(pane._apply_filter, f"Genre > {genre}", genre_filter)
+        yield (f"Filter: Genre > {genre}", command, genre)
+
+    for album_name in sorted({photo.name for photo in pane._state.all_photos}):
+        command = partial(pane._apply_filter, album_name, partial(match_field, "name", album_name))
+        yield (f"Album: {album_name}", command, album_name)
+
+
 class PhotoFilterProvider(Provider):
     """Command palette provider: preset filters and per-album/genre filters."""
 
     async def search(self, query: str) -> Hits:
-        from textual.widgets import TabbedContent
-
         if self.app.query_one(TabbedContent).active != "photos":
             return
 
-        pane: PhotoPane = self.app.query_one(PhotoPane)
+        pane = self.app.query_one(PhotoPane)
         matcher = self.matcher(query)
-
-        all_label = "All photos"
-        all_score = matcher.match(all_label)
-        if all_score > 0 or not query:
-            yield Hit(
-                score=all_score,
-                match_display=matcher.highlight(all_label),
-                command=lambda: pane._apply_filter(None, None),
-                help="Remove filter — show all photos",
-            )
-
-        for preset_label, predicate in PRESET_FILTERS:
-            namespaced = f"Filter: {preset_label}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred))(),
-                    help=preset_label.lower(),
-                )
-
-        for genre in sorted(pane._state.known_genres):
-            namespaced = f"Filter: Genre > {genre}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda g=genre: lambda: pane._apply_filter(
-                            f"Genre > {g}", lambda photo, genre=g: photo.genre == genre
-                        )
-                    )(),
-                    help=genre,
-                )
-
-        albums = sorted({photo.name for photo in pane._state.all_photos})
-        for album_name in albums:
-            namespaced = f"Album: {album_name}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda name=album_name: lambda: pane._apply_filter(name, lambda photo, n=name: photo.name == n)
-                    )(),
-                    help=album_name,
-                )
+        for hit in iter_hits(matcher, query, photo_filter_entries(pane)):
+            yield hit
 
 
 class PhotoPane(Widget):
     """Browse and edit photos.md entries."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("left", "prev_photo", "Prev photo"),
         Binding("right", "next_photo", "Next photo"),
         Binding("[", "prev_album", "Prev album"),
@@ -158,8 +141,6 @@ class PhotoPane(Widget):
             self.app.notify("No previous edit to repeat", severity="warning")
             return
         field, value = self.app.last_edit
-        from .parser import EDITABLE_COLUMNS
-
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for photos", severity="warning")
             return
@@ -221,15 +202,18 @@ class PhotoPane(Widget):
         urns = [token.strip() for token in places_field.split() if token.strip()]
         return [urn_to_name[urn] for urn in urns if urn in urn_to_name]
 
-    def _fetch_labels(self, fpath: str | None, url: str, album_title: str | None, place_names: list[str]) -> None:
-        from rich.markup import escape
-
-        from .vision import label_image
-
+    def _fetch_labels(
+        self,
+        fpath: str | None,
+        url: str,
+        album_title: str | None,
+        place_names: list[str],
+    ) -> None:
         try:
             labels = label_image(fpath, url, album_title=album_title, place_names=place_names)
-        except Exception as exc:
-            self.app.call_from_thread(self.app.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
+        except Exception as exc:  # noqa: BLE001
+            message = escape(f"Vision API error: {exc}")
+            self.app.call_from_thread(self.app.notify, message, severity="error", timeout=8)
             return
         if not labels:
             self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")

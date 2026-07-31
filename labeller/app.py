@@ -1,5 +1,7 @@
 """Main Textual application: tabbed layout for photo and album labelling."""
 
+from typing import ClassVar
+
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.widgets import Footer, Header, TabbedContent, TabPane
@@ -29,7 +31,7 @@ class LabellerApp(App):
     }
     """
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("q", "quit", "Quit"),
         Binding("l", "label_image", "Label image"),
     ]

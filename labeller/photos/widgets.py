@@ -1,6 +1,6 @@
 """Photo-specific widgets: PhotoFieldTable."""
 
-from collections.abc import Callable
+from functools import partial
 
 from textual.app import ComposeResult
 from textual.widget import Widget
@@ -15,6 +15,7 @@ from labeller.widgets import (
     GenreSuggester,
     RatingSelector,
     UrnSuggester,
+    format_urn_list,
 )
 
 from .parser import EDITABLE_COLUMNS
@@ -23,7 +24,13 @@ from .parser import EDITABLE_COLUMNS
 class PhotoFieldTable(FieldTable):
     """FieldTable with photo-specific editors: RatingSelector, GenreSuggester, UrnSuggester."""
 
-    def __init__(self, genres: set[str], places: dict[str, str], subjects: dict[str, str], **kwargs) -> None:
+    def __init__(
+        self,
+        genres: set[str],
+        places: dict[str, str],
+        subjects: dict[str, str],
+        **kwargs,
+    ) -> None:
         super().__init__(
             editable_columns=EDITABLE_COLUMNS,
             **kwargs,
@@ -35,23 +42,12 @@ class PhotoFieldTable(FieldTable):
         self._urn_to_place = {urn: name for name, urn in places.items()}
         self._urn_to_subject = {urn: name for name, urn in subjects.items()}
 
-    def _urn_display(self, urn_to_name: dict[str, str]) -> Callable[[str], str]:
-        def _fmt_one(urn: str) -> str:
-            bare = urn.split("?", 1)[0]
-            name = urn_to_name.get(bare)
-            return f"{name} [{urn}]" if name else urn
-
-        def _fmt(value: str) -> str:
-            return ", ".join(_fmt_one(urn.strip()) for urn in value.split(","))
-
-        return _fmt
-
     def compose(self) -> ComposeResult:
         for field_index, field_name in enumerate(EDITABLE_COLUMNS):
             if field_name == "places":
-                display_fn = self._urn_display(self._urn_to_place)
+                display_fn = partial(format_urn_list, self._urn_to_place)
             elif field_name == "subjects":
-                display_fn = self._urn_display(self._urn_to_subject)
+                display_fn = partial(format_urn_list, self._urn_to_subject)
             else:
                 display_fn = None
             yield FieldRow(

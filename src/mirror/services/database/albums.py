@@ -33,13 +33,13 @@ class AlbumDataView:
 
         return None
 
-    def album_dpath_from_thumbnail_url(self, thumbnail_url: str) -> Optional[str]:
-        query = "select dpath from view_album_data where thumbnail_url = ?"
+    def album_dpaths_by_thumbnail_url(self) -> dict[str, str]:
+        """Every thumbnail url mapped to its album dpath.
 
-        for row in self.conn.execute(query, (thumbnail_url,)):
-            return row[0]
-
-        return None
+        Build this once when resolving a whole markdown table. The view aggregates, so one
+        query per row is slow."""
+        query = "select thumbnail_url, dpath from view_album_data where thumbnail_url is not null"
+        return {row[0]: row[1] for row in self.conn.execute(query)}
 
 
 class MediaMetadataTable:

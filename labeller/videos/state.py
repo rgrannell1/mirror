@@ -51,8 +51,9 @@ class VideoState:
     ) -> None:
         """Apply a named filter predicate, or pass None to show all videos."""
         self.active_filter = label
-        self.videos = (
-            list(self.all_videos) if predicate is None else [video for video in self.all_videos if predicate(video)]
-        )
+        if predicate is None:
+            self.videos = list(self.all_videos)
+        else:
+            self.videos = [video for video in self.all_videos if predicate(video)]
         self.video_index = 0
         self.field_index = 0

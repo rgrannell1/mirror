@@ -406,7 +406,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d304588f76.avif) | Dublin Museums | Museum | ⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2d5e228b14.avif) | Dublin Museums | Museum | ⭐⭐⭐ | urn:ró:place:20 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/55a69c18d8.avif) | Dublin Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:20 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/4969a29cd0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:corvus-monedula?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/4969a29cd0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:coloeus-monedula?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/ada1eda6d3.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:arthropod:bombus-terrestris?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/76bcd31a12.avif) | Dublin Zoo | Wildlife | ⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:myrmecophaga-tridactyla |  |
@@ -713,6 +713,27 @@
 | ![](https://photos-cdn.rgrannell.xyz/de23bf2362.avif) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/07cb995bcb.avif) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/7316afbf02.avif) | Lapwings, Emo, Laois | Wildlife | ⭐⭐ | urn:ró:place:110 |  | urn:ró:bird:vanellus-vanellus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/2f9721ce62.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ba52ee58c0.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f815131b8f.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7c31102467.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2fa17eefa6.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4678fa48ab.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0607fd3a4b.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8565bba150.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5e636a1922.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/424e9417a9.avif) | Las Palmas | Transport | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a1235ce4c2.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:189 |  | urn:ró:arthropod:danaus-plexippus?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/6a09cf5b19.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/ec4e2487af.avif) | Las Palmas Museums | Other | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/32d750f765.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:reptile:centrochelys-sulcata?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/e37310c797.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:reptile:furcifer-pardalis?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/21b077f9f9.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/dbbfbfa4d3.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d34fac5e82.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1989ba03ef.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9278e94154.avif) | Las Palmas Museums | Museum | ⭐⭐⭐ |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3964688c79.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5b4d2321f0.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:podargus-strigoides?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/7d93d696d6.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:nycticorax-nycticorax?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9844e0f35.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:guira-guira?context=captivity |  |
@@ -887,6 +908,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/48722a6fee.avif) | Mallorca | Cityscape | ⭐⭐⭐ | urn:ró:place:177 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ae2ae90208.avif) | Mallorca | Wildlife | ⭐⭐⭐ | urn:ró:place:177 |  | urn:ró:bird:columba-livia?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/4f0d9a4ac9.avif) | Mallorca | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:177 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0196e0d958.avif) | Maspalomas | Wildlife | ⭐⭐ | urn:ró:place:190 |  | urn:ró:bird:falco-tinnunculus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/f48d6b9a8b.avif) | Maspalomas | Landscape | ⭐⭐⭐ | urn:ró:place:190 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4a428c1e7c.avif) | Maspalomas | Landscape | ⭐⭐⭐ | urn:ró:place:190 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0cc4d23c96.avif) | Maspalomas | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:190 |  | urn:ró:arthropod:xylocopa-pubescens?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8a1a8e8b39.avif) | Maynooth | Transport | ⭐⭐⭐ | urn:ró:place:180 |  | urn:ró:train:cié-071 |  |
 | ![](https://photos-cdn.rgrannell.xyz/42466b3590.avif) | Maynooth | Transport | ⭐⭐⭐ | urn:ró:place:180 |  | urn:ró:train:cié-071 |  |
 | ![](https://photos-cdn.rgrannell.xyz/599845c5da.avif) | Menlo Castle | Landscape | ⭐⭐⭐ | urn:ró:place:92 |  |  |  |

@@ -51,8 +51,9 @@ class PhotoState:
     ) -> None:
         """Apply a named filter predicate, or pass None to show all photos."""
         self.active_filter = label
-        self.photos = (
-            list(self.all_photos) if predicate is None else [photo for photo in self.all_photos if predicate(photo)]
-        )
+        if predicate is None:
+            self.photos = list(self.all_photos)
+        else:
+            self.photos = [photo for photo in self.all_photos if predicate(photo)]
         self.photo_index = 0
         self.field_index = 0

@@ -14,13 +14,13 @@ def fetch_image(url: str) -> Image.Image | None:
         response = requests.get(url, timeout=8)
         response.raise_for_status()
         return Image.open(io.BytesIO(response.content)).convert("RGB")
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None
 
 
 def fit_image(image: Image.Image, max_width: int, max_height: int) -> Image.Image:
     """
-    Resize image to fit within max_width × max_height terminal character cells.
+    Resize image to fit within max_width by max_height terminal character cells.
     Each cell renders two vertical pixel rows via half-block characters, so the
     pixel height passed to Pixels should be max_height * 2.
     """

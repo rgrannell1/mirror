@@ -7,7 +7,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/37f93bdfc4.avif) | Skellig Micheal | skellig-micheal-13 | urn:ró:place:148 | Skellig Micheal is rocky crag off the cost of Kerry. It's a UNESCO World Heritage Site with a large (and fairly tame) puffin population. I personally think it's the most beautiful place in Ireland. |
 | ![](https://photos-cdn.rgrannell.xyz/86de92150e.avif) | Aran Islands | aran-islands-15 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/2dd551d820.avif) | University of Galway | university-of-galway-16 | urn:ró:place:148 |  |
-| ![](https://photos-cdn.rgrannell.xyz/b5ec32445f.avif) | Handel's Messiah | messiah-16 |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b5ec32445f.avif) | Handel's Messiah | messiah-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/877c84c119.avif) | Roundstone | roundstone-16 | urn:ró:place:148 | These photos are from a trip though Connemara to Roundstone. I was using a bridge camera, so the image quality (and corrective editing) is questionable |
 | ![](https://photos-cdn.rgrannell.xyz/fa45969940.avif) | Cliffs of Moher | cliffs-of-moher-16 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/d7be1dce7e.avif) | Emo Court | laois-16 | urn:ró:place:148 |  |
@@ -126,8 +126,11 @@
 | ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | dublin-zoo-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd4ae22b43.avif) | East Coast Nature Reserve | east-coast-nature-26 | urn:ró:place:148 | I was close to photographing a kingfisher, again... |
+| ![](https://photos-cdn.rgrannell.xyz/a1235ce4c2.avif) | Las Palmas Museums | las-palmas-museums-26 | urn:ró:place:186 |  |
+| ![](https://photos-cdn.rgrannell.xyz/0607fd3a4b.avif) | Las Palmas | las-palmas-26 | urn:ró:place:186 |  |
 | ![](https://photos-cdn.rgrannell.xyz/666396a661.avif) | Madrid | madrid-city-26 | urn:ró:place:164 | I finally got to see the Temple of Debod, after three attempts |
 | ![](https://photos-cdn.rgrannell.xyz/8c7539ca00.avif) | National Archaeological Museum | man-26 | urn:ró:place:164 | I was recovering from surgery at the time, so it took a few attempts to actually see this museum (and see it briefly) |
+| ![](https://photos-cdn.rgrannell.xyz/f48d6b9a8b.avif) | Maspalomas | maspalomas-26 | urn:ró:place:186 |  |
 | ![](https://photos-cdn.rgrannell.xyz/8a1a8e8b39.avif) | Maynooth | maynooth-26 | urn:ró:place:148 | I went to see a [steam train](https://www.steamtrainsireland.com/rpsi-collection/1/no171-slieve-gullion), but something a bit more [industrial](https://en.wikipedia.org/wiki/CI%C3%89_071_Class) showed up in its place |
 | ![](https://photos-cdn.rgrannell.xyz/0791d7a678.avif) | River Dodder | river-dodder-26 | urn:ró:place:148 | The first blue-sky of 2026. I went for a walk hoping to see kingfishers and otters. As expected, I didn't find any, but it was a nice walk regardless |
 | ![](https://photos-cdn.rgrannell.xyz/b3f272115e.avif) | Steam Museum & Gardens | steam-museum-26 | urn:ró:place:148 |  |

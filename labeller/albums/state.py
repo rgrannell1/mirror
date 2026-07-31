@@ -48,8 +48,9 @@ class AlbumState:
     ) -> None:
         """Apply a named filter predicate, or pass None to show all albums."""
         self.active_filter = label
-        self.albums = (
-            list(self.all_albums) if predicate is None else [album for album in self.all_albums if predicate(album)]
-        )
+        if predicate is None:
+            self.albums = list(self.all_albums)
+        else:
+            self.albums = [album for album in self.all_albums if predicate(album)]
         self.album_index = 0
         self.field_index = 0

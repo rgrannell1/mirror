@@ -2,21 +2,26 @@
 
 import random
 import subprocess
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from functools import partial
 from pathlib import Path
+from typing import ClassVar
 
+from rich.markup import escape
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.command import Hit, Hits, Provider
+from textual.command import Hits, Provider
 from textual.widget import Widget
-from textual.widgets import Label, Static
+from textual.widgets import Label, Static, TabbedContent
 
+from labeller.filtering import FilterEntry, iter_hits, match_field
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer
+from labeller.photos.vision import label_image
 from labeller.widgets import ImageFrame
 
 from .filters import PRESET_FILTERS
-from .parser import VideoRow, load_videos
+from .parser import EDITABLE_COLUMNS, VideoRow, load_videos
 from .state import VideoState
 from .widgets import VideoFieldTable
 from .writer import save_video_row
@@ -24,73 +29,42 @@ from .writer import save_video_row
 VIDEOS_PATH = Path(__file__).parent.parent.parent / "videos.md"
 
 
+def video_filter_entries(pane: "VideoPane") -> Iterator[FilterEntry]:
+    """Build the (label, command, help) palette rows for the Videos tab."""
+    all_command = partial(pane._apply_filter, None, None)
+    yield ("All videos", all_command, "Remove filter — show all videos")
+
+    for preset_label, predicate in PRESET_FILTERS:
+        command = partial(pane._apply_filter, preset_label, predicate)
+        yield (f"Filter: {preset_label}", command, preset_label.lower())
+
+    for genre in sorted(pane._state.known_genres):
+        genre_filter = partial(match_field, "genre", genre)
+        command = partial(pane._apply_filter, f"Genre > {genre}", genre_filter)
+        yield (f"Filter: Genre > {genre}", command, genre)
+
+    for album_name in sorted({video.name for video in pane._state.all_videos}):
+        command = partial(pane._apply_filter, album_name, partial(match_field, "name", album_name))
+        yield (f"Album: {album_name}", command, album_name)
+
+
 class VideoFilterProvider(Provider):
     """Command palette provider: preset filters and per-album/genre filters."""
 
     async def search(self, query: str) -> Hits:
-        from textual.widgets import TabbedContent
-
         if self.app.query_one(TabbedContent).active != "videos":
             return
 
-        pane: VideoPane = self.app.query_one(VideoPane)
+        pane = self.app.query_one(VideoPane)
         matcher = self.matcher(query)
-
-        all_label = "All videos"
-        all_score = matcher.match(all_label)
-        if all_score > 0 or not query:
-            yield Hit(
-                score=all_score,
-                match_display=matcher.highlight(all_label),
-                command=lambda: pane._apply_filter(None, None),
-                help="Remove filter — show all videos",
-            )
-
-        for preset_label, predicate in PRESET_FILTERS:
-            namespaced = f"Filter: {preset_label}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred))(),
-                    help=preset_label.lower(),
-                )
-
-        for genre in sorted(pane._state.known_genres):
-            namespaced = f"Filter: Genre > {genre}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda g=genre: lambda: pane._apply_filter(
-                            f"Genre > {g}", lambda video, genre=g: video.genre == genre
-                        )
-                    )(),
-                    help=genre,
-                )
-
-        albums = sorted({video.name for video in pane._state.all_videos})
-        for album_name in albums:
-            namespaced = f"Album: {album_name}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda name=album_name: lambda: pane._apply_filter(name, lambda video, n=name: video.name == n)
-                    )(),
-                    help=album_name,
-                )
+        for hit in iter_hits(matcher, query, video_filter_entries(pane)):
+            yield hit
 
 
 class VideoPane(Widget):
     """Browse and edit videos.md entries."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("left", "prev_video", "Prev video"),
         Binding("right", "next_video", "Next video"),
         Binding("[", "prev_album", "Prev album"),
@@ -145,7 +119,8 @@ class VideoPane(Widget):
             subjects=self._subject_urns,
             id="field-table",
         )
-        yield Static("p play  ·  space pause  ·  ← → seek  ·  [ ] speed  ·  q quit", id="playback-hint")
+        playback_hint = "p play  ·  space pause  ·  ← → seek  ·  [ ] speed  ·  q quit"
+        yield Static(playback_hint, id="playback-hint")
 
     def on_mount(self) -> None:
         # Populate the field table without loading an image — the pane is
@@ -182,8 +157,6 @@ class VideoPane(Widget):
             self.app.notify("No previous edit to repeat", severity="warning")
             return
         field, value = self.app.last_edit
-        from .parser import EDITABLE_COLUMNS
-
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for videos", severity="warning")
             return
@@ -227,15 +200,14 @@ class VideoPane(Widget):
         else:
             self.app.notify(f"No local file found for {url}", severity="warning")
 
-    _IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    _IMAGE_SUFFIXES: ClassVar = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
     def action_label_image(self) -> None:
         video = self._state.current_video
         url = video.cover.strip() or video.thumbnail_url
         raw_fpath = fpath_for_url(url)
-        from pathlib import Path
-
-        fpath = raw_fpath if raw_fpath and Path(raw_fpath).suffix.lower() in self._IMAGE_SUFFIXES else None
+        is_image = raw_fpath and Path(raw_fpath).suffix.lower() in self._IMAGE_SUFFIXES
+        fpath = raw_fpath if is_image else None
         self.app.notify("Asking Google Vision...", timeout=3)
         self.run_worker(
             lambda: self._fetch_labels(fpath, url),
@@ -244,14 +216,11 @@ class VideoPane(Widget):
         )
 
     def _fetch_labels(self, fpath: str | None, url: str) -> None:
-        from rich.markup import escape
-
-        from labeller.photos.vision import label_image
-
         try:
             labels = label_image(fpath, url)
-        except Exception as exc:
-            self.app.call_from_thread(self.app.notify, escape(f"Vision API error: {exc}"), severity="error", timeout=8)
+        except Exception as exc:  # noqa: BLE001
+            message = escape(f"Vision API error: {exc}")
+            self.app.call_from_thread(self.app.notify, message, severity="error", timeout=8)
             return
         if not labels:
             self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")

@@ -1,16 +1,20 @@
 """AlbumPane widget and AlbumFilterProvider for the Albums tab."""
 
 import random
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from functools import partial
 from pathlib import Path
+from typing import ClassVar
 
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.command import Hit, Hits, Provider
+from textual.command import Hits, Provider
 from textual.widget import Widget
-from textual.widgets import Label
+from textual.widgets import Label, TabbedContent
 
+from labeller.filtering import FilterEntry, iter_hits, match_field
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
+from labeller.opener import fpath_for_url, open_in_viewer
 from labeller.widgets import FieldTable, ImageFrame
 
 from .parser import EDITABLE_COLUMNS, AlbumRow, load_albums
@@ -24,63 +28,42 @@ PRESET_FILTERS: list[tuple[str, Callable[[AlbumRow], bool]]] = [
     ("Has summary", lambda album: bool(album.summary.strip())),
     ("No summary", lambda album: not album.summary.strip()),
     ("Has permalink", lambda album: bool(album.permalink.strip())),
+    ("Unlabelled", lambda album: not album.permalink.strip() or not album.country.strip()),
 ]
+
+
+def album_filter_entries(pane: "AlbumPane") -> Iterator[FilterEntry]:
+    """Build the (label, command, help) palette rows for the Albums tab."""
+    all_command = partial(pane._apply_filter, None, None)
+    yield ("All albums", all_command, "Remove filter — show all albums")
+
+    for preset_label, predicate in PRESET_FILTERS:
+        command = partial(pane._apply_filter, preset_label, predicate)
+        yield (f"Filter: {preset_label}", command, preset_label.lower())
+
+    countries = {album.country for album in pane._state.all_albums if album.country.strip()}
+    for country in sorted(countries):
+        command = partial(pane._apply_filter, country, partial(match_field, "country", country))
+        yield (f"Country: {country}", command, country)
 
 
 class AlbumFilterProvider(Provider):
     """Command palette provider: preset filters and per-country filters for albums."""
 
     async def search(self, query: str) -> Hits:
-        from textual.widgets import TabbedContent
-
         if self.app.query_one(TabbedContent).active != "albums":
             return
 
-        pane: AlbumPane = self.app.query_one(AlbumPane)
+        pane = self.app.query_one(AlbumPane)
         matcher = self.matcher(query)
-
-        all_label = "All albums"
-        all_score = matcher.match(all_label)
-        if all_score > 0 or not query:
-            yield Hit(
-                score=all_score,
-                match_display=matcher.highlight(all_label),
-                command=lambda: pane._apply_filter(None, None),
-                help="Remove filter — show all albums",
-            )
-
-        for preset_label, predicate in PRESET_FILTERS:
-            namespaced = f"Filter: {preset_label}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(lambda lbl=preset_label, pred=predicate: lambda: pane._apply_filter(lbl, pred))(),
-                    help=preset_label.lower(),
-                )
-
-        countries = sorted({album.country for album in pane._state.all_albums if album.country.strip()})
-        for country in countries:
-            namespaced = f"Country: {country}"
-            score = matcher.match(namespaced)
-            if score > 0 or not query:
-                yield Hit(
-                    score=score,
-                    match_display=matcher.highlight(namespaced),
-                    command=(
-                        lambda c=country: lambda: pane._apply_filter(
-                            c, lambda album, country=c: album.country == country
-                        )
-                    )(),
-                    help=country,
-                )
+        for hit in iter_hits(matcher, query, album_filter_entries(pane)):
+            yield hit
 
 
 class AlbumPane(Widget):
     """Browse and edit albums.md entries."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("left", "prev_album", "Prev album"),
         Binding("right", "next_album", "Next album"),
         Binding("r", "random_album", "Random"),
@@ -157,8 +140,6 @@ class AlbumPane(Widget):
         self._refresh_all()
 
     def action_open_image(self) -> None:
-        from labeller.opener import fpath_for_url, open_in_viewer
-
         url = self._state.current_album.thumbnail_url
         fpath = fpath_for_url(url)
         if fpath:

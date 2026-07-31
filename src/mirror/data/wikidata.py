@@ -9,7 +9,7 @@ import requests
 from attr import dataclass
 
 from mirror.commons.constants import KnownRelations, KnownWikiProperties
-from mirror.data.binomials import binomial_to_urn
+from mirror.data.binomials import binomial_urn_map, normalise_binomial
 from mirror.data.types import SemanticTriple
 
 
@@ -148,13 +148,14 @@ class WikidataMetadataReader:
         wikidata_table = db.wikidata_table()
 
         binomial_to_qid = {binomial: qid for binomial, qid in binomials_table.list() if qid}
+        urns = binomial_urn_map(db)
 
         for binomial, qid in binomial_to_qid.items():
             common_name = self.common_name_for(binomial, qid, wikidata_table)
             if common_name is None:
                 continue
 
-            urn = binomial_to_urn(db, binomial)
+            urn = urns.get(normalise_binomial(binomial))
             if not urn:
                 continue
 
@@ -165,25 +166,28 @@ class WikidataMetadataReader:
             )
 
     @staticmethod
-    def read_wikipedia_urls(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        wikidata_table = db.wikidata_table()
-
-        qids_to_urls = {}
-
+    def wikipedia_urls_by_qid(wikidata_table) -> dict[str, str]:
+        """Map each wikidata qid to its wikipedia link, skipping entries that have none."""
+        urls = {}
         for data in wikidata_table.list():
             url = data.find_wikipedia_link()
-            if not url:
-                continue
+            if url:
+                urls[data.qid] = url
+        return urls
 
-            qids_to_urls[data.qid] = url
+    @staticmethod
+    def read_wikipedia_urls(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
+        qids_to_urls = WikidataMetadataReader.wikipedia_urls_by_qid(db.wikidata_table())
 
         binomials_table = db.binomials_wikidata_id_table()
+        urns = binomial_urn_map(db)
+
         for qid, url in qids_to_urls.items():
             binomial = binomials_table.get_binomial(qid)
             if not binomial:
                 continue
 
-            urn = binomial_to_urn(db, binomial)
+            urn = urns.get(normalise_binomial(binomial))
             if not urn:
                 continue
 

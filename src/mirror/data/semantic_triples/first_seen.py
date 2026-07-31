@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Iterator
 
@@ -13,6 +14,9 @@ from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
+
+# concurrent ffprobe subprocesses; each probe is subprocess-bound, not CPU-bound
+PROBE_WORKERS = 12
 
 _PHOTO_TYPE_FILTERS = " OR ".join(
     f"pmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES
@@ -110,10 +114,21 @@ def _read_photo_first_seen(db: SqliteDatabase, earliest: dict[str, int]) -> None
         _merge_earliest(earliest, raw_urn, _exif_created_at_to_unix_ms(created_at))
 
 
+def _probe_capture_times(fpaths: list[str]) -> dict[str, int | None]:
+    """Capture time per video path. Each probe spawns ffprobe, so run them concurrently."""
+    if not fpaths:
+        return {}
+    with ThreadPoolExecutor(max_workers=PROBE_WORKERS) as pool:
+        return dict(zip(fpaths, pool.map(_video_capture_unix_ms, fpaths), strict=True))
+
+
 def _read_video_first_seen(db: SqliteDatabase, earliest: dict[str, int]) -> None:
     """Merge earliest capture times for filmed animal subjects."""
-    for fpath, raw_urn in db.conn.execute(ANIMAL_VIDEO_SUBJECT_QUERY).fetchall():
-        when_ms = _video_capture_unix_ms(fpath)
+    rows = db.conn.execute(ANIMAL_VIDEO_SUBJECT_QUERY).fetchall()
+    captured = _probe_capture_times(sorted({fpath for fpath, _ in rows}))
+
+    for fpath, raw_urn in rows:
+        when_ms = captured[fpath]
         if when_ms is not None:
             _merge_earliest(earliest, raw_urn, when_ms)
 

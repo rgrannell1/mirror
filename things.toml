@@ -18,6 +18,7 @@ place_feature = [
     { id = "urn:ró:place_feature:cave", name = "Cave" },
     { id = "urn:ró:place_feature:cliffs", name = "Cliffs" },
     { id = "urn:ró:place_feature:county", name = "County" },
+    { id = "urn:ró:place_feature:dunes", name = "Dunes" },
     { id = "urn:ró:place_feature:district", name = "District" },
     { id = "urn:ró:place_feature:garden", name = "Garden" },
     { id = "urn:ró:place_feature:island", name = "Island" },
@@ -2532,6 +2533,76 @@ features = [
     "urn:ró:place_feature:town",
 ]
 
+[[places]]
+id = "urn:ró:place:186"
+name = "Gran Canaria"
+flag = "🇮🇨"
+wikipedia = "https://en.wikipedia.org/wiki/Gran_Canaria"
+in = [
+    "urn:ró:place:164",
+    "urn:ró:place:142",
+]
+features = [
+    "urn:ró:place_feature:island",
+    "urn:ró:place_feature:country",
+]
+
+[[places]]
+id = "urn:ró:place:187"
+longitude = -15.431389
+latitude = 28.126667
+name = "Las Palmas"
+wikipedia = "https://en.wikipedia.org/wiki/Las_Palmas"
+in = [
+    "urn:ró:place:186",
+]
+features = [
+    "urn:ró:place_feature:city",
+]
+
+[[places]]
+id = "urn:ró:place:188"
+longitude = -15.4312
+latitude = 28.1414
+name = "Poema del Mar"
+wikipedia = "https://en.wikipedia.org/wiki/Poema_del_Mar"
+in = [
+    "urn:ró:place:186",
+    "urn:ró:place:187",
+]
+features = [
+    "urn:ró:place_feature:aquarium",
+]
+
+[[places]]
+id = "urn:ró:place:189"
+longitude = -15.4293
+latitude = 28.1401
+name = "Elder Museum of Science and Technology"
+wikipedia = "https://en.wikipedia.org/wiki/Elder_Museum_of_Science_and_Technology"
+in = [
+    "urn:ró:place:186",
+    "urn:ró:place:187",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
+[[places]]
+id = "urn:ró:place:190"
+longitude = -15.5766
+latitude = 27.7392
+name = "Dunas de Maspalomas"
+wikipedia = "https://es.wikipedia.org/wiki/Dunas_de_Maspalomas"
+in = [
+    "urn:ró:place:186",
+]
+features = [
+    "urn:ró:place_feature:dunes",
+    "urn:ró:place_feature:nature reserve",
+    "urn:ró:place_feature:beach",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 contains_album = [
@@ -4680,6 +4751,10 @@ id = "urn:ró:amphibian:bufo-bufo"
 name = "Common Toad"
 
 [[reptiles]]
+id = "urn:ró:reptile:centrochelys-sulcata"
+name = "African Spurred Tortoise"
+
+[[reptiles]]
 id = "urn:ró:reptile:correlophus-ciliatus"
 name = "Crested Gecko"
 
@@ -4694,6 +4769,10 @@ name = "Rhinoceros Iguana"
 [[reptiles]]
 id = "urn:ró:reptile:dracaena-guianensis"
 name = "Caiman Lizard"
+
+[[reptiles]]
+id = "urn:ró:reptile:furcifer-pardalis"
+name = "Panther Chameleon"
 
 [[reptiles]]
 id = "urn:ró:reptile:gonocephalus-liogaster"
@@ -4959,6 +5038,10 @@ name = "Orange Ladybird"
 [[arthropods]]
 id = "urn:ró:arthropod:vespula-vulgaris"
 name = "Common Wasp"
+
+[[arthropods]]
+id = "urn:ró:arthropod:xylocopa-pubescens"
+name = "Hairy Carpenter Bee"
 
 [[mammals]]
 id = "urn:ró:mammal:nycticebus-javanicus"

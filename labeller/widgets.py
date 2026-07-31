@@ -2,10 +2,12 @@
 
 from collections.abc import Callable
 from pathlib import Path
+from typing import ClassVar
 
 import tomllib
 from textual.app import ComposeResult
 from textual.binding import Binding
+from textual.css.query import NoMatches
 from textual.markup import escape
 from textual.suggester import Suggester
 from textual.widget import Widget
@@ -24,7 +26,8 @@ def load_places() -> dict[str, str]:
         return {}
     with open(THINGS_PATH, "rb") as fh:
         data = tomllib.load(fh)
-    return {entry["name"]: entry["id"] for entry in data.get("places", []) if "name" in entry and "id" in entry}
+    entries = data.get("places", [])
+    return {entry["name"]: entry["id"] for entry in entries if "name" in entry and "id" in entry}
 
 
 def load_subjects() -> dict[str, str]:
@@ -41,6 +44,18 @@ def load_subjects() -> dict[str, str]:
             if "name" in entry and "id" in entry:
                 result[entry["name"]] = entry["id"]
     return result
+
+
+def format_urn(urn_to_name: dict[str, str], urn: str) -> str:
+    """Render one URN as 'Name [urn]' when a display name is known."""
+    bare = urn.split("?", 1)[0]
+    name = urn_to_name.get(bare)
+    return f"{name} [{urn}]" if name else urn
+
+
+def format_urn_list(urn_to_name: dict[str, str], value: str) -> str:
+    """Render a comma-separated URN field with display names."""
+    return ", ".join(format_urn(urn_to_name, urn.strip()) for urn in value.split(","))
 
 
 _FIELD_ROW_ID_PREFIX = "field-row-"
@@ -134,7 +149,9 @@ class UrnSuggester(CyclingSuggester):
 
     def _compute_matches(self, value: str) -> list[str]:
         lower = value.casefold()
-        prefix = [f"{name} [ {urn} ]" for name, urn in self._entries if name.casefold().startswith(lower)]
+        prefix = [
+            f"{name} [ {urn} ]" for name, urn in self._entries if name.casefold().startswith(lower)
+        ]
         infix = [
             f"{name} [ {urn} ]"
             for name, urn in self._entries
@@ -165,7 +182,8 @@ class ImageFrame(Widget):
         super().__init__(**kwargs)
         self._current_url: str = ""
 
-    def compose(self) -> ComposeResult:
+    @staticmethod
+    def compose() -> ComposeResult:
         yield TIImage()
 
     def update_photo(self, thumbnail_url: str) -> None:
@@ -195,7 +213,7 @@ class RatingSelector(Static, can_focus=True):
     Left/right cycles through RATING_OPTIONS; Enter confirms, Escape cancels.
     """
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("left", "prev_option", show=False),
         Binding("right", "next_option", show=False),
         Binding("enter", "confirm", show=False),
@@ -254,7 +272,12 @@ class FieldRow(Static):
     }
     """
 
-    def __init__(self, field_name: str, display_fn: Callable[[str], str] | None = None, **kwargs) -> None:
+    def __init__(
+        self,
+        field_name: str,
+        display_fn: Callable[[str], str] | None = None,
+        **kwargs,
+    ) -> None:
         super().__init__(**kwargs)
         self._field_name = field_name
         self._value: str = ""
@@ -288,7 +311,7 @@ class FieldTable(Widget, can_focus=True):
     Subclass and override _make_editor to provide field-specific editors.
     """
 
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding("up", "move_up", "Previous field", show=False),
         Binding("down", "move_down", "Next field", show=False),
         Binding("enter", "begin_edit", "Edit", show=False),
@@ -388,7 +411,8 @@ class FieldTable(Widget, can_focus=True):
     # Override in subclasses for field-specific editors
     # ------------------------------------------------------------------
 
-    def _make_editor(self, field_name: str, current_value: str) -> Widget:
+    # Instance method so subclasses can override with editors that need state.
+    def _make_editor(self, field_name: str, current_value: str) -> Widget:  # noqa: PLR6301
         return Input(value=current_value, placeholder=f"Edit {field_name}…", id=_EDIT_INPUT_ID)
 
     # ------------------------------------------------------------------
@@ -459,18 +483,23 @@ class FieldTable(Widget, can_focus=True):
             self.post_message(EditCancelled())
             event.stop()
             return
-        if self._edit_mode and event.key in ("up", "down"):
-            try:
-                inp = self.query_one(f"#{_EDIT_INPUT_ID}", Input)
-            except Exception:
-                return
-            if isinstance(inp.suggester, CyclingSuggester) and inp.value:
-                if self._cycle_base_query is None:
-                    self._cycle_base_query = inp.value
-                delta = -1 if event.key == "up" else 1
-                new_suggestion = inp.suggester.cycle(self._cycle_base_query, delta)
-                if new_suggestion is not None:
-                    self._cycling_in_progress = True
-                    inp.value = new_suggestion
-                    inp.cursor_position = len(new_suggestion)
-                event.stop()
+        if self._edit_mode and event.key in {"up", "down"}:
+            self._cycle_suggestion(event)
+
+    def _cycle_suggestion(self, event) -> None:
+        """Replace the edit input's value with the next/previous suggester match."""
+        try:
+            inp = self.query_one(f"#{_EDIT_INPUT_ID}", Input)
+        except NoMatches:
+            return
+        event.stop()
+        if not isinstance(inp.suggester, CyclingSuggester) or not inp.value:
+            return
+        if self._cycle_base_query is None:
+            self._cycle_base_query = inp.value
+        delta = -1 if event.key == "up" else 1
+        new_suggestion = inp.suggester.cycle(self._cycle_base_query, delta)
+        if new_suggestion is not None:
+            self._cycling_in_progress = True
+            inp.value = new_suggestion
+            inp.cursor_position = len(new_suggestion)

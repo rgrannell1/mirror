@@ -40,8 +40,7 @@ audit:triple-graph-invalid
             SELECT $this (?focus AS ?value)
                 (GROUP_CONCAT(?property; separator=", ") AS ?properties)
             WHERE {
-                ?focus audit:originalValue ?id ; audit:isSource true .
-                FILTER regex(str(?id), "^urn:ró:photo:")
+                ?focus audit:kind "photo" ; audit:isSource true .
                 {
                     BIND ("albumId" AS ?property)
                     BIND (relation:albumId AS ?predicate)
@@ -83,8 +82,7 @@ audit:triple-graph-invalid
             PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
             SELECT $this (?focus AS ?value) ?property
             WHERE {
-                ?focus audit:originalValue ?id ; audit:isSource true .
-                FILTER regex(str(?id), "^urn:ró:album:")
+                ?focus audit:kind "album" ; audit:isSource true .
                 {
                     BIND ("name" AS ?property)
                     BIND (relation:name AS ?predicate)
@@ -130,8 +128,7 @@ audit:triple-graph-invalid
             PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
             SELECT $this (?focus AS ?value)
             WHERE {
-                ?focus audit:originalValue ?id ; ?predicate ?field_value .
-                FILTER regex(str(?id), "^urn:ró:album:")
+                ?focus audit:kind "album" ; ?predicate ?field_value .
                 FILTER (?predicate IN (
                     relation:photosCount, relation:videosCount,
                     relation:minDate, relation:maxDate
@@ -257,6 +254,57 @@ audit:triple-graph-invalid
                     !regex(str(?target_id), "^urn:ró:place:") ||
                     !BOUND(?name)
                 )
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "country must have a flag in things.toml" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?target AS ?value)
+            WHERE {
+                ?focus relation:country ?target .
+                ?focus audit:originalValue ?focus_id .
+                ?target audit:originalValue ?target_id .
+                FILTER regex(str(?focus_id), "^urn:ró:(photo|album|video):")
+                FILTER regex(str(?target_id), "^urn:ró:place:")
+                FILTER NOT EXISTS {
+                    ?target relation:flag ?flag .
+                    FILTER (strlen(str(?flag)) > 0)
+                }
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "album must have at least one country" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?focus AS ?value)
+            WHERE {
+                ?focus audit:kind "album" ; audit:isSource true .
+                FILTER NOT EXISTS { ?focus relation:country ?country . }
+            }
+        """ ;
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "country must be a place with the country feature" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?target AS ?value)
+            WHERE {
+                ?focus relation:country ?target ; audit:kind ?focus_kind .
+                ?target audit:kind "place" .
+                FILTER (?focus_kind IN ("photo", "album", "video"))
+                FILTER NOT EXISTS {
+                    ?target relation:features ?feature .
+                    ?feature audit:originalValue "urn:ró:place_feature:country" .
+                }
             }
         """ ;
     ] ;

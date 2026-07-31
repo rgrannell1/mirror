@@ -19,6 +19,10 @@ def make_valid_triples() -> list[list]:
         ["[i:photo:one]", "location", "[i:geoname:123]"],
         ["[i:bird:named]", "name", "Named bird"],
         ["[i:geoname:123]", "name", "Named location"],
+        ["[i:place:148]", "name", "Ireland"],
+        ["[i:place:148]", "flag", "🇮🇪"],
+        ["[i:place:148]", "features", "[i:place_feature:country]"],
+        ["[i:album:album-one]", "country", "[i:place:148]"],
         ["[i:album:album-one]", "name", "Album one"],
         ["[i:album:album-one]", "photosCount", "1"],
         ["[i:album:album-one]", "videosCount", "0"],
@@ -46,6 +50,86 @@ def test_shacl_audit_reports_animal_without_name() -> None:
         ("animal-missing-name", "urn:ró:insect:missing"),
         ("triple-graph-invalid", "urn:ró:observation:three"),
     ]
+
+
+def test_shacl_audit_reports_country_without_flag() -> None:
+    """Proves the graph contract rejects a country place that carries no flag."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:album:album-one]", "country", "[i:place:187]"],
+        ["[i:place:187]", "name", "Las Palmas"],
+        ["[i:place:187]", "features", "[i:place_feature:country]"],
+    ])
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"country must have a flag in things.toml"}
+
+
+def test_shacl_audit_accepts_country_with_flag() -> None:
+    """Proves a named country place with a flag passes the graph contract."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:album:album-one]", "country", "[i:place:186]"],
+        ["[i:place:186]", "name", "Gran Canaria"],
+        ["[i:place:186]", "flag", "🇮🇨"],
+        ["[i:place:186]", "features", "[i:place_feature:country]"],
+    ])
+
+    assert validate_triples(triples) == []
+
+
+def test_shacl_audit_reports_album_without_a_country() -> None:
+    """Proves the graph contract requires every album to name a country."""
+    triples = [
+        triple
+        for triple in make_valid_triples()
+        if not (triple[0] == "[i:album:album-one]" and triple[1] == "country")
+    ]
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"album must have at least one country"}
+
+
+def test_shacl_audit_reports_country_that_is_not_a_country_place() -> None:
+    """Proves the graph contract rejects an album country that is a city, not a country."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:album:album-one]", "country", "[i:place:187]"],
+        ["[i:place:187]", "name", "Las Palmas"],
+        ["[i:place:187]", "flag", "🇮🇨"],
+        ["[i:place:187]", "features", "[i:place_feature:city]"],
+    ])
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"country must be a place with the country feature"}
+
+
+def test_shacl_audit_reports_album_missing_a_required_field() -> None:
+    """Proves the graph contract requires exactly one value for each album field."""
+    triples = [
+        triple
+        for triple in make_valid_triples()
+        if not (triple[0] == "[i:album:album-one]" and triple[1] == "mosaic")
+    ]
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"album must have exactly one mosaic"}
+
+
+def test_shacl_audit_reports_album_with_non_numeric_count() -> None:
+    """Proves the graph contract rejects album counts that are not integer strings."""
+    triples = make_valid_triples()
+    for triple in triples:
+        if triple[:2] == ["[i:album:album-one]", "photosCount"]:
+            triple[2] = "many"
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"album counts and dates must be non-negative integer strings"}
 
 
 def test_shacl_audit_checks_photo_album_and_reference_structure() -> None:

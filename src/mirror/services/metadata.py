@@ -6,10 +6,12 @@ import os
 import re
 import tempfile
 from collections import defaultdict
+from functools import cache
 from pathlib import Path
 from typing import Iterator, Optional, Protocol, Sequence, TypedDict
 
-from jsonschema import ValidationError, validate
+from jsonschema import ValidationError
+from jsonschema.validators import validator_for
 
 from mirror.commons.constants import (
     ALBUM_ROW_MIN_CELLS,
@@ -93,10 +95,21 @@ def read_markdown_rows(fpath: str, label: str, min_cells: int) -> Iterator[list[
             yield [cell.strip() for cell in row]
 
 
+@cache
+def build_validator(schema_json: str):
+    """Compile one JSON schema. jsonschema.validate re-checks the schema on every call, which
+    dominates the runtime when validating thousands of markdown rows against the same schema."""
+    schema = json.loads(schema_json)
+    validator_class = validator_for(schema)
+    validator_class.check_schema(schema)
+    return validator_class(schema)
+
+
 def validate_item(item: dict, schema: dict) -> None:
     """Validate against a JSON schema, dumping the failing item before raising."""
+    validator = build_validator(json.dumps(schema, sort_keys=True))
     try:
-        validate(item, schema)
+        validator.validate(item)
     except ValidationError as err:
         print(json.dumps(item, indent=2))
         raise ValueError(str(err.message)) from None
@@ -229,13 +242,13 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         emit_markdown_table(ALBUM_TABLE_HEADERS, album_table_rows(by_album), output_path)
 
 
-def resolve_album_dpath(album_data, embedding: str, permalink: str) -> str:
+def resolve_album_dpath(dpaths_by_thumbnail: dict[str, str], embedding: str, permalink: str) -> str:
     """Resolve a row's dpath from its thumbnail, with overrides for legacy albums."""
     if permalink in LEGACY_ALBUM_DPATHS:
         return LEGACY_ALBUM_DPATHS[permalink]
 
     thumbnail_url = embedding[4:-1]
-    return album_data.album_dpath_from_thumbnail_url(thumbnail_url)
+    return dpaths_by_thumbnail.get(thumbnail_url)
 
 
 def album_metadata_models(item: dict) -> Iterator[AlbumMetadataModel]:
@@ -260,13 +273,13 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         self.fpath = fpath
 
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
-        album_data = db.album_data_view()
+        dpaths_by_thumbnail = db.album_data_view().album_dpaths_by_thumbnail_url()
 
         for row in read_markdown_rows(self.fpath, "albums", ALBUM_ROW_MIN_CELLS):
             _, embedding, title, permalink, country, summary, _ = row
 
             item = {
-                "fpath": resolve_album_dpath(album_data, embedding, permalink),
+                "fpath": resolve_album_dpath(dpaths_by_thumbnail, embedding, permalink),
                 "title": title,
                 "permalink": permalink,
                 "country": split_cell(country),

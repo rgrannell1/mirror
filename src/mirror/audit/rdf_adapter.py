@@ -26,6 +26,19 @@ def display_resource(value: str) -> str:
     return f"urn:ró:{canonical[3:-1]}"
 
 
+def resource_kind(value: str) -> str | None:
+    """The urn type segment of a Mirror resource, e.g. 'album' for [i:album:x].
+
+    The shapes match on this instead of running a regex over every node's original value."""
+    canonical = canonicalise_resource(value)
+    if not canonical.startswith("[i:"):
+        return None
+    kind, separator, _ = canonical[3:-1].partition(":")
+    if not separator:
+        return None
+    return kind
+
+
 def resource_uri(value: str) -> URIRef:
     """Map a Mirror resource to a safe, deterministic internal IRI."""
     canonical = canonicalise_resource(value)
@@ -45,6 +58,9 @@ def is_resource(value: object) -> bool:
 def add_resource_metadata(graph: Graph, node: URIRef, value: str) -> None:
     """Retain the public resource spelling for readable validation findings."""
     graph.add((node, AUDIT.originalValue, Literal(display_resource(value))))
+    kind = resource_kind(value)
+    if kind is not None:
+        graph.add((node, AUDIT.kind, Literal(kind)))
 
 
 def add_album_link(graph: Graph, subject: URIRef, album_id: str) -> None:

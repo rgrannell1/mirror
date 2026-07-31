@@ -29,15 +29,20 @@ def list_photo_binomials(db) -> Iterator[str]:
             binomials.add(parsed_id)
 
 
-def binomial_to_urn(db, binomial: str) -> str | None:
-    """Convert a binomial to a URN, if it exists in the database"""
+def binomial_urn_map(db) -> dict[str, str]:
+    """Map every normalised binomial in the photo metadata table to its URN.
 
-    normalised = binomial.replace(" ", "-").lower()
+    Build this once per reader. Scanning the table per binomial is quadratic."""
+
+    urns: dict[str, str] = {}
     for parsed in _iter_binomial_targets_from_photo_metadata(db):
-        if parsed["id"] == normalised:
-            return format_mirror_urn({
-                "type": parsed["type"],
-                "id": normalised,
-            })
+        parsed_id = parsed["id"]
+        if parsed_id in urns:
+            continue
+        urns[parsed_id] = format_mirror_urn({"type": parsed["type"], "id": parsed_id})
+    return urns
 
-    return None
+
+def normalise_binomial(binomial: str) -> str:
+    """Normalise a binomial to the hyphenated, lower-case form used in URNs."""
+    return binomial.replace(" ", "-").lower()

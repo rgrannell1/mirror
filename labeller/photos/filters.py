@@ -1,6 +1,11 @@
 """Named preset filters for the photo command palette."""
 
+from itertools import chain
 from typing import Callable
+
+from labeller.opener import DB_PATH
+from mirror.audit.checks import check_photos_missing_main_image, check_photos_missing_rating
+from mirror.services.database.facade import SqliteDatabase
 
 from .parser import PhotoRow
 
@@ -16,8 +21,24 @@ def _animal_without_context(photo: PhotoRow) -> bool:
     return False
 
 
+def failing_audit_urls() -> set[str]:
+    """Thumbnail urls of photos that fail a photo-level audit check."""
+    db = SqliteDatabase(str(DB_PATH))
+    findings = chain(check_photos_missing_rating(db), check_photos_missing_main_image(db))
+    failing_fpaths = {finding.subject for finding in findings}
+    return {
+        photo.thumbnail_url
+        for photo in db.photo_data_table().list()
+        if photo.fpath in failing_fpaths and photo.thumbnail_url
+    }
+
+
+def photo_fails_audit(failing_urls: set[str], photo: PhotoRow) -> bool:
+    """True when the photo's thumbnail url failed a photo-level audit check."""
+    return photo.thumbnail_url in failing_urls
+
+
 PRESET_FILTERS: list[tuple[str, Callable[[PhotoRow], bool]]] = [
-    ("No rating", lambda photo: not photo.rating.strip()),
     ("Has description", lambda photo: bool(photo.description.strip())),
     ("Has subjects", lambda photo: bool(photo.subjects.strip())),
     ("No subjects", lambda photo: not photo.subjects.strip()),
