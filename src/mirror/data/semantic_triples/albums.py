@@ -76,7 +76,15 @@ def album_triples(album, min_dt: datetime, max_dt: datetime) -> Iterator[Semanti
 class AlbumTriples:
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        for album in db.album_data_view().list():
+        # newest first, so the site's streaming render fills the top of the
+        # albums page earliest
+        albums = sorted(
+            db.album_data_view().list(),
+            key=lambda album: album.max_date or "",
+            reverse=True,
+        )
+
+        for album in albums:
             # miscellaneous is a hidden album; its photos publish but the album does not
             if album.id == MISCELLANEOUS_ALBUM_ID:
                 continue
