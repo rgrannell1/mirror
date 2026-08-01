@@ -2605,6 +2605,7 @@ features = [
 
 [[trips]]
 id = "urn:ró:trip:0"
+title = "Spain & Portugal, 2025"
 contains_album = [
     "urn:ró:album:zaragoza-25",
     "urn:ró:album:madrid-25",
@@ -2615,6 +2616,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:1"
+title = "Tenerife, 2025"
 contains_album = [
     "urn:ró:album:la-lagunas-25",
     "urn:ró:album:puorto-de-la-cruz-25",
@@ -2623,6 +2625,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:2"
+title = "Andalusia, 2024"
 contains_album = [
     "urn:ró:album:granada-24",
     "urn:ró:album:cordoba-24",
@@ -2632,6 +2635,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:3"
+title = "Tenerife, 2024"
 contains_album = [
     "urn:ró:album:mount-tiede-24",
     "urn:ró:album:tenerife-24",
@@ -2639,6 +2643,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:4"
+title = "Chicago & Wisconsin"
 contains_album = [
     "urn:ró:album:wisconsin-22",
     "urn:ró:album:renfair-22",
@@ -2650,6 +2655,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:5"
+title = "Madrid & Toledo, 2026"
 contains_album = [
     "urn:ró:album:toledo-26",
     "urn:ró:album:madrid-city-26",
@@ -2658,6 +2664,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:6"
+title = "Tenerife, 2026"
 contains_album = [
     "urn:ró:album:anaga-26",
     "urn:ró:album:tenerife-26",
@@ -2665,6 +2672,7 @@ contains_album = [
 
 [[trips]]
 id = "urn:ró:trip:7"
+title = "Gran Canaria, 2026"
 contains_album = [
     "urn:ró:album:las-palmas-museums-26",
     "urn:ró:album:las-palmas-26",

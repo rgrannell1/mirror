@@ -348,3 +348,25 @@ audit:triple-graph-invalid
             }
         """ ;
     ] .
+
+audit:trip-missing-title
+    a sh:NodeShape ;
+    sh:targetNode audit:graph ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "trip must have exactly one non-empty title" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?trip AS ?value)
+            WHERE {
+                ?trip audit:kind "trip" .
+                OPTIONAL {
+                    ?trip relation:title ?found .
+                    FILTER (strlen(str(?found)) > 0)
+                }
+            }
+            GROUP BY $this ?trip
+            HAVING (COUNT(?found) != 1)
+        """ ;
+    ] .

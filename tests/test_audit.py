@@ -155,3 +155,38 @@ def test_shacl_audit_checks_photo_album_and_reference_structure() -> None:
         "photo is missing required fields: midImageLossyUrl",
         "rating must be one of urn:ró:rating:0 through urn:ró:rating:4",
     }
+
+
+def test_shacl_audit_reports_trip_without_title() -> None:
+    """Proves the graph contract rejects a trip that carries no title."""
+    triples = make_valid_triples()
+    triples.append(["[i:trip:0]", "containsAlbum", "[i:album:album-one]"])
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"trip must have exactly one non-empty title"}
+
+
+def test_shacl_audit_accepts_trip_with_title() -> None:
+    """Proves a titled trip passes the graph contract."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:trip:0]", "containsAlbum", "[i:album:album-one]"],
+        ["[i:trip:0]", "title", "Gran Canaria, 2026"],
+    ])
+
+    assert validate_triples(triples) == []
+
+
+def test_shacl_audit_reports_trip_with_duplicate_titles() -> None:
+    """Proves the graph contract rejects a trip with more than one title."""
+    triples = make_valid_triples()
+    triples.extend([
+        ["[i:trip:0]", "containsAlbum", "[i:album:album-one]"],
+        ["[i:trip:0]", "title", "First title"],
+        ["[i:trip:0]", "title", "Second title"],
+    ])
+
+    details = {finding.detail for finding in validate_triples(triples)}
+
+    assert details == {"trip must have exactly one non-empty title"}

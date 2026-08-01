@@ -30,6 +30,15 @@ def trip_to_albums(things_file: str = "things.toml") -> dict[str, tuple[str, ...
 
 
 @cache
+def trip_titles(things_file: str = "things.toml") -> dict[str, str]:
+    """Return mapping of trip URN → trip title."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {trip["id"]: trip["title"] for trip in data.get("trips", []) if trip.get("title")}
+
+
+@cache
 def country_slug_to_urn(things_file: str = "things.toml") -> dict[str, str]:
     """Return a mapping of slugified country name → place URN for country-type places.
 
