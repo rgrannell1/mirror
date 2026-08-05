@@ -9,7 +9,8 @@ from typing import TYPE_CHECKING, Iterator
 
 import ffmpeg
 
-from mirror.commons.constants import ANIMAL_TYPES, DATE_FORMAT
+from mirror.commons.constants import DATE_FORMAT
+from mirror.data.things import animal_types
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -18,12 +19,17 @@ if TYPE_CHECKING:
 # concurrent ffprobe subprocesses; each probe is subprocess-bound, not CPU-bound
 PROBE_WORKERS = 12
 
-_PHOTO_TYPE_FILTERS = " OR ".join(
-    f"pmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES
-)
 
-# Earliest EXIF capture time per photographed animal subject.
-ANIMAL_PHOTO_FIRST_SEEN_QUERY = f"""
+def animal_type_filters(column: str) -> str:
+    """SQL disjunction matching any animal-typed subject URN in the given column."""
+    return " OR ".join(
+        f"{column}.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in animal_types()
+    )
+
+
+def animal_photo_first_seen_query() -> str:
+    """Earliest EXIF capture time per photographed animal subject."""
+    return f"""
 SELECT
     pmt.target,
     MIN(exif.created_at) AS earliest
@@ -31,21 +37,19 @@ FROM photo_metadata_table pmt
 JOIN phashes ON pmt.phash = phashes.phash
 JOIN exif ON phashes.fpath = exif.fpath
 WHERE pmt.relation = 'subject'
-  AND ({_PHOTO_TYPE_FILTERS})
+  AND ({animal_type_filters("pmt")})
   AND exif.created_at IS NOT NULL
 GROUP BY pmt.target
 """
 
-_VIDEO_TYPE_FILTERS = " OR ".join(
-    f"vmt.target LIKE 'urn:ró:{animal_type}:%'" for animal_type in ANIMAL_TYPES
-)
 
-# Every video subject; the capture time is read from the file, not the database.
-ANIMAL_VIDEO_SUBJECT_QUERY = f"""
+def animal_video_subject_query() -> str:
+    """Every video subject; the capture time is read from the file, not the database."""
+    return f"""
 SELECT vmt.fpath, vmt.target
 FROM video_metadata_table vmt
 WHERE vmt.relation = 'subject'
-  AND ({_VIDEO_TYPE_FILTERS})
+  AND ({animal_type_filters("vmt")})
 """
 
 
@@ -110,7 +114,7 @@ def _merge_earliest(earliest: dict[str, int], urn: str, when_ms: int) -> None:
 
 def _read_photo_first_seen(db: SqliteDatabase, earliest: dict[str, int]) -> None:
     """Merge earliest EXIF capture times for photographed animal subjects."""
-    for raw_urn, created_at in db.conn.execute(ANIMAL_PHOTO_FIRST_SEEN_QUERY).fetchall():
+    for raw_urn, created_at in db.conn.execute(animal_photo_first_seen_query()).fetchall():
         _merge_earliest(earliest, raw_urn, _exif_created_at_to_unix_ms(created_at))
 
 
@@ -124,7 +128,7 @@ def _probe_capture_times(fpaths: list[str]) -> dict[str, int | None]:
 
 def _read_video_first_seen(db: SqliteDatabase, earliest: dict[str, int]) -> None:
     """Merge earliest capture times for filmed animal subjects."""
-    rows = db.conn.execute(ANIMAL_VIDEO_SUBJECT_QUERY).fetchall()
+    rows = db.conn.execute(animal_video_subject_query()).fetchall()
     captured = _probe_capture_times(sorted({fpath for fpath, _ in rows}))
 
     for fpath, raw_urn in rows:

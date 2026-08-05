@@ -28,7 +28,7 @@ from mirror.data.semantic_triples import (
     ThingCoverReader,
     VideosReader,
 )
-from mirror.data.things import ThingsReader, WildlifeReader
+from mirror.data.things import ThingsReader, WildlifeReader, binomial_types
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
@@ -124,13 +124,11 @@ def stats_content(db: SqliteDatabase) -> str:
         "albums": len(albums),
         "years": _count_years(albums),
         "countries": _count_countries(albums),
-        "bird_species": _count_type("bird", subjects),
-        "mammal_species": _count_type("mammal", subjects),
-        "reptile_species": _count_type("reptile", subjects),
-        "amphibian_species": _count_type("amphibian", subjects),
-        "fish_species": _count_type("fish", subjects),
         "unesco_sites": _count_unesco_sites(places, db),
     }
+    # one <type>_species count per binomial taxon; the site's stats schema names these fields
+    for animal_type in sorted(binomial_types()):
+        data[f"{animal_type}_species"] = _count_type(animal_type, subjects)
     validate_stats(data)
     return json.dumps(data, separators=(",", ":"), ensure_ascii=False)
 

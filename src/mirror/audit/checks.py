@@ -12,9 +12,9 @@ from enum import StrEnum
 from mirror.audit.audit_types import Check, Finding
 from mirror.audit.shacl import validate_triples
 from mirror.commons.config import PHOTO_DIRECTORY
-from mirror.commons.constants import ALBUM_URN_PREFIX, EXCLUDED_LISTING_TYPES, URN_PREFIX
+from mirror.commons.constants import ALBUM_URN_PREFIX, URN_PREFIX
 from mirror.commons.utils import is_miscellaneous_dpath
-from mirror.data.things import listing_labels, named_thing_ids, trip_to_albums
+from mirror.data.things import listing_labels, named_thing_ids, trip_to_albums, unlisted_types
 from mirror.models.album import AlbumDataModel
 from mirror.services.database import SqliteDatabase
 from mirror.services.metadata import (
@@ -231,7 +231,7 @@ def find_unlisted_subject_types(subject_urns: list[str], labels: dict) -> Iterat
             continue
         nouns.add(base.removeprefix(URN_PREFIX).split(":")[0])
 
-    for noun in sorted(nouns - set(labels) - EXCLUDED_LISTING_TYPES):
+    for noun in sorted(nouns - set(labels) - unlisted_types()):
         detail = "no things.toml section for this type — its photos get no site listing"
         yield Finding(check=CheckSlug.SUBJECT_TYPE_UNLISTED, subject=noun, detail=detail)
 

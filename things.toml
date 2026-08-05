@@ -1,6 +1,12 @@
 # Subject types whose ids are latin binomials; rendered in italics on the site.
 binomial_types = ["bird", "mammal", "reptile", "amphibian", "fish"]
 
+# Animal URN nouns; drives the name audit shape, first-seen triples, and labeller prompt.
+animal_types = ["bird", "mammal", "reptile", "amphibian", "fish", "arthropod"]
+
+# Subject types that never get a site listing.
+unlisted_types = ["person"]
+
 place_features = [
     { id = "urn:ró:place_feature:castle", name = "Castle" },
     { id = "urn:ró:place_feature:city", name = "City" },
@@ -5150,3 +5156,25 @@ recap = "I saw some of the most beautiful sights on earth this year. I'm really 
 [[years]]
 id = "urn:ró:year:2025"
 recap = "A varied year; I saw the old castle in Conwy, Slovenia, a run across Iberia (seeing more moorish architecture), and the rainforests of Anaga in Tenerife."
+
+# Page banner source photos; these receive the banner rendition at upload.
+[[banners]]
+page = "albums"
+fpath = "/home/rg/Drive/Media/2022/Cranes/Published/79_535.JPG"
+
+[[banners]]
+page = "about"
+fpath = "/home/rg/Drive/Media/2017/Kerry with Friends/Published/P1290572.jpg"
+
+# Albums whose thumbnail no longer resolves a dpath; permalink to dpath overrides.
+[[legacy_albums]]
+permalink = "lanzarote-17"
+dpath = "/home/rg/Drive/Media/2017/Lanzarote/Published"
+
+[[legacy_albums]]
+permalink = "slieve-bloom-20"
+dpath = "/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published"
+
+[[legacy_albums]]
+permalink = "dublin-zoo-21"
+dpath = "/home/rg/Drive/Media/2021/Dublin Zoo/Published"

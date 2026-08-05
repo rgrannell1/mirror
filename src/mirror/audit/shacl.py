@@ -8,6 +8,7 @@ from rdflib.namespace import RDF, SH
 
 from mirror.audit.audit_types import Finding
 from mirror.audit.rdf_adapter import AUDIT, build_rdf_graph
+from mirror.data.things import animal_types
 
 SHAPES_PATH = Path(__file__).with_name("shapes.ttl")
 
@@ -36,10 +37,17 @@ def finding_from_result(data: Graph, report: Graph, result) -> Finding:
     )
 
 
+def load_shapes() -> Graph:
+    """Parse the SHACL shapes, filling the animal-types token from things.toml."""
+    shapes_text = SHAPES_PATH.read_text()
+    shapes_text = shapes_text.replace("__ANIMAL_TYPES__", "|".join(animal_types()))
+    return Graph().parse(data=shapes_text, format="turtle")
+
+
 def validate_triples(triples: list[list]) -> list[Finding]:
     """Validate processed triples against Mirror's graph contract."""
     data = build_rdf_graph(triples)
-    shapes = Graph().parse(SHAPES_PATH, format="turtle")
+    shapes = load_shapes()
     _, report, report_text = validate(data, shacl_graph=shapes)
     if not isinstance(report, Graph):
         raise ValueError(f"SHACL validation failed: {report_text}")

@@ -5,7 +5,7 @@ produced for a subset of source files, so we don't generate, upload and store a
 big rendition for all 1400+ photos.
 """
 
-from mirror.commons.constants import BANNER_SOURCE_FILES
+from mirror.data.things import banner_fpaths
 
 
 def _is_cover_source(fpath: str) -> bool:
@@ -15,7 +15,7 @@ def _is_cover_source(fpath: str) -> bool:
 
 def _is_banner_source(fpath: str) -> bool:
     """Banner heroes are an explicit allow-list (renaming would change the URN)."""
-    return fpath in BANNER_SOURCE_FILES
+    return fpath in banner_fpaths()
 
 
 # Roles generated only for a subset of source files: role -> predicate on fpath.

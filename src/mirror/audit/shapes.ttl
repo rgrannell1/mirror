@@ -17,7 +17,7 @@ audit:animal-missing-name
                 ?animal audit:originalValue ?animal_id .
                 FILTER regex(
                     str(?animal_id),
-                    "^urn:ró:(bird|mammal|reptile|amphibian|fish|insect):"
+                    "^urn:ró:(__ANIMAL_TYPES__):"
                 )
                 FILTER NOT EXISTS {
                     ?animal relation:name ?name .
@@ -327,7 +327,7 @@ audit:triple-graph-invalid
                     (
                         !regex(
                             str(?target_id),
-                            "^urn:ró:(bird|mammal|reptile|amphibian|fish|insect):"
+                            "^urn:ró:(__ANIMAL_TYPES__):"
                         ) &&
                         !BOUND(?name)
                     )

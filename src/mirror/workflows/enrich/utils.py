@@ -14,6 +14,6 @@ def read_things(fpath: str) -> Iterator:
     with open(path, "rb") as f:
         data = tomllib.load(f)
 
-    # skip scalar config keys like binomial_types; only entry sections yield things
+    # config keys (binomial_types) and id-less sections (banners) hold no things
     for block in data.values():
-        yield from (item for item in block if isinstance(item, dict))
+        yield from (item for item in block if isinstance(item, dict) and "id" in item)

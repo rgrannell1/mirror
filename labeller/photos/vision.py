@@ -7,29 +7,36 @@ import requests
 from google import genai
 from google.genai import types
 
-BASE_PROMPT = (
-    "Identify the main subject of this image for photo tagging purposes. "
-    "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "
-    "where <category> is one of: bird, mammal, arthropod, fish, reptile, amphibian, and "
-    "<latin-binomial> is the species name lowercased with a hyphen, followed by "
-    "?context=wild for arthropods and amphibians or ?context=captivity for all other "
-    "animal categories "
-    "(e.g. urn:ró:bird:hirundo-rustica?context=captivity, "
-    "urn:ró:mammal:vulpes-vulpes?context=captivity, "
-    "urn:ró:arthropod:vanessa-atalanta?context=wild, "
-    "urn:ró:amphibian:rana-temporaria?context=wild). "
-    "For cars, return a URN tag in the format urn:ró:car:<make>-<model> with make and "
-    "model lowercased and hyphenated "
-    "(e.g. urn:ró:car:ferrari-f40, urn:ró:car:volkswagen-beetle, urn:ró:car:ford-mustang). "
-    "For trains, return a URN tag in the format urn:ró:train:<operator>-<model> "
-    "lowercased and hyphenated "
-    "(e.g. urn:ró:train:jr-shinkansen-n700s, urn:ró:train:eurostar-e320, urn:ró:train:dart-arrow). "
-    "For other non-animals, give the most specific name possible "
-    "(e.g. 'Shinkansen N700S', 'Boeing 737-800'). "
-    "Return only the single tag for the main subject — nothing else. "
-    "Never add extra tags for places, scenery, colours, materials, or other details. "
-    "No explanation."
-)
+from mirror.data.things import animal_types
+
+
+def base_prompt() -> str:
+    """The tagging prompt; animal categories come from things.toml."""
+    categories = ", ".join(animal_types())
+    return (
+        "Identify the main subject of this image for photo tagging purposes. "
+        "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "
+        f"where <category> is one of: {categories}, and "
+        "<latin-binomial> is the species name lowercased with a hyphen, followed by "
+        "?context=wild for arthropods and amphibians or ?context=captivity for all other "
+        "animal categories "
+        "(e.g. urn:ró:bird:hirundo-rustica?context=captivity, "
+        "urn:ró:mammal:vulpes-vulpes?context=captivity, "
+        "urn:ró:arthropod:vanessa-atalanta?context=wild, "
+        "urn:ró:amphibian:rana-temporaria?context=wild). "
+        "For cars, return a URN tag in the format urn:ró:car:<make>-<model> with make and "
+        "model lowercased and hyphenated "
+        "(e.g. urn:ró:car:ferrari-f40, urn:ró:car:volkswagen-beetle, urn:ró:car:ford-mustang). "
+        "For trains, return a URN tag in the format urn:ró:train:<operator>-<model> "
+        "lowercased and hyphenated "
+        "(e.g. urn:ró:train:jr-shinkansen-n700s, urn:ró:train:eurostar-e320, "
+        "urn:ró:train:dart-arrow). "
+        "For other non-animals, give the most specific name possible "
+        "(e.g. 'Shinkansen N700S', 'Boeing 737-800'). "
+        "Return only the single tag for the main subject — nothing else. "
+        "Never add extra tags for places, scenery, colours, materials, or other details. "
+        "No explanation."
+    )
 
 
 def build_prompt(album_title: str | None, place_names: list[str]) -> str:
@@ -40,9 +47,9 @@ def build_prompt(album_title: str | None, place_names: list[str]) -> str:
     if place_names:
         context_parts.append(f"Location: {', '.join(place_names)}")
     if not context_parts:
-        return BASE_PROMPT
+        return base_prompt()
     context = " | ".join(context_parts)
-    return f"Context — {context}.\n\n{BASE_PROMPT}"
+    return f"Context — {context}.\n\n{base_prompt()}"
 
 
 def load_image_part(fpath: str | None, url: str | None) -> types.Part | None:

@@ -6,8 +6,7 @@ exists in the frontend. Labels derive from things.toml section headers.
 
 from typing import TYPE_CHECKING, Iterator
 
-from mirror.commons.constants import EXCLUDED_LISTING_TYPES
-from mirror.data.things import binomial_types, listing_labels
+from mirror.data.things import binomial_types, listing_labels, unlisted_types
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -45,7 +44,7 @@ def listing_entity_triples(types: set[str]) -> Iterator[SemanticTriple]:
     binomials = binomial_types()
 
     for noun in sorted(types):
-        if noun in EXCLUDED_LISTING_TYPES or noun not in labels:
+        if noun in unlisted_types() or noun not in labels:
             continue
         listing_urn = f"urn:ró:listing:{noun}"
         yield SemanticTriple(listing_urn, "name", labels[noun])

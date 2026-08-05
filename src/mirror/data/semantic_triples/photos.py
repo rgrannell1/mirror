@@ -2,9 +2,9 @@
 
 from typing import TYPE_CHECKING, Iterator
 
-from mirror.commons.constants import EXCLUDED_LISTING_TYPES, MISCELLANEOUS_ALBUM_ID
+from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
-from mirror.data.things import place_feature_to_places
+from mirror.data.things import place_feature_to_places, unlisted_types
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -116,7 +116,7 @@ ranked AS (
       AND listing_type NOT IN ({excluded})
 )
 SELECT fpath, listing_type FROM ranked WHERE rank = 1
-""".format(excluded=",".join("?" for _ in EXCLUDED_LISTING_TYPES))
+"""
 
 
 class ListingCoverReader:
@@ -131,8 +131,9 @@ class ListingCoverReader:
 
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        excluded = tuple(sorted(EXCLUDED_LISTING_TYPES))
-        for fpath, listing_type in db.conn.execute(LISTING_COVER_QUERY, excluded).fetchall():
+        excluded = tuple(sorted(unlisted_types()))
+        query = LISTING_COVER_QUERY.format(excluded=",".join("?" for _ in excluded))
+        for fpath, listing_type in db.conn.execute(query, excluded).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             listing_urn = f"urn:ró:listing:{listing_type}"
             yield SemanticTriple(photo_urn, "cover", listing_urn)

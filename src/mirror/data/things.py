@@ -64,6 +64,42 @@ def binomial_types(things_file: str = "things.toml") -> frozenset[str]:
 
 
 @cache
+def animal_types(things_file: str = "things.toml") -> tuple[str, ...]:
+    """Animal URN nouns, from the top-level animal_types list."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return tuple(data.get("animal_types", []))
+
+
+@cache
+def unlisted_types(things_file: str = "things.toml") -> frozenset[str]:
+    """Subject types that never get a site listing, from the top-level unlisted_types list."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return frozenset(data.get("unlisted_types", []))
+
+
+@cache
+def banner_fpaths(things_file: str = "things.toml") -> frozenset[str]:
+    """Source photos that receive the banner rendition, from the banners section."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return frozenset(entry["fpath"] for entry in data.get("banners", []))
+
+
+@cache
+def legacy_album_dpaths(things_file: str = "things.toml") -> dict[str, str]:
+    """Permalink → dpath overrides for albums whose thumbnail no longer resolves."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {entry["permalink"]: entry["dpath"] for entry in data.get("legacy_albums", [])}
+
+
+@cache
 def listing_labels(things_file: str = "things.toml") -> dict[str, str]:
     """Map each URN noun to a plural display label derived from its section header.
 
@@ -139,10 +175,10 @@ class ThingsReader:
             data = tomllib.load(conn)
 
         # TODO validate these against a schema based on type
-        # scalar config keys like binomial_types hold no entries
+        # config keys (binomial_types) and id-less sections (banners) hold no things
         for urn_info in data.values():
             for item in urn_info:
-                if isinstance(item, dict):
+                if isinstance(item, dict) and "id" in item:
                     yield from self.to_triples(item)
 
 

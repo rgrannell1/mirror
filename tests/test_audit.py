@@ -83,14 +83,14 @@ def test_shacl_audit_reports_animal_without_name() -> None:
     """Proves SHACL audits processed triples without changing their representation."""
     triples = make_valid_triples()
     triples.extend([
-        ["[i:observation:two]", "subject", "[i:insect:missing?context=wild]"],
+        ["[i:observation:two]", "subject", "[i:arthropod:missing?context=wild]"],
         ["[i:observation:three]", "subject", "[i:car:not-an-animal]"],
     ])
 
     findings = validate_triples(triples)
 
     assert [(finding.check, finding.subject) for finding in findings] == [
-        ("animal-missing-name", "urn:ró:insect:missing"),
+        ("animal-missing-name", "urn:ró:arthropod:missing"),
         ("triple-graph-invalid", "urn:ró:observation:three"),
     ]
 

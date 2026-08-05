@@ -16,11 +16,11 @@ from jsonschema.validators import validator_for
 from mirror.commons.constants import (
     ALBUM_ROW_MIN_CELLS,
     ALBUM_TABLE_HEADERS,
-    LEGACY_ALBUM_DPATHS,
     MEDIA_ROW_MIN_CELLS,
     MEDIA_TABLE_HEADERS,
 )
 from mirror.commons.utils import is_miscellaneous_dpath
+from mirror.data.things import legacy_album_dpaths
 from mirror.models.album import AlbumMetadataModel
 from mirror.models.photo import PhotoMetadataModel, PhotoMetadataSummaryModel
 from mirror.models.video import VideoMetadataSummaryModel
@@ -244,8 +244,9 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
 
 def resolve_album_dpath(dpaths_by_thumbnail: dict[str, str], embedding: str, permalink: str) -> str:
     """Resolve a row's dpath from its thumbnail, with overrides for legacy albums."""
-    if permalink in LEGACY_ALBUM_DPATHS:
-        return LEGACY_ALBUM_DPATHS[permalink]
+    legacy_dpaths = legacy_album_dpaths()
+    if permalink in legacy_dpaths:
+        return legacy_dpaths[permalink]
 
     thumbnail_url = embedding[4:-1]
     return dpaths_by_thumbnail.get(thumbnail_url)

@@ -75,24 +75,11 @@ ALBUM_ROW_MIN_CELLS = 5
 # Minimum pipe-separated cells for a parseable photos.md / videos.md row.
 MEDIA_ROW_MIN_CELLS = 8
 
-# Albums whose thumbnail no longer resolves a dpath; permalink → dpath overrides.
-LEGACY_ALBUM_DPATHS = {
-    "lanzarote-17": "/home/rg/Drive/Media/2017/Lanzarote/Published",
-    "slieve-bloom-20": "/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published",
-    "dublin-zoo-21": "/home/rg/Drive/Media/2021/Dublin Zoo/Published",
-}
-
 # Albums with this folder name are hidden: photos publish, but no album page or albums.md row.
 MISCELLANEOUS_ALBUM_NAME = "Miscellaneous"
 
 # Shared album id given to every Miscellaneous album's photos.
 MISCELLANEOUS_ALBUM_ID = "miscellaneous"
-
-# Animal URN nouns which need name definitions in things.toml.
-ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
-
-# Subject types that never get a site listing.
-EXCLUDED_LISTING_TYPES = frozenset({"person"})
 
 # Attr-Exif property associations
 # these are the exif attributes we care about
@@ -160,7 +147,7 @@ IMAGE_ENCODINGS = {
     "preview_jpeg": {"format": "jpeg", "quality": 80, "width": 800, "height": 600},
     # High-res hero for full-width page banners (about/albums). Larger than
     # mid_image so it stays sharp on wide/4K displays; only generated for the
-    # source files in BANNER_SOURCE_FILES (see SELECTIVE_ROLE_FILTERS).
+    # banner sources in things.toml (see SELECTIVE_ROLE_FILTERS).
     "banner": {
         "format": "webp",
         "quality": 80,
@@ -172,11 +159,6 @@ IMAGE_ENCODINGS = {
 
 # Source files used as full-width page banners. The `banner` rendition above is
 # only generated for these, so we don't produce a 2560px hero for every photo.
-BANNER_SOURCE_FILES = frozenset({
-    "/home/rg/Drive/Media/2022/Cranes/Published/79_535.JPG",  # /albums page banner
-    "/home/rg/Drive/Media/2017/Kerry with Friends/Published/P1290572.jpg",  # /about page banner
-})
-
 # How should we encode our videos? Currently uses unscaled + various
 # scaling of libx264 encoding
 VIDEO_ENCODINGS: list[Any] = [
