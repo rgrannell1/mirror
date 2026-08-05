@@ -15,6 +15,9 @@ SPACES_SECRET_KEY = os.getenv("SPACES_SECRET_KEY")
 
 DATA_URL = "data:image/bmp;base64,"
 
+# GitHub token used to push the website manifest. Mint one with `gh auth token`.
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
 # Photo CDN URL
 PHOTOS_URL = os.getenv("PHOTOS_URL", "https://photos-cdn.rgrannell.xyz")
 

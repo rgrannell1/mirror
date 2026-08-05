@@ -35,6 +35,7 @@ dependencies = [
   "google-genai",
   "pyshacl>=0.40.0",
   "rdflib>=7.6.0",
+  "dulwich>=1.2.12",
 ]
 
 [project.scripts]

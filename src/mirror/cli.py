@@ -61,7 +61,12 @@ from mirror.workflows.upload.upload import (
     upload_video,
     upload_video_thumbnail,
 )
-from mirror.workflows.website.website import build_source, publish_d1_remote, run_integration_tests
+from mirror.workflows.website.website import (
+    build_source,
+    publish_d1_remote,
+    publish_github,
+    run_integration_tests,
+)
 from mirror.workflows.workflow import mirror_workflow
 
 logging.basicConfig(level=logging.INFO, force=True)
@@ -110,6 +115,7 @@ SCOPE = {
     "build_source": build_source,
     "run_integration_tests": run_integration_tests,
     "publish_d1_remote": publish_d1_remote,
+    "publish_github": publish_github,
 }
 
 

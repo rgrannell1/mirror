@@ -10,6 +10,26 @@ THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 
+# Branch the website manifest is published to on GitHub.
+WEBSITE_BRANCH = "main"
+
+# Subject prefix that marks an album triple in the CURIE-compressed manifest.
+ALBUM_SUBJECT_PREFIX = "[i:album:"
+
+# The only manifest files the GitHub publish step may delete or copy.
+# Anything else in manifest/ is left untouched.
+MANIFEST_PATTERNS = (
+    "env.json",
+    "stats.*.json",
+    "triples.*.json",
+    "tribbles.*.txt",
+    "tribbles-expanded.*.txt",
+    "atom/*.xml",
+)
+
+# Most album names listed in a derived commit message before "and N more".
+COMMIT_MESSAGE_NAME_LIMIT = 3
+
 # Sanity bounds on the published country count; outside this range the stats are broken.
 STATS_MIN_COUNTRIES = 10
 STATS_MAX_COUNTRIES = 50

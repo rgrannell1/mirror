@@ -54,6 +54,18 @@ def publish_phase(
     if input.get("publish_d1"):
         yield ctx.scope.publish_d1_remote({})
 
+    yield from push_manifest_phase(ctx)
+
+
+def push_manifest_phase(ctx: JobContext) -> Generator[Any, Any, None]:
+    """Push the manifest to GitHub and report the outcome."""
+    message = yield ctx.scope.publish_github({})
+
+    if message:
+        print(f"pushed manifest to github: {message}")
+    else:
+        print("manifest matches github, skipping push")
+
 
 def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[Any, Any, None]:
     artifact_paths = {
