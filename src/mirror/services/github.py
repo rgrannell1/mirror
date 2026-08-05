@@ -1,30 +1,50 @@
-"""Publish the website manifest to GitHub through a throwaway clone.
+"""Publish the website manifest and build artifacts by committing in the local repo.
 
-The main working copy is never touched by git, so a cancelled or failed
-publish cannot leave it inconsistent.
+The commit is built directly as git objects from the artifact patterns. The
+working copy and index are only touched after the push succeeds, so a cancel
+or failure at any point leaves the repo exactly as it was.
 """
 
 from __future__ import annotations
 
+import fnmatch
 import glob
 import io
 import json
 import os
-import shutil
+import time
 from datetime import date
 
 from dulwich import porcelain
-from dulwich.repo import Repo
+from dulwich.index import index_entry_from_stat
+from dulwich.object_store import commit_tree_changes, iter_tree_contents
+from dulwich.objects import Blob, Commit
+from dulwich.repo import Repo, get_user_identity
 
 from mirror.commons.config import GITHUB_TOKEN, OUTPUT_DIRECTORY, WEBSITE_DIRECTORY
 from mirror.commons.constants import (
     ALBUM_SUBJECT_PREFIX,
     COMMIT_MESSAGE_NAME_LIMIT,
     MANIFEST_PATTERNS,
+    WEBSITE_ARTIFACT_PATTERNS,
     WEBSITE_BRANCH,
 )
 from mirror.commons.exceptions import GithubPublishError
 from mirror.services.github_types import AlbumChanges, AlbumFingerprints
+
+# artifact sources: (directory on disk, path prefix in the repo, patterns)
+ARTIFACT_SPECS = (
+    (OUTPUT_DIRECTORY, "manifest", MANIFEST_PATTERNS),
+    (WEBSITE_DIRECTORY, "", WEBSITE_ARTIFACT_PATTERNS),
+)
+
+# temporary ref the publish commit is pushed from; deleted afterwards
+PUBLISH_REF = b"refs/mirror/publish"
+
+# regular non-executable file mode for published artifacts
+ARTIFACT_FILE_MODE = 0o100644
+
+MAIN_REF = b"refs/heads/" + WEBSITE_BRANCH.encode()
 
 
 def read_origin_url() -> str:
@@ -59,16 +79,31 @@ def load_publication_triples(manifest_dir: str) -> list:
         return json.load(triples_handle)
 
 
-def load_previous_triples(manifest_dir: str) -> list:
-    """Load the already-published triples, or an empty list when unreadable.
-
-    A missing or broken remote manifest must not block publication. The diff
-    then reports every album as added.
-    """
+def read_tree_blob(repo: Repo, tree_id: bytes, path: str) -> bytes | None:
+    """Read a file's bytes from a git tree, or None when absent."""
+    tree = repo[tree_id]
     try:
-        return load_publication_triples(manifest_dir)
-    except (KeyError, OSError, TypeError, ValueError):
-        # ValueError also covers JSONDecodeError and UnicodeDecodeError
+        blob_id = tree.lookup_path(repo.object_store.__getitem__, path.encode())[1]
+    except KeyError:
+        return None
+    return repo[blob_id].data
+
+
+def load_tip_triples(repo: Repo, tree_id: bytes) -> list:
+    """Load the published triples from the tip tree, or an empty list when unreadable.
+
+    A missing or broken published manifest must not block publication. The
+    diff then reports every album as added.
+    """
+    env_bytes = read_tree_blob(repo, tree_id, "manifest/env.json")
+    if env_bytes is None:
+        return []
+
+    try:
+        publication_id = json.loads(env_bytes)["publication_id"]
+        triples_bytes = read_tree_blob(repo, tree_id, f"manifest/triples.{publication_id}.json")
+        return [] if triples_bytes is None else json.loads(triples_bytes)
+    except (KeyError, TypeError, ValueError):
         return []
 
 
@@ -157,57 +192,126 @@ def derive_commit_message(old_triples: list, new_triples: list) -> str:
 
     parts = describe_changes(old_albums, new_albums, names)
     if not parts:
-        return f"publish manifest {date.today().isoformat()}"
+        return f"publish artifacts {date.today().isoformat()}"
     return ", ".join(parts)
 
 
-def list_manifest_files(manifest_dir: str) -> list[str]:
-    """List the files in a manifest directory that match the artifact patterns."""
+def list_pattern_files(directory: str, patterns: tuple[str, ...]) -> list[str]:
+    """List the files in a directory that match the given artifact patterns."""
     paths = []
-    for pattern in MANIFEST_PATTERNS:
-        matches = glob.glob(os.path.join(manifest_dir, pattern))
+    for pattern in patterns:
+        matches = glob.glob(os.path.join(directory, pattern))
         paths.extend(match for match in matches if os.path.isfile(match))
     return paths
 
 
-def sync_manifest(clone_dir: str) -> None:
-    """Replace the clone's manifest artifacts with the freshly generated ones.
-
-    Deletes and copies only files matching MANIFEST_PATTERNS, so a bad path
-    can never wipe anything beyond the published artifacts.
-    """
-    target = os.path.join(clone_dir, "manifest")
-    for stale_path in list_manifest_files(target):
-        os.remove(stale_path)
-
-    for source_path in list_manifest_files(OUTPUT_DIRECTORY):
-        relative = os.path.relpath(source_path, OUTPUT_DIRECTORY)
-        destination = os.path.join(target, relative)
-        os.makedirs(os.path.dirname(destination), exist_ok=True)
-        shutil.copy2(source_path, destination)
+def matches_artifact(repo_path: str) -> bool:
+    """Report whether a repo path matches any artifact pattern."""
+    for spec in ARTIFACT_SPECS:
+        prefix, patterns = spec[1], spec[2]
+        if prefix and not repo_path.startswith(prefix + "/"):
+            continue
+        relative = repo_path[len(prefix) + 1 :] if prefix else repo_path
+        for pattern in patterns:
+            # slash-count check keeps fnmatch from recursing into subdirectories
+            if relative.count("/") == pattern.count("/") and fnmatch.fnmatch(relative, pattern):
+                return True
+    return False
 
 
-def stage_manifest(clone_dir: str) -> bool:
-    """Stage manifest changes in the clone. Report whether anything changed."""
-    # "all" lists files inside new directories; "normal" collapses them to the directory
-    status = porcelain.status(clone_dir, untracked_files="all")
-    new_paths = [os.path.join(clone_dir, os.fsdecode(path)) for path in status.untracked]
-    if new_paths:
-        porcelain.add(clone_dir, paths=new_paths)
+def collect_local_artifacts() -> dict[str, str]:
+    """Map repo paths to the local files that should be published there."""
+    collected = {}
+    for source_root, prefix, patterns in ARTIFACT_SPECS:
+        for file_path in list_pattern_files(source_root, patterns):
+            relative = os.path.relpath(file_path, source_root)
+            repo_path = f"{prefix}/{relative}" if prefix else relative
+            collected[repo_path] = file_path
+    return collected
 
-    staged = any(paths for paths in status.staged.values())
-    return bool(new_paths or staged or status.unstaged)
+
+def find_tree_artifacts(repo: Repo, tree_id: bytes) -> set[str]:
+    """List the repo paths in a tree that match the artifact patterns."""
+    found = set()
+    for entry in iter_tree_contents(repo.object_store, tree_id):
+        path = entry.path.decode()
+        if matches_artifact(path):
+            found.add(path)
+    return found
 
 
-def push_clone(clone_dir: str, remote_url: str) -> None:
-    """Push the clone to GitHub. Raise on any rejected ref."""
+def store_file_blob(repo: Repo, file_path: str) -> bytes:
+    """Store a file's content as a blob object. Returns the blob id."""
+    with open(file_path, "rb") as handle:
+        blob = Blob.from_string(handle.read())
+    repo.object_store.add_object(blob)
+    return blob.id
+
+
+def build_artifact_changes(repo: Repo, tree_id: bytes) -> list:
+    """Build the tree changes that replace the tip's artifacts with local ones."""
+    local = collect_local_artifacts()
+    existing = find_tree_artifacts(repo, tree_id)
+
+    changes = []
+    for repo_path, file_path in sorted(local.items()):
+        blob_id = store_file_blob(repo, file_path)
+        changes.append((repo_path.encode(), ARTIFACT_FILE_MODE, blob_id))
+    for stale_path in sorted(existing - set(local)):
+        changes.append((stale_path.encode(), None, None))
+    return changes
+
+
+def fetch_remote_tip(origin_url: str) -> bytes:
+    """Read origin's main tip commit id without fetching objects."""
+    result = porcelain.ls_remote(origin_url)
+    refs = dict(result.refs) if hasattr(result, "refs") else dict(result)
+    if MAIN_REF not in refs:
+        raise GithubPublishError(f"origin has no {MAIN_REF.decode()} ref")
+    return refs[MAIN_REF]
+
+
+def read_ready_tip(repo: Repo, origin_url: str) -> bytes:
+    """Check the repo is on main and level with origin. Returns the tip id."""
+    if repo.refs.read_ref(b"HEAD") != b"ref: " + MAIN_REF:
+        raise GithubPublishError("website repo is not on main; check it out before publishing")
+
+    remote_tip = fetch_remote_tip(origin_url)
+    local_tip = repo.refs[MAIN_REF]
+    if local_tip != remote_tip:
+        raise GithubPublishError(
+            f"local main ({local_tip.decode()[:10]}) does not match origin"
+            f" ({remote_tip.decode()[:10]}); reconcile the website repo before publishing"
+        )
+    return local_tip
+
+
+def create_publish_commit(repo: Repo, tree_id: bytes, parent: bytes, message: str) -> bytes:
+    """Create the publish commit object. Moves no refs."""
+    commit = Commit()
+    commit.tree = tree_id
+    commit.parents = [parent]
+
+    identity = get_user_identity(repo.get_config_stack())
+    commit.author = commit.committer = identity
+    commit.author_time = commit.commit_time = int(time.time())
+    offset = -time.altzone if time.localtime().tm_isdst else -time.timezone
+    commit.author_timezone = commit.commit_timezone = offset
+    commit.message = message.encode()
+
+    repo.object_store.add_object(commit)
+    return commit.id
+
+
+def push_ref(remote_url: str, refspec: bytes) -> None:
+    """Push a refspec from the website repo. Raise on any rejected ref."""
     result = None
     failure = ""
     try:
         result = porcelain.push(
-            clone_dir,
+            WEBSITE_DIRECTORY,
             remote_url,
-            WEBSITE_BRANCH,
+            refspec,
             outstream=io.BytesIO(),
             errstream=io.BytesIO(),
         )
@@ -228,30 +332,53 @@ def push_clone(clone_dir: str, remote_url: str) -> None:
         raise GithubPublishError(f"push rejected: {conceal_token(str(rejected))}")
 
 
-def commit_and_push(clone_dir: str, origin_url: str, message: str) -> None:
-    """Commit staged manifest changes and push them to GitHub."""
-    porcelain.commit(clone_dir, message=message, all=True)
-    push_clone(clone_dir, authenticate_url(origin_url))
+def refresh_artifact_index(repo: Repo, changes: list) -> None:
+    """Update the index entries for published artifacts, leaving staged work alone."""
+    index = repo.open_index()
+    for path, mode, blob_id in changes:
+        if mode is None:
+            if path in index:
+                del index[path]
+            continue
+        file_path = os.path.join(WEBSITE_DIRECTORY, os.fsdecode(path))
+        index[path] = index_entry_from_stat(os.stat(file_path), blob_id, mode)
+    index.write()
 
 
-def publish_manifest(scratch_dir: str) -> str | None:
-    """Publish the manifest via a throwaway clone.
+def push_publish_commit(repo: Repo, origin_url: str, commit_id: bytes, prior_tip: bytes) -> None:
+    """Push the publish commit, then advance local main."""
+    repo.refs[PUBLISH_REF] = commit_id
+    try:
+        push_ref(authenticate_url(origin_url), PUBLISH_REF + b":" + MAIN_REF)
+    finally:
+        repo.refs.remove_if_equals(PUBLISH_REF, commit_id)
 
-    Returns the commit message, or None when the manifest is unchanged.
+    repo.refs.set_if_equals(MAIN_REF, prior_tip, commit_id)
+
+
+def publish_manifest() -> str | None:
+    """Publish the manifest and build artifacts by committing in the local repo.
+
+    Returns the commit message, or None when nothing changed.
     """
     if not GITHUB_TOKEN:
         raise GithubPublishError("GITHUB_TOKEN is not set")
 
     origin_url = read_origin_url()
-    clone_dir = os.path.join(scratch_dir, "clone")
-    porcelain.clone(origin_url, clone_dir, depth=1, branch=WEBSITE_BRANCH, errstream=io.BytesIO())
+    with Repo(WEBSITE_DIRECTORY) as repo:
+        local_tip = read_ready_tip(repo, origin_url)
+        tip_tree = repo[local_tip].tree
 
-    old_triples = load_previous_triples(os.path.join(clone_dir, "manifest"))
-    sync_manifest(clone_dir)
+        changes = build_artifact_changes(repo, tip_tree)
+        new_tree = commit_tree_changes(repo.object_store, tip_tree, changes)
+        if new_tree == tip_tree:
+            return None
 
-    if not stage_manifest(clone_dir):
-        return None
+        message = derive_commit_message(
+            load_tip_triples(repo, tip_tree), load_publication_triples(OUTPUT_DIRECTORY)
+        )
+        commit_id = create_publish_commit(repo, new_tree, local_tip, message)
+        push_publish_commit(repo, origin_url, commit_id, local_tip)
+        refresh_artifact_index(repo, changes)
 
-    message = derive_commit_message(old_triples, load_publication_triples(OUTPUT_DIRECTORY))
-    commit_and_push(clone_dir, origin_url, message)
     return message

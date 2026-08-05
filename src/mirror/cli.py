@@ -3,12 +3,14 @@ import json
 import logging
 import multiprocessing
 import os
+import sys
 from collections.abc import Generator, Iterable
 from typing import Any
 
 from bookman.bookman_types import Cumulative, Delta
 from bookman.events import Event
-from zahir import evaluate, make_telemetry, setup, with_progress
+from zahir import RootResult, evaluate, make_telemetry, setup, with_progress
+from zahir.core.exceptions import JobError
 
 from mirror.audit import audit_media, run_audit_command
 from mirror.commons import config
@@ -226,11 +228,20 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def report_workflow_failure(err: JobError, error_path: str) -> None:
+    """Print a concise failure report instead of an engine traceback."""
+    print(f"\nworkflow failed: {err}", file=sys.stderr)
+    print(f"failed job log: {error_path}", file=sys.stderr)
+    raise SystemExit(1)
+
+
 def run_workflow(
     root: str, workflow_input: dict, n_workers: int, log_paths: tuple[str, str]
-) -> None:
-    """Evaluate a workflow root, streaming events to log files with a progress bar."""
+) -> Any:
+    """Evaluate a workflow root, streaming events to log files with a progress bar.
 
+    Returns the root job's result, surfaced via RootResult on the event stream.
+    """
     events = evaluate(
         setup(n_workers=n_workers),
         root,
@@ -238,8 +249,14 @@ def run_workflow(
         scope=SCOPE,
         handler_wrappers=[make_telemetry()],
     )
-    for _ in with_progress(record_events(events, log_paths[0], log_paths[1])):
-        pass
+    root_result = None
+    try:
+        for event in with_progress(record_events(events, log_paths[0], log_paths[1])):
+            if isinstance(event, RootResult):
+                root_result = event.value
+    except JobError as err:
+        report_workflow_failure(err, log_paths[1])
+    return root_result
 
 
 def run_copy_command(args: argparse.Namespace) -> None:
@@ -276,7 +293,10 @@ def run_pipeline_command(args: argparse.Namespace) -> None:
         "force_roles": args.force_roles,
         "publish_d1": args.publish_d1,
     }
-    run_workflow("mirror_workflow", workflow_input, 15, (MIRROR_JSONL_PATH, MIRROR_ERROR_PATH))
+    log_paths = (MIRROR_JSONL_PATH, MIRROR_ERROR_PATH)
+    summary = run_workflow("mirror_workflow", workflow_input, 15, log_paths)
+    if summary:
+        print(summary)
 
 
 def main():

@@ -27,8 +27,19 @@ MANIFEST_PATTERNS = (
     "atom/*.xml",
 )
 
+# Built website files that embed the publication id. They must ship in the
+# same commit as the manifest, or the deployed site references deleted files.
+WEBSITE_ARTIFACT_PATTERNS = (
+    "index.html",
+    "sw.js",
+    "dist/js/*",
+)
+
 # Most album names listed in a derived commit message before "and N more".
 COMMIT_MESSAGE_NAME_LIMIT = 3
+
+# Lines of captured build output kept when a website build step fails.
+BUILD_OUTPUT_TAIL_LINES = 30
 
 # Sanity bounds on the published country count; outside this range the stats are broken.
 STATS_MIN_COUNTRIES = 10

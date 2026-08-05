@@ -9,6 +9,10 @@ class GithubPublishError(Exception):
     """Raised when the manifest cannot be published to GitHub."""
 
 
+class WebsiteBuildError(Exception):
+    """Raised when a website build step fails, carrying the output tail."""
+
+
 class InvalidVideoDimensionsError(Exception):
     pass
 

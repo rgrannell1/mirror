@@ -38,8 +38,11 @@ def run_scan(ctx: JobContext, paths: dict) -> Generator[Any, Any, bool]:
 
 def publish_phase(
     ctx: JobContext, input: MirrorWorkflowInput, paths: dict
-) -> Generator[Any, Any, None]:
-    """Publish artifacts, rebuild the site, and verify the outputs."""
+) -> Generator[Any, Any, str]:
+    """Publish artifacts, rebuild the site, verify the outputs, and push to GitHub.
+
+    Returns a one-line summary of what was published.
+    """
     print("publishing artifacts")
 
     result = yield ctx.scope.publish_artifacts(paths)
@@ -54,20 +57,20 @@ def publish_phase(
     if input.get("publish_d1"):
         yield ctx.scope.publish_d1_remote({})
 
-    yield from push_manifest_phase(ctx)
+    summary = yield from push_manifest_phase(ctx)
+    return summary
 
 
-def push_manifest_phase(ctx: JobContext) -> Generator[Any, Any, None]:
-    """Push the manifest to GitHub and report the outcome."""
+def push_manifest_phase(ctx: JobContext) -> Generator[Any, Any, str]:
+    """Push the manifest to GitHub and describe the outcome."""
     message = yield ctx.scope.publish_github({})
 
     if message:
-        print(f"pushed manifest to github: {message}")
-    else:
-        print("manifest matches github, skipping push")
+        return f"published to github: {message}"
+    return "manifest matches github, nothing published"
 
 
-def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[Any, Any, None]:
+def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[Any, Any, str]:
     artifact_paths = {
         "output_dir": input.get("manifest_output_dir", OUTPUT_DIRECTORY),
         "albums_markdown_path": input.get("albums_markdown_path", DEFAULT_ALBUMS_MARKDOWN_PATH),
@@ -87,7 +90,7 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
             "scan failed: skipping metadata rewrite and publish"
             " to avoid overwriting albums.md/photos.md from a stale database"
         )
-        return
+        return "scan failed: nothing published"
 
     # Phase A (ungated): rewrite albums.md/photos.md so freshly-indexed photos become labellable.
     yield ctx.scope.write_metadata(artifact_paths)
@@ -95,4 +98,5 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
     # Gate: block outward publication if the metadata is not publish-ready.
     yield ctx.scope.audit_media({})
 
-    yield from publish_phase(ctx, input, artifact_paths)
+    summary = yield from publish_phase(ctx, input, artifact_paths)
+    return summary
