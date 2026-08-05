@@ -1,21 +1,24 @@
 """Named preset filters for the photo command palette."""
 
 from itertools import chain
+from pathlib import Path
 from typing import Callable
 
 from labeller.opener import DB_PATH
 from mirror.audit.checks import check_photos_missing_main_image, check_photos_missing_rating
+from mirror.data.things import animal_types
 from mirror.services.database.facade import SqliteDatabase
 
 from .parser import PhotoRow
 
-_ANIMAL_PREFIXES = ("urn:ró:bird:", "urn:ró:mammal:")
+THINGS_PATH = Path(__file__).parent.parent.parent / "things.toml"
+ANIMAL_PREFIXES = tuple(f"urn:ró:{noun}:" for noun in animal_types(str(THINGS_PATH)))
 
 
 def _animal_without_context(photo: PhotoRow) -> bool:
     """True if any subject is a bird/mammal URN that lacks a ?context= qualifier."""
     for subject in photo.subjects.split():
-        is_animal = any(subject.startswith(prefix) for prefix in _ANIMAL_PREFIXES)
+        is_animal = any(subject.startswith(prefix) for prefix in ANIMAL_PREFIXES)
         if is_animal and "?context=" not in subject:
             return True
     return False

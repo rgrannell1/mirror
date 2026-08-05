@@ -411,7 +411,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/76bcd31a12.avif) | Dublin Zoo | Wildlife | ⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:myrmecophaga-tridactyla |  |
 | ![](https://photos-cdn.rgrannell.xyz/176c07e3c0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:larus-argentatus?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/1bdf4cbb60.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/1bdf4cbb60.avif) | Dublin Zoo | Landscape | ⭐⭐⭐ | urn:ró:place:95 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d42eaa80fa.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:ailurus-fulgens?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/3a0470ddc1.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:bird:larus-argentatus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/515b8433e0.avif) | Dublin Zoo | Wildlife | ⭐⭐⭐ | urn:ró:place:95 |  | urn:ró:mammal:pongo-pygmaeus?context=captivity |  |
@@ -719,21 +719,23 @@
 | ![](https://photos-cdn.rgrannell.xyz/7c31102467.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/2fa17eefa6.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/4678fa48ab.avif) | Las Palmas | Museum | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c8bcf26f6f.avif) | Las Palmas | Cityscape | ⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/0607fd3a4b.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/8565bba150.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5e636a1922.avif) | Las Palmas | Cityscape | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/424e9417a9.avif) | Las Palmas | Transport | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f533f27b53.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ |  |  | urn:ró:fish:hydrolycus-scomberoides?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a1235ce4c2.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:189 |  | urn:ró:arthropod:danaus-plexippus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/6a09cf5b19.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ec4e2487af.avif) | Las Palmas Museums | Other | ⭐⭐⭐ | urn:ró:place:187 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/32d750f765.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:reptile:centrochelys-sulcata?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/e37310c797.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:reptile:furcifer-pardalis?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/21b077f9f9.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/dbbfbfa4d3.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d34fac5e82.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/1989ba03ef.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/66bf285e9f.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐⭐ |  |  | urn:ró:reptile:furcifer-pardalis?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/21b077f9f9.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  | urn:ró:amphibian:triturus-carnifex?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/dbbfbfa4d3.avif) | Las Palmas Museums | Wildlife | ⭐⭐ | urn:ró:place:188 |  | urn:ró:amphibian:ambystoma-mexicanum?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/d34fac5e82.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:reptile:carettochelys-insculpta?context=captivity |  |
+| ![](https://photos-cdn.rgrannell.xyz/1989ba03ef.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:fish:unknown |  |
 | ![](https://photos-cdn.rgrannell.xyz/9278e94154.avif) | Las Palmas Museums | Museum | ⭐⭐⭐ |  |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/3964688c79.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3964688c79.avif) | Las Palmas Museums | Wildlife | ⭐⭐⭐ | urn:ró:place:188 |  | urn:ró:fish:carcharias-taurus?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/5b4d2321f0.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:podargus-strigoides?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/7d93d696d6.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:nycticorax-nycticorax?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b9844e0f35.avif) | Lincoln Park Zoo, Chicago | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:87 |  | urn:ró:bird:guira-guira?context=captivity |  |
@@ -1243,7 +1245,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/ef57854030.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:mammal:halichoerus-grypus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/6add8b80f6.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/55cef9b610.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/840817ca57.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/840817ca57.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:cnidaria:chrysaora-hysoscella |  |
 | ![](https://photos-cdn.rgrannell.xyz/920f803cee.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/b051dc8a11.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/82dda3738e.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
@@ -1291,17 +1293,17 @@
 | ![](https://photos-cdn.rgrannell.xyz/d423f5903f.avif) | Sparrowhawk | Wildlife | ⭐⭐⭐ | urn:ró:place:15 |  | urn:ró:bird:accipiter-nisus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/9d3c31690f.avif) | Sparrowhawk | Wildlife | ⭐⭐⭐ | urn:ró:place:15 |  | urn:ró:bird:accipiter-nisus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/37f16a8724.avif) | Steam Museum & Gardens | Museum | ⭐⭐⭐ | urn:ró:place:181 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/8ef796b645.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/48fa4cc50d.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/21bf0c601c.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8ef796b645.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/48fa4cc50d.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/21bf0c601c.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/102c756512.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:arthropod:vespula-vulgaris?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/341b786c08.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/b3f272115e.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/341b786c08.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/b3f272115e.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/456590091a.avif) | Steam Museum & Gardens | Other | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/2c40c22e1a.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/d4cbb14564.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/2c40c22e1a.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/d4cbb14564.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/a2d84b4ce5.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  | urn:ró:arthropod:halyzia-sedecimguttata?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/cdcd55fc95.avif) | Steam Museum & Gardens | Wildlife | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/cdcd55fc95.avif) | Steam Museum & Gardens | Landscape | ⭐⭐⭐ | urn:ró:place:182 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5b43551d88.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/188e3429ff.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐⭐ | urn:ró:place:185 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3648464f32.avif) | Stradbally Steam Rally | Other | ⭐⭐⭐ | urn:ró:place:185 |  |  |  |
@@ -1445,6 +1447,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/d076d8c12a.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:179 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/9ea60de5b8.avif) | Wicklow | Wildlife | ⭐⭐⭐ | urn:ró:place:179 |  | urn:ró:arthropod:celastrina-argiolus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/7771d7f88d.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e8709610b7.avif) | Wicklow | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d33748b7f2.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c5faf503aa.avif) | Wicklow | Landscape | ⭐⭐⭐ | urn:ró:place:178 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/d59abaf86f.avif) | Wicklow | Landscape | ⭐⭐⭐⭐ | urn:ró:place:179 |  |  |  |

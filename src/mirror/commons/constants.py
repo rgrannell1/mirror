@@ -222,10 +222,8 @@ class KnownRelations:
 
 class KnownTypes:
     GEONAME = "geoname"
-    BIRD = "bird"
 
 
 class KnownWikiProperties:
     TAXON_NAME = "P225"
-
 

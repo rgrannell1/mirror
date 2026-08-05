@@ -4,7 +4,12 @@ from typing import TYPE_CHECKING, Iterator
 
 from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
-from mirror.data.things import place_feature_to_places, unlisted_types
+from mirror.data.things import (
+    genre_cover_priorities,
+    place_feature_to_places,
+    rating_ranks,
+    unlisted_types,
+)
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -44,7 +49,9 @@ class PhotoTriples:
 class AlbumBannerReader:
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        rows = db.conn.execute("""
+        genre_order = genre_priority_sql("album", "vps.genre")
+        rating_order = rating_rank_sql("vps.rating")
+        query = f"""
             SELECT fpath, album_id, mosaic_banner_url
             FROM (
                 SELECT
@@ -54,13 +61,8 @@ class AlbumBannerReader:
                     ROW_NUMBER() OVER (
                         PARTITION BY vpd.album_id
                         ORDER BY
-                            vps.rating DESC,
-                            CASE
-                                WHEN lower(vps.genre) LIKE '%landscape%' THEN 0
-                                WHEN lower(vps.genre) LIKE '%cityscape%' THEN 1
-                                WHEN lower(vps.genre) LIKE '%wildlife%'  THEN 2
-                                ELSE 3
-                            END ASC
+                            {rating_order} DESC,
+                            {genre_order} ASC
                     ) AS rank
                 FROM view_photo_metadata_summary vps
                 JOIN view_photo_data vpd ON vps.fpath = vpd.fpath
@@ -68,7 +70,8 @@ class AlbumBannerReader:
                 WHERE vpd.album_id IS NOT NULL
             )
             WHERE rank = 1
-        """).fetchall()
+        """
+        rows = db.conn.execute(query).fetchall()
 
         for fpath, album_id, mosaic_banner_url in rows:
             # miscellaneous is hidden; no album page exists to show a banner on
@@ -105,11 +108,8 @@ ranked AS (
         ROW_NUMBER() OVER (
             PARTITION BY listing_type
             ORDER BY
-                CASE
-                    WHEN listing_type = 'place' AND lower(genre) LIKE '%landscape%' THEN 0
-                    ELSE 1
-                END ASC,
-                rating DESC
+                CASE WHEN listing_type = 'place' THEN {place_genre_order} ELSE 1 END ASC,
+                {rating_order} DESC
         ) AS rank
     FROM categorised
     WHERE listing_type IS NOT NULL
@@ -119,12 +119,41 @@ SELECT fpath, listing_type FROM ranked WHERE rank = 1
 """
 
 
+def genre_priority(scope: str, genre: str) -> int:
+    """Return the configured cover priority for a genre string."""
+    priorities = genre_cover_priorities(scope)
+    matches = [priority for name, priority in priorities.items() if name in genre.lower()]
+    return min(matches, default=max(priorities.values(), default=0) + 1)
+
+
+def genre_priority_sql(scope: str, column: str) -> str:
+    """Build a SQL case expression from configured genre priorities."""
+    priorities = genre_cover_priorities(scope)
+    clauses = [
+        f"WHEN lower({column}) LIKE '%{sql_text(name)}%' THEN {priority}"
+        for name, priority in priorities.items()
+    ]
+    default = max(priorities.values(), default=0) + 1
+    return f"CASE {' '.join(clauses)} ELSE {default} END"
+
+
+def rating_rank_sql(column: str) -> str:
+    """Build a SQL case expression from configured rating ranks."""
+    clauses = [
+        f"WHEN {column} = '{sql_text(name)}' THEN {rank}" for name, rank in rating_ranks().items()
+    ]
+    return f"CASE {' '.join(clauses)} ELSE -1 END"
+
+
+def sql_text(value: str) -> str:
+    """Escape a trusted configuration value for a SQL text literal."""
+    return value.replace("'", "''")
+
+
 class ListingCoverReader:
     """Selects one representative cover photo per top-level listing type.
 
-    For subject-based types (bird, mammal, etc.) the highest-rated photo is
-    chosen.  For places the best landscape photo is preferred,
-    falling back to highest-rated if no landscape exists.
+    Subject listings use rating. Place listings first use configured genre priority.
 
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:listing:<type>
     """
@@ -132,7 +161,11 @@ class ListingCoverReader:
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         excluded = tuple(sorted(unlisted_types()))
-        query = LISTING_COVER_QUERY.format(excluded=",".join("?" for _ in excluded))
+        query = LISTING_COVER_QUERY.format(
+            excluded=",".join("?" for _ in excluded),
+            place_genre_order=genre_priority_sql("place", "genre"),
+            rating_order=rating_rank_sql("rating"),
+        )
         for fpath, listing_type in db.conn.execute(query, excluded).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             listing_urn = f"urn:ró:listing:{listing_type}"
@@ -172,7 +205,7 @@ ranked AS (
         thing_urn,
         ROW_NUMBER() OVER (
             PARTITION BY thing_urn
-            ORDER BY is_explicit DESC, rating DESC
+            ORDER BY is_explicit DESC, {rating_order} DESC
         ) AS rank
     FROM all_candidates
 )
@@ -191,19 +224,20 @@ class ThingCoverReader:
 
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        for fpath, thing_urn in db.conn.execute(THING_COVER_QUERY).fetchall():
+        query = THING_COVER_QUERY.format(rating_order=rating_rank_sql("rating"))
+        for fpath, thing_urn in db.conn.execute(query).fetchall():
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
 
 
-def landscape_then_rating(candidate: tuple) -> tuple:
-    """Sort key preferring landscape photos, then higher ratings."""
-    stars, genre = candidate[1], candidate[2]
-    return (0 if "landscape" in genre.lower() else 1, -stars)
+def genre_then_rating(candidate: tuple) -> tuple:
+    """Sort a place-cover candidate by configured genre priority, then rating."""
+    rank, genre = candidate[1], candidate[2]
+    return (genre_priority("place", genre), -rank)
 
 
 def map_place_photos(db: "SqliteDatabase", place_urns: list[str]) -> dict[str, list[tuple]]:
-    """Group candidate photos (fpath, stars, genre) by their place URN."""
+    """Group candidate photos by their place URN."""
     placeholders = ",".join("?" * len(place_urns))
     rows = db.conn.execute(
         f"""
@@ -219,8 +253,8 @@ def map_place_photos(db: "SqliteDatabase", place_urns: list[str]) -> dict[str, l
 
     place_to_photos: dict[str, list[tuple]] = {}
     for fpath, rating, genre, place_urn in rows:
-        stars = rating.count("⭐") if rating else 0
-        place_to_photos.setdefault(place_urn, []).append((fpath, stars, genre or ""))
+        rank = rating_ranks().get(rating, -1)
+        place_to_photos.setdefault(place_urn, []).append((fpath, rank, genre or ""))
 
     return place_to_photos
 
@@ -234,15 +268,14 @@ def feature_cover_candidates(
         if not candidates:
             continue
 
-        yield feature_urn, min(candidates, key=landscape_then_rating)
+        yield feature_urn, min(candidates, key=genre_then_rating)
 
 
 class PlaceFeatureCoverReader:
     """Selects one cover photo per place_feature (castle, beach, volcano, etc.).
 
     Loads the feature→places mapping from things.toml, queries the DB for all
-    photos at those places, then picks the best per feature (landscape preferred,
-    then highest-rated).
+    photos at those places, then applies configured genre priority and rating.
 
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:place_feature:<feature-id>
     """
@@ -264,7 +297,7 @@ class PlaceFeatureCoverReader:
             yield SemanticTriple(photo_urn, "cover", feature_urn)
 
         if all_candidates:
-            listing_best = min(all_candidates, key=landscape_then_rating)
+            listing_best = min(all_candidates, key=genre_then_rating)
             listing_photo_urn = f"urn:ró:photo:{deterministic_hash_str(listing_best[0])}"
             yield SemanticTriple(listing_photo_urn, "cover", "urn:ró:listing:place_feature")
 

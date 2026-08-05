@@ -1,11 +1,20 @@
-# Subject types whose ids are latin binomials; rendered in italics on the site.
-binomial_types = ["bird", "mammal", "reptile", "amphibian", "fish"]
+# Properties of subject types used by publishing, audits, and the labeller.
+subject_types = [
+    { noun = "bird", animal = true, binomial = true, context = "captivity" },
+    { noun = "mammal", animal = true, binomial = true, context = "captivity" },
+    { noun = "reptile", animal = true, binomial = true, context = "captivity" },
+    { noun = "amphibian", animal = true, binomial = true, context = "wild" },
+    { noun = "fish", animal = true, binomial = true, context = "captivity" },
+    { noun = "arthropod", animal = true, binomial = false, context = "wild" },
+    { noun = "person", listed = false },
+]
 
-# Animal URN nouns; drives the name audit shape, first-seen triples, and labeller prompt.
-animal_types = ["bird", "mammal", "reptile", "amphibian", "fish", "arthropod"]
-
-# Subject types that never get a site listing.
-unlisted_types = ["person"]
+# Genre priorities for selecting covers. Lower numbers have higher priority.
+genres = [
+    { id = "landscape", cover_priority = { album = 0, place = 0 } },
+    { id = "cityscape", cover_priority = { album = 1 } },
+    { id = "wildlife", cover_priority = { album = 2 } },
+]
 
 place_features = [
     { id = "urn:ró:place_feature:castle", name = "Castle" },
@@ -15,7 +24,7 @@ place_features = [
     { id = "urn:ró:place_feature:nature reserve", name = "Nature Reserve" },
     { id = "urn:ró:place_feature:port", name = "Port" },
     { id = "urn:ró:place_feature:rainforest", name = "Rainforest" },
-    { id = "urn:ró:place_feature:unesco", name = "UNESCO" },
+    { id = "urn:ró:place_feature:unesco", name = "UNESCO", roles = ["unesco"] },
     { id = "urn:ró:place_feature:volcano", name = "Volcano" },
     { id = "urn:ró:place_feature:aquarium", name = "Aquarium" },
     { id = "urn:ró:place_feature:archaeological site", name = "Archaeological Site" },
@@ -48,14 +57,14 @@ place_features = [
     { id = "urn:ró:place_feature:waterfall", name = "Waterfall" },
     { id = "urn:ró:place_feature:wildlife-conservation", name = "Wildlife Conservation" },
     { id = "urn:ró:place_feature:zoo", name = "Zoo" },
-    { id = "urn:ró:place_feature:country", name = "Country" },
+    { id = "urn:ró:place_feature:country", name = "Country", roles = ["country"] },
 ]
 ratings = [
-    { id = "urn:ró:rating:0", name = "⭐" },
-    { id = "urn:ró:rating:1", name = "⭐⭐" },
-    { id = "urn:ró:rating:2", name = "⭐⭐⭐" },
-    { id = "urn:ró:rating:3", name = "⭐⭐⭐⭐" },
-    { id = "urn:ró:rating:4", name = "⭐⭐⭐⭐⭐" },
+    { id = "urn:ró:rating:0", name = "⭐", rank = 0 },
+    { id = "urn:ró:rating:1", name = "⭐⭐", rank = 1 },
+    { id = "urn:ró:rating:2", name = "⭐⭐⭐", rank = 2 },
+    { id = "urn:ró:rating:3", name = "⭐⭐⭐⭐", rank = 3 },
+    { id = "urn:ró:rating:4", name = "⭐⭐⭐⭐⭐", rank = 4 },
 ]
 
 [[places]]

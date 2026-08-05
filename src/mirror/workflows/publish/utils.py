@@ -28,7 +28,7 @@ from mirror.data.semantic_triples import (
     ThingCoverReader,
     VideosReader,
 )
-from mirror.data.things import ThingsReader, WildlifeReader, binomial_types
+from mirror.data.things import ThingsReader, WildlifeReader, binomial_types, feature_urn_for_role
 from mirror.data.types import SemanticTriple
 from mirror.data.unesco import UnescoReader
 from mirror.data.wikidata import WikidataMetadataReader
@@ -87,8 +87,9 @@ def _count_type(type_name: str, subjects: list[PhotoMetadataModel]) -> int:
 
 def _count_unesco_sites(places: list[PhotoMetadataModel], db: SqliteDatabase) -> int:
     unesco_places = set()
+    unesco_feature = feature_urn_for_role("unesco")
     for thing in ThingsReader().read(db):
-        if thing.relation == "features" and thing.target == "urn:ró:place_feature:unesco":
+        if thing.relation == "features" and thing.target == unesco_feature:
             unesco_places.add(thing.source)
     return len({p.target for p in places if p.target in unesco_places})
 

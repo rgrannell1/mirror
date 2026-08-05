@@ -196,7 +196,7 @@ def test_shacl_audit_checks_photo_album_and_reference_structure() -> None:
         "album minDate must not exceed maxDate",
         "albumId does not resolve to a named album",
         "photo is missing required fields: midImageLossyUrl",
-        "rating must be one of urn:ró:rating:0 through urn:ró:rating:4",
+        "rating must be a rating id defined in things.toml",
     }
 
 

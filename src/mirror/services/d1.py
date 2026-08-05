@@ -56,9 +56,7 @@ def map_permalink_to_dpath(dpath_to_details: dict) -> dict:
     }
 
 
-def collect_album_covers(
-    dpath_to_details: dict, cover_ratings: dict, max_dates: dict
-) -> dict:
+def collect_album_covers(dpath_to_details: dict, cover_ratings: dict, max_dates: dict) -> dict:
     """Map album dpath → (rating, max_date, image_url) for albums with a cover."""
     return {
         dpath: (cover_ratings.get(dpath, 0), max_dates.get(dpath, ""), details["image_url"])
@@ -67,9 +65,7 @@ def collect_album_covers(
     }
 
 
-def choose_trip_image(
-    album_urns, permalink_to_dpath: dict, album_covers: dict
-) -> str | None:
+def choose_trip_image(album_urns, permalink_to_dpath: dict, album_covers: dict) -> str | None:
     """Pick the trip card image: the highest-rated album cover, ties favouring
     the newest album."""
     best_cover = None
@@ -98,17 +94,11 @@ class D1Builder:
 
     def read_cover_ratings(self) -> dict:
         """Map album dpath → cover photo star count."""
-        return {
-            dpath: len(stars)
-            for dpath, stars in self.db.conn.execute(COVER_RATING_QUERY)
-        }
+        return {dpath: len(stars) for dpath, stars in self.db.conn.execute(COVER_RATING_QUERY)}
 
     def read_max_dates(self) -> dict:
         """Map album dpath → newest photo date."""
-        return {
-            album.dpath: album.max_date or ""
-            for album in self.db.album_data_view().list()
-        }
+        return {album.dpath: album.max_date or "" for album in self.db.album_data_view().list()}
 
     def add_trip_cards(self, socials, dpath_to_details: dict) -> None:
         """Add one social-card row per titled trip."""

@@ -20,6 +20,7 @@ from mirror.commons.config import (
     ZAHIR_JSONL_PATH,
     ZAHIR_STDERR_PATH,
 )
+from mirror.list_album import run_list_album_command
 from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
 from mirror.workflows.fetch.fetch import (
     fetch_copy_file,
@@ -195,6 +196,17 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
 
     subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
 
+    list_album_parser = subparsers.add_parser(
+        "list-album", help="List albums before, on, or after a date"
+    )
+    list_album_parser.add_argument(
+        "--date",
+        dest="date",
+        required=True,
+        metavar="YYYY-MM-DD",
+        help="Target date, e.g. 2026-05-09",
+    )
+
     fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
     fetch_parser.add_argument(
         "--from",
@@ -310,6 +322,9 @@ def main():
 
     if args.command == "audit":
         raise SystemExit(run_audit_command())
+
+    if args.command == "list-album":
+        raise SystemExit(run_list_album_command(args.date))
 
     if args.command == "fetch":
         run_fetch_command(args)

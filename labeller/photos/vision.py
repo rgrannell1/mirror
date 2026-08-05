@@ -7,23 +7,34 @@ import requests
 from google import genai
 from google.genai import types
 
-from mirror.data.things import animal_types
+from mirror.data.things import animal_contexts
+
+THINGS_PATH = Path(__file__).parent.parent.parent / "things.toml"
+
+
+def format_context_guidance(contexts: dict[str, str]) -> str:
+    """Describe configured animal contexts for the image labelling prompt."""
+    types_by_context: dict[str, list[str]] = {}
+    for animal_type, context in contexts.items():
+        types_by_context.setdefault(context, []).append(animal_type)
+    parts = [
+        f"use ?context={context} for {', '.join(animal_types)}"
+        for context, animal_types in types_by_context.items()
+    ]
+    return "; ".join(parts)
 
 
 def base_prompt() -> str:
     """The tagging prompt; animal categories come from things.toml."""
-    categories = ", ".join(animal_types())
+    contexts = animal_contexts(str(THINGS_PATH))
+    categories = ", ".join(contexts)
+    context_guidance = format_context_guidance(contexts)
     return (
         "Identify the main subject of this image for photo tagging purposes. "
         "For animals, return a URN tag in the format urn:ró:<category>:<latin-binomial> "
         f"where <category> is one of: {categories}, and "
         "<latin-binomial> is the species name lowercased with a hyphen, followed by "
-        "?context=wild for arthropods and amphibians or ?context=captivity for all other "
-        "animal categories "
-        "(e.g. urn:ró:bird:hirundo-rustica?context=captivity, "
-        "urn:ró:mammal:vulpes-vulpes?context=captivity, "
-        "urn:ró:arthropod:vanessa-atalanta?context=wild, "
-        "urn:ró:amphibian:rana-temporaria?context=wild). "
+        f"the configured context: {context_guidance}. "
         "For cars, return a URN tag in the format urn:ró:car:<make>-<model> with make and "
         "model lowercased and hyphenated "
         "(e.g. urn:ró:car:ferrari-f40, urn:ró:car:volkswagen-beetle, urn:ró:car:ford-mustang). "

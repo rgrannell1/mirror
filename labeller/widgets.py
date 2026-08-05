@@ -14,6 +14,8 @@ from textual.widget import Widget
 from textual.widgets import Input, Static
 from textual_image.widget import Image as TIImage
 
+from mirror.data.things import rating_names
+
 from .image_loader import fetch_image
 from .messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 
@@ -62,7 +64,7 @@ _FIELD_ROW_ID_PREFIX = "field-row-"
 _EDIT_INPUT_ID = "edit-input"
 _RATING_SELECTOR_ID = "rating-selector"
 
-RATING_OPTIONS = ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"]
+RATING_OPTIONS = list(rating_names(str(THINGS_PATH)))
 
 
 class CyclingSuggester(Suggester):

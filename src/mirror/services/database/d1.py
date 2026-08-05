@@ -35,9 +35,19 @@ class D1SqliteDatabase:
         return SocialCardTable(self.conn)
 
     def dump(self):
+        """Write an idempotent SQL dump: safe to re-run, and safe against the
+        partial-apply retries wrangler's remote D1 import performs."""
         with open(D1_DUMP_PATH, "w", encoding="utf-8") as f:
+            f.write("DROP TABLE IF EXISTS social_cards;\n")
             for line in self.conn.iterdump():
-                if "social_cards" in line:
-                    f.write(line + "\n")
+                if "social_cards" not in line:
+                    continue
+
+                if line.startswith("CREATE TABLE"):
+                    line = line.replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS", 1)
+                if line.startswith("INSERT INTO"):
+                    line = line.replace("INSERT INTO", "INSERT OR REPLACE INTO", 1)
+
+                f.write(line + "\n")
 
         self.conn.close()

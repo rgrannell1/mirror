@@ -4,10 +4,14 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from mirror.data.things import rating_names
+
+THINGS_PATH = Path(__file__).parent.parent.parent / "things.toml"
+
 COLUMNS = ["embedding", "name", "genre", "rating", "places", "description", "subjects", "cover"]
 EDITABLE_COLUMNS = ["name", "genre", "rating", "places", "description", "subjects", "cover"]
 
-RATING_OPTIONS = ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"]
+RATING_OPTIONS = list(rating_names(str(THINGS_PATH)))
 
 
 @dataclass

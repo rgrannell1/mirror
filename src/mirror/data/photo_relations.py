@@ -7,6 +7,7 @@ import markdown
 
 from mirror.commons.constants import URN_PREFIX
 from mirror.commons.utils import deterministic_hash_str
+from mirror.data.things import rating_urns_by_name
 from mirror.data.types import SemanticTriple
 
 # Track style names we've already seen to avoid duplicate name triples
@@ -17,21 +18,11 @@ ALLOWED_PHOTO_RELATIONS = {"summary", "style", "location", "subject", "rating", 
 
 
 def parse_rating(rating_str: str) -> str:
-    """
-    Parse a rating string containing star emojis and convert to a rating URN.
-
-    Args:
-        rating_str: String containing star emojis (⭐)
-
-    Returns:
-        URN in format "urn:ró:rating:{count}" where count is stars - 1
-
-    Examples:
-        "⭐" -> "urn:ró:rating:0"
-        "⭐⭐⭐" -> "urn:ró:rating:2"
-    """
-    star_count = rating_str.count("⭐")
-    return f"urn:ró:rating:{star_count - 1}"
+    """Convert a configured rating display name to its URN."""
+    try:
+        return rating_urns_by_name()[rating_str]
+    except KeyError as err:
+        raise ValueError(f"Unknown rating {rating_str!r}") from err
 
 
 def parse_style(style_str: str) -> str:

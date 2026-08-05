@@ -56,29 +56,48 @@ def named_thing_ids(things_file: str = "things.toml") -> frozenset[str]:
 
 @cache
 def binomial_types(things_file: str = "things.toml") -> frozenset[str]:
-    """Subject types whose ids are latin binomials, from the top-level binomial_types list."""
+    """Return subject types whose identifiers are binomials."""
     with open(Path(things_file), "rb") as fh:
         data = tomllib.load(fh)
 
-    return frozenset(data.get("binomial_types", []))
+    return frozenset(
+        entry["noun"] for entry in data.get("subject_types", []) if entry.get("binomial")
+    )
 
 
 @cache
 def animal_types(things_file: str = "things.toml") -> tuple[str, ...]:
-    """Animal URN nouns, from the top-level animal_types list."""
+    """Return subject types marked as animals."""
     with open(Path(things_file), "rb") as fh:
         data = tomllib.load(fh)
 
-    return tuple(data.get("animal_types", []))
+    return tuple(entry["noun"] for entry in data.get("subject_types", []) if entry.get("animal"))
+
+
+@cache
+def animal_contexts(things_file: str = "things.toml") -> dict[str, str]:
+    """Return the required context for each animal subject type."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {
+        entry["noun"]: entry["context"]
+        for entry in data.get("subject_types", [])
+        if entry.get("animal") and entry.get("context")
+    }
 
 
 @cache
 def unlisted_types(things_file: str = "things.toml") -> frozenset[str]:
-    """Subject types that never get a site listing, from the top-level unlisted_types list."""
+    """Return subject types excluded from site listings."""
     with open(Path(things_file), "rb") as fh:
         data = tomllib.load(fh)
 
-    return frozenset(data.get("unlisted_types", []))
+    return frozenset(
+        entry["noun"]
+        for entry in data.get("subject_types", [])
+        if entry.get("listed", True) is False
+    )
 
 
 @cache
@@ -97,6 +116,71 @@ def legacy_album_dpaths(things_file: str = "things.toml") -> dict[str, str]:
         data = tomllib.load(fh)
 
     return {entry["permalink"]: entry["dpath"] for entry in data.get("legacy_albums", [])}
+
+
+@cache
+def rating_ids(things_file: str = "things.toml") -> tuple[str, ...]:
+    """Rating URN ids in ascending order, from the ratings section."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    ratings = sorted(data.get("ratings", []), key=lambda entry: entry["rank"])
+    return tuple(entry["id"] for entry in ratings)
+
+
+@cache
+def rating_names(things_file: str = "things.toml") -> tuple[str, ...]:
+    """Rating display names (star strings) in ascending order, from the ratings section."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    ratings = sorted(data.get("ratings", []), key=lambda entry: entry["rank"])
+    return tuple(entry["name"] for entry in ratings)
+
+
+@cache
+def rating_urns_by_name(things_file: str = "things.toml") -> dict[str, str]:
+    """Return rating display names mapped to their URNs."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {entry["name"]: entry["id"] for entry in data.get("ratings", [])}
+
+
+@cache
+def rating_ranks(things_file: str = "things.toml") -> dict[str, int]:
+    """Return rating display names mapped to their numeric rank."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {entry["name"]: entry["rank"] for entry in data.get("ratings", [])}
+
+
+@cache
+def feature_urn_for_role(role: str, things_file: str = "things.toml") -> str:
+    """Return the place-feature URN assigned to a domain role."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    matches = [
+        entry["id"] for entry in data.get("place_features", []) if role in entry.get("roles", [])
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"Expected one place feature with role {role!r}, found {len(matches)}")
+    return matches[0]
+
+
+@cache
+def genre_cover_priorities(scope: str, things_file: str = "things.toml") -> dict[str, int]:
+    """Return genre cover priorities for one publication scope."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {
+        entry["id"]: entry["cover_priority"][scope]
+        for entry in data.get("genres", [])
+        if scope in entry.get("cover_priority", {})
+    }
 
 
 @cache
@@ -131,10 +215,11 @@ def country_slug_to_urn(things_file: str = "things.toml") -> dict[str, str]:
     with open(Path(things_file), "rb") as fh:
         data = tomllib.load(fh)
 
+    country_feature = feature_urn_for_role("country", things_file)
     lookup: dict[str, str] = {}
     for place in data.get("places", []):
         features = place.get("features", [])
-        if "urn:ró:place_feature:country" not in features:
+        if country_feature not in features:
             continue
         name: str = place.get("name", "")
         slug = name.lower().replace(" ", "-")
@@ -175,10 +260,11 @@ class ThingsReader:
             data = tomllib.load(conn)
 
         # TODO validate these against a schema based on type
-        # config keys (binomial_types) and id-less sections (banners) hold no things
+        # configuration entries and id-less sections hold no publishable things
         for urn_info in data.values():
             for item in urn_info:
-                if isinstance(item, dict) and "id" in item:
+                item_id = item.get("id") if isinstance(item, dict) else None
+                if isinstance(item_id, str) and item_id.startswith(URN_PREFIX):
                     yield from self.to_triples(item)
 
 

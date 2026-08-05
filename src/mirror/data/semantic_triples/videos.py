@@ -6,12 +6,11 @@ import markdown
 
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
 from mirror.data.photo_relations import parse_style
+from mirror.data.things import rating_urns_by_name
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
     from mirror.services.database import SqliteDatabase
-
-_RATING_MAP = {"⭐": "0", "⭐⭐": "1", "⭐⭐⭐": "2", "⭐⭐⭐⭐": "3", "⭐⭐⭐⭐⭐": "4"}
 
 _style_names_seen: Set[str] = set()
 
@@ -59,9 +58,9 @@ def video_metadata_triples(source: str, rows: list) -> Iterator[SemanticTriple]:
         if relation == "summary":
             yield SemanticTriple(source, "description", markdown.markdown(target))
         elif relation == "rating":
-            rating_index = _RATING_MAP.get(target)
-            if rating_index is not None:
-                yield SemanticTriple(source, "rating", f"urn:ró:rating:{rating_index}")
+            rating_urn = rating_urns_by_name().get(target)
+            if rating_urn is not None:
+                yield SemanticTriple(source, "rating", rating_urn)
         elif relation == "style":
             yield from video_style_triples(source, target)
         elif relation in {"location", "subject", "cover"}:

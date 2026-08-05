@@ -8,7 +8,7 @@ from rdflib.namespace import RDF, SH
 
 from mirror.audit.audit_types import Finding
 from mirror.audit.rdf_adapter import AUDIT, build_rdf_graph
-from mirror.data.things import animal_types
+from mirror.data.things import animal_types, feature_urn_for_role, rating_ids
 
 SHAPES_PATH = Path(__file__).with_name("shapes.ttl")
 
@@ -38,9 +38,11 @@ def finding_from_result(data: Graph, report: Graph, result) -> Finding:
 
 
 def load_shapes() -> Graph:
-    """Parse the SHACL shapes, filling the animal-types token from things.toml."""
+    """Parse the SHACL shapes, filling vocabulary tokens from things.toml."""
     shapes_text = SHAPES_PATH.read_text()
     shapes_text = shapes_text.replace("__ANIMAL_TYPES__", "|".join(animal_types()))
+    shapes_text = shapes_text.replace("__RATING_IDS__", "|".join(rating_ids()))
+    shapes_text = shapes_text.replace("__COUNTRY_FEATURE__", feature_urn_for_role("country"))
     return Graph().parse(data=shapes_text, format="turtle")
 
 

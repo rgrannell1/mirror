@@ -156,7 +156,7 @@ audit:triple-graph-invalid
     ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:message "rating must be one of urn:ró:rating:0 through urn:ró:rating:4" ;
+        sh:message "rating must be a rating id defined in things.toml" ;
         sh:select """
             PREFIX audit: <https://photos.rgrannell.xyz/audit/>
             PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
@@ -166,7 +166,7 @@ audit:triple-graph-invalid
                 OPTIONAL { ?rating audit:originalValue ?rating_id . }
                 FILTER (
                     !BOUND(?rating_id) ||
-                    !regex(str(?rating_id), "^urn:ró:rating:[0-4]$")
+                    !regex(str(?rating_id), "^(__RATING_IDS__)$")
                 )
             }
         """ ;
@@ -303,7 +303,7 @@ audit:triple-graph-invalid
                 FILTER (?focus_kind IN ("photo", "album", "video"))
                 FILTER NOT EXISTS {
                     ?target relation:features ?feature .
-                    ?feature audit:originalValue "urn:ró:place_feature:country" .
+                    ?feature audit:originalValue "__COUNTRY_FEATURE__" .
                 }
             }
         """ ;
