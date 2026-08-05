@@ -1,7 +1,7 @@
 from typing import Iterator
 
-from mirror.commons.constants import BINOMIAL_TYPE
 from mirror.commons.urn import format_mirror_urn, is_mirror_urn, parse_mirror_urn
+from mirror.data.things import binomial_types
 
 
 def _iter_binomial_targets_from_photo_metadata(db) -> Iterator[dict]:
@@ -11,7 +11,7 @@ def _iter_binomial_targets_from_photo_metadata(db) -> Iterator[dict]:
         if not is_mirror_urn(target):
             continue
         parsed = parse_mirror_urn(target)
-        if parsed["type"] not in BINOMIAL_TYPE:
+        if parsed["type"] not in binomial_types():
             continue
         yield parsed
 

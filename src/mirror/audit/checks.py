@@ -12,9 +12,9 @@ from enum import StrEnum
 from mirror.audit.audit_types import Check, Finding
 from mirror.audit.shacl import validate_triples
 from mirror.commons.config import PHOTO_DIRECTORY
-from mirror.commons.constants import ALBUM_URN_PREFIX
+from mirror.commons.constants import ALBUM_URN_PREFIX, EXCLUDED_LISTING_TYPES, URN_PREFIX
 from mirror.commons.utils import is_miscellaneous_dpath
-from mirror.data.things import trip_to_albums
+from mirror.data.things import listing_labels, named_thing_ids, trip_to_albums
 from mirror.models.album import AlbumDataModel
 from mirror.services.database import SqliteDatabase
 from mirror.services.metadata import (
@@ -39,6 +39,8 @@ class CheckSlug(StrEnum):
     PHOTO_MISSING_RATING = "photo-missing-rating"
     PHOTO_MISSING_MAIN_IMAGE = "photo-missing-main-image"
     ANIMAL_MISSING_NAME = "animal-missing-name"
+    SUBJECT_MISSING_NAME = "subject-missing-name"
+    SUBJECT_TYPE_UNLISTED = "subject-type-unlisted"
     TRIPLE_GRAPH_INVALID = "triple-graph-invalid"
     ALBUM_OMITTED_FROM_TRIP = "album-omitted-from-trip"
 
@@ -190,6 +192,56 @@ def check_albums_omitted_from_trips(db: SqliteDatabase) -> Iterator[Finding]:
     yield from find_albums_omitted_from_trips(trip_to_albums(), db.album_data_view().list())
 
 
+def find_unnamed_subjects(subjects: Iterator[str], named_ids: set[str]) -> Iterator[Finding]:
+    """Report each subject URN with no named things.toml entry, once, query string stripped."""
+    seen: set[str] = set()
+    for subject in subjects:
+        base = subject.split("?")[0].strip()
+        if not base.startswith(URN_PREFIX) or base in named_ids or base in seen:
+            continue
+        seen.add(base)
+        detail = "no named entry in things.toml — the site shows the raw urn slug"
+        yield Finding(check=CheckSlug.SUBJECT_MISSING_NAME, subject=base, detail=detail)
+
+
+def photo_subject_urns(db: SqliteDatabase) -> list[str]:
+    """All subject cell values from photos.md, or [] when the file is malformed.
+
+    Subjects enter photos.md at labelling time, before any pipeline run ingests them, so the
+    subject checks read the markdown source — the SHACL contract only sees ingested triples."""
+    reader = MarkdownTablePhotoMetadataReader(DEFAULT_PHOTOS_MARKDOWN_PATH)
+    try:
+        rows = list(reader.read_photo_metadata(db))
+    except ValueError:
+        return []  # a malformed photos.md is reported by check_metadata_parses
+    return [subject for row in rows for subject in row.subjects]
+
+
+def check_subjects_missing_name(db: SqliteDatabase) -> Iterator[Finding]:
+    """Every subject URN needs a named things.toml entry, or the site shows the raw slug."""
+    yield from find_unnamed_subjects(iter(photo_subject_urns(db)), named_thing_ids())
+
+
+def find_unlisted_subject_types(subject_urns: list[str], labels: dict) -> Iterator[Finding]:
+    """Report each subject type with no things.toml section and no exclusion, once."""
+    nouns: set[str] = set()
+    for urn in subject_urns:
+        base = urn.split("?")[0].strip()
+        if not base.startswith(URN_PREFIX):
+            continue
+        nouns.add(base.removeprefix(URN_PREFIX).split(":")[0])
+
+    for noun in sorted(nouns - set(labels) - EXCLUDED_LISTING_TYPES):
+        detail = "no things.toml section for this type — its photos get no site listing"
+        yield Finding(check=CheckSlug.SUBJECT_TYPE_UNLISTED, subject=noun, detail=detail)
+
+
+def check_subject_types_listed(db: SqliteDatabase) -> Iterator[Finding]:
+    """A subject type without a section derives no listing entity, so it never gets a
+    listings-index card. Excluded types (person) are deliberate and pass."""
+    yield from find_unlisted_subject_types(photo_subject_urns(db), listing_labels())
+
+
 def check_graph_contract(db: SqliteDatabase) -> Iterator[Finding]:
     """Validate the exact processed publication triples against the SHACL contract."""
     yield from validate_triples(list(read_triples(db)))
@@ -235,6 +287,16 @@ CHECKS: list[Check] = [
         slug=CheckSlug.ANIMAL_MISSING_NAME,
         description="Referenced animal has no name definition",
         run=check_graph_contract,
+    ),
+    Check(
+        slug=CheckSlug.SUBJECT_MISSING_NAME,
+        description="photos.md subject has no named entry in things.toml",
+        run=check_subjects_missing_name,
+    ),
+    Check(
+        slug=CheckSlug.SUBJECT_TYPE_UNLISTED,
+        description="Subject type has no things.toml section, so no site listing",
+        run=check_subject_types_listed,
     ),
     Check(
         slug=CheckSlug.ALBUM_OMITTED_FROM_TRIP,

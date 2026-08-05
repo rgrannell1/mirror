@@ -20,7 +20,6 @@ from mirror.commons.config import (
     SPACES_SECRET_KEY,
 )
 from mirror.commons.constants import (
-    BINOMIAL_TYPE,
     DATE_FORMAT,
     EXIF_ATTR_ASSOCIATIONS,
     FULL_SIZED_VIDEO_ROLE,
@@ -72,7 +71,6 @@ __all__ = [
     "ALBUM_METADATA_FILE",
     "ANSI",
     "BINOMIALS_WIKIDATA_ID_TABLE",
-    "BINOMIAL_TYPE",
     "D1_DATABASE_PATH",
     "D1_DUMP_PATH",
     "DATABASE_PATH",

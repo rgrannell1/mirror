@@ -91,6 +91,9 @@ MISCELLANEOUS_ALBUM_ID = "miscellaneous"
 # Animal URN nouns which need name definitions in things.toml.
 ANIMAL_TYPES = ("bird", "mammal", "reptile", "amphibian", "fish", "insect")
 
+# Subject types that never get a site listing.
+EXCLUDED_LISTING_TYPES = frozenset({"person"})
+
 # Attr-Exif property associations
 # these are the exif attributes we care about
 EXIF_ATTR_ASSOCIATIONS = {
@@ -244,4 +247,3 @@ class KnownWikiProperties:
     TAXON_NAME = "P225"
 
 
-BINOMIAL_TYPE = {"mammal", "bird", "reptile", "amphibian", "fish"}

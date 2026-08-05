@@ -1,4 +1,7 @@
-place_feature = [
+# Subject types whose ids are latin binomials; rendered in italics on the site.
+binomial_types = ["bird", "mammal", "reptile", "amphibian", "fish"]
+
+place_features = [
     { id = "urn:ró:place_feature:castle", name = "Castle" },
     { id = "urn:ró:place_feature:city", name = "City" },
     { id = "urn:ró:place_feature:harbor", name = "Harbour" },
@@ -4842,6 +4845,18 @@ name = "Cobalt Zebra Cichlid"
 id = "urn:ró:fish:petromyzon-marinus"
 name = "Sea Lamprey"
 
+[[fish]]
+id = "urn:ró:fish:carcharias-taurus"
+name = "Sand Tiger Shark"
+
+[[fish]]
+id = "urn:ró:fish:hydrolycus-scomberoides"
+name = "Payara"
+
+[[fish]]
+id = "urn:ró:fish:unknown"
+name = "Unknown Fish"
+
 [[cars]]
 id = "urn:ró:car:bmw-isetta"
 name = "BMW Isetta"
@@ -4922,6 +4937,14 @@ name = "Eastern Newt"
 id = "urn:ró:amphibian:proteus-anguinus"
 name = "Olm"
 
+[[amphibians]]
+id = "urn:ró:amphibian:ambystoma-mexicanum"
+name = "Axolotl"
+
+[[amphibians]]
+id = "urn:ró:amphibian:triturus-carnifex"
+name = "Italian Crested Newt"
+
 [[arthropods]]
 id = "urn:ró:arthropod:amegilla-canifrons"
 name = "Amegilla Bee"
@@ -4970,6 +4993,10 @@ name = "Atlantic Sally Lightfoot Crab"
 id = "urn:ró:ctenophore:pleurobrachia-pileus"
 name = "Sea Gooseberry"
 
+[[cnidaria]]
+id = "urn:ró:cnidaria:chrysaora-hysoscella"
+name = "Compass Jellyfish"
+
 [[boats]]
 id = "urn:ró:boat:unknown"
 name = "Unknown Boat"
@@ -5013,6 +5040,10 @@ name = "Róisín Grannell"
 [[reptiles]]
 id = "urn:ró:reptile:unknown"
 name = "Unknown Reptile"
+
+[[reptiles]]
+id = "urn:ró:reptile:carettochelys-insculpta"
+name = "Pig-nosed Turtle"
 
 [[birds]]
 id = "urn:ró:bird:linaria-cannabina"

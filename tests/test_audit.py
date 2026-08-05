@@ -1,6 +1,49 @@
 """Tests for publication audit rules."""
 
+from mirror.audit.checks import find_unlisted_subject_types, find_unnamed_subjects
 from mirror.audit.shacl import validate_triples
+
+
+def test_audit_reports_subject_types_without_section() -> None:
+    """Proves subject types with no things.toml section and no exclusion are reported once,
+    since they would silently get no site listing."""
+    labels = {"bird": "Birds"}
+    urns = [
+        "urn:ró:bird:turdus-merula",
+        "urn:ró:sponge:spongilla-lacustris?context=wild",
+        "urn:ró:sponge:euplectella-aspergillum",
+        "urn:ró:person:me",
+        "not-a-urn",
+    ]
+
+    findings = list(find_unlisted_subject_types(urns, labels))
+
+    assert [finding.subject for finding in findings] == ["sponge"]
+    assert all(finding.check == "subject-type-unlisted" for finding in findings)
+
+
+def test_audit_reports_subjects_without_named_thing() -> None:
+    """Proves photos.md subject URNs without a named things.toml entry are reported once each."""
+    named_ids = {"urn:ró:bird:turdus-merula", "urn:ró:fish:unknown"}
+    cases = [
+        (["urn:ró:bird:turdus-merula"], []),
+        (["urn:ró:bird:turdus-merula?context=wild"], []),
+        (["urn:ró:fish:carcharias-taurus"], ["urn:ró:fish:carcharias-taurus"]),
+        (
+            ["urn:ró:cnidaria:chrysaora-hysoscella?context=wild"],
+            ["urn:ró:cnidaria:chrysaora-hysoscella"],
+        ),
+        (
+            ["urn:ró:mammal:lutra-lutra", "urn:ró:mammal:lutra-lutra?context=wild"],
+            ["urn:ró:mammal:lutra-lutra"],
+        ),
+        (["not-a-urn"], []),
+    ]
+
+    for subjects, expected in cases:
+        findings = list(find_unnamed_subjects(subjects, named_ids))
+        assert [finding.subject for finding in findings] == expected
+        assert all(finding.check == "subject-missing-name" for finding in findings)
 
 
 def make_valid_triples() -> list[list]:

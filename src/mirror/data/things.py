@@ -4,6 +4,7 @@ from typing import Iterator
 
 import tomllib
 
+from mirror.commons.constants import URN_PREFIX
 from mirror.data.types import SemanticTriple
 
 
@@ -36,6 +37,51 @@ def trip_titles(things_file: str = "things.toml") -> dict[str, str]:
         data = tomllib.load(fh)
 
     return {trip["id"]: trip["title"] for trip in data.get("trips", []) if trip.get("title")}
+
+
+@cache
+def named_thing_ids(things_file: str = "things.toml") -> frozenset[str]:
+    """Return the ids of things.toml entries that carry a non-empty name."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    ids = {
+        entry["id"]
+        for entries in data.values()
+        for entry in entries
+        if isinstance(entry, dict) and entry.get("id") and entry.get("name")
+    }
+    return frozenset(ids)
+
+
+@cache
+def binomial_types(things_file: str = "things.toml") -> frozenset[str]:
+    """Subject types whose ids are latin binomials, from the top-level binomial_types list."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return frozenset(data.get("binomial_types", []))
+
+
+@cache
+def listing_labels(things_file: str = "things.toml") -> dict[str, str]:
+    """Map each URN noun to a plural display label derived from its section header.
+
+    The section header is the plural ('birds', 'place_features'); the noun comes from the
+    section's first entry id ('urn:ró:bird:…' → 'bird')."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    labels: dict[str, str] = {}
+    for section, entries in data.items():
+        if not isinstance(entries, list) or not entries or not isinstance(entries[0], dict):
+            continue
+        first_id = entries[0].get("id", "")
+        if not first_id.startswith(URN_PREFIX):
+            continue
+        noun = first_id.removeprefix(URN_PREFIX).split(":")[0]
+        labels[noun] = section.replace("_", " ").title()
+    return labels
 
 
 @cache
@@ -93,9 +139,11 @@ class ThingsReader:
             data = tomllib.load(conn)
 
         # TODO validate these against a schema based on type
+        # scalar config keys like binomial_types hold no entries
         for urn_info in data.values():
             for item in urn_info:
-                yield from self.to_triples(item)
+                if isinstance(item, dict):
+                    yield from self.to_triples(item)
 
 
 class WildlifeReader(ThingsReader):

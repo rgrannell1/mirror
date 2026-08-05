@@ -3,6 +3,7 @@
 from .albums import AlbumTriples
 from .exif import ExifTriplesReader
 from .first_seen import AnimalFirstSeenReader
+from .listings import ListingEntityReader
 from .photos import (
     AlbumBannerReader,
     ListingCoverReader,
@@ -19,6 +20,7 @@ __all__ = [
     "AnimalFirstSeenReader",
     "ExifTriplesReader",
     "ListingCoverReader",
+    "ListingEntityReader",
     "PhotoTriples",
     "PhotosCountryReader",
     "PlaceFeatureCoverReader",
