@@ -1,4 +1,4 @@
-# Python-generated files
+# Python build artifacts
 __pycache__/
 *.py[oc]
 build/
@@ -6,29 +6,39 @@ dist/
 wheels/
 *.egg-info
 
-# Virtual environments
+# Virtual environments and tool caches
 .venv
+env/
 .mypy_cache
 .ruff_cache
 .env
-env/*
-build/*
-test_artifacts/
-vermiel.egg-info/
-test.md
-albums.json
-main.py
+
+# Editor and agent config
 .vscode/settings.json
-uv.lock
-src/data/whc001.json
+.claude/
+
+# Workflow state and logs
 mirror_jobs.db
 mirror_jobs.db-wal
 mirror_jobs.db-shm
 zahir_logs
 traces/
-photos-rgrannell-xyz-9977d13ed814.json
-.claude/
 logs/
 latest.jsonl
 latest.error
+
+# Working files, never committed
 work.md
+snags.md
+test.md
+
+# One-off scratch scripts
+scripts/
+
+# Local data and credentials
+src/data/whc001.json
+photos-rgrannell-xyz-9977d13ed814.json
+albums.json
+uv.lock
+test_artifacts/
+main.py

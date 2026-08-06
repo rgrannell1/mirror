@@ -100,12 +100,12 @@ def is_silent(fpath: str) -> bool:
 
 def publish_video_encoding(cdn, db, fpath, encoding: tuple[str, dict]):
     role, params = encoding
-    uploaded_video_name = CDN.video_name(fpath, params, "webm")
+    uploaded_video_name = CDN.video_name(fpath, params, "mp4")
 
     if cdn.has_object(uploaded_video_name):
         # CDN already has the encoded asset; avoid re-encoding and just update the DB
         uploaded_video_url = cdn.url(uploaded_video_name)
-        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
+        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
         return None
 
     encoded_path = VideoEncoder.encode(
@@ -120,7 +120,7 @@ def publish_video_encoding(cdn, db, fpath, encoding: tuple[str, dict]):
 
     uploaded_video_url = cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
 
-    db.encoded_videos_table().add(fpath, uploaded_video_url, role, "webm")
+    db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
     db.encoded_videos_table().get_by_fpath_and_role(fpath, role)
 
     return encoded_path
