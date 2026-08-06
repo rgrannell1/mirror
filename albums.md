@@ -126,11 +126,10 @@
 | ![](https://photos-cdn.rgrannell.xyz/090abd728a.avif) | Dublin Zoo | dublin-zoo-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/3ef03e240f.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/fd4ae22b43.avif) | East Coast Nature Reserve | east-coast-nature-26 | urn:ró:place:148 | I was close to photographing a kingfisher, again... |
-| ![](https://photos-cdn.rgrannell.xyz/a1235ce4c2.avif) | Las Palmas Museums | las-palmas-museums-26 | urn:ró:place:186 |  |
 | ![](https://photos-cdn.rgrannell.xyz/0607fd3a4b.avif) | Las Palmas | las-palmas-26 | urn:ró:place:186 |  |
 | ![](https://photos-cdn.rgrannell.xyz/666396a661.avif) | Madrid | madrid-city-26 | urn:ró:place:164 | I finally got to see the Temple of Debod, after three attempts |
 | ![](https://photos-cdn.rgrannell.xyz/8c7539ca00.avif) | National Archaeological Museum | man-26 | urn:ró:place:164 | I was recovering from surgery at the time, so it took a few attempts to actually see this museum (and see it briefly) |
-| ![](https://photos-cdn.rgrannell.xyz/f48d6b9a8b.avif) | Maspalomas | maspalomas-26 | urn:ró:place:186 |  |
+| ![](https://photos-cdn.rgrannell.xyz/f48d6b9a8b.avif) | Maspalomas | maspalomas-26 | urn:ró:place:186 | To put it lightly, I don't really like the beer-and-sun tourist camps dotted around Spain and the Canaries. But, I went on a quick day-trip down from the capital to see the sand-dunes and found a nice little pocket of biodiversity. I saw common kestrels, flocks of egrets, herons, and an invasive bee outside the Yumba Shopping Center. It was an odd place to get my nature-watching kicks, but it was fun. |
 | ![](https://photos-cdn.rgrannell.xyz/8a1a8e8b39.avif) | Maynooth | maynooth-26 | urn:ró:place:148 | I went to see a [steam train](https://www.steamtrainsireland.com/rpsi-collection/1/no171-slieve-gullion), but something a bit more [industrial](https://en.wikipedia.org/wiki/CI%C3%89_071_Class) showed up in its place |
 | ![](https://photos-cdn.rgrannell.xyz/0791d7a678.avif) | River Dodder | river-dodder-26 | urn:ró:place:148 | The first blue-sky of 2026. I went for a walk hoping to see kingfishers and otters. As expected, I didn't find any, but it was a nice walk regardless |
 | ![](https://photos-cdn.rgrannell.xyz/b3f272115e.avif) | Steam Museum & Gardens | steam-museum-26 | urn:ró:place:148 |  |

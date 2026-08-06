@@ -5,6 +5,7 @@ from typing import Any
 from zahir import JobContext, check_file_dependency
 
 from mirror.commons.config import OUTPUT_DIRECTORY
+from mirror.workflows.output import workflow_output
 from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.workflows.workflow_types import MirrorWorkflowInput
 
@@ -30,7 +31,7 @@ def run_scan(ctx: JobContext, paths: dict) -> Generator[Any, Any, bool]:
             "photos_markdown_path": paths["photos_markdown_path"],
         })
     except Exception as err:  # noqa: BLE001
-        print(f"WARNING: scan_media failed: {err}")
+        yield workflow_output(f"scan_media failed: {err}")
         return False
 
     return True
@@ -86,7 +87,7 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
         # DB is stale, and write_metadata rewrites the whole markdown file from the DB — which would
         # silently overwrite the human-edited ratings. Bail out before any destructive write or
         # publish; resume the run once scan is fixed.
-        print(
+        yield workflow_output(
             "scan failed: skipping metadata rewrite and publish"
             " to avoid overwriting albums.md/photos.md from a stale database"
         )

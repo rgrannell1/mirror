@@ -18,6 +18,7 @@ from mirror.services.metadata import (
     MarkdownTableVideoMetadataReader,
 )
 from mirror.services.vault_sync import VaultIndexSync
+from mirror.workflows.output import workflow_output
 from mirror.workflows.scan.utils import (
     DEFAULT_ALBUMS_MARKDOWN_PATH,
     DEFAULT_PHOTOS_MARKDOWN_PATH,
@@ -107,6 +108,9 @@ def read_albums(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
 
         write_miscellaneous_permalinks(db)
         db.conn.commit()
+
+    for skipped_row in album_reader.skipped:
+        yield workflow_output(f"albums.md: skipped {skipped_row}: thumbnail not in database")
 
     return {"count": count, "status": "albums_loaded"}
     yield

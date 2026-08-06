@@ -54,7 +54,7 @@ def listing_entity_triples(types: set[str]) -> Iterator[SemanticTriple]:
 
 class ListingEntityReader:
     """Emits:  urn:ró:listing:<type>  name      <plural label>
-               urn:ró:listing:<type>  binomial  true            (binomial types only)
+    urn:ró:listing:<type>  binomial  true            (binomial types only)
     """
 
     @staticmethod

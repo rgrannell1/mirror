@@ -242,7 +242,9 @@ class MarkdownAlbumMetadataWriter(IAlbumMetadataWriter):
         emit_markdown_table(ALBUM_TABLE_HEADERS, album_table_rows(by_album), output_path)
 
 
-def resolve_album_dpath(dpaths_by_thumbnail: dict[str, str], embedding: str, permalink: str) -> str:
+def resolve_album_dpath(
+    dpaths_by_thumbnail: dict[str, str], embedding: str, permalink: str
+) -> str | None:
     """Resolve a row's dpath from its thumbnail, with overrides for legacy albums."""
     legacy_dpaths = legacy_album_dpaths()
     if permalink in legacy_dpaths:
@@ -269,9 +271,11 @@ def album_metadata_models(item: dict) -> Iterator[AlbumMetadataModel]:
 
 class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
     fpath: str
+    skipped: list[str]
 
     def __init__(self, fpath: str):
         self.fpath = fpath
+        self.skipped = []
 
     def list_album_metadata(self, db: SqliteDatabase) -> Iterator[AlbumMetadataModel]:
         dpaths_by_thumbnail = db.album_data_view().album_dpaths_by_thumbnail_url()
@@ -279,8 +283,13 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
         for row in read_markdown_rows(self.fpath, "albums", ALBUM_ROW_MIN_CELLS):
             _, embedding, title, permalink, country, summary, _ = row
 
+            dpath = resolve_album_dpath(dpaths_by_thumbnail, embedding, permalink)
+            if not dpath:
+                self.skipped.append(f"{title} ({permalink})")
+                continue
+
             item = {
-                "fpath": resolve_album_dpath(dpaths_by_thumbnail, embedding, permalink),
+                "fpath": dpath,
                 "title": title,
                 "permalink": permalink,
                 "country": split_cell(country),
@@ -288,10 +297,6 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             }
 
             validate_item(item, AlbumMetadataModel.schema())
-
-            if not item["fpath"]:
-                continue
-
             yield from album_metadata_models(item)
 
 

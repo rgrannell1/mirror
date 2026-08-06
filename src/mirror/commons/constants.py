@@ -226,4 +226,3 @@ class KnownTypes:
 
 class KnownWikiProperties:
     TAXON_NAME = "P225"
-

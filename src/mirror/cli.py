@@ -33,6 +33,7 @@ from mirror.workflows.fetch.fetch import (
     fetch_run_badger,
     fetch_workflow,
 )
+from mirror.workflows.output import workflow_output_message
 from mirror.workflows.publish.publish import (
     publish_artifacts,
     publish_atom,
@@ -247,6 +248,25 @@ def report_workflow_failure(err: JobError, error_path: str) -> None:
     raise SystemExit(1)
 
 
+def stream_workflow_events(events: Iterable[Any], outputs: list[str]) -> Any:
+    """Drain the event stream, collecting workflow output messages; return the root result."""
+    root_result = None
+    for event in events:
+        if isinstance(event, RootResult):
+            root_result = event.value
+        elif isinstance(event, Event):
+            message = workflow_output_message(event)
+            if message:
+                outputs.append(message)
+    return root_result
+
+
+def print_workflow_outputs(outputs: list[str]) -> None:
+    """Print collected workflow messages once the progress bar has stopped."""
+    for message in outputs:
+        print(message, file=sys.stderr)
+
+
 def run_workflow(
     root: str, workflow_input: dict, n_workers: int, log_paths: tuple[str, str]
 ) -> Any:
@@ -262,12 +282,14 @@ def run_workflow(
         handler_wrappers=[make_telemetry()],
     )
     root_result = None
+    outputs: list[str] = []
     try:
-        for event in with_progress(record_events(events, log_paths[0], log_paths[1])):
-            if isinstance(event, RootResult):
-                root_result = event.value
+        recorded = record_events(events, log_paths[0], log_paths[1])
+        root_result = stream_workflow_events(with_progress(recorded), outputs)
     except JobError as err:
+        print_workflow_outputs(outputs)
         report_workflow_failure(err, log_paths[1])
+    print_workflow_outputs(outputs)
     return root_result
 
 
