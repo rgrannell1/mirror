@@ -43,6 +43,7 @@ class CheckSlug(StrEnum):
     SUBJECT_TYPE_UNLISTED = "subject-type-unlisted"
     TRIPLE_GRAPH_INVALID = "triple-graph-invalid"
     ALBUM_OMITTED_FROM_TRIP = "album-omitted-from-trip"
+    TRIP_ALBUM_UNKNOWN = "trip-album-unknown"
 
 
 def check_albums_cover(db: SqliteDatabase) -> Iterator[Finding]:
@@ -192,6 +193,30 @@ def check_albums_omitted_from_trips(db: SqliteDatabase) -> Iterator[Finding]:
     yield from find_albums_omitted_from_trips(trip_to_albums(), db.album_data_view().list())
 
 
+def find_trips_with_unknown_albums(
+    trips: dict[str, tuple[str, ...]], album_urns: set[str]
+) -> Iterator[Finding]:
+    """Report each trip member URN that resolves to no published album."""
+    for trip, members in trips.items():
+        for urn in members:
+            if urn in album_urns:
+                continue
+            detail = (
+                f"referenced by {trip} but no published album has this id — "
+                "the site receives an unparseable album stub"
+            )
+            yield Finding(check=CheckSlug.TRIP_ALBUM_UNKNOWN, subject=urn, detail=detail)
+
+
+def check_trip_albums_exist(db: SqliteDatabase) -> Iterator[Finding]:
+    """A trip's contains_album list is hand-written; a typo or a not-yet-published album
+    publishes a trip stub the site logs a parse warning for and skips."""
+    album_urns = {
+        f"{ALBUM_URN_PREFIX}{album.id}" for album in db.album_data_view().list() if album.id
+    }
+    yield from find_trips_with_unknown_albums(trip_to_albums(), album_urns)
+
+
 def find_unnamed_subjects(subjects: Iterator[str], named_ids: set[str]) -> Iterator[Finding]:
     """Report each subject URN with no named things.toml entry, once, query string stripped."""
     seen: set[str] = set()
@@ -302,6 +327,11 @@ CHECKS: list[Check] = [
         slug=CheckSlug.ALBUM_OMITTED_FROM_TRIP,
         description="Album dated mid-trip but missing from the trip",
         run=check_albums_omitted_from_trips,
+    ),
+    Check(
+        slug=CheckSlug.TRIP_ALBUM_UNKNOWN,
+        description="Trip references an album id that is not published",
+        run=check_trip_albums_exist,
     ),
     Check(
         slug=CheckSlug.TRIPLE_GRAPH_INVALID,

@@ -9,6 +9,30 @@ subject_types = [
     { noun = "person", listed = false },
 ]
 
+# Listing entities for non-subject types, with site behaviour flags.
+# listable: the listing page shows a "see all <type> photos" link.
+# browseable: entities of this type prune when no media references them.
+# Subject types are listable and browseable by default.
+listing_types = [
+    { noun = "place", listable = false, browseable = true },
+    { noun = "place_feature", listable = false, browseable = true },
+    { noun = "country", label = "Countries", listable = false, browseable = false },
+]
+
+# Cameras and phones by EXIF-derived URN. device_type picks the site icon.
+cameras = [
+    { id = "urn:ró:camera:dc-gh5", device_type = "camera" },
+    { id = "urn:ró:camera:dc-gh6", device_type = "camera" },
+    { id = "urn:ró:camera:dmc-fz72", device_type = "camera" },
+    { id = "urn:ró:camera:dmc-g7", device_type = "camera" },
+    { id = "urn:ró:camera:finepix-f70exr", device_type = "camera" },
+    { id = "urn:ró:camera:xz-1", device_type = "camera" },
+    { id = "urn:ró:camera:pixel-4a", device_type = "phone" },
+    { id = "urn:ró:camera:pixel-7-pro", device_type = "phone" },
+    { id = "urn:ró:camera:pixel-9a", device_type = "phone" },
+    { id = "urn:ró:camera:sm-a520f", device_type = "phone" },
+]
+
 # Genre priorities for selecting covers. Lower numbers have higher priority.
 genres = [
     { id = "landscape", cover_priority = { album = 0, place = 0 } },
@@ -16,48 +40,52 @@ genres = [
     { id = "wildlife", cover_priority = { album = 2 } },
 ]
 
+# emoji: the map/list icon the site shows for places with this feature.
+# generic: too broad to surface in the site's "Place Type" row.
 place_features = [
-    { id = "urn:ró:place_feature:castle", name = "Castle" },
-    { id = "urn:ró:place_feature:city", name = "City" },
-    { id = "urn:ró:place_feature:harbor", name = "Harbour" },
-    { id = "urn:ró:place_feature:national-park", name = "National Park" },
-    { id = "urn:ró:place_feature:nature reserve", name = "Nature Reserve" },
-    { id = "urn:ró:place_feature:port", name = "Port" },
-    { id = "urn:ró:place_feature:rainforest", name = "Rainforest" },
-    { id = "urn:ró:place_feature:unesco", name = "UNESCO", roles = ["unesco"] },
-    { id = "urn:ró:place_feature:volcano", name = "Volcano" },
-    { id = "urn:ró:place_feature:aquarium", name = "Aquarium" },
-    { id = "urn:ró:place_feature:archaeological site", name = "Archaeological Site" },
-    { id = "urn:ró:place_feature:beach", name = "Beach" },
-    { id = "urn:ró:place_feature:bridge", name = "Bridge" },
-    { id = "urn:ró:place_feature:canal", name = "Canal" },
-    { id = "urn:ró:place_feature:cathedral", name = "Cathedral" },
-    { id = "urn:ró:place_feature:church", name = "Church" },
-    { id = "urn:ró:place_feature:cave", name = "Cave" },
-    { id = "urn:ró:place_feature:cliffs", name = "Cliffs" },
-    { id = "urn:ró:place_feature:county", name = "County" },
-    { id = "urn:ró:place_feature:dunes", name = "Dunes" },
-    { id = "urn:ró:place_feature:district", name = "District" },
-    { id = "urn:ró:place_feature:garden", name = "Garden" },
-    { id = "urn:ró:place_feature:island", name = "Island" },
-    { id = "urn:ró:place_feature:lake", name = "Lake" },
-    { id = "urn:ró:place_feature:monastery", name = "Monastery" },
-    { id = "urn:ró:place_feature:monument", name = "Monument" },
-    { id = "urn:ró:place_feature:mosque", name = "Mosque" },
-    { id = "urn:ró:place_feature:mountain", name = "Mountain" },
-    { id = "urn:ró:place_feature:museum", name = "Museum" },
-    { id = "urn:ró:place_feature:palace", name = "Palace" },
-    { id = "urn:ró:place_feature:park", name = "Park" },
-    { id = "urn:ró:place_feature:square", name = "Square" },
-    { id = "urn:ró:place_feature:state", name = "State" },
-    { id = "urn:ró:place_feature:street", name = "Street" },
-    { id = "urn:ró:place_feature:town", name = "Town" },
-    { id = "urn:ró:place_feature:train station", name = "Train Station" },
-    { id = "urn:ró:place_feature:village", name = "Village" },
-    { id = "urn:ró:place_feature:waterfall", name = "Waterfall" },
-    { id = "urn:ró:place_feature:wildlife-conservation", name = "Wildlife Conservation" },
-    { id = "urn:ró:place_feature:zoo", name = "Zoo" },
-    { id = "urn:ró:place_feature:country", name = "Country", roles = ["country"] },
+    { id = "urn:ró:place_feature:castle", name = "Castle", emoji = "🏰" },
+    { id = "urn:ró:place_feature:city", name = "City", emoji = "🏙️" },
+    { id = "urn:ró:place_feature:harbor", name = "Harbour", emoji = "⚓" },
+    { id = "urn:ró:place_feature:national-park", name = "National Park", emoji = "🏞️" },
+    { id = "urn:ró:place_feature:nature reserve", name = "Nature Reserve", emoji = "🌿" },
+    { id = "urn:ró:place_feature:port", name = "Port", emoji = "🛳️" },
+    { id = "urn:ró:place_feature:rainforest", name = "Rainforest", emoji = "🌴" },
+    { id = "urn:ró:place_feature:unesco", name = "UNESCO", roles = ["unesco"], emoji = "🏛️" },
+    { id = "urn:ró:place_feature:volcano", name = "Volcano", emoji = "🌋" },
+    { id = "urn:ró:place_feature:aquarium", name = "Aquarium", emoji = "🐠" },
+    { id = "urn:ró:place_feature:aqueduct", name = "Aqueduct", emoji = "🏛️" },
+    { id = "urn:ró:place_feature:archaeological site", name = "Archaeological Site", emoji = "🏺" },
+    { id = "urn:ró:place_feature:beach", name = "Beach", emoji = "🏖️" },
+    { id = "urn:ró:place_feature:bridge", name = "Bridge", emoji = "🌉" },
+    { id = "urn:ró:place_feature:canal", name = "Canal", emoji = "🚤" },
+    { id = "urn:ró:place_feature:cathedral", name = "Cathedral", emoji = "⛪" },
+    { id = "urn:ró:place_feature:church", name = "Church", emoji = "⛪" },
+    { id = "urn:ró:place_feature:cave", name = "Cave", emoji = "⛏️" },
+    { id = "urn:ró:place_feature:cliffs", name = "Cliffs", emoji = "⛰️" },
+    { id = "urn:ró:place_feature:county", name = "County", emoji = "🗺️" },
+    { id = "urn:ró:place_feature:dunes", name = "Dunes", emoji = "🏜️" },
+    { id = "urn:ró:place_feature:district", name = "District", emoji = "🏘️" },
+    { id = "urn:ró:place_feature:garden", name = "Garden", emoji = "🌺" },
+    { id = "urn:ró:place_feature:island", name = "Island", emoji = "🏝️" },
+    { id = "urn:ró:place_feature:lake", name = "Lake", emoji = "🏞️" },
+    { id = "urn:ró:place_feature:monastery", name = "Monastery", emoji = "🏯" },
+    { id = "urn:ró:place_feature:monument", name = "Monument", emoji = "🗿" },
+    { id = "urn:ró:place_feature:mosque", name = "Mosque", emoji = "🕌" },
+    { id = "urn:ró:place_feature:mountain", name = "Mountain", emoji = "🏔️" },
+    { id = "urn:ró:place_feature:museum", name = "Museum", emoji = "🏛️" },
+    { id = "urn:ró:place_feature:palace", name = "Palace", emoji = "🏯" },
+    { id = "urn:ró:place_feature:park", name = "Park", emoji = "🌳" },
+    { id = "urn:ró:place_feature:square", name = "Square", emoji = "🏢" },
+    { id = "urn:ró:place_feature:state", name = "State", emoji = "🏛️" },
+    { id = "urn:ró:place_feature:street", name = "Street", emoji = "🚶‍♂️" },
+    { id = "urn:ró:place_feature:town", name = "Town", emoji = "🏘️" },
+    { id = "urn:ró:place_feature:train station", name = "Train Station", emoji = "🚆" },
+    { id = "urn:ró:place_feature:village", name = "Village", emoji = "🏡" },
+    { id = "urn:ró:place_feature:waterfall", name = "Waterfall", emoji = "💦" },
+    { id = "urn:ró:place_feature:wildlife-conservation", name = "Wildlife Conservation", emoji = "🦁" },
+    { id = "urn:ró:place_feature:zoo", name = "Zoo", emoji = "🦓" },
+    { id = "urn:ró:place_feature:country", name = "Country", roles = ["country"], emoji = "🗺️", generic = "true" },
+    { id = "urn:ró:place_feature:continent", name = "Continent", emoji = "🌍", generic = "true" },
 ]
 ratings = [
     { id = "urn:ró:rating:0", name = "⭐", rank = 0 },
@@ -2692,7 +2720,6 @@ contains_album = [
 id = "urn:ró:trip:7"
 title = "Gran Canaria, 2026"
 contains_album = [
-    "urn:ró:album:las-palmas-museums-26",
     "urn:ró:album:las-palmas-26",
     "urn:ró:album:maspalomas-26",
 ]
@@ -2931,6 +2958,18 @@ id = "urn:ró:transfer:36"
 source = "urn:ró:place:16"
 destination = "urn:ró:place:135"
 mode = "train"
+
+[[transfers]]
+id = "urn:ró:transfer:37"
+source = "urn:ró:place:187"
+destination = "urn:ró:place:190"
+mode = "bus"
+
+[[transfers]]
+id = "urn:ró:transfer:38"
+source = "urn:ró:place:190"
+destination = "urn:ró:place:187"
+mode = "bus"
 
 [[birds]]
 id = "urn:ró:bird:sterna-dougallii"

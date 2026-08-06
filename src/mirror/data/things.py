@@ -101,6 +101,15 @@ def unlisted_types(things_file: str = "things.toml") -> frozenset[str]:
 
 
 @cache
+def listing_type_config(things_file: str = "things.toml") -> dict[str, dict]:
+    """Per-noun labels and site behaviour flags for non-subject listing types."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {entry["noun"]: entry for entry in data.get("listing_types", [])}
+
+
+@cache
 def banner_fpaths(things_file: str = "things.toml") -> frozenset[str]:
     """Source photos that receive the banner rendition, from the banners section."""
     with open(Path(things_file), "rb") as fh:
@@ -247,6 +256,10 @@ class ThingsReader:
                     yield SemanticTriple(source=src, relation=relation, target=val)
             else:
                 yield SemanticTriple(source=src, relation=relation, target=tgt_vals)
+
+        # a BirdWatch page exists only for Irish-list species; publish the marker
+        if item.get("birdwatch_url"):
+            yield SemanticTriple(source=src, relation="irish", target="true")
 
     def read(self, db) -> Iterator[SemanticTriple]:
         """Read TOML information and yield semantic triples"""

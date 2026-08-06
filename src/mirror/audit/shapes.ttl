@@ -83,6 +83,8 @@ audit:triple-graph-invalid
             SELECT $this (?focus AS ?value) ?property
             WHERE {
                 ?focus audit:kind "album" ; audit:isSource true .
+                # hidden albums publish only their hidden marker
+                FILTER NOT EXISTS { ?focus relation:hidden ?hidden . }
                 {
                     BIND ("name" AS ?property)
                     BIND (relation:name AS ?predicate)
@@ -286,6 +288,8 @@ audit:triple-graph-invalid
             SELECT $this (?focus AS ?value)
             WHERE {
                 ?focus audit:kind "album" ; audit:isSource true .
+                # hidden albums publish only their hidden marker
+                FILTER NOT EXISTS { ?focus relation:hidden ?hidden . }
                 FILTER NOT EXISTS { ?focus relation:country ?country . }
             }
         """ ;

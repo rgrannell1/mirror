@@ -85,8 +85,11 @@ class AlbumTriples:
         )
 
         for album in albums:
-            # miscellaneous is a hidden album; its photos publish but the album does not
+            # miscellaneous is a hidden album; its photos publish, but only a
+            # hidden marker publishes for the album itself, so the site never
+            # links to an album page for it
             if album.id == MISCELLANEOUS_ALBUM_ID:
+                yield SemanticTriple(f"urn:ró:album:{album.id}", "hidden", "true")
                 continue
 
             if album.id is None:

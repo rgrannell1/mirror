@@ -6,7 +6,12 @@ exists in the frontend. Labels derive from things.toml section headers.
 
 from typing import TYPE_CHECKING, Iterator
 
-from mirror.data.things import binomial_types, listing_labels, unlisted_types
+from mirror.data.things import (
+    binomial_types,
+    listing_labels,
+    listing_type_config,
+    unlisted_types,
+)
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -29,32 +34,46 @@ SELECT EXISTS (
 
 
 def listed_types(db: "SqliteDatabase") -> set[str]:
-    """Distinct subject URN nouns, plus place and place_feature when located photos exist."""
+    """Distinct subject URN nouns, plus the place types when located photos exist."""
     nouns = {row[0] for row in db.conn.execute(SUBJECT_TYPES_QUERY) if row[0]}
 
     has_location = db.conn.execute(HAS_LOCATION_QUERY).fetchone()[0]
     if has_location:
-        nouns.update({"place", "place_feature"})
+        nouns.update({"place", "place_feature", "country"})
     return nouns
 
 
+def flag_value(entry: dict, key: str) -> str:
+    """A site behaviour flag as a published string; flags default to true."""
+    return "true" if entry.get(key, True) else "false"
+
+
 def listing_entity_triples(types: set[str]) -> Iterator[SemanticTriple]:
-    """Name and binomial triples for each listed type; types without a section are skipped."""
+    """Name, binomial, and behaviour-flag triples for each listed type.
+
+    Types with neither a things.toml section nor a listing_types entry are skipped."""
     labels = listing_labels()
     binomials = binomial_types()
+    config = listing_type_config()
 
-    for noun in sorted(types):
-        if noun in unlisted_types() or noun not in labels:
+    for noun in sorted(types - unlisted_types()):
+        entry = config.get(noun, {})
+        label = entry.get("label") or labels.get(noun)
+        if label is None:
             continue
         listing_urn = f"urn:ró:listing:{noun}"
-        yield SemanticTriple(listing_urn, "name", labels[noun])
+        yield SemanticTriple(listing_urn, "name", label)
         if noun in binomials:
             yield SemanticTriple(listing_urn, "binomial", "true")
+        yield SemanticTriple(listing_urn, "listable", flag_value(entry, "listable"))
+        yield SemanticTriple(listing_urn, "browseable", flag_value(entry, "browseable"))
 
 
 class ListingEntityReader:
-    """Emits:  urn:ró:listing:<type>  name      <plural label>
-    urn:ró:listing:<type>  binomial  true            (binomial types only)
+    """Emits:  urn:ró:listing:<type>  name        <plural label>
+    urn:ró:listing:<type>  binomial    true          (binomial types only)
+    urn:ró:listing:<type>  listable    true|false
+    urn:ró:listing:<type>  browseable  true|false
     """
 
     @staticmethod
