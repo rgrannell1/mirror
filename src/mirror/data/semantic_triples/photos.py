@@ -24,7 +24,6 @@ def photo_row_triples(photo) -> Iterator[SemanticTriple]:
 
     yield SemanticTriple(source, "album_id", photo.album_id)
     yield SemanticTriple(source, "thumbnail_url", short_cdn_url(photo.thumbnail_url))
-    yield SemanticTriple(source, "png_url", short_cdn_url(photo.png_url))
     yield SemanticTriple(source, "mid_image_lossy_url", mid_lossy_url)
     yield SemanticTriple(source, "preview_jpeg_url", short_cdn_url(photo.preview_jpeg_url))
     yield SemanticTriple(source, "mosaic_colours", photo.mosaic_colours)

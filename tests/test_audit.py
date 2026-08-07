@@ -55,7 +55,6 @@ def make_valid_triples() -> list[list]:
         ["[i:photo:one]", "thumbnailUrl", "[photos:one-thumbnail]"],
         ["[i:photo:one]", "midImageLossyUrl", "[photos:one-mid]"],
         ["[i:photo:one]", "previewJpegUrl", "[photos:one-preview]"],
-        ["[i:photo:one]", "pngUrl", "[photos:one-png]"],
         ["[i:photo:one]", "fullImage", "[photos:one-full]"],
         ["[i:photo:one]", "mosaicColours", "abcdef"],
         ["[i:photo:one]", "rating", "[i:rating:2]"],

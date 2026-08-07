@@ -103,8 +103,6 @@ class GeonameMetadataReader:
             (KnownRelations.LATITUDE, str(model.lat)),
             (KnownRelations.LONGITUDE, str(model.lng)),
             (KnownRelations.COUNTRY, model.country_name),
-            (KnownRelations.FCODE, model.fcode),
-            (KnownRelations.FCODE_NAME, model.fcode_name),
         ]
 
         for relation, target in fields:

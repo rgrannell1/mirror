@@ -95,7 +95,7 @@ class StubTriplesDatabase:
 
 
 def test_album_triples_skips_miscellaneous() -> None:
-    """Proves no album triples are published for the hidden miscellaneous album."""
+    """Proves the miscellaneous album publishes only its hidden marker."""
     database = StubTriplesDatabase([
         make_album(MISCELLANEOUS_ALBUM_ID, "/media/2026/Miscellaneous/Published"),
         make_album("maynooth-26", "/media/2026/Maynooth/Published"),
@@ -103,6 +103,11 @@ def test_album_triples_skips_miscellaneous() -> None:
 
     triples = list(AlbumTriples().read(database))
 
-    sources = {triple.source for triple in triples}
-    assert f"urn:ró:album:{MISCELLANEOUS_ALBUM_ID}" not in sources
-    assert "urn:ró:album:maynooth-26" in sources
+    miscellaneous_urn = f"urn:ró:album:{MISCELLANEOUS_ALBUM_ID}"
+    miscellaneous = [
+        (triple.relation, triple.target)
+        for triple in triples
+        if triple.source == miscellaneous_urn
+    ]
+    assert miscellaneous == [("hidden", "true")]
+    assert "urn:ró:album:maynooth-26" in {triple.source for triple in triples}

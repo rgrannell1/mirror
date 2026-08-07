@@ -4,7 +4,7 @@ from typing import Iterator
 
 import tomllib
 
-from mirror.commons.constants import URN_PREFIX
+from mirror.commons.constants import UNPUBLISHED_THINGS_RELATIONS, URN_PREFIX
 from mirror.data.types import SemanticTriple
 
 
@@ -248,7 +248,7 @@ class ThingsReader:
         src = item["id"]
 
         for relation, tgt_vals in item.items():
-            if relation == "id":
+            if relation == "id" or relation in UNPUBLISHED_THINGS_RELATIONS:
                 continue
 
             if isinstance(tgt_vals, list):

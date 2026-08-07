@@ -57,9 +57,6 @@ audit:triple-graph-invalid
                     BIND ("previewJpegUrl" AS ?property)
                     BIND (relation:previewJpegUrl AS ?predicate)
                 } UNION {
-                    BIND ("pngUrl" AS ?property)
-                    BIND (relation:pngUrl AS ?predicate)
-                } UNION {
                     BIND ("fullImage" AS ?property)
                     BIND (relation:fullImage AS ?predicate)
                 } UNION {

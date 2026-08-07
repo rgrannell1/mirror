@@ -205,8 +205,6 @@ URN_PREFIX = "urn:ró:"
 
 class KnownRelations:
     COUNTRY = "country"
-    FCODE = "fcode"
-    FCODE_NAME = "fcode_name"
     LATITUDE = "latitude"
     LONGITUDE = "longitude"
     NAME = "name"
@@ -216,8 +214,11 @@ class KnownRelations:
     SHORT_NAME = "short_name"
     FEATURE = "feature"
     IN = "in"
-    NEAR = "near"
     UNESCO_ID = "unesco_id"
+
+
+# things.toml keys kept for reference but never published as triples
+UNPUBLISHED_THINGS_RELATIONS = frozenset({"near"})
 
 
 class KnownTypes:
