@@ -42,3 +42,6 @@ albums.json
 uv.lock
 test_artifacts/
 main.py
+detections-preview.png
+.playwright-mcp
+designs

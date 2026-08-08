@@ -44,7 +44,7 @@ def publish_phase(
 
     Returns a one-line summary of what was published.
     """
-    print("publishing artifacts")
+    yield workflow_output("publishing artifacts")
 
     result = yield ctx.scope.publish_artifacts(paths)
 
@@ -57,6 +57,9 @@ def publish_phase(
 
     if input.get("publish_d1"):
         yield ctx.scope.publish_d1_remote({})
+
+    if input.get("no_github"):
+        return "github publish skipped (--no-github)"
 
     summary = yield from push_manifest_phase(ctx)
     return summary
@@ -95,6 +98,10 @@ def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[An
 
     # Phase A (ungated): rewrite albums.md/photos.md so freshly-indexed photos become labellable.
     yield ctx.scope.write_metadata(artifact_paths)
+
+    # Find bounding boxes for newly-labelled subjects. Incremental: only unscanned
+    # photo-subject pairs are detected, so this is fast once the backlog is done.
+    yield ctx.scope.detect_subjects({})
 
     # Gate: block outward publication if the metadata is not publish-ready.
     yield ctx.scope.audit_media({})

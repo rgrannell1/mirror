@@ -55,6 +55,20 @@ def named_thing_ids(things_file: str = "things.toml") -> frozenset[str]:
 
 
 @cache
+def thing_names(things_file: str = "things.toml") -> dict[str, str]:
+    """Return mapping of thing URN → display name, for entries that carry one."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {
+        entry["id"]: entry["name"]
+        for entries in data.values()
+        for entry in entries
+        if isinstance(entry, dict) and entry.get("id") and entry.get("name")
+    }
+
+
+@cache
 def binomial_types(things_file: str = "things.toml") -> frozenset[str]:
     """Return subject types whose identifiers are binomials."""
     with open(Path(things_file), "rb") as fh:

@@ -1,5 +1,6 @@
 """Photo-related tables and views."""
 
+import json
 import os
 import sqlite3
 import string
@@ -15,7 +16,9 @@ from mirror.commons.tables import (
     PHOTO_METADATA_TABLE,
     PHOTO_METADATA_VIEW,
     PHOTOS_TABLE,
+    SUBJECT_DETECTIONS_TABLE,
 )
+from mirror.models.detection import DetectionScan, box_volume
 from mirror.models.exif import PhotoExifData
 from mirror.models.phash import PhashData
 from mirror.models.photo import (
@@ -346,6 +349,80 @@ class PhotoMetadataTable:
 
         for row in self.conn.execute(query):
             yield PhotoMetadataModel.from_row(row)
+
+
+class SubjectDetectionsTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(SUBJECT_DETECTIONS_TABLE)
+        self.migrate_prompt_column()
+        self.migrate_box_volumes()
+
+    def migrate_prompt_column(self) -> None:
+        """Add the scan-provenance columns to tables created before they existed."""
+        columns = [row[1] for row in self.conn.execute("pragma table_info(subject_detections)")]
+        if "prompt" not in columns:
+            self.conn.execute(
+                "alter table subject_detections add column prompt text not null default ''"
+            )
+        if "threshold" not in columns:
+            self.conn.execute(
+                "alter table subject_detections add column threshold real not null default 0.45"
+            )
+        if "image_area" not in columns:
+            self.conn.execute(
+                "alter table subject_detections add column image_area integer not null default 0"
+            )
+        self.conn.commit()
+
+    def migrate_box_volumes(self) -> None:
+        """Backfill the volume field on boxes stored before it existed."""
+        query = "select phash, subject_type, boxes from subject_detections"
+        for phash, subject_type, boxes_json in self.conn.execute(query).fetchall():
+            boxes = json.loads(boxes_json)
+            if all("volume" in box for box in boxes):
+                continue
+
+            for box in boxes:
+                box["volume"] = box_volume(box["coords"])
+            self.conn.execute(
+                "update subject_detections set boxes = ? where phash = ? and subject_type = ?",
+                (json.dumps(boxes), phash, subject_type),
+            )
+        self.conn.commit()
+
+    def add(self, phash: str, subject_type: str, scan: DetectionScan) -> None:
+        with self.conn as conn:
+            conn.execute("begin immediate;")
+            conn.execute(
+                "insert or replace into subject_detections"
+                " (phash, subject_type, boxes, prompt, threshold, image_area)"
+                " values (?, ?, ?, ?, ?, ?)",
+                (
+                    phash,
+                    subject_type,
+                    json.dumps(scan["boxes"]),
+                    scan["prompt"],
+                    scan["threshold"],
+                    scan["image_area"],
+                ),
+            )
+            conn.commit()
+
+    def get(self, phash: str, subject_type: str) -> Optional[list]:
+        query = "select boxes from subject_detections where phash = ? and subject_type = ?"
+        for row in self.conn.execute(query, (phash, subject_type)):
+            return json.loads(row[0])
+        return None
+
+    def list_scan_provenance(self) -> dict[tuple[str, str], tuple[str, float]]:
+        """Return the (prompt, threshold) each (phash, subject type) pair was scanned with."""
+        query = "select phash, subject_type, prompt, threshold from subject_detections"
+        return {(row[0], row[1]): (row[2], row[3]) for row in self.conn.execute(query)}
+
+    def has(self, phash: str, subject_type: str) -> bool:
+        query = "select 1 from subject_detections where phash = ? and subject_type = ?"
+        return bool(self.conn.execute(query, (phash, subject_type)).fetchone())
 
 
 class PhotoMetadataSummaryView:

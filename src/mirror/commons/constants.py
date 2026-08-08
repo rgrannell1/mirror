@@ -220,6 +220,38 @@ class KnownRelations:
 # things.toml keys kept for reference but never published as triples
 UNPUBLISHED_THINGS_RELATIONS = frozenset({"near"})
 
+# Subject detection: the GroundingDINO checkpoint used to find subject boxes.
+DETECTION_MODEL_ID = "IDEA-Research/grounding-dino-base"
+
+# Subject detection: minimum GroundingDINO confidence for a box to be stored.
+DETECTION_CONFIDENCE_THRESHOLD = 0.35
+
+# Subject detection: torch threads per worker process. Keeps one inference from
+# taking every core, so parallel detection jobs share the CPU budget.
+DETECTION_TORCH_THREADS = 4
+
+# Subject detection: at most this many detection jobs run at once.
+DETECTION_CONCURRENCY_LIMIT = 15
+
+# Cover selection: a subject filling under this share of the image is too small to cover.
+COVER_MIN_SUBJECT_FILL = 0.05
+
+# Subject detection: pause before each photo while system CPU use is above this.
+DETECTION_CPU_MAX_PERCENT = 80.0
+
+# Subject detection: pause before each photo while system memory use is above this.
+DETECTION_MEMORY_MAX_PERCENT = 80.0
+
+# Subject detection: URN types whose raw word is a poor detection prompt.
+# GroundingDINO accepts several prompts split by ".". Types not listed use the raw type word.
+DETECTION_PROMPT_OVERRIDES = {
+    "arthropod": "insect. spider. crab.",
+    "cnidaria": "jellyfish",
+    "ctenophore": "jellyfish",
+    "plane": "airplane",
+    "spacecraft": "rocket. spacecraft.",
+}
+
 
 class KnownTypes:
     GEONAME = "geoname"

@@ -18,3 +18,5 @@ class MirrorWorkflowInput(TypedDict, total=False):
     # Overrides config `OUTPUT_DIRECTORY` when set
     manifest_output_dir: str
     publish_d1: bool
+    # Skip the GitHub publish step; used to test the pipeline without autopublishing
+    no_github: bool

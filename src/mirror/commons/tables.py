@@ -467,6 +467,26 @@ create table if not exists wikidata (
 );
 """
 
+# Bounding boxes for photo subjects, found by an object-detection model. `boxes` is a
+# JSON array of {coords: [x1, y1, x2, y2], volume, confidence} in original-image pixels.
+# An empty array means the photo was searched and nothing was found. `prompt` and
+# `threshold` record how the row was scanned; when either differs from the current
+# configuration the row is stale and is re-scanned in place. The threshold default
+# matches the value every pre-provenance row was scanned with. `image_area` is the
+# pixel area of the file the boxes were measured on; 0 means unrecorded (legacy row).
+SUBJECT_DETECTIONS_TABLE = """
+create table if not exists subject_detections (
+  phash         text not null,
+  subject_type  text not null,
+  boxes         text not null,
+  prompt        text not null default '',
+  threshold     real not null default 0.45,
+  image_area    integer not null default 0,
+
+  primary key (phash, subject_type)
+);
+"""
+
 # D1 database, used to store social-card information
 SOCIAL_CARD_TABLE = """
 create table if not exists social_cards (

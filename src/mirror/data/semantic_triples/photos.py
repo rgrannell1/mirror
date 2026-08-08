@@ -1,8 +1,10 @@
 """Photo rows and icons → semantic triples for publish."""
 
-from typing import TYPE_CHECKING, Iterator
+import json
+from typing import TYPE_CHECKING, Iterator, NamedTuple
 
-from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID
+from mirror.commons.constants import COVER_MIN_SUBJECT_FILL, MISCELLANEOUS_ALBUM_ID
+from mirror.commons.urn import parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
 from mirror.data.things import (
     genre_cover_priorities,
@@ -172,60 +174,167 @@ class ListingCoverReader:
 
 
 THING_COVER_QUERY = """
-WITH all_candidates AS (
-    -- Explicit cover assignments (is_explicit=1) and subject/location photos (is_explicit=0)
-    SELECT
-        ph.fpath,
-        pmt.target AS thing_urn,
-        vps.rating,
-        CASE WHEN pmt.relation = 'cover' THEN 1 ELSE 0 END AS is_explicit
-    FROM photo_metadata_table pmt
-    JOIN phashes ph ON pmt.phash = ph.phash
-    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
-    WHERE pmt.relation IN ('subject', 'location', 'cover')
+-- Explicit cover assignments and subject/location photos
+SELECT
+    ph.fpath,
+    ph.phash,
+    pmt.target AS thing_urn,
+    vps.rating,
+    vps.subjects,
+    pmt.relation
+FROM photo_metadata_table pmt
+JOIN phashes ph ON pmt.phash = ph.phash
+JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+WHERE pmt.relation IN ('subject', 'location', 'cover')
 
-    UNION ALL
+UNION ALL
 
-    -- Country photos derived from single-country album flags (flags are now place URNs)
-    SELECT
-        ph.fpath,
-        vad.flags AS thing_urn,
-        vps.rating,
-        0 AS is_explicit
-    FROM photos p
-    JOIN phashes ph ON p.fpath = ph.fpath
-    JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
-    JOIN view_album_data vad ON p.dpath = vad.dpath
-    WHERE vad.flags IS NOT NULL AND vad.flags != '' AND vad.flags NOT LIKE '%,%'
-),
-ranked AS (
-    SELECT
-        fpath,
-        thing_urn,
-        ROW_NUMBER() OVER (
-            PARTITION BY thing_urn
-            ORDER BY is_explicit DESC, {rating_order} DESC
-        ) AS rank
-    FROM all_candidates
-)
-SELECT fpath, thing_urn FROM ranked WHERE rank = 1
+-- Country photos derived from single-country album flags (flags are now place URNs)
+SELECT
+    ph.fpath,
+    ph.phash,
+    vad.flags AS thing_urn,
+    vps.rating,
+    vps.subjects,
+    'flag' AS relation
+FROM photos p
+JOIN phashes ph ON p.fpath = ph.fpath
+JOIN view_photo_metadata_summary vps ON ph.fpath = vps.fpath
+JOIN view_album_data vad ON p.dpath = vad.dpath
+WHERE vad.flags IS NOT NULL AND vad.flags != '' AND vad.flags NOT LIKE '%,%'
 """
+
+
+class CoverCandidate(NamedTuple):
+    """One photo competing to be a thing's cover."""
+
+    fpath: str
+    is_explicit: int
+    rating_rank: int
+    single_subject: int
+    # best detection box's share of the image; None when there is no box information
+    fill: float | None
+
+
+def best_box_scans(db: "SqliteDatabase") -> dict[tuple[str, str], tuple[int, int]]:
+    """(best box volume, recorded image area) per scanned (phash, subject type).
+
+    Empty scans record volume 0. A recorded area of 0 means the row predates
+    area tracking.
+    """
+    db.subject_detections_table()
+
+    scans: dict[tuple[str, str], tuple[int, int]] = {}
+    query = "select phash, subject_type, boxes, image_area from subject_detections"
+    for phash, subject_type, boxes_json, image_area in db.conn.execute(query):
+        boxes = json.loads(boxes_json)
+        best = max((box["volume"] for box in boxes), default=0)
+        scans[phash, subject_type] = (best, image_area)
+    return scans
+
+
+def photo_areas(db: "SqliteDatabase") -> dict[str, int]:
+    """Image pixel area per fpath, where exif has usable dimensions."""
+    areas: dict[str, int] = {}
+    for fpath, width, height in db.conn.execute("select fpath, width, height from exif"):
+        if width and height and str(width).isdigit() and str(height).isdigit():
+            areas[fpath] = int(width) * int(height)
+    return areas
+
+
+def candidate_fill(volume: int | None, area: int | None) -> float | None:
+    """Best box share of the image; None without box or area information.
+
+    Volume 0 (searched, nothing found) is also None: the design treats a
+    subject the detector could not find neutrally, not as too small.
+    """
+    if not volume or not area:
+        return None
+    return volume / area
+
+
+def count_subjects(subjects: str) -> int:
+    """Count the subject URNs in a view_photo_metadata_summary subjects cell."""
+    if not subjects:
+        return 0
+    return len(subjects.split(", "))
+
+
+def subject_type_of(thing_urn: str) -> str | None:
+    """The subject type of a thing URN, or None when it does not parse."""
+    try:
+        return parse_mirror_urn(thing_urn)["type"]
+    except ValueError:
+        return None
+
+
+def make_candidate(row: tuple, scans: dict, areas: dict) -> tuple[str, CoverCandidate]:
+    """Build one cover candidate from a THING_COVER_QUERY row.
+
+    The recorded scan area is preferred: it was measured on the very file the
+    boxes came from. Exif dimensions are the fallback for legacy rows.
+    """
+    fpath, phash, thing_urn, rating, subjects, relation = row
+
+    fill = None
+    if relation == "subject":
+        subject_type = subject_type_of(thing_urn)
+        scan = scans.get((phash, subject_type))
+        if scan:
+            volume, recorded_area = scan
+            fill = candidate_fill(volume, recorded_area or areas.get(fpath))
+
+    candidate = CoverCandidate(
+        fpath=fpath,
+        is_explicit=1 if relation == "cover" else 0,
+        rating_rank=rating_ranks().get(rating, -1),
+        single_subject=1 if relation == "subject" and count_subjects(subjects) == 1 else 0,
+        fill=fill,
+    )
+    return thing_urn, candidate
+
+
+def cover_sort_key(candidate: CoverCandidate) -> tuple:
+    """Order covers: explicit wins, then rating, then single-subject, then fill."""
+    fill = candidate.fill if candidate.fill is not None else 0.0
+    return (candidate.is_explicit, candidate.rating_rank, candidate.single_subject, fill)
+
+
+def eligible_candidates(candidates: list[CoverCandidate]) -> list[CoverCandidate]:
+    """Drop photos whose subject is too small, unless that leaves the thing coverless."""
+    kept = [
+        candidate
+        for candidate in candidates
+        if candidate.fill is None or candidate.fill >= COVER_MIN_SUBJECT_FILL
+    ]
+    return kept or candidates
 
 
 class ThingCoverReader:
     """Selects one cover photo per individual thing (bird, place, country, etc.).
 
     Explicit cover assignments (relation='cover' in photo_metadata_table) take
-    priority; otherwise the highest-rated photo referencing the thing is used.
+    priority. Otherwise photos rank by rating, then single-subject labelling,
+    then how much of the image the detected subject fills. Photos whose subject
+    box is too small are not eligible. Photos with no boxes — never scanned, or
+    scanned and nothing found — rank neutrally on fill.
 
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<type>:<thing-id>
     """
 
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        query = THING_COVER_QUERY.format(rating_order=rating_rank_sql("rating"))
-        for fpath, thing_urn in db.conn.execute(query).fetchall():
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
+        scans = best_box_scans(db)
+        areas = photo_areas(db)
+
+        groups: dict[str, list[CoverCandidate]] = {}
+        for row in db.conn.execute(THING_COVER_QUERY).fetchall():
+            thing_urn, candidate = make_candidate(row, scans, areas)
+            groups.setdefault(thing_urn, []).append(candidate)
+
+        for thing_urn, group in groups.items():
+            best = max(eligible_candidates(group), key=cover_sort_key)
+            photo_urn = f"urn:ró:photo:{deterministic_hash_str(best.fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
 
 

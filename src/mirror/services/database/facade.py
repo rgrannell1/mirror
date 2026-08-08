@@ -14,6 +14,7 @@ from mirror.services.database.photos import (
     PhotoMetadataTable,
     PhotoMetadataView,
     PhotosTable,
+    SubjectDetectionsTable,
 )
 from mirror.services.database.videos import (
     EncodedVideosTable,
@@ -109,6 +110,9 @@ class SqliteDatabase:  # noqa: PLR0904
 
     def photo_metadata_table(self):
         return PhotoMetadataTable(self.conn)
+
+    def subject_detections_table(self):
+        return SubjectDetectionsTable(self.conn)
 
     def photo_metadata_summary_view(self):
         return PhotoMetadataSummaryView(self.conn)

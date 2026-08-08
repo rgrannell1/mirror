@@ -22,6 +22,7 @@ from mirror.commons.config import (
 )
 from mirror.list_album import run_list_album_command
 from mirror.workflows.copy.copy import copy_into_library, copy_open_nautilus, copy_workflow
+from mirror.workflows.detect.detect import detect_pair, detect_subjects
 from mirror.workflows.fetch.fetch import (
     fetch_copy_file,
     fetch_find_filtered,
@@ -75,6 +76,7 @@ from mirror.workflows.workflow import mirror_workflow
 
 logging.basicConfig(level=logging.INFO, force=True)
 logging.getLogger("PIL").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 SCOPE = {
     "copy_workflow": copy_workflow,
@@ -90,6 +92,8 @@ SCOPE = {
     "fetch_raw_clustering": fetch_raw_clustering,
     "fetch_open_nautilus": fetch_open_nautilus,
     "mirror_workflow": mirror_workflow,
+    "detect_subjects": detect_subjects,
+    "detect_pair": detect_pair,
     "audit_media": audit_media,
     "scan_media": scan_media,
     "media_scan": media_scan,
@@ -176,6 +180,7 @@ def add_pipeline_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--force-upload-videos", action="store_true")
     parser.add_argument("--force-roles", nargs="+", default=None, metavar="ROLE")
     parser.add_argument("--publish-d1", action="store_true")
+    parser.add_argument("--no-github", dest="no_github", action="store_true")
 
 
 def add_subcommands(parser: argparse.ArgumentParser) -> None:
@@ -326,6 +331,7 @@ def run_pipeline_command(args: argparse.Namespace) -> None:
         "force_upload_videos": args.force_upload_videos,
         "force_roles": args.force_roles,
         "publish_d1": args.publish_d1,
+        "no_github": args.no_github,
     }
     log_paths = (MIRROR_JSONL_PATH, MIRROR_ERROR_PATH)
     summary = run_workflow("mirror_workflow", workflow_input, 15, log_paths)
