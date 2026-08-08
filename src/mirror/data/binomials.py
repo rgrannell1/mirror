@@ -24,6 +24,9 @@ def list_photo_binomials(db) -> Iterator[str]:
     binomials = set()
     for parsed in _iter_binomial_targets_from_photo_metadata(db):
         parsed_id = parsed["id"]
+        # 'unknown' marks an unidentified subject, not a species
+        if parsed_id == "unknown":
+            continue
         if parsed_id not in binomials:
             yield parsed_id.replace("-", " ").capitalize()
             binomials.add(parsed_id)

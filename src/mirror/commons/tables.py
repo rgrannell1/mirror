@@ -467,6 +467,18 @@ create table if not exists wikidata (
 );
 """
 
+# One row per (binomial, taxonomic rank) from the Wikidata parent-taxon chain.
+TAXON_CHAINS_TABLE = """
+create table if not exists taxon_chains (
+  binomial  text not null,
+  rank      text not null,
+  qid       text not null,
+  label     text not null,
+
+  primary key (binomial, rank)
+);
+"""
+
 # Bounding boxes for photo subjects, found by an object-detection model. `boxes` is a
 # JSON array of {coords: [x1, y1, x2, y2], volume, confidence} in original-image pixels.
 # An empty array means the photo was searched and nothing was found. `prompt` and

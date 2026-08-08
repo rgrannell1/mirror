@@ -21,35 +21,47 @@ class WikidataClient:
     SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
     API_ENDPOINT = "https://www.wikidata.org/w/api.php"
 
+    # Wikimedia rejects requests without a descriptive User-Agent (HTTP 403).
+    USER_AGENT = "mirror-photo-pipeline/0.1 (https://photos.rgrannell.xyz)"
+
     def get_by_id(self, id: str) -> dict | None:
-        """Fetches full entity data from Wikidata by QID."""
-        url = f"{self.API_ENDPOINT}?action=wbgetentities&ids={id}&format=json&languages=en"
-        response = requests.get(url)
+        """Fetches full entity data from Wikidata by QID.
+
+        Labels request en plus mul: many taxa carry only the all-languages label.
+        """
+        url = f"{self.API_ENDPOINT}?action=wbgetentities&ids={id}&format=json&languages=en|mul"
+        response = requests.get(url, headers={"User-Agent": self.USER_AGENT})
         if response.status_code != HTTPStatus.OK:
             return None
         return response.json().get("entities", {}).get(id)
 
-    def get_by_binomial(self, name: str) -> dict | None:
-        """Fetches the Wikidata entity for a given taxon name"""
-
-        headers = {"Accept": "application/sparql-results+json"}
+    def find_qid_by_binomial(self, name: str) -> str | None:
+        """Find the QID of the taxon whose name (P225) matches exactly."""
+        headers = {"Accept": "application/sparql-results+json", "User-Agent": self.USER_AGENT}
         query = f"""
         SELECT ?item WHERE {{
           ?item wdt:{KnownWikiProperties.TAXON_NAME} "{name}".
         }}
         """
-        print(f"looking up {name}")
-
         response = requests.get(self.SPARQL_ENDPOINT, headers=headers, params={"query": query})
         if response.status_code != HTTPStatus.OK:
             return None
 
-        data = response.json()
-        bindings = data.get("results", {}).get("bindings", [])
-        if not bindings:
-            return None
+        bindings = response.json().get("results", {}).get("bindings", [])
 
-        qid = bindings[0]["item"]["value"].split("/")[-1]
+        # Latin lexeme senses (L…-S1) also carry P225; only Q-items are taxa
+        for binding in bindings:
+            candidate = binding["item"]["value"].split("/")[-1]
+            if candidate.startswith("Q"):
+                return candidate
+
+        return None
+
+    def get_by_binomial(self, name: str) -> dict | None:
+        """Fetches the Wikidata entity for a given taxon name"""
+        qid = self.find_qid_by_binomial(name)
+        if not qid:
+            return None
         return self.get_by_id(qid)
 
 
@@ -59,11 +71,50 @@ class WikidataModel:
     data: dict | None = None
 
     def find_label(self) -> str | None:
+        """The English label, falling back to the all-languages (mul) label."""
         data = self.data
         if not data:
             return None
 
-        return data.get("labels", {}).get("en", {}).get("value")
+        labels = data.get("labels", {})
+        english = labels.get("en", {}).get("value")
+        return english or labels.get("mul", {}).get("value")
+
+    def find_taxon_name(self) -> str | None:
+        """The scientific taxon name (P225), always Latin."""
+        if not self.data:
+            return None
+
+        for claim in self.data.get("claims", {}).get(KnownWikiProperties.TAXON_NAME, []):
+            value = claim.get("mainsnak", {}).get("datavalue", {}).get("value")
+            if isinstance(value, str) and value:
+                return value
+
+        return None
+
+    def find_common_name(self) -> str | None:
+        """The English taxon common name (P1843), e.g. 'cranes' for Gruidae."""
+        if not self.data:
+            return None
+
+        for claim in self.data.get("claims", {}).get("P1843", []):
+            value = claim.get("mainsnak", {}).get("datavalue", {}).get("value", {})
+            if isinstance(value, dict) and value.get("language") == "en" and value.get("text"):
+                return value["text"]
+
+        return None
+
+    def find_claim_target(self, prop: str) -> str | None:
+        """The QID targeted by the first claim of a property, e.g. P171 parent taxon."""
+        if not self.data:
+            return None
+
+        for claim in self.data.get("claims", {}).get(prop, []):
+            value = claim.get("mainsnak", {}).get("datavalue", {}).get("value", {})
+            if isinstance(value, dict) and value.get("id"):
+                return value["id"]
+
+        return None
 
     def find_alias(self) -> str | None:
         data = self.data

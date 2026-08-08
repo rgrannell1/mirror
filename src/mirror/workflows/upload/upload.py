@@ -14,7 +14,7 @@ from zahir import (
 from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import (
     FULL_SIZED_VIDEO_ROLE,
-    MOSAIC_ENCODINGS,
+    THUMBHASH_ROLES,
     VIDEO_ENCODINGS,
 )
 from mirror.commons.exceptions import InvalidVideoDimensionsError
@@ -48,9 +48,9 @@ def compute_image_mosaic(ctx: JobContext, input: PhotoJobInput) -> Generator[Any
 
     with SqliteDatabase(DATABASE_PATH) as db:
         encoded_photos_table = db.encoded_photos_table()
-        for role, params in MOSAIC_ENCODINGS.items():
-            colours = PhotoEncoder.encode_image_colours(fpath, params["width"], params["height"])
-            encoded_photos_table.add(fpath, "".join(colours), role, "custom")
+        placeholder = PhotoEncoder.encode_thumbhash(fpath)
+        for role in THUMBHASH_ROLES:
+            encoded_photos_table.add(fpath, placeholder, role, "thumbhash")
 
     return None
     yield

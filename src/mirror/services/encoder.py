@@ -1,5 +1,6 @@
 """Encode video and images"""
 
+import base64
 import contextlib
 import io
 import os
@@ -8,10 +9,12 @@ from typing import Dict, Optional, Tuple
 import cv2
 import ffmpeg
 from PIL import Image, ImageOps
+from thumbhash import rgba_to_thumb_hash
 
 from mirror.commons.constants import (
     CONTRAST_DELTA,
     LIGHTNESS_MIDPOINT,
+    THUMBHASH_MAX_DIMENSION,
     THUMBNAIL_HEIGHT,
     THUMBNAIL_WIDTH,
     VIDEO_THUMBNAIL_FORMAT,
@@ -89,19 +92,29 @@ class PhotoEncoder:
         return neutral_grey_hex(target_lightness)
 
     @classmethod
-    def encode_image_colours(cls, fpath: str, width: int, height: int) -> list[str]:
-        """Create a list of colours in the image, to use as a data-url while the main image loads"""
+    def encode_thumbhash(cls, fpath: str) -> str:
+        """Encode the image as an unpadded-base64 ThumbHash placeholder string.
+
+        The hash keeps the full frame. The frontend crops it to each display
+        shape with object-fit: cover, so a full-frame hash serves every
+        rendition at the smallest byte cost.
+
+        The image is flattened to opaque RGBA before hashing. The library's
+        alpha path is broken (a tuple-assignment bug), and our photos carry
+        no meaningful transparency."""
 
         with Image.open(fpath) as img:
-            rgb = img.convert("RGB")
+            oriented = ImageOps.exif_transpose(img)
+            rgb = oriented.convert("RGB")
+            rgb.thumbnail((THUMBHASH_MAX_DIMENSION, THUMBHASH_MAX_DIMENSION))
 
-            # resize directly to mosaic dimensions preserving aspect ratio via fit,
-            # so the mosaic represents the actual framing of the image
-            smaller = ImageOps.fit(rgb, (width, height), method=Image.Resampling.BILINEAR)
+            rgba = []
+            for red, green, blue in rgb.get_flattened_data():
+                rgba.extend((red, green, blue, 255))
 
-            # getdata() returns pixels in row-major order (left-to-right, top-to-bottom),
-            # which matches the frontend's row * cols + col placement
-            return [f"#{r:02X}{g:02X}{b:02X}" for r, g, b in smaller.getdata()]
+            hash_bytes = bytes(rgba_to_thumb_hash(rgb.width, rgb.height, rgba))
+
+        return base64.b64encode(hash_bytes).decode("ascii").rstrip("=")
 
     @classmethod
     def encode(cls, fpath: str, role: str, params: Dict) -> PhotoContent:

@@ -371,3 +371,39 @@ audit:trip-missing-title
             HAVING (COUNT(?found) != 1)
         """ ;
     ] .
+
+audit:taxon-relation-invalid
+    a sh:NodeShape ;
+    sh:targetNode audit:graph ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "taxon relation must target a named urn:ró:{?rank}: resource" ;
+        sh:select """
+            PREFIX audit: <https://photos.rgrannell.xyz/audit/>
+            PREFIX relation: <https://photos.rgrannell.xyz/audit/relation/>
+            SELECT $this (?target AS ?value) ?rank
+            WHERE {
+                {
+                    BIND ("genus" AS ?rank)
+                    BIND (relation:genus AS ?predicate)
+                } UNION {
+                    BIND ("family" AS ?rank)
+                    BIND (relation:family AS ?predicate)
+                } UNION {
+                    BIND ("order" AS ?rank)
+                    BIND (relation:order AS ?predicate)
+                }
+                ?focus ?predicate ?target .
+                OPTIONAL { ?target audit:originalValue ?target_id . }
+                OPTIONAL {
+                    ?target relation:name ?name .
+                    FILTER (strlen(str(?name)) > 0)
+                }
+                FILTER (
+                    !BOUND(?target_id) ||
+                    !STRSTARTS(str(?target_id), CONCAT("urn:ró:", ?rank, ":")) ||
+                    !BOUND(?name)
+                )
+            }
+        """ ;
+    ] .

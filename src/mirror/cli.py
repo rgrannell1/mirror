@@ -56,6 +56,7 @@ from mirror.workflows.scan.scan import (
     scan_media,
     wikidata_scan,
 )
+from mirror.workflows.scan.taxonomy import chain_binomial, lookup_binomial, taxonomy_scan
 from mirror.workflows.upload.upload import (
     compute_contrasting_grey,
     compute_image_mosaic,
@@ -99,6 +100,9 @@ SCOPE = {
     "media_scan": media_scan,
     "geonames_scan": geonames_scan,
     "wikidata_scan": wikidata_scan,
+    "taxonomy_scan": taxonomy_scan,
+    "chain_binomial": chain_binomial,
+    "lookup_binomial": lookup_binomial,
     "read_albums": read_albums,
     "read_photos": read_photos,
     "read_videos": read_videos,

@@ -18,7 +18,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/a835bf4854.avif) | Avoca, Wicklow | Wildlife | ⭐⭐ | urn:ró:place:97 |  | urn:ró:bird:milvus-milvus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/d3db1e1846.avif) | Avoca, Wicklow | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:97 |  | urn:ró:bird:milvus-milvus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/70886a0a2b.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:mammal:martes-martes?context=wild |  |
-| ![](https://photos-cdn.rgrannell.xyz/eb58c9d001.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:bird:dendrocopus-major?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/eb58c9d001.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:bird:dendrocopos-major?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/311f6d93d3.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:mammal:martes-martes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/8d0c278797.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:mammal:martes-martes?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/f982c4c5f0.avif) | Ballyfin Nature Hide | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:76 |  | urn:ró:mammal:martes-martes?context=wild |  |
@@ -651,7 +651,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/40ea89b8ea.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:cathartes-aura?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/3765b5d191.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:grus-carunculata?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/4a2b461e64.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:unknown?context=captivity |  |
-| ![](https://photos-cdn.rgrannell.xyz/662d5498d5.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:balaerica-pavonina?context=captive |  |
+| ![](https://photos-cdn.rgrannell.xyz/662d5498d5.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:balearica-pavonina?context=captive |  |
 | ![](https://photos-cdn.rgrannell.xyz/1f92ef8720.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:grus-nigricollis?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/a16c4cc0ae.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:mammal:tamias-striatus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/ca0376db61.avif) | International Crane Foundation, Wisconsin | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:85 |  | urn:ró:bird:balearica-regulorum?context=captivity |  |
@@ -1253,7 +1253,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/37f93bdfc4.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/f485d09f90.avif) | Skellig Micheal | Landscape | ⭐⭐⭐⭐ | urn:ró:place:102 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/984b7ab28b.avif) | Skellig Micheal | Landscape | ⭐⭐⭐ | urn:ró:place:102 |  |  |  |
-| ![](https://photos-cdn.rgrannell.xyz/74bfa08667.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:102 | gannets and other seabirds in flight | urn:ró:bird:morus-bassanus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/74bfa08667.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐ | urn:ró:place:102 | gannets and other seabirds in flight | urn:ró:bird:morus-bassanus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/c20dc810ed.avif) | Skellig Micheal | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:102 |  | urn:ró:bird:fratercula-arctica |  |
 | ![](https://photos-cdn.rgrannell.xyz/fb18c741eb.avif) | Sliebh Bloom Mountains | Wildlife | ⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:mammal:equus-caballus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/146e37f654.avif) | Sliebh Bloom Mountains | Wildlife | ⭐⭐⭐ | urn:ró:place:110 |  | urn:ró:mammal:equus-caballus?context=wild |  |

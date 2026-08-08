@@ -105,9 +105,7 @@ def test_album_triples_skips_miscellaneous() -> None:
 
     miscellaneous_urn = f"urn:ró:album:{MISCELLANEOUS_ALBUM_ID}"
     miscellaneous = [
-        (triple.relation, triple.target)
-        for triple in triples
-        if triple.source == miscellaneous_urn
+        (triple.relation, triple.target) for triple in triples if triple.source == miscellaneous_urn
     ]
     assert miscellaneous == [("hidden", "true")]
     assert "urn:ró:album:maynooth-26" in {triple.source for triple in triples}

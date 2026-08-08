@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Generator, Iterator, TypedDict
 
 from mirror.commons.config import DATABASE_PATH
-from mirror.commons.constants import IMAGE_ENCODINGS, MOSAIC_ENCODINGS, VIDEO_ENCODINGS
+from mirror.commons.constants import IMAGE_ENCODINGS, THUMBHASH_ROLES, VIDEO_ENCODINGS
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
 from mirror.services.encoder import VideoEncoder
@@ -24,15 +24,24 @@ class UploadOpts(TypedDict, total=False):
     upload_videos: bool | None
 
 
+def is_legacy_mosaic(value: str) -> bool:
+    """True for the old hex-colour mosaic format. ThumbHash base64 never starts with '#'."""
+    return value.startswith("#")
+
+
 def list_photos_without_mosaic(db: SqliteDatabase, force_recompute: bool = False) -> Generator[str]:
     photos = db.photos_table()
     encoded_photos_table = db.encoded_photos_table()
 
     for fpath in photos.list():
         encodings = list(encoded_photos_table.list_for_file(fpath))
-        published_roles = {enc.role for enc in encodings}
+        role_values = {enc.role: enc.url for enc in encodings}
 
-        if not MOSAIC_ENCODINGS.keys() <= published_roles or force_recompute:
+        stale = any(
+            role not in role_values or is_legacy_mosaic(role_values[role])
+            for role in THUMBHASH_ROLES
+        )
+        if stale or force_recompute:
             yield fpath
 
 

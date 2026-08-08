@@ -3,7 +3,12 @@
 import sqlite3
 
 from mirror.services.database.albums import AlbumContentsView, AlbumDataView, MediaMetadataTable
-from mirror.services.database.knowledge import BinomialsWikidataIdTable, GeonameTable, WikidataTable
+from mirror.services.database.knowledge import (
+    BinomialsWikidataIdTable,
+    GeonameTable,
+    TaxonChainsTable,
+    WikidataTable,
+)
 from mirror.services.database.photos import (
     EncodedPhotosTable,
     ExifTable,
@@ -104,6 +109,9 @@ class SqliteDatabase:  # noqa: PLR0904
 
     def binomials_wikidata_id_table(self):
         return BinomialsWikidataIdTable(self.conn)
+
+    def taxon_chains_table(self):
+        return TaxonChainsTable(self.conn)
 
     def media_metadata_table(self):
         return MediaMetadataTable(self.conn)

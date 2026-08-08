@@ -232,3 +232,45 @@ def test_shacl_audit_reports_trip_with_duplicate_titles() -> None:
     details = {finding.detail for finding in validate_triples(triples)}
 
     assert details == {"trip must have exactly one non-empty title"}
+
+
+TAXON_SHACL_CASES = [
+    (
+        "a named, correctly-typed taxon target passes",
+        [
+            ["[i:bird:named]", "genus", "[i:genus:alca]"],
+            ["[i:genus:alca]", "name", "Alca"],
+        ],
+        [],
+    ),
+    (
+        "a literal taxon target is rejected",
+        [["[i:bird:named]", "genus", "Alca"]],
+        [("taxon-relation-invalid", "Alca")],
+    ),
+    (
+        "a taxon urn of the wrong rank is rejected",
+        [
+            ["[i:bird:named]", "genus", "[i:family:alcidae]"],
+            ["[i:family:alcidae]", "name", "Alcidae"],
+        ],
+        [("taxon-relation-invalid", "urn:ró:family:alcidae")],
+    ),
+    (
+        "an unnamed taxon urn is rejected",
+        [["[i:bird:named]", "order", "[i:order:charadriiformes]"]],
+        [("taxon-relation-invalid", "urn:ró:order:charadriiformes")],
+    ),
+]
+
+
+def test_shacl_audit_checks_taxon_relations() -> None:
+    """Proves genus/family/order must target a named URN of the matching rank."""
+    for label, extra, expected in TAXON_SHACL_CASES:
+        triples = make_valid_triples()
+        triples.extend(extra)
+
+        findings = validate_triples(triples)
+
+        found = [(finding.check, finding.subject) for finding in findings]
+        assert found == expected, label

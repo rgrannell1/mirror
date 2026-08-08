@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-MOSAIC_WIDTH = 2
-MOSAIC_HEIGHT = 2
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
@@ -96,10 +94,14 @@ EXIF_ATTR_ASSOCIATIONS = {
 
 SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 
-MOSAIC_ENCODINGS = {
-    "thumbnail_mosaic": {"width": 2, "height": 2},
-    "mosaic_banner": {"width": 10, "height": 10},
-}
+# Roles that store a photo's ThumbHash placeholder string. Both roles hold the
+# same full-frame hash; the frontend crops it to each display shape with
+# object-fit: cover. Two names survive from the old two-resolution mosaic
+# format so the published triple labels stay stable.
+THUMBHASH_ROLES = ("thumbnail_mosaic", "mosaic_banner")
+
+# ThumbHash requires input images of at most 100x100 pixels
+THUMBHASH_MAX_DIMENSION = 100
 
 # How should we encode our photos? Currently uses
 # - thumbnail: a lossy thumbnail for fast loading
@@ -236,6 +238,12 @@ DETECTION_CONCURRENCY_LIMIT = 15
 # Cover selection: a subject filling under this share of the image is too small to cover.
 COVER_MIN_SUBJECT_FILL = 0.05
 
+# Taxonomy: the ranks the site receives; higher levels stay database-only.
+PUBLISHED_TAXON_RANKS = ("genus", "family", "order")
+
+# Cover selection: photos with a subject of this prefix are not eligible as covers.
+PERSON_URN_PREFIX = "urn:ró:person:"
+
 # Subject detection: pause before each photo while system CPU use is above this.
 DETECTION_CPU_MAX_PERCENT = 80.0
 
@@ -257,5 +265,11 @@ class KnownTypes:
     GEONAME = "geoname"
 
 
+# Taxonomy: longest parent-taxon chain we will walk before giving up.
+TAXON_CHAIN_MAX_DEPTH = 30
+
+
 class KnownWikiProperties:
     TAXON_NAME = "P225"
+    PARENT_TAXON = "P171"
+    TAXON_RANK = "P105"

@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from pyshacl import validate
-from rdflib import Graph
+from rdflib import Graph, Literal
 from rdflib.namespace import RDF, SH
 
 from mirror.audit.audit_types import Finding
@@ -26,7 +26,9 @@ def finding_from_result(data: Graph, report: Graph, result) -> Finding:
     focus = report.value(result, SH.value) or report.value(result, SH.focusNode)
     if focus is None:
         raise ValueError("SHACL result has no focus node")
-    subject = data.value(focus, AUDIT.originalValue)
+    # a shape can flag a literal value (e.g. a taxon stored as plain text);
+    # literals carry no originalValue, so they report their own text
+    subject = focus if isinstance(focus, Literal) else data.value(focus, AUDIT.originalValue)
     if subject is None:
         raise ValueError(f"SHACL focus node has no original value: {focus}")
     source_shape = result_text(report, result, SH.sourceShape)

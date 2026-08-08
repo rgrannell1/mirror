@@ -6,6 +6,7 @@ exists in the frontend. Labels derive from things.toml section headers.
 
 from typing import TYPE_CHECKING, Iterator
 
+from mirror.commons.constants import PUBLISHED_TAXON_RANKS
 from mirror.data.things import (
     binomial_types,
     listing_labels,
@@ -34,12 +35,17 @@ SELECT EXISTS (
 
 
 def listed_types(db: "SqliteDatabase") -> set[str]:
-    """Distinct subject URN nouns, plus the place types when located photos exist."""
+    """Distinct subject URN nouns, plus place and taxon types when their data exists."""
     nouns = {row[0] for row in db.conn.execute(SUBJECT_TYPES_QUERY) if row[0]}
 
     has_location = db.conn.execute(HAS_LOCATION_QUERY).fetchone()[0]
     if has_location:
         nouns.update({"place", "place_feature", "country"})
+
+    db.taxon_chains_table()
+    has_chains = db.conn.execute("select exists (select 1 from taxon_chains)").fetchone()[0]
+    if has_chains:
+        nouns.update(PUBLISHED_TAXON_RANKS)
     return nouns
 
 

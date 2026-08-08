@@ -4,7 +4,12 @@ import json
 import sqlite3
 from typing import Iterator, Optional
 
-from mirror.commons.tables import BINOMIALS_WIKIDATA_ID_TABLE, GEONAME_TABLE, WIKIDATA_TABLE
+from mirror.commons.tables import (
+    BINOMIALS_WIKIDATA_ID_TABLE,
+    GEONAME_TABLE,
+    TAXON_CHAINS_TABLE,
+    WIKIDATA_TABLE,
+)
 from mirror.data.geoname import GeonameModel
 from mirror.data.wikidata import WikidataModel
 
@@ -59,6 +64,36 @@ class WikidataTable:
 
         for row in self.conn.execute(query):
             yield WikidataModel.from_row(row)
+
+
+class TaxonChainsTable:
+    def __init__(self, conn: sqlite3.Connection) -> None:
+        self.conn = conn
+        self.conn.execute(TAXON_CHAINS_TABLE)
+
+    def add(self, binomial: str, rank_row: tuple[str, str, str]) -> None:
+        """Store one (rank, qid, label) row of a binomial's chain."""
+        rank, qid, label = rank_row
+        self.conn.execute(
+            "insert or replace into taxon_chains (binomial, rank, qid, label)"
+            " values (?, ?, ?, ?)",
+            (binomial, rank, qid, label),
+        )
+        self.conn.commit()
+
+    def list_binomials(self) -> set[str]:
+        """The binomials that already have a stored chain."""
+        query = "select distinct binomial from taxon_chains"
+        return {row[0] for row in self.conn.execute(query)}
+
+    def list_chain(self, binomial: str) -> Iterator[tuple[str, str, str]]:
+        """Yield (rank, qid, label) rows for one binomial, ordered by rank name.
+
+        The schema stores no chain position; readers that need taxonomic order
+        should sort by a rank-precedence list.
+        """
+        query = "select rank, qid, label from taxon_chains where binomial = ? order by rank"
+        yield from self.conn.execute(query, (binomial,))
 
 
 class BinomialsWikidataIdTable:

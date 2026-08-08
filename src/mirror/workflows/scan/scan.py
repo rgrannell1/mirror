@@ -26,9 +26,9 @@ from mirror.workflows.scan.utils import (
     ScanOpts,
     index_media_files,
     list_geonames_from_metadata,
+    list_unsaved_binomials,
     list_unsaved_exifs,
     list_unsaved_phashes,
-    scan_binomial_wikidata,
     scan_geoname_wikidata,
     write_miscellaneous_permalinks,
 )
@@ -77,12 +77,16 @@ def geonames_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
 
 
 def wikidata_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
-    """Scan WikiData for geonames and binomials"""
+    """Scan WikiData for geonames and binomials.
+
+    Binomial lookups fan out one rate-limited job per pending name."""
     wikidata_client = WikidataClient()
 
     with SqliteDatabase(DATABASE_PATH) as db:
         scan_geoname_wikidata(db, wikidata_client)
-        scan_binomial_wikidata(db, wikidata_client)
+        pending = list(list_unsaved_binomials(db))
+
+    yield await_all([ctx.scope.lookup_binomial({"binomial": name}) for name in pending])
 
     return {"complete": True}
     yield
@@ -175,3 +179,4 @@ def scan_media(ctx: JobContext, input: ScanOpts) -> Generator[Any, Any, None]:
     ])
 
     yield ctx.scope.wikidata_scan({})
+    yield ctx.scope.taxonomy_scan({})

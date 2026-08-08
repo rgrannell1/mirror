@@ -3,7 +3,12 @@
 import json
 from typing import TYPE_CHECKING, Iterator, NamedTuple
 
-from mirror.commons.constants import COVER_MIN_SUBJECT_FILL, MISCELLANEOUS_ALBUM_ID
+from mirror.commons.constants import (
+    COVER_MIN_SUBJECT_FILL,
+    MISCELLANEOUS_ALBUM_ID,
+    PERSON_URN_PREFIX,
+    PUBLISHED_TAXON_RANKS,
+)
 from mirror.commons.urn import parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
 from mirror.data.things import (
@@ -211,9 +216,15 @@ class CoverCandidate(NamedTuple):
     fpath: str
     is_explicit: int
     rating_rank: int
+    # 2 wild, 1 unspecified, 0 captivity (see context_rank)
+    wild_rank: int
     single_subject: int
+    # photos with a person subject are never covers, unless explicitly assigned
+    has_person: int
     # best detection box's share of the image; None when there is no box information
     fill: float | None
+    # base subject URN; taxon covers use it as an alphabetical tie-break
+    species: str = ""
 
 
 def best_box_scans(db: "SqliteDatabase") -> dict[tuple[str, str], tuple[int, int]]:
@@ -260,6 +271,13 @@ def count_subjects(subjects: str) -> int:
     return len(subjects.split(", "))
 
 
+def has_person_subject(subjects: str) -> bool:
+    """Report whether a subjects cell includes a person URN."""
+    if not subjects:
+        return False
+    return any(urn.startswith(PERSON_URN_PREFIX) for urn in subjects.split(", "))
+
+
 def subject_type_of(thing_urn: str) -> str | None:
     """The subject type of a thing URN, or None when it does not parse."""
     try:
@@ -268,17 +286,37 @@ def subject_type_of(thing_urn: str) -> str | None:
         return None
 
 
-def make_candidate(row: tuple, scans: dict, areas: dict) -> tuple[str, CoverCandidate]:
-    """Build one cover candidate from a THING_COVER_QUERY row.
+def subject_context(thing_urn: str) -> str:
+    """The context query value of a subject URN; '' when absent or unparseable."""
+    try:
+        return parse_mirror_urn(thing_urn).get("context", "")
+    except ValueError:
+        return ""
 
-    The recorded scan area is preferred: it was measured on the very file the
-    boxes came from. Exif dimensions are the fallback for legacy rows.
+
+def context_rank(context: str) -> int:
+    """Rank a photo's subject context: wild beats unspecified beats captivity."""
+    if context == "wild":
+        return 2
+    if context == "captivity":
+        return 0
+    return 1
+
+
+def make_candidate(row: tuple, scans: dict, areas: dict) -> tuple[str, CoverCandidate]:
+    """Build one cover candidate from a THING_COVER_QUERY row, keyed by base URN.
+
+    Query-string variants (?context=wild) collapse into one group; the context
+    becomes a rank factor instead. The recorded scan area is preferred: it was
+    measured on the very file the boxes came from. Exif dimensions are the
+    fallback for legacy rows.
     """
     fpath, phash, thing_urn, rating, subjects, relation = row
+    base_urn = thing_urn.split("?")[0]
 
     fill = None
     if relation == "subject":
-        subject_type = subject_type_of(thing_urn)
+        subject_type = subject_type_of(base_urn)
         scan = scans.get((phash, subject_type))
         if scan:
             volume, recorded_area = scan
@@ -288,16 +326,35 @@ def make_candidate(row: tuple, scans: dict, areas: dict) -> tuple[str, CoverCand
         fpath=fpath,
         is_explicit=1 if relation == "cover" else 0,
         rating_rank=rating_ranks().get(rating, -1),
+        wild_rank=context_rank(subject_context(thing_urn)),
         single_subject=1 if relation == "subject" and count_subjects(subjects) == 1 else 0,
+        has_person=1 if has_person_subject(subjects) else 0,
         fill=fill,
     )
-    return thing_urn, candidate
+    return base_urn, candidate
 
 
 def cover_sort_key(candidate: CoverCandidate) -> tuple:
-    """Order covers: explicit wins, then rating, then single-subject, then fill."""
+    """Order covers: explicit, rating, wild over captive, single-subject, fill."""
     fill = candidate.fill if candidate.fill is not None else 0.0
-    return (candidate.is_explicit, candidate.rating_rank, candidate.single_subject, fill)
+    return (
+        candidate.is_explicit,
+        candidate.rating_rank,
+        candidate.wild_rank,
+        candidate.single_subject,
+        fill,
+    )
+
+
+def person_free(candidates: list[CoverCandidate]) -> list[CoverCandidate]:
+    """Drop photos with a person subject. Explicit assignments override.
+
+    A hard rule with no fallback: a subject whose every photo has a person in
+    it gets no cover triple.
+    """
+    return [
+        candidate for candidate in candidates if not candidate.has_person or candidate.is_explicit
+    ]
 
 
 def eligible_candidates(candidates: list[CoverCandidate]) -> list[CoverCandidate]:
@@ -314,10 +371,15 @@ class ThingCoverReader:
     """Selects one cover photo per individual thing (bird, place, country, etc.).
 
     Explicit cover assignments (relation='cover' in photo_metadata_table) take
-    priority. Otherwise photos rank by rating, then single-subject labelling,
-    then how much of the image the detected subject fills. Photos whose subject
-    box is too small are not eligible. Photos with no boxes — never scanned, or
-    scanned and nothing found — rank neutrally on fill.
+    priority. Otherwise photos rank by rating, then wild context over captive,
+    then single-subject labelling, then how much of the image the detected
+    subject fills. Photos whose subject box is too small are not eligible.
+    Photos with no boxes — never scanned, or scanned and nothing found — rank
+    neutrally on fill. Context query-string variants of a subject collapse to
+    one base URN, matching the first_seen readers.
+
+    Taxon-typed targets (genus, family, order) are left to TaxonCoverReader,
+    which pools candidates across every species under the taxon.
 
     Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<type>:<thing-id>
     """
@@ -330,10 +392,16 @@ class ThingCoverReader:
         groups: dict[str, list[CoverCandidate]] = {}
         for row in db.conn.execute(THING_COVER_QUERY).fetchall():
             thing_urn, candidate = make_candidate(row, scans, areas)
+            if subject_type_of(thing_urn) in PUBLISHED_TAXON_RANKS:
+                continue
             groups.setdefault(thing_urn, []).append(candidate)
 
         for thing_urn, group in groups.items():
-            best = max(eligible_candidates(group), key=cover_sort_key)
+            allowed = person_free(group)
+            if not allowed:
+                continue
+
+            best = max(eligible_candidates(allowed), key=cover_sort_key)
             photo_urn = f"urn:ró:photo:{deterministic_hash_str(best.fpath)}"
             yield SemanticTriple(photo_urn, "cover", thing_urn)
 

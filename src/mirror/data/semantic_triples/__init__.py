@@ -12,6 +12,7 @@ from .photos import (
     PlaceFeatureCoverReader,
     ThingCoverReader,
 )
+from .taxa import TaxonCoverReader, TaxonRelationsReader
 from .videos import VideosReader
 
 __all__ = [
@@ -24,6 +25,8 @@ __all__ = [
     "PhotoTriples",
     "PhotosCountryReader",
     "PlaceFeatureCoverReader",
+    "TaxonCoverReader",
+    "TaxonRelationsReader",
     "ThingCoverReader",
     "VideosReader",
 ]

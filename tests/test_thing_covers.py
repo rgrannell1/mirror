@@ -7,12 +7,20 @@ from mirror.data.semantic_triples.photos import (
     cover_sort_key,
     eligible_candidates,
     make_candidate,
+    person_free,
 )
 
 
 def make(fpath: str, **overrides) -> CoverCandidate:
     """Build a candidate with neutral defaults."""
-    fields = {"is_explicit": 0, "rating_rank": 0, "single_subject": 0, "fill": None}
+    fields = {
+        "is_explicit": 0,
+        "rating_rank": 0,
+        "wild_rank": 1,
+        "single_subject": 0,
+        "has_person": 0,
+        "fill": None,
+    }
     fields.update(overrides)
     return CoverCandidate(fpath=fpath, **fields)
 
@@ -31,6 +39,19 @@ RANKING_CASES = [
     (
         "single-subject labelling wins within a rating band",
         [make("a", rating_rank=3, fill=0.9), make("b", rating_rank=3, single_subject=1)],
+        "b",
+    ),
+    (
+        "wild beats captive within a rating band",
+        [make("a", rating_rank=3, wild_rank=0, fill=0.9), make("b", rating_rank=3, wild_rank=2)],
+        "b",
+    ),
+    (
+        "wild context outranks single-subject labelling",
+        [
+            make("a", rating_rank=3, wild_rank=0, single_subject=1),
+            make("b", rating_rank=3, wild_rank=2),
+        ],
         "b",
     ),
     (
@@ -79,6 +100,32 @@ def test_cover_eligibility() -> None:
         assert best.fpath == expected, label
 
 
+PERSON_CASES = [
+    (
+        "a person photo is dropped no matter its rating",
+        [make("a", rating_rank=5, has_person=1), make("b", rating_rank=1)],
+        ["b"],
+    ),
+    (
+        "an explicit assignment overrides the person rule",
+        [make("a", is_explicit=1, has_person=1), make("b")],
+        ["a", "b"],
+    ),
+    (
+        "a subject with only person photos gets no cover",
+        [make("a", has_person=1), make("b", has_person=1)],
+        [],
+    ),
+]
+
+
+def test_person_free() -> None:
+    """Proves person photos are never covers, with no fallback, unless explicit."""
+    for label, candidates, expected in PERSON_CASES:
+        kept = [candidate.fpath for candidate in person_free(candidates)]
+        assert kept == expected, label
+
+
 def test_candidate_fill() -> None:
     """Proves fill needs both a box volume and an image area."""
     assert candidate_fill(None, 1000) is None
@@ -106,6 +153,27 @@ def test_make_candidate_computes_subject_fill() -> None:
     assert candidate.fill == 0.5
     assert candidate.single_subject == 1
     assert candidate.is_explicit == 0
+
+
+def test_make_candidate_collapses_context_variants() -> None:
+    """Proves context variants group under the base URN and rank by wildness."""
+    gannet = "urn:ró:bird:morus-bassanus"
+    scans = {("p1", "bird"): (500, 1000)}
+
+    wild_row = ("/a.jpg", "p1", f"{gannet}?context=wild", "⭐", gannet, "subject")
+    captive_row = ("/b.jpg", "p1", f"{gannet}?context=captivity", "⭐", gannet, "subject")
+    plain_row = ("/c.jpg", "p1", gannet, "⭐", gannet, "subject")
+
+    wild = make_candidate(wild_row, scans, {})
+    captive = make_candidate(captive_row, scans, {})
+    plain = make_candidate(plain_row, scans, {})
+
+    assert wild[0] == captive[0] == plain[0] == gannet
+    assert wild[1].wild_rank == 2
+    assert plain[1].wild_rank == 1
+    assert captive[1].wild_rank == 0
+    # the context variant still finds its detection row via the base type
+    assert wild[1].fill == 0.5
 
 
 def test_make_candidate_area_fallbacks() -> None:

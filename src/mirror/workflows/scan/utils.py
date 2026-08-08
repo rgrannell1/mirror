@@ -113,22 +113,6 @@ def scan_geoname_wikidata(db: SqliteDatabase, wikidata_client) -> None:
         wikidata_table.add(qid, res)
 
 
-def scan_binomial_wikidata(db: SqliteDatabase, wikidata_client) -> None:
-    """Fetch WikiData entries for species binomials."""
-    binomials_wikidata_table = db.binomials_wikidata_id_table()
-    wikidata_table = db.wikidata_table()
-
-    for binomial in list_unsaved_binomials(db):
-        res = wikidata_client.get_by_binomial(binomial)
-        if not res:
-            binomials_wikidata_table.add(binomial, None)
-            continue
-
-        qid = res["id"]
-        binomials_wikidata_table.add(binomial, qid)
-        wikidata_table.add(qid, res)
-
-
 def write_miscellaneous_permalinks(db: SqliteDatabase) -> None:
     """Assign the shared hidden album id to every Miscellaneous dpath."""
 
@@ -162,15 +146,19 @@ def read_geonames_wikidata_ids(db: SqliteDatabase) -> Iterator[SemanticTriple]:
 
 
 def list_unsaved_binomials(db: SqliteDatabase) -> Iterator[str]:
-    """Return binomials that haven't been looked up in WikiData"""
+    """Return binomials with no stored WikiData QID.
+
+    Failed lookups store a null QID; those binomials stay in this list, so a
+    later scan retries them (e.g. after a transient outage)."""
 
     binomials_wikidata_table = db.binomials_wikidata_id_table()
 
-    # subtract the set of stored binomials from the ones in our photos
+    # subtract the resolved binomials from the ones in our photos. Only a Q-item
+    # id counts as resolved: old lookups stored lexeme sense ids (L…-S1)
     unsaved_binomials = set(list_photo_binomials(db))
 
-    for binomial, _qid in binomials_wikidata_table.list():
-        if binomial in unsaved_binomials:
+    for binomial, qid in binomials_wikidata_table.list():
+        if qid and qid.startswith("Q") and binomial in unsaved_binomials:
             unsaved_binomials.remove(binomial)
 
     return iter(unsaved_binomials)
