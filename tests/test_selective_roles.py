@@ -5,6 +5,7 @@ files rather than every photo. These guard that scoping.
 """
 
 from mirror.data.things import banner_fpaths
+from mirror.workflows.upload import selective
 from mirror.workflows.upload.selective import is_role_skipped
 
 
@@ -14,8 +15,13 @@ def test_banner_role_only_generated_for_banner_sources():
     assert is_role_skipped("banner", "/home/rg/Drive/Media/2022/Cranes/Published/not-a-banner.JPG")
 
 
-def test_social_card_role_only_generated_for_cover_sources():
+def test_social_card_role_only_generated_for_cover_sources(monkeypatch):
+    """Proves social_card encodes are gated to album covers and computed thing covers."""
+    computed = frozenset({"/x/thing-cover.jpg"})
+    monkeypatch.setattr(selective, "computed_cover_fpaths", lambda: computed)
+
     assert not is_role_skipped("social_card", "/x/PkhvUKujrGo4+cover.jpg")
+    assert not is_role_skipped("social_card", "/x/thing-cover.jpg")
     assert is_role_skipped("social_card", "/x/regular.jpg")
 
 

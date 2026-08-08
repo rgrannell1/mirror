@@ -6,13 +6,10 @@ from .first_seen import AnimalFirstSeenReader
 from .listings import ListingEntityReader
 from .photos import (
     AlbumBannerReader,
-    ListingCoverReader,
     PhotosCountryReader,
     PhotoTriples,
-    PlaceFeatureCoverReader,
-    ThingCoverReader,
 )
-from .taxa import TaxonCoverReader, TaxonRelationsReader
+from .taxa import TaxonRelationsReader
 from .videos import VideosReader
 
 __all__ = [
@@ -20,13 +17,9 @@ __all__ = [
     "AlbumTriples",
     "AnimalFirstSeenReader",
     "ExifTriplesReader",
-    "ListingCoverReader",
     "ListingEntityReader",
     "PhotoTriples",
     "PhotosCountryReader",
-    "PlaceFeatureCoverReader",
-    "TaxonCoverReader",
     "TaxonRelationsReader",
-    "ThingCoverReader",
     "VideosReader",
 ]

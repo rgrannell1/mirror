@@ -28,6 +28,8 @@ PHOTO_DIRECTORY = os.getenv("PHOTO_DIRECTORY", f"{HOME}/Drive/Media")
 DATABASE_PATH = os.getenv("DATABASE_PATH", f"{HOME}/media.db")
 D1_DATABASE_PATH = os.getenv("D1_DATABASE_PATH", f"{HOME}/media_d1.db")
 D1_DUMP_PATH = os.getenv("D1_DUMP_PATH", f"{HOME}/media_d1.sql")
+# funes cache for expensive computed selections (cover selection)
+FUNES_CACHE_PATH = os.getenv("FUNES_CACHE_PATH", f"{HOME}/mirror_cache.db")
 WEBSITE_DIRECTORY = os.getenv("WEBSITE_DIRECTORY", f"{HOME}/Code/websites/photos.rgrannell.xyz")
 OUTPUT_DIRECTORY = os.getenv("OUTPUT_DIRECTORY", f"{WEBSITE_DIRECTORY}/manifest")
 

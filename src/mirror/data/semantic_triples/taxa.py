@@ -4,19 +4,16 @@ from typing import TYPE_CHECKING, Iterator, NamedTuple
 
 from mirror.commons.constants import PUBLISHED_TAXON_RANKS
 from mirror.commons.urn import format_mirror_urn
-from mirror.commons.utils import deterministic_hash_str
 from mirror.data.binomials import binomial_urn_map, normalise_binomial
 from mirror.data.semantic_triples.photos import (
-    THING_COVER_QUERY,
     CoverCandidate,
-    best_box_scans,
     cover_sort_key,
     eligible_candidates,
     make_candidate,
     person_free,
-    photo_areas,
     subject_type_of,
 )
+from mirror.data.things import taxon_common_names
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -60,13 +57,16 @@ def taxon_scientific_name(db: "SqliteDatabase", qid: str, fallback: str) -> str:
 
 
 def taxon_name_triples(
-    db: "SqliteDatabase", scan: tuple[str, str, str]
+    db: "SqliteDatabase", scan: tuple[str, str, str], curated: dict[str, str]
 ) -> Iterator[SemanticTriple]:
-    """The name triples for one taxon: scientific name, plus any common name."""
+    """The name triples for one taxon: scientific name, plus any common name.
+
+    Curated things.toml common names win; Wikidata's P1843 is the fallback.
+    """
     target, qid, latin_name = scan
     yield SemanticTriple(target, "name", latin_name)
 
-    common_name = taxon_common_name(db, qid)
+    common_name = curated.get(target) or taxon_common_name(db, qid)
     if common_name:
         yield SemanticTriple(target, "common_name", common_name)
 
@@ -98,12 +98,14 @@ class TaxonRelationsReader:
     @staticmethod
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         named: set[str] = set()
+        curated = taxon_common_names()
 
         for link in list_taxon_links(db):
             yield SemanticTriple(link.subject_urn, link.rank, link.taxon_urn)
             if link.taxon_urn not in named:
                 named.add(link.taxon_urn)
-                yield from taxon_name_triples(db, (link.taxon_urn, link.qid, link.latin_name))
+                scan = (link.taxon_urn, link.qid, link.latin_name)
+                yield from taxon_name_triples(db, scan, curated)
 
 
 def subject_taxon_map(db: "SqliteDatabase") -> dict[str, list[str]]:
@@ -153,27 +155,3 @@ def group_taxon_candidates(
     return groups
 
 
-class TaxonCoverReader:
-    """Selects one cover photo per published taxon (genus, family, order).
-
-    Every subject photo of every species under a taxon competes, ranked by the
-    thing-cover key. A species' explicit cover loses its trump here: it is
-    scoped to the species URN. Hand assignments made directly to a taxon URN
-    stay explicit and win. Cross-species ties resolve alphabetically.
-
-    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<rank>:<slug>
-    """
-
-    @staticmethod
-    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        rows = db.conn.execute(THING_COVER_QUERY).fetchall()
-        taxa_of = subject_taxon_map(db)
-        groups = group_taxon_candidates(rows, best_box_scans(db), photo_areas(db), taxa_of)
-
-        for taxon, group in groups.items():
-            best = best_taxon_cover(group)
-            if not best:
-                continue
-
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(best.fpath)}"
-            yield SemanticTriple(photo_urn, "cover", taxon)

@@ -7,16 +7,10 @@ from mirror.commons.constants import (
     COVER_MIN_SUBJECT_FILL,
     MISCELLANEOUS_ALBUM_ID,
     PERSON_URN_PREFIX,
-    PUBLISHED_TAXON_RANKS,
 )
 from mirror.commons.urn import parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
-from mirror.data.things import (
-    genre_cover_priorities,
-    place_feature_to_places,
-    rating_ranks,
-    unlisted_types,
-)
+from mirror.data.things import genre_cover_priorities, rating_ranks
 from mirror.data.types import SemanticTriple
 
 if TYPE_CHECKING:
@@ -154,28 +148,6 @@ def rating_rank_sql(column: str) -> str:
 def sql_text(value: str) -> str:
     """Escape a trusted configuration value for a SQL text literal."""
     return value.replace("'", "''")
-
-
-class ListingCoverReader:
-    """Selects one representative cover photo per top-level listing type.
-
-    Subject listings use rating. Place listings first use configured genre priority.
-
-    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:listing:<type>
-    """
-
-    @staticmethod
-    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        excluded = tuple(sorted(unlisted_types()))
-        query = LISTING_COVER_QUERY.format(
-            excluded=",".join("?" for _ in excluded),
-            place_genre_order=genre_priority_sql("place", "genre"),
-            rating_order=rating_rank_sql("rating"),
-        )
-        for fpath, listing_type in db.conn.execute(query, excluded).fetchall():
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(fpath)}"
-            listing_urn = f"urn:ró:listing:{listing_type}"
-            yield SemanticTriple(photo_urn, "cover", listing_urn)
 
 
 THING_COVER_QUERY = """
@@ -367,45 +339,6 @@ def eligible_candidates(candidates: list[CoverCandidate]) -> list[CoverCandidate
     return kept or candidates
 
 
-class ThingCoverReader:
-    """Selects one cover photo per individual thing (bird, place, country, etc.).
-
-    Explicit cover assignments (relation='cover' in photo_metadata_table) take
-    priority. Otherwise photos rank by rating, then wild context over captive,
-    then single-subject labelling, then how much of the image the detected
-    subject fills. Photos whose subject box is too small are not eligible.
-    Photos with no boxes — never scanned, or scanned and nothing found — rank
-    neutrally on fill. Context query-string variants of a subject collapse to
-    one base URN, matching the first_seen readers.
-
-    Taxon-typed targets (genus, family, order) are left to TaxonCoverReader,
-    which pools candidates across every species under the taxon.
-
-    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:<type>:<thing-id>
-    """
-
-    @staticmethod
-    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        scans = best_box_scans(db)
-        areas = photo_areas(db)
-
-        groups: dict[str, list[CoverCandidate]] = {}
-        for row in db.conn.execute(THING_COVER_QUERY).fetchall():
-            thing_urn, candidate = make_candidate(row, scans, areas)
-            if subject_type_of(thing_urn) in PUBLISHED_TAXON_RANKS:
-                continue
-            groups.setdefault(thing_urn, []).append(candidate)
-
-        for thing_urn, group in groups.items():
-            allowed = person_free(group)
-            if not allowed:
-                continue
-
-            best = max(eligible_candidates(allowed), key=cover_sort_key)
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(best.fpath)}"
-            yield SemanticTriple(photo_urn, "cover", thing_urn)
-
-
 def genre_then_rating(candidate: tuple) -> tuple:
     """Sort a place-cover candidate by configured genre priority, then rating."""
     rank, genre = candidate[1], candidate[2]
@@ -445,37 +378,6 @@ def feature_cover_candidates(
             continue
 
         yield feature_urn, min(candidates, key=genre_then_rating)
-
-
-class PlaceFeatureCoverReader:
-    """Selects one cover photo per place_feature (castle, beach, volcano, etc.).
-
-    Loads the feature→places mapping from things.toml, queries the DB for all
-    photos at those places, then applies configured genre priority and rating.
-
-    Emits triples:  urn:ró:photo:<id>  cover  urn:ró:place_feature:<feature-id>
-    """
-
-    @staticmethod
-    def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
-        feature_to_places = place_feature_to_places()
-
-        all_place_urns = list({urn for urns in feature_to_places.values() for urn in urns})
-        if not all_place_urns:
-            return
-
-        place_to_photos = map_place_photos(db, all_place_urns)
-
-        all_candidates: list[tuple] = []
-        for feature_urn, best in feature_cover_candidates(feature_to_places, place_to_photos):
-            all_candidates.append(best)
-            photo_urn = f"urn:ró:photo:{deterministic_hash_str(best[0])}"
-            yield SemanticTriple(photo_urn, "cover", feature_urn)
-
-        if all_candidates:
-            listing_best = min(all_candidates, key=genre_then_rating)
-            listing_photo_urn = f"urn:ró:photo:{deterministic_hash_str(listing_best[0])}"
-            yield SemanticTriple(listing_photo_urn, "cover", "urn:ró:listing:place_feature")
 
 
 class PhotosCountryReader:

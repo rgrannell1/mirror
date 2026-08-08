@@ -1,9 +1,11 @@
 """Build the D1 SQLite snapshot used for social-card metadata."""
 
 import os
+from typing import NamedTuple
 
 from mirror.commons.config import D1_DATABASE_PATH
-from mirror.data.things import trip_titles, trip_to_albums
+from mirror.data.covers import CoverSelection, cached_cover_selection, thing_card_pairs
+from mirror.data.things import thing_names, trip_titles, trip_to_albums
 from mirror.services.database import D1SqliteDatabase, SqliteDatabase
 
 # star rating of each album's cover photo, keyed by album dpath
@@ -86,6 +88,50 @@ def choose_trip_image(album_urns, permalink_to_dpath: dict, album_covers: dict) 
     return best_cover[2]
 
 
+class ThingCard(NamedTuple):
+    """One thing page's social-card row."""
+
+    path: str
+    title: str
+    image_url: str
+
+
+def thing_display_name(thing_urn: str, names: dict[str, str]) -> str:
+    """The thing's curated name, else its title-cased URN id."""
+    if thing_urn in names:
+        return names[thing_urn]
+
+    thing_id = thing_urn.rsplit(":", 1)[-1]
+    return thing_id.replace("-", " ").title()
+
+
+def thing_path(thing_urn: str) -> str:
+    """The thing page path for a URN: urn:ró:bird:robin → /thing/bird:robin."""
+    return f"/thing/{thing_urn.removeprefix('urn:ró:')}"
+
+
+def thing_card_rows(
+    selection: CoverSelection, social_urls: dict, mid_urls: dict, names: dict[str, str]
+) -> tuple[list[ThingCard], list[str]]:
+    """Build thing card rows. Also returns the things whose cover lacked a
+    social_card encode and fell back to the mid-size image."""
+    cards: list[ThingCard] = []
+    fallbacks: list[str] = []
+
+    for thing_urn, fpath in thing_card_pairs(selection):
+        image_url = social_urls.get(fpath)
+        if image_url is None:
+            image_url = mid_urls.get(fpath)
+            if image_url is None:
+                continue
+            fallbacks.append(thing_urn)
+
+        title = thing_display_name(thing_urn, names)
+        cards.append(ThingCard(path=thing_path(thing_urn), title=title, image_url=image_url))
+
+    return cards, fallbacks
+
+
 class D1Builder:
     """Populate the D1 cache DB from the main media index for social cards."""
 
@@ -122,7 +168,27 @@ class D1Builder:
                 image_url=image_url,
             )
 
-    def build(self) -> None:
+    def urls_by_role(self, role: str) -> dict[str, str]:
+        """Map fpath → encoded image url for one rendition role."""
+        return {enc.fpath: enc.url for enc in self.db.encoded_photos_table().list_by_role(role)}
+
+    def add_thing_cards(self, socials) -> list[str]:
+        """Add one social-card row per thing with a cover. Returns the things
+        whose cover lacked a social_card encode and fell back to mid-size."""
+        selection = cached_cover_selection(self.db)
+        cards, fallbacks = thing_card_rows(
+            selection, self.urls_by_role("social_card"), self.urls_by_role("mid_image_lossy"),
+            thing_names(),
+        )
+
+        for card in cards:
+            socials.add(
+                path=card.path, description=None, title=card.title, image_url=card.image_url
+            )
+        return fallbacks
+
+    def build(self) -> list[str]:
+        """Build and dump every social card. Returns thing-card fallback URNs."""
         d1 = D1SqliteDatabase(D1_DATABASE_PATH)
 
         dpath_to_details = map_album_details(self.db.media_metadata_table().list_albums())
@@ -140,5 +206,7 @@ class D1Builder:
             )
 
         self.add_trip_cards(socials, dpath_to_details)
+        fallbacks = self.add_thing_cards(socials)
 
         d1.dump()
+        return fallbacks

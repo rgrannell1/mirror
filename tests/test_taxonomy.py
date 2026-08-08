@@ -1,7 +1,7 @@
 """Tests for Wikidata taxon-chain walking and storage."""
 
 from mirror.data.semantic_triples.listings import listed_types, listing_entity_triples
-from mirror.data.semantic_triples.taxa import TaxonRelationsReader
+from mirror.data.semantic_triples.taxa import TaxonRelationsReader, taxon_name_triples
 from mirror.data.wikidata import WikidataModel
 from mirror.services.database import SqliteDatabase
 from mirror.workflows.scan.taxonomy import list_unchained_binomials, walk_taxon_chain
@@ -165,10 +165,11 @@ def test_taxon_relations_reader() -> None:
         "labels": {"en": {"value": "shorebirds"}},
         "claims": {"P225": [{"mainsnak": {"datavalue": {"value": "Charadriiformes"}}}]},
     }
+    # Fakeidae: fictional, so the curated things.toml names cannot couple to this test
     chain_rows = [
         ("Alca torda", ("species", "Q1", "razorbill")),
         ("Alca torda", ("genus", "Q2", "Alca")),
-        ("Alca torda", ("family", "Q3", "Alcidae")),
+        ("Alca torda", ("family", "Q3", "Fakeidae")),
         ("Alca torda", ("order", "Q4", "shorebirds")),
         ("Alca torda", ("class", "Q5", "bird")),
         ("Unphotographed species", ("family", "Q6", "Ghostidae")),
@@ -186,14 +187,38 @@ def test_taxon_relations_reader() -> None:
         ]
 
     assert triples == [
-        ("urn:ró:bird:alca-torda", "family", "urn:ró:family:alcidae"),
-        ("urn:ró:family:alcidae", "name", "Alcidae"),
-        ("urn:ró:family:alcidae", "common_name", "auks"),
+        ("urn:ró:bird:alca-torda", "family", "urn:ró:family:fakeidae"),
+        ("urn:ró:family:fakeidae", "name", "Fakeidae"),
+        ("urn:ró:family:fakeidae", "common_name", "auks"),
         ("urn:ró:bird:alca-torda", "genus", "urn:ró:genus:alca"),
         ("urn:ró:genus:alca", "name", "Alca"),
         ("urn:ró:bird:alca-torda", "order", "urn:ró:order:charadriiformes"),
         ("urn:ró:order:charadriiformes", "name", "Charadriiformes"),
     ]
+
+
+def test_curated_common_names_win() -> None:
+    """Proves a curated things.toml common name beats Wikidata's P1843."""
+    with make_subject_db() as db:
+        db.wikidata_table().add(
+            "Q3",
+            {
+                "labels": {},
+                "claims": {
+                    "P1843": [
+                        {"mainsnak": {"datavalue": {"value": {"text": "auks", "language": "en"}}}}
+                    ]
+                },
+            },
+        )
+        curated = {"urn:ró:family:fakeidae": "Curated Auks"}
+        scan = ("urn:ró:family:fakeidae", "Q3", "Fakeidae")
+
+        triples = [(t.relation, t.target) for t in taxon_name_triples(db, scan, curated)]
+        assert triples == [("name", "Fakeidae"), ("common_name", "Curated Auks")]
+
+        uncurated = [(t.relation, t.target) for t in taxon_name_triples(db, scan, {})]
+        assert uncurated == [("name", "Fakeidae"), ("common_name", "auks")]
 
 
 def test_taxon_listing_entities() -> None:

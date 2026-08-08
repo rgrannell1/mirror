@@ -238,6 +238,9 @@ DETECTION_CONCURRENCY_LIMIT = 15
 # Cover selection: a subject filling under this share of the image is too small to cover.
 COVER_MIN_SUBJECT_FILL = 0.05
 
+# Cover selection cache: how many input-hash keyed selections funes keeps before LRU eviction.
+COVER_CACHE_MAX_ENTRIES = 16
+
 # Taxonomy: the ranks the site receives; higher levels stay database-only.
 PUBLISHED_TAXON_RANKS = ("genus", "family", "order")
 

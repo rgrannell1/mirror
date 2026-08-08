@@ -13,6 +13,7 @@ from mirror.commons.config import PHOTOS_URL
 from mirror.commons.constants import STATS_MAX_COUNTRIES, STATS_MIN_COUNTRIES
 from mirror.commons.urn import is_mirror_urn, parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str
+from mirror.data.covers import CoversReader
 from mirror.data.geoname import GeonameMetadataReader
 from mirror.data.photo_relations import PhotoRelationsReader
 from mirror.data.semantic_triples import (
@@ -20,14 +21,10 @@ from mirror.data.semantic_triples import (
     AlbumTriples,
     AnimalFirstSeenReader,
     ExifTriplesReader,
-    ListingCoverReader,
     ListingEntityReader,
     PhotosCountryReader,
     PhotoTriples,
-    PlaceFeatureCoverReader,
-    TaxonCoverReader,
     TaxonRelationsReader,
-    ThingCoverReader,
     VideosReader,
 )
 from mirror.data.things import ThingsReader, WildlifeReader, binomial_types, feature_urn_for_role
@@ -174,13 +171,10 @@ def read_triples(db: SqliteDatabase) -> Iterator[list]:
         PhotoRelationsReader(),
         PhotosCountryReader(),
         AlbumBannerReader(),
-        ListingCoverReader(),
         ListingEntityReader(),
-        ThingCoverReader(),
-        PlaceFeatureCoverReader(),
+        CoversReader(),
         AnimalFirstSeenReader(),
         TaxonRelationsReader(),
-        TaxonCoverReader(),
     ]
     seen: set[int] = set()
     for long, alias in CURIE.items():

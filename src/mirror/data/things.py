@@ -55,6 +55,19 @@ def named_thing_ids(things_file: str = "things.toml") -> frozenset[str]:
 
 
 @cache
+def taxon_common_names(things_file: str = "things.toml") -> dict[str, str]:
+    """Curated common names for taxon URNs, from the taxa section."""
+    with open(Path(things_file), "rb") as fh:
+        data = tomllib.load(fh)
+
+    return {
+        entry["id"]: entry["common_name"]
+        for entry in data.get("taxa", [])
+        if entry.get("id") and entry.get("common_name")
+    }
+
+
+@cache
 def thing_names(things_file: str = "things.toml") -> dict[str, str]:
     """Return mapping of thing URN → display name, for entries that carry one."""
     with open(Path(things_file), "rb") as fh:

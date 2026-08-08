@@ -5,7 +5,9 @@ subject_types = [
     { noun = "reptile", animal = true, binomial = true, context = "captivity" },
     { noun = "amphibian", animal = true, binomial = true, context = "wild" },
     { noun = "fish", animal = true, binomial = true, context = "captivity" },
-    { noun = "arthropod", animal = true, binomial = false, context = "wild" },
+    { noun = "arthropod", animal = true, binomial = true, context = "wild" },
+    { noun = "cnidaria", animal = true, binomial = true, context = "wild" },
+    { noun = "ctenophore", animal = true, binomial = true, context = "wild" },
     { noun = "person", listed = false },
 ]
 
@@ -5229,3 +5231,234 @@ dpath = "/home/rg/Drive/Media/2020/Sliebh Bloom Mountains/Published"
 [[legacy_albums]]
 permalink = "dublin-zoo-21"
 dpath = "/home/rg/Drive/Media/2021/Dublin Zoo/Published"
+
+# Curated common names for published taxa. These win over Wikidata's P1843.
+# Keyed by taxon URN; covers every family with two or more photographed species.
+
+[[taxa]]
+id = "urn:ró:family:accipitridae"
+common_name = "Hawks and Eagles"
+
+[[taxa]]
+id = "urn:ró:family:agamidae"
+common_name = "Agamas"
+
+[[taxa]]
+id = "urn:ró:family:alcidae"
+common_name = "Auks"
+
+[[taxa]]
+id = "urn:ró:family:anatidae"
+common_name = "Ducks, Geese and Swans"
+
+[[taxa]]
+id = "urn:ró:family:apidae"
+common_name = "Bees"
+
+[[taxa]]
+id = "urn:ró:family:arctiidae"
+common_name = "Tiger Moths"
+
+[[taxa]]
+id = "urn:ró:family:apodidae"
+common_name = "Swifts"
+
+[[taxa]]
+id = "urn:ró:family:ardeidae"
+common_name = "Herons and Egrets"
+
+[[taxa]]
+id = "urn:ró:family:camelidae"
+common_name = "Camels and Llamas"
+
+[[taxa]]
+id = "urn:ró:family:canidae"
+common_name = "Dogs and Foxes"
+
+[[taxa]]
+id = "urn:ró:family:cathartidae"
+common_name = "New World Vultures"
+
+[[taxa]]
+id = "urn:ró:family:caviidae"
+common_name = "Cavies and Capybaras"
+
+[[taxa]]
+id = "urn:ró:family:cervidae"
+common_name = "Deer"
+
+[[taxa]]
+id = "urn:ró:family:ciconiidae"
+common_name = "Storks"
+
+[[taxa]]
+id = "urn:ró:family:coccinellidae"
+common_name = "Ladybirds"
+
+[[taxa]]
+id = "urn:ró:family:columbidae"
+common_name = "Pigeons and Doves"
+
+[[taxa]]
+id = "urn:ró:family:corvidae"
+common_name = "Crows and Jays"
+
+[[taxa]]
+id = "urn:ró:family:delphinidae"
+common_name = "Dolphins"
+
+[[taxa]]
+id = "urn:ró:family:emberizidae"
+common_name = "Buntings"
+
+[[taxa]]
+id = "urn:ró:family:emydidae"
+common_name = "Pond Turtles"
+
+[[taxa]]
+id = "urn:ró:family:falconidae"
+common_name = "Falcons"
+
+[[taxa]]
+id = "urn:ró:family:felidae"
+common_name = "Cats"
+
+[[taxa]]
+id = "urn:ró:family:fringillidae"
+common_name = "Finches"
+
+[[taxa]]
+id = "urn:ró:family:giraffidae"
+common_name = "Giraffes"
+
+[[taxa]]
+id = "urn:ró:family:grapsidae"
+common_name = "Shore Crabs"
+
+[[taxa]]
+id = "urn:ró:family:gruidae"
+common_name = "Cranes"
+
+[[taxa]]
+id = "urn:ró:family:hirundinidae"
+common_name = "Swallows and Martins"
+
+[[taxa]]
+id = "urn:ró:family:hominidae"
+common_name = "Great Apes"
+
+[[taxa]]
+id = "urn:ró:family:hylobatidae"
+common_name = "Gibbons"
+
+[[taxa]]
+id = "urn:ró:family:iguanidae"
+common_name = "Iguanas"
+
+[[taxa]]
+id = "urn:ró:family:lacertidae"
+common_name = "Wall Lizards"
+
+[[taxa]]
+id = "urn:ró:family:laridae"
+common_name = "Gulls and Terns"
+
+[[taxa]]
+id = "urn:ró:family:lemuridae"
+common_name = "Lemurs"
+
+[[taxa]]
+id = "urn:ró:family:macropodidae"
+common_name = "Kangaroos and Wallabies"
+
+[[taxa]]
+id = "urn:ró:family:motacillidae"
+common_name = "Wagtails and Pipits"
+
+[[taxa]]
+id = "urn:ró:family:muscicapidae"
+common_name = "Chats and Flycatchers"
+
+[[taxa]]
+id = "urn:ró:family:musophagidae"
+common_name = "Turacos"
+
+[[taxa]]
+id = "urn:ró:family:mustelidae"
+common_name = "Weasels and Otters"
+
+[[taxa]]
+id = "urn:ró:family:nymphalidae"
+common_name = "Brush-footed Butterflies"
+
+[[taxa]]
+id = "urn:ró:family:papilionidae"
+common_name = "Swallowtails"
+
+[[taxa]]
+id = "urn:ró:family:paridae"
+common_name = "Tits"
+
+[[taxa]]
+id = "urn:ró:family:passeridae"
+common_name = "Sparrows"
+
+[[taxa]]
+id = "urn:ró:family:phalacrocoracidae"
+common_name = "Cormorants"
+
+[[taxa]]
+id = "urn:ró:family:phocidae"
+common_name = "Seals"
+
+[[taxa]]
+id = "urn:ró:family:procellariidae"
+common_name = "Petrels and Shearwaters"
+
+[[taxa]]
+id = "urn:ró:family:psittacidae"
+common_name = "Parrots"
+
+[[taxa]]
+id = "urn:ró:family:rallidae"
+common_name = "Rails, Coots and Moorhens"
+
+[[taxa]]
+id = "urn:ró:family:salamandridae"
+common_name = "Newts and Salamanders"
+
+[[taxa]]
+id = "urn:ró:family:scincidae"
+common_name = "Skinks"
+
+[[taxa]]
+id = "urn:ró:family:sciuridae"
+common_name = "Squirrels"
+
+[[taxa]]
+id = "urn:ró:family:scolopacidae"
+common_name = "Sandpipers"
+
+[[taxa]]
+id = "urn:ró:family:spheniscidae"
+common_name = "Penguins"
+
+[[taxa]]
+id = "urn:ró:family:sturnidae"
+common_name = "Starlings"
+
+[[taxa]]
+id = "urn:ró:family:suidae"
+common_name = "Pigs"
+
+[[taxa]]
+id = "urn:ró:family:threskiornithidae"
+common_name = "Ibises and Spoonbills"
+
+[[taxa]]
+id = "urn:ró:family:turdidae"
+common_name = "Thrushes"
+
+[[taxa]]
+id = "urn:ró:family:ursidae"
+common_name = "Bears"

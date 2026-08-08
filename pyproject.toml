@@ -40,6 +40,7 @@ dependencies = [
   "torch>=2.13.0",
   "torchvision>=0.28.0",
   "thumbhash>=0.1.2",
+  "funes",
 ]
 
 [project.scripts]
@@ -68,6 +69,7 @@ tertius = { path = "../tertius", editable = true }
 orbis = { path = "../orbis", editable = true }
 bookman = { path = "../bookman", editable = true }
 zahir2 = { path = "../zahir", editable = true }
+funes = { path = "../funes", editable = true }
 
 [tool.pytest.ini_options]
 # src-layout: let tests import `mirror` without an editable install step

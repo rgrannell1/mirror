@@ -15,6 +15,7 @@ def test_listing_entities_derive_from_sections() -> None:
         ("urn:ró:listing:bird", "listable", "true"),
         ("urn:ró:listing:bird", "browseable", "true"),
         ("urn:ró:listing:cnidaria", "name", "Cnidaria"),
+        ("urn:ró:listing:cnidaria", "binomial", "true"),
         ("urn:ró:listing:cnidaria", "listable", "true"),
         ("urn:ró:listing:cnidaria", "browseable", "true"),
     ]
