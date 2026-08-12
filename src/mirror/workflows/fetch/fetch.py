@@ -17,14 +17,10 @@ from zahir.core.commons.constants import DependencyState
 from zahir.core.effects import ESetState
 
 from mirror.commons.config import BADGER_PATH, RAW_MEDIA_DIRECTORY
-from mirror.commons.constants import SUPPORTED_IMAGE_EXTENSIONS
-
-SUPPORTED_VIDEO_EXTENSIONS = (".mp4", ".MP4", ".mov", ".MOV")
-SUPPORTED_RAW_EXTENSIONS = (".rw2", ".RW2", ".raw", ".RAW", ".dng", ".DNG")
-SUPPORTED_EXTENSIONS = (
-    frozenset(SUPPORTED_IMAGE_EXTENSIONS)
-    | frozenset(SUPPORTED_VIDEO_EXTENSIONS)
-    | frozenset(SUPPORTED_RAW_EXTENSIONS)
+from mirror.commons.constants import (
+    SUPPORTED_IMAGE_EXTENSIONS,
+    SUPPORTED_MEDIA_EXTENSIONS,
+    SUPPORTED_VIDEO_EXTENSIONS,
 )
 
 _PHOTO_EXTS = frozenset(SUPPORTED_IMAGE_EXTENSIONS)
@@ -55,7 +51,7 @@ def find_camera_files(dcim_dir: str) -> list[Path]:
 
     all_files = glob.glob(str(dcim_path / "**" / "*"), recursive=True)
     paths = (Path(fpath) for fpath in all_files)
-    return [path for path in paths if path.suffix in SUPPORTED_EXTENSIONS and path.is_file()]
+    return [path for path in paths if path.suffix in SUPPORTED_MEDIA_EXTENSIONS and path.is_file()]
 
 
 def file_date(path: Path) -> date:

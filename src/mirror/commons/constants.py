@@ -4,8 +4,15 @@ from __future__ import annotations
 
 from typing import Any
 
-THUMBNAIL_WIDTH = 400
-THUMBNAIL_HEIGHT = 400
+# Grid tiles stretch up to 810 CSS px, so a 400px thumbnail upscaled 2x. 600px
+# holds the worst case to 1.35x.
+THUMBNAIL_WIDTH = 600
+THUMBNAIL_HEIGHT = 600
+
+# The TUI thumbnail stays at 400px. It is lossless webp, so 600px would more
+# than double its bytes for no gain in a terminal.
+TUI_THUMBNAIL_WIDTH = 400
+TUI_THUMBNAIL_HEIGHT = 400
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 
 # Branch the website manifest is published to on GitHub.
@@ -94,6 +101,26 @@ EXIF_ATTR_ASSOCIATIONS = {
 
 SUPPORTED_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 
+SUPPORTED_VIDEO_EXTENSIONS = (".mp4", ".MP4", ".mov", ".MOV")
+
+SUPPORTED_RAW_EXTENSIONS = (".rw2", ".RW2", ".raw", ".RAW", ".dng", ".DNG")
+
+# Every extension the camera commands read: photos, videos, and raw files.
+SUPPORTED_MEDIA_EXTENSIONS = (
+    frozenset(SUPPORTED_IMAGE_EXTENSIONS)
+    | frozenset(SUPPORTED_VIDEO_EXTENSIONS)
+    | frozenset(SUPPORTED_RAW_EXTENSIONS)
+)
+
+# `mirror free` refuses to clear more than this share of the card in one run.
+MAX_FREE_PERCENT = 30.0
+
+# Byte-size units used when a plan reports space, largest last.
+BYTE_UNITS = ("B", "KiB", "MiB", "GiB", "TiB")
+
+# Divisor between neighbouring byte units.
+BYTES_PER_UNIT = 1024.0
+
 # Roles that store a photo's ThumbHash placeholder string. Both roles hold the
 # same full-frame hash; the frontend crops it to each display shape with
 # object-fit: cover. Two names survive from the old two-resolution mosaic
@@ -110,7 +137,8 @@ THUMBHASH_MAX_DIMENSION = 100
 IMAGE_ENCODINGS = {
     "thumbnail_lossy": {
         "format": "avif",
-        "quality": 90,
+        # q80 at 600px beats q90 at 400px by 2.8dB, for 32% more bytes
+        "quality": 80,
         "subsampling": "4:4:4",
         "width": THUMBNAIL_WIDTH,
         "height": THUMBNAIL_HEIGHT,
@@ -119,8 +147,8 @@ IMAGE_ENCODINGS = {
     "thumbnail_webp": {
         "format": "webp",
         "lossless": True,
-        "width": THUMBNAIL_WIDTH,
-        "height": THUMBNAIL_HEIGHT,
+        "width": TUI_THUMBNAIL_WIDTH,
+        "height": TUI_THUMBNAIL_HEIGHT,
     },
     "full_image_lossless": {
         "format": "webp",

@@ -19,10 +19,22 @@ def test_social_card_role_only_generated_for_cover_sources(monkeypatch):
     """Proves social_card encodes are gated to album covers and computed thing covers."""
     computed = frozenset({"/x/thing-cover.jpg"})
     monkeypatch.setattr(selective, "computed_cover_fpaths", lambda: computed)
+    monkeypatch.setattr(selective, "person_blocked_fpaths", frozenset)
 
     assert not is_role_skipped("social_card", "/x/PkhvUKujrGo4+cover.jpg")
     assert not is_role_skipped("social_card", "/x/thing-cover.jpg")
     assert is_role_skipped("social_card", "/x/regular.jpg")
+
+
+def test_person_photos_never_get_social_cards(monkeypatch):
+    """Proves a photo with a person subject never gets a social_card encode,
+    even as an album cover or computed thing cover."""
+    blocked = frozenset({"/x/friends+cover.jpg", "/x/thing-cover.jpg"})
+    monkeypatch.setattr(selective, "computed_cover_fpaths", lambda: blocked)
+    monkeypatch.setattr(selective, "person_blocked_fpaths", lambda: blocked)
+
+    assert is_role_skipped("social_card", "/x/friends+cover.jpg")
+    assert is_role_skipped("social_card", "/x/thing-cover.jpg")
 
 
 def test_general_roles_never_skipped():

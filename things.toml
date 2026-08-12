@@ -4749,6 +4749,10 @@ id = "urn:ró:arthropod:episyrphus-balteatus"
 name = "Marmalade Hoverfly"
 
 [[arthropods]]
+id = "urn:ró:arthropod:syrphus-ribesii"
+name = "Common Banded Hoverfly"
+
+[[arthropods]]
 id = "urn:ró:arthropod:papilio-cresphontes"
 name = "Giant Swallowtail"
 
@@ -4759,6 +4763,10 @@ name = "Eastern Tiger Swallowtail"
 [[arthropods]]
 id = "urn:ró:arthropod:pararge-aegeria"
 name = "Speckled Wood"
+
+[[arthropods]]
+id = "urn:ró:arthropod:pieris-rapae"
+name = "Small White"
 
 [[arthropods]]
 id = "urn:ró:arthropod:aglais-io"

@@ -10,6 +10,7 @@ from mirror.data.covers import (
     cached_cover_selection,
     cover_fpaths,
     cover_inputs_key,
+    person_photo_fpaths,
     read_cover_inputs,
     select_covers,
 )
@@ -90,3 +91,12 @@ def test_cover_fpaths_gathers_all_sections() -> None:
     with make_covers_db() as db, tempfile.TemporaryDirectory() as tmp:
         cache_path = os.path.join(tmp, "cache.db")
         assert cover_fpaths(db, cache_path) == frozenset({FPATH})
+
+
+def test_person_photo_fpaths() -> None:
+    """Proves photos with a person subject are identified, and others are not."""
+    person_fpath = "/media/2026/Birds/Published/with-person.jpg"
+    with make_covers_db() as db:
+        add_published_photo(db, person_fpath, "h9", "urn:ró:person:someone")
+
+        assert person_photo_fpaths(db) == frozenset({person_fpath})

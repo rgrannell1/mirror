@@ -4,7 +4,12 @@ import os
 from typing import NamedTuple
 
 from mirror.commons.config import D1_DATABASE_PATH
-from mirror.data.covers import CoverSelection, cached_cover_selection, thing_card_pairs
+from mirror.data.covers import (
+    CoverSelection,
+    cached_cover_selection,
+    person_photo_fpaths,
+    thing_card_pairs,
+)
 from mirror.data.things import thing_names, trip_titles, trip_to_albums
 from mirror.services.database import D1SqliteDatabase, SqliteDatabase
 
@@ -88,6 +93,25 @@ def choose_trip_image(album_urns, permalink_to_dpath: dict, album_covers: dict) 
     return best_cover[2]
 
 
+def add_album_cards(socials, dpath_to_details: dict) -> list[str]:
+    """Add one social-card row per album. Returns the paths of albums skipped
+    because no usable card image exists."""
+    skipped: list[str] = []
+
+    for details in dpath_to_details.values():
+        if "image_url" not in details:
+            skipped.append(details["path"])
+            continue
+
+        socials.add(
+            path=details["path"],
+            description=details["description"],
+            title=details["title"],
+            image_url=details["image_url"],
+        )
+    return skipped
+
+
 class ThingCard(NamedTuple):
     """One thing page's social-card row."""
 
@@ -169,8 +193,16 @@ class D1Builder:
             )
 
     def urls_by_role(self, role: str) -> dict[str, str]:
-        """Map fpath → encoded image url for one rendition role."""
-        return {enc.fpath: enc.url for enc in self.db.encoded_photos_table().list_by_role(role)}
+        """Map fpath → encoded image url for one rendition role.
+
+        Photos with a person subject are excluded: they never become cards.
+        """
+        blocked = person_photo_fpaths(self.db)
+        return {
+            enc.fpath: enc.url
+            for enc in self.db.encoded_photos_table().list_by_role(role)
+            if enc.fpath not in blocked
+        }
 
     def add_thing_cards(self, socials) -> list[str]:
         """Add one social-card row per thing with a cover. Returns the things
@@ -187,26 +219,24 @@ class D1Builder:
             )
         return fallbacks
 
-    def build(self) -> list[str]:
-        """Build and dump every social card. Returns thing-card fallback URNs."""
+    def build(self) -> dict:
+        """Build and dump every social card. Returns a card-quality summary."""
         d1 = D1SqliteDatabase(D1_DATABASE_PATH)
 
         dpath_to_details = map_album_details(self.db.media_metadata_table().list_albums())
 
-        album_covers = self.db.encoded_photos_table().list_by_role("social_card")
+        blocked = person_photo_fpaths(self.db)
+        album_covers = [
+            enc
+            for enc in self.db.encoded_photos_table().list_by_role("social_card")
+            if enc.fpath not in blocked
+        ]
         attach_cover_urls(dpath_to_details, album_covers)
 
         socials = d1.social_card_table()
-        for details in dpath_to_details.values():
-            socials.add(
-                path=details["path"],
-                description=details["description"],
-                title=details["title"],
-                image_url=details["image_url"],
-            )
-
+        skipped_albums = add_album_cards(socials, dpath_to_details)
         self.add_trip_cards(socials, dpath_to_details)
         fallbacks = self.add_thing_cards(socials)
 
         d1.dump()
-        return fallbacks
+        return {"thing_fallbacks": fallbacks, "skipped_albums": skipped_albums}

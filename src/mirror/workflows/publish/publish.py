@@ -117,8 +117,8 @@ def update_videos_markdown(
 
 def publish_d1(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
     with SqliteDatabase(DATABASE_PATH) as db:
-        cover_fallbacks = D1Builder(db).build()
-    return {"artifact": "d1", "cover_fallbacks": cover_fallbacks}
+        summary = D1Builder(db).build()
+    return {"artifact": "d1", **summary}
     yield
 
 

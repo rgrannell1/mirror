@@ -61,3 +61,6 @@ CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM", f"/run/media/{USER}/PROGRADE/DCIM
 
 # Staging directory for camera imports before badger clustering
 RAW_MEDIA_DIRECTORY = os.getenv("RAW_MEDIA_DIRECTORY", f"{HOME}/RawMedia")
+
+# Where `mirror free` writes the tar.gz archives it takes off the camera
+ARCHIVED_PHOTOS_DIRECTORY = os.getenv("ARCHIVED_PHOTOS_DIRECTORY", f"{HOME}/ArchivedPhotos")

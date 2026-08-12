@@ -8,7 +8,7 @@ big rendition for all 1400+ photos.
 from functools import cache
 
 from mirror.commons.config import DATABASE_PATH
-from mirror.data.covers import cover_fpaths
+from mirror.data.covers import cover_fpaths, person_photo_fpaths
 from mirror.data.things import banner_fpaths
 from mirror.services.database import SqliteDatabase
 
@@ -24,11 +24,22 @@ def computed_cover_fpaths() -> frozenset[str]:
         return cover_fpaths(db)
 
 
+@cache
+def person_blocked_fpaths() -> frozenset[str]:
+    """Photos with a person subject, memoised for this process."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        return person_photo_fpaths(db)
+
+
 def is_cover(fpath: str) -> bool:
     """Is this file an album cover (+cover marker), or a computed thing cover?
 
     Trip cards reuse album covers, so the +cover marker also covers trips.
+    A photo with a person subject is never a social-card source.
     """
+    if fpath in person_blocked_fpaths():
+        return False
+
     return "+cover" in fpath or fpath in computed_cover_fpaths()
 
 

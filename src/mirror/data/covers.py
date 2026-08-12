@@ -13,6 +13,7 @@ from mirror.commons.config import FUNES_CACHE_PATH
 from mirror.commons.constants import (
     COVER_CACHE_MAX_ENTRIES,
     COVER_MIN_SUBJECT_FILL,
+    PERSON_URN_PREFIX,
     PUBLISHED_TAXON_RANKS,
 )
 from mirror.commons.utils import deterministic_hash_str
@@ -210,6 +211,15 @@ def cover_pairs(selection: CoverSelection) -> Iterator[tuple[str, str]]:
     """Yield every (thing urn, cover fpath) pair in the selection."""
     for mapping in selection:
         yield from mapping.items()
+
+
+PERSON_SUBJECT_QUERY = "select fpath from view_photo_metadata_summary where subjects like ?"
+
+
+def person_photo_fpaths(db: "SqliteDatabase") -> frozenset[str]:
+    """Photos with a person subject. These must never become social cards."""
+    rows = db.conn.execute(PERSON_SUBJECT_QUERY, (f"%{PERSON_URN_PREFIX}%",))
+    return frozenset(fpath for (fpath,) in rows)
 
 
 def thing_card_pairs(selection: CoverSelection) -> Iterator[tuple[str, str]]:
