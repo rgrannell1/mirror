@@ -25,7 +25,7 @@ dependencies = [
   "typeguard",
   "feedgen",
   "psutil",
-  "zahir2",
+  "zahir",
   "bookman",
   "tertius",
   "orbis",
@@ -68,7 +68,7 @@ torchvision = { index = "pytorch-cpu" }
 tertius = { path = "../tertius", editable = true }
 orbis = { path = "../orbis", editable = true }
 bookman = { path = "../bookman", editable = true }
-zahir2 = { path = "../zahir", editable = true }
+zahir = { path = "../zahir", editable = true }
 funes = { path = "../funes", editable = true }
 
 [tool.pytest.ini_options]

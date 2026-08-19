@@ -786,7 +786,7 @@ dependencies = [
     { name = "transformers" },
     { name = "typeguard" },
     { name = "xmltodict" },
-    { name = "zahir2" },
+    { name = "zahir" },
 ]
 
 [package.optional-dependencies]
@@ -834,7 +834,7 @@ requires-dist = [
     { name = "typeguard" },
     { name = "vulture", marker = "extra == 'dev'" },
     { name = "xmltodict" },
-    { name = "zahir2", editable = "../zahir" },
+    { name = "zahir", editable = "../zahir" },
 ]
 provides-extras = ["dev"]
 
@@ -1966,12 +1966,10 @@ wheels = [
 ]
 
 [[package]]
-name = "zahir2"
+name = "zahir"
 version = "0.1.0"
 source = { editable = "../zahir" }
 dependencies = [
-    { name = "bookman" },
-    { name = "orbis" },
     { name = "pdoc" },
     { name = "psutil" },
     { name = "rich" },
@@ -1981,8 +1979,6 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bookman", editable = "../bookman" },
-    { name = "orbis", editable = "../orbis" },
     { name = "pdoc", specifier = ">=16.0.0" },
     { name = "psutil", specifier = ">=7.2.2" },
     { name = "rich", specifier = ">=13.0.0" },
@@ -1992,10 +1988,13 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "bookman", editable = "../bookman" },
     { name = "mypy", specifier = ">=1.20.2" },
+    { name = "orbis", editable = "../orbis" },
     { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
+    { name = "tertius", editable = "../tertius" },
     { name = "time-machine" },
     { name = "vulture" },
 ]
