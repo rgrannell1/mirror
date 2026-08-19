@@ -7,7 +7,6 @@ from functools import partial
 from pathlib import Path
 from typing import ClassVar
 
-from rich.markup import escape
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.command import Hits, Provider
@@ -15,9 +14,9 @@ from textual.widget import Widget
 from textual.widgets import Label, Static, TabbedContent
 
 from labeller.filtering import FilterEntry, iter_hits, match_field
+from labeller.labelling import LabelRequest, request_labels
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer
-from labeller.photos.vision import label_image
 from labeller.widgets import ImageFrame
 
 from .filters import PRESET_FILTERS
@@ -208,26 +207,7 @@ class VideoPane(Widget):
         raw_fpath = fpath_for_url(url)
         is_image = raw_fpath and Path(raw_fpath).suffix.lower() in self._IMAGE_SUFFIXES
         fpath = raw_fpath if is_image else None
-        self.app.notify("Asking Google Vision...", timeout=3)
-        self.run_worker(
-            lambda: self._fetch_labels(fpath, url),
-            exclusive=False,
-            thread=True,
-        )
-
-    def _fetch_labels(self, fpath: str | None, url: str) -> None:
-        try:
-            labels = label_image(fpath, url)
-        except Exception as exc:  # noqa: BLE001
-            message = escape(f"Vision API error: {exc}")
-            self.app.call_from_thread(self.app.notify, message, severity="error", timeout=8)
-            return
-        if not labels:
-            self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")
-            return
-        text = escape("  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.copy_to_clipboard, "  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.notify, text, timeout=12)
+        request_labels(self, LabelRequest(fpath=fpath, url=url))
 
     def action_play_video(self) -> None:
         fpath = fpath_for_url(self._state.current_video.thumbnail_url)

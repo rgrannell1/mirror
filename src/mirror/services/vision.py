@@ -7,9 +7,10 @@ import requests
 from google import genai
 from google.genai import types
 
+from mirror.commons.constants import GEMINI_VISION_MODEL
 from mirror.data.things import animal_contexts
 
-THINGS_PATH = Path(__file__).parent.parent.parent / "things.toml"
+THINGS_PATH = Path(__file__).parents[3] / "things.toml"
 
 
 def format_context_guidance(contexts: dict[str, str]) -> str:
@@ -96,7 +97,7 @@ def label_image(
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
     prompt = build_prompt(album_title, place_names or [])
     result = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=GEMINI_VISION_MODEL,
         contents=[prompt, image_part],
     )
     raw = result.text.strip()

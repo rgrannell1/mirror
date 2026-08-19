@@ -6,7 +6,6 @@ from functools import partial
 from pathlib import Path
 from typing import ClassVar
 
-from rich.markup import escape
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.command import Hits, Provider
@@ -14,6 +13,7 @@ from textual.widget import Widget
 from textual.widgets import Label, TabbedContent
 
 from labeller.filtering import FilterEntry, iter_hits, match_field
+from labeller.labelling import LabelRequest, request_labels
 from labeller.messages import EditCancelled, EditRequested, FieldChanged, SaveRequested
 from labeller.opener import fpath_for_url, open_in_viewer, webp_url_for_url
 from labeller.widgets import ImageFrame
@@ -21,7 +21,6 @@ from labeller.widgets import ImageFrame
 from .filters import PRESET_FILTERS, failing_audit_urls, photo_fails_audit
 from .parser import EDITABLE_COLUMNS, PhotoRow, load_photos
 from .state import PhotoState
-from .vision import label_image
 from .widgets import PhotoFieldTable
 from .writer import save_photo_row
 
@@ -187,40 +186,18 @@ class PhotoPane(Widget):
     def action_label_image(self) -> None:
         photo = self._state.current_photo
         url = photo.thumbnail_url
-        fpath = fpath_for_url(url)
-        album_title = photo.name.strip() or None
-        place_names = self._resolve_place_names(photo.places)
-        self.app.notify("Asking Google Vision...", timeout=3)
-        self.run_worker(
-            lambda: self._fetch_labels(fpath, url, album_title, place_names),
-            exclusive=False,
-            thread=True,
+        request = LabelRequest(
+            fpath=fpath_for_url(url),
+            url=url,
+            album_title=photo.name.strip() or None,
+            place_names=tuple(self._resolve_place_names(photo.places)),
         )
+        request_labels(self, request)
 
     def _resolve_place_names(self, places_field: str) -> list[str]:
         urn_to_name = {urn: name for name, urn in self._places_urns.items()}
         urns = [token.strip() for token in places_field.split() if token.strip()]
         return [urn_to_name[urn] for urn in urns if urn in urn_to_name]
-
-    def _fetch_labels(
-        self,
-        fpath: str | None,
-        url: str,
-        album_title: str | None,
-        place_names: list[str],
-    ) -> None:
-        try:
-            labels = label_image(fpath, url, album_title=album_title, place_names=place_names)
-        except Exception as exc:  # noqa: BLE001
-            message = escape(f"Vision API error: {exc}")
-            self.app.call_from_thread(self.app.notify, message, severity="error", timeout=8)
-            return
-        if not labels:
-            self.app.call_from_thread(self.app.notify, "No labels returned", severity="warning")
-            return
-        text = escape("  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.copy_to_clipboard, "  •  ".join(labels[:6]))
-        self.app.call_from_thread(self.app.notify, text, timeout=12)
 
     # ------------------------------------------------------------------
     # Message handlers (from PhotoFieldTable)

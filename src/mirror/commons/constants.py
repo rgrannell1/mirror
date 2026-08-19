@@ -299,6 +299,9 @@ class KnownTypes:
 # Taxonomy: longest parent-taxon chain we will walk before giving up.
 TAXON_CHAIN_MAX_DEPTH = 30
 
+# Gemini model used for image subject identification.
+GEMINI_VISION_MODEL = "gemini-2.5-flash"
+
 
 class KnownWikiProperties:
     TAXON_NAME = "P225"
