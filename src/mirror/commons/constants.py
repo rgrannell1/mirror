@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 # Grid tiles stretch up to 810 CSS px, so a 400px thumbnail upscaled 2x. 600px
@@ -114,6 +115,9 @@ SUPPORTED_MEDIA_EXTENSIONS = (
 
 # `mirror free` refuses to clear more than this share of the card in one run.
 MAX_FREE_PERCENT = 30.0
+
+# Linux block-device metadata used to verify removable storage.
+SYS_BLOCK_DIRECTORY = Path("/sys/class/block")
 
 # Byte-size units used when a plan reports space, largest last.
 BYTE_UNITS = ("B", "KiB", "MiB", "GiB", "TiB")

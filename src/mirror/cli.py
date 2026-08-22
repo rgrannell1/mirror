@@ -16,6 +16,7 @@ from mirror.commons.config import (
 from mirror.commons.constants import MAX_FREE_PERCENT
 from mirror.list_album import run_list_album_command
 from mirror.workflows.free import run_free_command
+from mirror.workflows.free.storage import detect_camera_dir
 from mirror.workflows.runner import run_workflow
 
 logging.basicConfig(level=logging.INFO, force=True)
@@ -87,7 +88,7 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
         dest="camera",
         default=config.CAMERA_DCIM_DEFAULT,
         metavar="PATH",
-        help="Path to camera DCIM directory",
+        help="Path to camera DCIM directory; default: detect one removable card",
     )
 
     add_free_subcommand(subparsers)
@@ -119,9 +120,9 @@ def add_free_subcommand(subparsers: Any) -> None:
     free_parser.add_argument(
         "--camera",
         dest="camera",
-        default=config.CAMERA_DCIM_DEFAULT,
+        default=None,
         metavar="PATH",
-        help="Path to camera DCIM directory",
+        help="Path to camera DCIM directory; default: detect one removable card",
     )
 
 
@@ -148,7 +149,8 @@ def run_copy_command(args: argparse.Namespace) -> None:
 def run_fetch_command(args: argparse.Namespace) -> None:
     """Run the camera fetch workflow."""
 
-    fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": args.camera}
+    camera = args.camera if args.camera is not None else str(detect_camera_dir())
+    fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": camera}
     run_workflow("fetch_workflow", fetch_input, 15, (ZAHIR_JSONL_PATH, ZAHIR_STDERR_PATH))
 
 

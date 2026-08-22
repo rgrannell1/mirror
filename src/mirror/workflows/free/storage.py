@@ -4,10 +4,19 @@ from __future__ import annotations
 
 import math
 import os
+from collections.abc import Sequence
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
-from mirror.commons.constants import BYTE_UNITS, BYTES_PER_UNIT, SUPPORTED_MEDIA_EXTENSIONS
+import psutil
+
+from mirror.commons.constants import (
+    BYTE_UNITS,
+    BYTES_PER_UNIT,
+    SUPPORTED_MEDIA_EXTENSIONS,
+    SYS_BLOCK_DIRECTORY,
+)
 from mirror.workflows.free.free_types import CameraFile, SpaceReport
 
 
@@ -18,9 +27,67 @@ def accepts_deletes(camera_dir: Path) -> bool:
     return os.access(camera_dir, os.W_OK)
 
 
-def resolve_camera_dir(camera: str) -> Path:
+def is_removable_device(device: str, sys_block_dir: Path = SYS_BLOCK_DIRECTORY) -> bool:
+    """Say whether Linux marks the device or its parent disk as removable."""
+    device_dir = sys_block_dir / Path(device).name
+    if not device_dir.exists():
+        return False
+
+    resolved = device_dir.resolve()
+    for candidate in (resolved, resolved.parent):
+        removable = candidate / "removable"
+        if removable.is_file():
+            return removable.read_text().strip() == "1"
+    return False
+
+
+def read_partitions(partitions: Sequence[Any] | None) -> Sequence[Any]:
+    """Return supplied partitions, or read the current mounted partitions."""
+    return partitions if partitions is not None else psutil.disk_partitions()
+
+
+def mount_depth(partition: Any) -> int:
+    """Return a mount path depth for selecting the closest mounted partition."""
+    return len(Path(partition.mountpoint).parts)
+
+
+def find_partition(camera_dir: Path, partitions: Sequence[Any]) -> Any | None:
+    """Find the closest mounted partition containing the camera directory."""
+    resolved = camera_dir.resolve()
+    matches = [
+        partition
+        for partition in partitions
+        if resolved.is_relative_to(Path(partition.mountpoint).resolve())
+    ]
+    return max(matches, key=mount_depth) if matches else None
+
+
+def detect_camera_dir(partitions: Sequence[Any] | None = None) -> Path:
+    """Find the sole mounted removable partition that contains a DCIM directory."""
+    mounted = read_partitions(partitions)
+    candidates = [
+        Path(partition.mountpoint) / "DCIM"
+        for partition in mounted
+        if is_removable_device(partition.device)
+        and (Path(partition.mountpoint) / "DCIM").is_dir()
+    ]
+    if not candidates:
+        raise FileNotFoundError("No mounted removable card with a DCIM directory found")
+    if len(candidates) > 1:
+        raise RuntimeError("More than one removable card has a DCIM directory. Use --camera")
+    return candidates[0]
+
+
+def require_removable_device(camera_dir: Path, partitions: Sequence[Any] | None = None) -> None:
+    """Reject a camera directory that does not belong to removable storage."""
+    partition = find_partition(camera_dir, read_partitions(partitions))
+    if partition is None or not is_removable_device(partition.device):
+        raise PermissionError(f"Refusing camera path on non-removable storage: {camera_dir}")
+
+
+def resolve_camera_dir(camera: str | None) -> Path:
     """Return the camera directory, raising when the card is absent or cannot lose files."""
-    camera_dir = Path(camera)
+    camera_dir = Path(camera) if camera is not None else detect_camera_dir()
     if not camera_dir.is_dir():
         raise FileNotFoundError(f"Camera not mounted: {camera}")
 

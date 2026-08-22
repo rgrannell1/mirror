@@ -312,6 +312,35 @@
 | ![](https://photos-cdn.rgrannell.xyz/d73698ea8f.avif) | Conwy | Landscape | ⭐⭐⭐ | urn:ró:place:13 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/02013a624d.avif) | Conwy | Landscape | ⭐⭐ | urn:ró:place:13 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/304ab8748c.avif) | Conwy | Cityscape | ⭐⭐ | urn:ró:place:13 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/46460990c7.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3e4410778c.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c841809114.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/13b6995afc.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/66c9ec7de6.avif) | Copenhagen | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/db6df11605.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c4546e0260.avif) | Copenhagen | Cityscape | ⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3fdf466d9a.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/3bd63a1668.avif) | Copenhagen Museums | Museum | ⭐⭐ | urn:ró:place:198 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/29368cb690.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:198 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/86e3debb2a.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:198 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/e4f8771926.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/5c9260d395.avif) | Copenhagen Museums | Museum | ⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a333d1b3fe.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4fb819b53c.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/8b540b71ee.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/59b22d3082.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/abef77a949.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:196 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0cbe0e0ebb.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 | Finally, unexpectedly, I get to see a minoan octopus vase ❤️ |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/df5ea54a5f.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/f2c48cb23b.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/743afdbbb3.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/0caa30efff.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/a4941123a1.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/c8eeab30bf.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/7e5c7a6e70.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:196 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/605d328ad3.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:197 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/492e2111ec.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:198 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/17cecf6e56.avif) | Copenhagen Museums | Museum | ⭐⭐⭐⭐ | urn:ró:place:196 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/aed987b7d8.avif) | Cádiz | Cityscape | ⭐⭐⭐ | urn:ró:place:26 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/89c7cbf11c.avif) | Cádiz | Cityscape | ⭐⭐ | urn:ró:place:26 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/b80d4fb04b.avif) | Cádiz | Cityscape | ⭐⭐ | urn:ró:place:26 |  |  |  |

@@ -55,9 +55,8 @@ GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
 # Path to the badger binary (local build has --json-progress; system package does not)
 BADGER_PATH = os.getenv("BADGER_PATH", f"{HOME}/Code/badger/badger")
 
-# Default camera DCIM path when connected via USB
-USER = os.getenv("USER", "rg")
-CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM", f"/run/media/{USER}/PROGRADE/DCIM")
+# Camera DCIM path override. When unset, mirror detects the mounted card
+CAMERA_DCIM_DEFAULT = os.getenv("CAMERA_DCIM")
 
 # Staging directory for camera imports before badger clustering
 RAW_MEDIA_DIRECTORY = os.getenv("RAW_MEDIA_DIRECTORY", f"{HOME}/RawMedia")

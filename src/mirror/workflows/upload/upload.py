@@ -64,18 +64,20 @@ def upload_photo(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     fpath = input["fpath"]
     role = input["role"]
     params = input["params"]
-    force = input.get("force", False)
+
+    # Encode before taking a CDN slot, so CPU work does not occupy the upload gate
+    encoded_data = PhotoEncoder.encode(fpath, role, params)
 
     yield from concurrency_dependency(_PHOTO_CDN_LIMIT, limit=6)
 
     cdn = CDN()
+    uploaded_url = cdn.upload_photo(
+        encoded_data=encoded_data,
+        role=role,
+        format=params["format"],
+    )
+
     with SqliteDatabase(DATABASE_PATH) as db:
-        uploaded_url = cdn.upload_photo(
-            encoded_data=PhotoEncoder.encode(fpath, role, params),
-            role=role,
-            format=params["format"],
-            force=force,
-        )
         db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
 
     yield from sqlite_dependency(
@@ -102,8 +104,8 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
     upload_roles = roles_needing_upload(fpath, published_roles, force, force_roles)
 
     effects = []
-    for role, params, role_forced in upload_roles:
-        job_input = {"fpath": fpath, "role": role, "params": params, "force": role_forced}
+    for role, params in upload_roles:
+        job_input = {"fpath": fpath, "role": role, "params": params}
         effects.append(ctx.scope.upload_photo(job_input))
 
     if effects:

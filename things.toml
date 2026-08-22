@@ -64,6 +64,7 @@ place_features = [
     { id = "urn:ró:place_feature:bridge", name = "Bridge", emoji = "🌉" },
     { id = "urn:ró:place_feature:canal", name = "Canal", emoji = "🚤" },
     { id = "urn:ró:place_feature:cathedral", name = "Cathedral", emoji = "⛪" },
+    { id = "urn:ró:place_feature:cemetery", name = "Cemetery", emoji = "🪦" },
     { id = "urn:ró:place_feature:church", name = "Church", emoji = "⛪" },
     { id = "urn:ró:place_feature:cave", name = "Cave", emoji = "⛏️" },
     { id = "urn:ró:place_feature:cliffs", name = "Cliffs", emoji = "⛰️" },
@@ -2652,6 +2653,144 @@ features = [
     "urn:ró:place_feature:dunes",
     "urn:ró:place_feature:nature reserve",
     "urn:ró:place_feature:beach",
+]
+
+[[places]]
+id = "urn:ró:place:191"
+features = ["urn:ró:place_feature:country"]
+name = "Denmark"
+flag = "🇩🇰"
+in = [
+    "urn:ró:place:142",
+]
+
+[[places]]
+id = "urn:ró:place:192"
+longitude = 12.5683
+latitude = 55.6761
+name = "Copenhagen"
+short_name = "Copenhagen"
+wikipedia = "https://en.wikipedia.org/wiki/Copenhagen"
+in = [
+    "urn:ró:place:191",
+]
+features = [
+    "urn:ró:place_feature:city",
+]
+
+[[places]]
+id = "urn:ró:place:193"
+longitude = 12.5914
+latitude = 55.6798
+name = "Nyhavn"
+short_name = "Nyhavn"
+wikipedia = "https://en.wikipedia.org/wiki/Nyhavn"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:harbor",
+    "urn:ró:place_feature:canal",
+]
+
+[[places]]
+id = "urn:ró:place:194"
+longitude = 12.5986
+latitude = 55.6724
+name = "Freetown Christiania"
+short_name = "Christiania"
+wikipedia = "https://en.wikipedia.org/wiki/Freetown_Christiania"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:district",
+]
+near = [
+    "urn:ró:place:195",
+]
+
+[[places]]
+id = "urn:ró:place:195"
+longitude = 12.5934
+latitude = 55.6728
+name = "Church of Our Saviour"
+short_name = "Church of Our Saviour"
+wikipedia = "https://en.wikipedia.org/wiki/Church_of_Our_Saviour,_Copenhagen"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:church",
+]
+near = [
+    "urn:ró:place:194",
+]
+
+[[places]]
+id = "urn:ró:place:196"
+longitude = 12.5807
+latitude = 55.6845
+name = "The David Collection"
+short_name = "David Collection"
+wikipedia = "https://en.wikipedia.org/wiki/The_David_Collection"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
+[[places]]
+id = "urn:ró:place:197"
+longitude = 12.5747
+latitude = 55.6743
+name = "National Museum of Denmark"
+short_name = "National Museum"
+wikipedia = "https://en.wikipedia.org/wiki/National_Museum_of_Denmark"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+
+[[places]]
+id = "urn:ró:place:198"
+longitude = 12.5723
+latitude = 55.6727
+name = "Ny Carlsberg Glyptotek"
+short_name = "Glyptoteket"
+wikipedia = "https://en.wikipedia.org/wiki/Ny_Carlsberg_Glyptotek"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:museum",
+]
+near = [
+    "urn:ró:place:197",
+]
+
+[[places]]
+id = "urn:ró:place:199"
+longitude = 12.5529
+latitude = 55.6907
+name = "Assistens Cemetery"
+short_name = "Assistens Cemetery"
+wikipedia = "https://en.wikipedia.org/wiki/Assistens_Cemetery_(Copenhagen)"
+in = [
+    "urn:ró:place:191",
+    "urn:ró:place:192",
+]
+features = [
+    "urn:ró:place_feature:cemetery",
 ]
 
 [[trips]]

@@ -20,6 +20,7 @@ from mirror.workflows.free.storage import (
     format_share,
     list_camera_files,
     read_space,
+    require_removable_device,
     resolve_camera_dir,
     to_entry,
 )
@@ -33,9 +34,10 @@ APPROVALS = ("y", "yes")
 FREE_WORKERS = 8
 
 
-def build_run_plan(camera: str, percent: float, no_preserve: bool) -> FreePlan | None:
+def build_run_plan(camera: str | None, percent: float, no_preserve: bool) -> FreePlan | None:
     """Plan one run, or return None when the card already has enough free space."""
     camera_dir = resolve_camera_dir(camera)
+    require_removable_device(camera_dir)
     space = read_space(camera_dir, percent)
     needed = bytes_needed(space)
     if needed == 0:
@@ -79,7 +81,9 @@ def report_result(plan: FreePlan, percent: float) -> None:
     print(f"free now: {format_bytes(space.free_bytes)} ({share})")
 
 
-def free_camera_space(percent_raw: str, no_preserve: bool, assume_yes: bool, camera: str) -> int:
+def free_camera_space(
+    percent_raw: str, no_preserve: bool, assume_yes: bool, camera: str | None
+) -> int:
     """Run the whole flow: plan, approve, then archive, verify, and delete."""
     percent = parse_percentage(percent_raw)
 
@@ -98,7 +102,9 @@ def free_camera_space(percent_raw: str, no_preserve: bool, assume_yes: bool, cam
     return 0
 
 
-def run_free_command(percent_raw: str, no_preserve: bool, assume_yes: bool, camera: str) -> int:
+def run_free_command(
+    percent_raw: str, no_preserve: bool, assume_yes: bool, camera: str | None
+) -> int:
     """Report a failure as a plain message instead of a traceback."""
     try:
         return free_camera_space(percent_raw, no_preserve, assume_yes, camera)

@@ -152,8 +152,8 @@ def publish_video_thumbnail(cdn, db, fpath, encoded_path):
 
 def roles_needing_upload(
     fpath: str, published_roles: set[str], force: bool, force_roles: set[str]
-) -> Iterator[tuple[str, dict, bool]]:
-    """Image roles still to upload for this file, with each role's force flag."""
+) -> Iterator[tuple[str, dict]]:
+    """Image roles still to upload for this file."""
     for role, params in IMAGE_ENCODINGS.items():
         role_forced = force or role in force_roles
         if role in published_roles and not role_forced:
@@ -162,7 +162,7 @@ def roles_needing_upload(
         if is_role_skipped(role, fpath):
             continue
 
-        yield role, params, role_forced
+        yield role, params
 
 
 def list_upload_work(input: UploadOpts) -> tuple[list, list, list, list]:

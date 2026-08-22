@@ -4,6 +4,7 @@ import os
 import tarfile
 from datetime import date, datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from zahir.core.commons.constants import DependencyState
@@ -31,8 +32,11 @@ from mirror.workflows.free.free_types import CameraFile, SpaceReport
 from mirror.workflows.free.plan import plan_bytes, plan_dates, select_oldest_files
 from mirror.workflows.free.storage import (
     bytes_needed,
+    detect_camera_dir,
     format_bytes,
+    is_removable_device,
     list_camera_files,
+    require_removable_device,
     resolve_camera_dir,
     to_entry,
 )
@@ -59,6 +63,20 @@ def fake_result(spec) -> dict:
     if spec.fn_name == "free_delete_file":
         return {"freed": spec.args[0]["size"], "error": None}
     return {}
+
+
+def is_card_device(device: str) -> bool:
+    """Treat the test card device as removable."""
+    return device == "/dev/sde1"
+
+
+def is_fixed_device(device: str) -> bool:
+    """Treat every test device as fixed storage."""
+    return False
+
+
+def allow_test_camera(camera_dir: Path) -> None:
+    """Allow a temporary directory to stand in for removable storage."""
 
 
 def answer_effect(effect, dispatched: list, signalled: list):
@@ -172,6 +190,46 @@ def test_resolve_camera_dir_complains_when_not_mounted(tmp_path):
         resolve_camera_dir(str(tmp_path / "absent"))
 
 
+def test_is_removable_device_reads_the_parent_disk_flag(tmp_path):
+    """Proves a partition inherits the removable flag from its parent disk."""
+    disk_dir = tmp_path / "devices" / "sde"
+    partition_dir = disk_dir / "sde1"
+    partition_dir.mkdir(parents=True)
+    (disk_dir / "removable").write_text("1\n")
+    (tmp_path / "sde1").symlink_to(partition_dir)
+
+    assert is_removable_device("/dev/sde1", tmp_path)
+
+
+def test_detect_camera_dir_finds_the_only_removable_card(tmp_path, monkeypatch):
+    """Proves automatic detection ignores a DCIM directory on a fixed disk."""
+    fixed_mount = tmp_path / "fixed"
+    card_mount = tmp_path / "card"
+    (fixed_mount / "DCIM").mkdir(parents=True)
+    (card_mount / "DCIM").mkdir(parents=True)
+    partitions = [
+        SimpleNamespace(device="/dev/nvme0n1p2", mountpoint=str(fixed_mount)),
+        SimpleNamespace(device="/dev/sde1", mountpoint=str(card_mount)),
+    ]
+    monkeypatch.setattr(
+        "mirror.workflows.free.storage.is_removable_device",
+        is_card_device,
+    )
+
+    assert detect_camera_dir(partitions) == card_mount / "DCIM"
+
+
+def test_require_removable_device_refuses_a_fixed_disk(tmp_path, monkeypatch):
+    """Proves an explicit camera path cannot point into the system disk."""
+    camera_dir = tmp_path / "DCIM"
+    camera_dir.mkdir()
+    partitions = [SimpleNamespace(device="/dev/nvme0n1p2", mountpoint=str(tmp_path))]
+    monkeypatch.setattr("mirror.workflows.free.storage.is_removable_device", is_fixed_device)
+
+    with pytest.raises(PermissionError, match="non-removable"):
+        require_removable_device(camera_dir, partitions)
+
+
 def test_list_camera_files_finds_media_in_subfolders(tmp_path):
     """Proves media is found recursively and non-media files are ignored."""
     write_media(tmp_path, "100_PANA/P1000001.JPG", 10, 1)
@@ -265,10 +323,13 @@ def test_build_archive_path_never_overwrites(tmp_path):
     assert second.name == "2026-05-01_2026-05-03-2.tar.gz"
 
 
-def test_build_run_plan_short_circuits_when_space_is_free(tmp_path):
+def test_build_run_plan_short_circuits_when_space_is_free(tmp_path, monkeypatch):
     """Proves a card already at the target is left completely untouched."""
     camera_dir = tmp_path / "DCIM"
     write_media(camera_dir, "A.JPG", 64, 1)
+    monkeypatch.setattr(
+        "mirror.workflows.free.command.require_removable_device", allow_test_camera
+    )
 
     assert build_run_plan(str(camera_dir), 0.000001, no_preserve=True) is None
 
