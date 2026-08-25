@@ -209,7 +209,9 @@ class D1Builder:
         whose cover lacked a social_card encode and fell back to mid-size."""
         selection = cached_cover_selection(self.db)
         cards, fallbacks = thing_card_rows(
-            selection, self.urls_by_role("social_card"), self.urls_by_role("mid_image_lossy"),
+            selection,
+            self.urls_by_role("social_card"),
+            self.urls_by_role("mid_image_lossy"),
             thing_names(),
         )
 

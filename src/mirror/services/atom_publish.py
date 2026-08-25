@@ -1,4 +1,4 @@
-"""Atom feed generation: builds paginated XML feed files from photo and video entries."""
+"""Build paginated Atom feed files from photo and video entries."""
 
 from __future__ import annotations
 

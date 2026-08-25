@@ -14,30 +14,28 @@ from zahir import (
 from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import (
     FULL_SIZED_VIDEO_ROLE,
-    THUMBHASH_ROLES,
     VIDEO_ENCODINGS,
 )
 from mirror.commons.exceptions import InvalidVideoDimensionsError
-from mirror.services.cdn import CDN
-from mirror.services.database import SqliteDatabase
-from mirror.services.encoder import PhotoEncoder
-from mirror.workflows.upload.utils import (
+from mirror.services.media_publish import (
     PhotoJobInput,
     UploadOpts,
+    list_published_photo_roles,
+    list_published_video_roles,
     list_upload_work,
     publish_video_encoding,
     publish_video_thumbnail,
     roles_needing_upload,
+    store_contrasting_grey,
+    store_image_mosaic,
+    upload_photo_encoding,
 )
 
 
 def compute_contrasting_grey(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        icons = db.photo_icon_table()
-        grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
-        icons.add(fpath, grey_value)
+    store_contrasting_grey(fpath)
 
     return None
     yield
@@ -46,11 +44,7 @@ def compute_contrasting_grey(ctx: JobContext, input: PhotoJobInput) -> Generator
 def compute_image_mosaic(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        encoded_photos_table = db.encoded_photos_table()
-        placeholder = PhotoEncoder.encode_thumbhash(fpath)
-        for role in THUMBHASH_ROLES:
-            encoded_photos_table.add(fpath, placeholder, role, "thumbhash")
+    store_image_mosaic(fpath)
 
     return None
     yield
@@ -66,19 +60,8 @@ def upload_photo(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     params = input["params"]
 
     # Encode before taking a CDN slot, so CPU work does not occupy the upload gate
-    encoded_data = PhotoEncoder.encode(fpath, role, params)
-
     yield from concurrency_dependency(_PHOTO_CDN_LIMIT, limit=6)
-
-    cdn = CDN()
-    uploaded_url = cdn.upload_photo(
-        encoded_data=encoded_data,
-        role=role,
-        format=params["format"],
-    )
-
-    with SqliteDatabase(DATABASE_PATH) as db:
-        db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
+    uploaded_url = upload_photo_encoding(fpath, role, params)
 
     yield from sqlite_dependency(
         DATABASE_PATH,
@@ -96,10 +79,7 @@ def upload_missing_photos(ctx: JobContext, input: PhotoJobInput) -> Generator[An
     force = input.get("force", False)
     force_roles = set(input.get("force_roles") or [])
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        encodings = list(db.encoded_photos_table().list_for_file(fpath))
-
-    published_roles = {enc.role for enc in encodings if enc.url and enc.url.strip()}
+    published_roles = list_published_photo_roles(fpath)
 
     upload_roles = roles_needing_upload(fpath, published_roles, force, force_roles)
 
@@ -116,9 +96,7 @@ def upload_video_thumbnail(ctx: JobContext, input: dict) -> Generator[Any, Any, 
     fpath = input["fpath"]
     encoded_path = input["encoded_path"]
 
-    cdn = CDN()
-    with SqliteDatabase(DATABASE_PATH) as db:
-        publish_video_thumbnail(cdn, db, fpath, encoded_path)
+    publish_video_thumbnail(fpath, encoded_path)
 
     return {"fpath": fpath}
     yield
@@ -132,12 +110,10 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     yield from concurrency_dependency(_VIDEO_CDN_LIMIT, limit=2)
     yield from resource_dependency("memory", max_percent=65)
 
-    cdn = CDN()
-    with SqliteDatabase(DATABASE_PATH) as db:
-        try:
-            encoded_path = publish_video_encoding(cdn, db, fpath, (role, params))
-        except InvalidVideoDimensionsError:
-            return {"fpath": fpath, "role": role}
+    try:
+        encoded_path = publish_video_encoding(fpath, role, params)
+    except InvalidVideoDimensionsError:
+        return {"fpath": fpath, "role": role}
 
     yield from sqlite_dependency(
         DATABASE_PATH,
@@ -157,10 +133,7 @@ def upload_video(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
 def upload_missing_videos(ctx: JobContext, input: PhotoJobInput) -> Generator[Any, Any, None]:
     fpath = input["fpath"]
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        encodings = list(db.encoded_videos_table().list_for_file(fpath))
-
-    published_roles = {enc.role for enc in encodings}
+    published_roles = list_published_video_roles(fpath)
 
     for role, params in VIDEO_ENCODINGS:
         if role in published_roles:

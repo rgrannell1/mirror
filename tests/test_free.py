@@ -11,7 +11,7 @@ from zahir.core.commons.constants import DependencyState
 from zahir.core.effects import EAcquire, EAwait, EGetState, ESetState
 from zahir.core.scope_proxy import ScopeProxy
 
-from mirror.workflows.free.archive import (
+from mirror.services.camera_archive import (
     PARTIAL_SUFFIX,
     build_archive_path,
     find_unverified,
@@ -19,18 +19,7 @@ from mirror.workflows.free.archive import (
     read_archive_sizes,
     write_archive,
 )
-from mirror.workflows.free.command import build_run_plan
-from mirror.workflows.free.free import (
-    free_archive_file,
-    free_archive_media,
-    free_delete_file,
-    free_verify_archive,
-    free_workflow,
-    summarise_deletes,
-)
-from mirror.workflows.free.free_types import CameraFile, SpaceReport
-from mirror.workflows.free.plan import plan_bytes, plan_dates, select_oldest_files
-from mirror.workflows.free.storage import (
+from mirror.services.camera_storage import (
     bytes_needed,
     detect_camera_dir,
     format_bytes,
@@ -40,6 +29,17 @@ from mirror.workflows.free.storage import (
     resolve_camera_dir,
     to_entry,
 )
+from mirror.services.camera_types import CameraFile, SpaceReport
+from mirror.workflows.free.command import build_run_plan
+from mirror.workflows.free.free import (
+    free_archive_file,
+    free_archive_media,
+    free_delete_file,
+    free_verify_archive,
+    free_workflow,
+    summarise_deletes,
+)
+from mirror.workflows.free.plan import plan_bytes, plan_dates, select_oldest_files
 from mirror.workflows.free.validate import parse_percentage
 
 FREE_SCOPE = {
@@ -212,7 +212,7 @@ def test_detect_camera_dir_finds_the_only_removable_card(tmp_path, monkeypatch):
         SimpleNamespace(device="/dev/sde1", mountpoint=str(card_mount)),
     ]
     monkeypatch.setattr(
-        "mirror.workflows.free.storage.is_removable_device",
+        "mirror.services.camera_storage.is_removable_device",
         is_card_device,
     )
 
@@ -224,7 +224,7 @@ def test_require_removable_device_refuses_a_fixed_disk(tmp_path, monkeypatch):
     camera_dir = tmp_path / "DCIM"
     camera_dir.mkdir()
     partitions = [SimpleNamespace(device="/dev/nvme0n1p2", mountpoint=str(tmp_path))]
-    monkeypatch.setattr("mirror.workflows.free.storage.is_removable_device", is_fixed_device)
+    monkeypatch.setattr("mirror.services.camera_storage.is_removable_device", is_fixed_device)
 
     with pytest.raises(PermissionError, match="non-removable"):
         require_removable_device(camera_dir, partitions)
@@ -327,9 +327,7 @@ def test_build_run_plan_short_circuits_when_space_is_free(tmp_path, monkeypatch)
     """Proves a card already at the target is left completely untouched."""
     camera_dir = tmp_path / "DCIM"
     write_media(camera_dir, "A.JPG", 64, 1)
-    monkeypatch.setattr(
-        "mirror.workflows.free.command.require_removable_device", allow_test_camera
-    )
+    monkeypatch.setattr("mirror.workflows.free.command.require_removable_device", allow_test_camera)
 
     assert build_run_plan(str(camera_dir), 0.000001, no_preserve=True) is None
 

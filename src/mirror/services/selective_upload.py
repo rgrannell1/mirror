@@ -1,4 +1,4 @@
-"""Which photos each selective rendition role is generated for.
+"""Select which photos need each restricted rendition role.
 
 Most roles are produced for every photo. A few (social_card, banner) are only
 produced for a subset of source files, so we don't generate, upload and store a

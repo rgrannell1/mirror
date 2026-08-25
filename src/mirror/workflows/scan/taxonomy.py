@@ -3,13 +3,22 @@
 from collections.abc import Generator
 from typing import Any
 
-import requests
 from zahir import JobContext, await_all, rate_limit_dependency
 
-from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import TAXON_CHAIN_MAX_DEPTH, KnownWikiProperties
-from mirror.data.wikidata import WikidataClient, WikidataModel
-from mirror.services.database import SqliteDatabase
+from mirror.data.wikidata import WikidataModel
+from mirror.services.taxonomy_store import (
+    list_pending_chains,
+    read_entity,
+    store_binomial_qid,
+    store_chain,
+    store_entity,
+)
+from mirror.services.wikidata_lookup import (
+    WikidataLookupError,
+    fetch_entity_data,
+    find_binomial_qid,
+)
 from mirror.workflows.output import workflow_output
 
 # Shared gate name: every Wikidata fetch in the workflow waits on the same limiter.
@@ -19,36 +28,31 @@ WIKIDATA_RATE_LIMIT_NAME = "wikidata"
 WIKIDATA_MIN_SECONDS = 1.0
 
 
-def fetch_entity(
-    db: SqliteDatabase, client: WikidataClient, qid: str
-) -> Generator[Any, Any, WikidataModel | None]:
+def fetch_entity(qid: str) -> Generator[Any, Any, WikidataModel | None]:
     """Read an entity from the wikidata cache; fetch rate-limited on a miss.
 
     Label-less cached entities count as misses: they predate mul-label fetching,
     and refetching heals the cache.
     """
-    cached = db.wikidata_table().get_by_id(qid)
+    cached = read_entity(qid)
     if cached and cached.data and cached.find_label():
         return cached
 
     yield from rate_limit_dependency(WIKIDATA_RATE_LIMIT_NAME, WIKIDATA_MIN_SECONDS)
-    data = client.get_by_id(qid)
+    data = fetch_entity_data(qid)
     if data is None:
         return None
 
-    db.wikidata_table().add(qid, data)
-    return WikidataModel(qid=qid, data=data)
+    return store_entity(qid, data)
 
 
-def resolve_rank(
-    db: SqliteDatabase, client: WikidataClient, entity: WikidataModel
-) -> Generator[Any, Any, str]:
+def resolve_rank(entity: WikidataModel) -> Generator[Any, Any, str]:
     """The lower-case English rank label of a taxon entity, or '' when rankless."""
     rank_qid = entity.find_claim_target(KnownWikiProperties.TAXON_RANK)
     if not rank_qid:
         return ""
 
-    rank_entity = yield from fetch_entity(db, client, rank_qid)
+    rank_entity = yield from fetch_entity(rank_qid)
     if not rank_entity:
         return ""
 
@@ -63,19 +67,17 @@ def chain_row(entity: WikidataModel, rank: str) -> tuple[str, str, str] | None:
     return None
 
 
-def walk_taxon_chain(
-    db: SqliteDatabase, client: WikidataClient, qid: str
-) -> Generator[Any, Any, list[tuple[str, str, str]]]:
+def walk_taxon_chain(qid: str) -> Generator[Any, Any, list[tuple[str, str, str]]]:
     """Collect (rank, qid, label) up the parent-taxon chain, first row per rank."""
     rows: dict[str, tuple[str, str, str]] = {}
     current = qid
 
     for _ in range(TAXON_CHAIN_MAX_DEPTH):
-        entity = yield from fetch_entity(db, client, current)
+        entity = yield from fetch_entity(current)
         if not entity:
             break
 
-        rank = yield from resolve_rank(db, client, entity)
+        rank = yield from resolve_rank(entity)
         row = chain_row(entity, rank)
         if row:
             rows.setdefault(rank, row)
@@ -87,37 +89,23 @@ def walk_taxon_chain(
     return list(rows.values())
 
 
-def list_unchained_binomials(db: SqliteDatabase) -> list[tuple[str, str]]:
-    """Binomials that have a QID but no stored taxon chain."""
-    chained = db.taxon_chains_table().list_binomials()
-
-    pending = []
-    for binomial, qid in db.binomials_wikidata_id_table().list():
-        if qid and binomial not in chained:
-            pending.append((binomial, qid))
-    return pending
-
-
 def lookup_binomial(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     """Find and store the Wikidata QID for one binomial, rate-limited.
 
     Failed lookups store a null QID, and stay listed for retry on later runs.
     """
     binomial = input["binomial"]
-    client = WikidataClient()
-
     yield from rate_limit_dependency(WIKIDATA_RATE_LIMIT_NAME, WIKIDATA_MIN_SECONDS)
     try:
-        qid = client.find_qid_by_binomial(binomial)
-    except requests.RequestException as err:
+        qid = find_binomial_qid(binomial)
+    except WikidataLookupError as err:
         yield workflow_output(f"wikidata lookup failed for {binomial}: {err}")
         return {"found": False}
 
+    store_binomial_qid(binomial, qid or None)
     entity = None
-    with SqliteDatabase(DATABASE_PATH) as db:
-        db.binomials_wikidata_id_table().add(binomial, qid or None)
-        if qid:
-            entity = yield from fetch_entity(db, client, qid)
+    if qid:
+        entity = yield from fetch_entity(qid)
 
     return {"found": entity is not None}
     yield
@@ -129,15 +117,11 @@ def chain_binomial(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     Failures are contained: an exception chains nothing for this binomial and
     the next run retries it, without failing the sibling jobs.
     """
-    client = WikidataClient()
     binomial = input["binomial"]
 
     try:
-        with SqliteDatabase(DATABASE_PATH) as db:
-            rows = yield from walk_taxon_chain(db, client, input["qid"])
-            chains = db.taxon_chains_table()
-            for rank_row in rows:
-                chains.add(binomial, rank_row)
+        rows = yield from walk_taxon_chain(input["qid"])
+        store_chain(binomial, rows)
     except Exception as err:  # noqa: BLE001
         yield workflow_output(f"taxon chain failed for {binomial}: {err}")
         return {"chained": False}
@@ -153,8 +137,7 @@ def taxonomy_scan(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     skipped, and entity fetches hit the shared wikidata cache before any
     request. Cache misses across all jobs share the one-per-second rate gate.
     """
-    with SqliteDatabase(DATABASE_PATH) as db:
-        pending = list_unchained_binomials(db)
+    pending = list_pending_chains()
 
     jobs = [
         ctx.scope.chain_binomial({"binomial": binomial, "qid": qid}) for binomial, qid in pending

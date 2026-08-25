@@ -1,15 +1,53 @@
 """Find photo-subject pairs that need bounding-box detection."""
 
 import os
+import sqlite3
 from collections.abc import Iterator
 
+from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import DETECTION_CONFIDENCE_THRESHOLD, URN_PREFIX
 from mirror.commons.urn import parse_mirror_urn
+from mirror.data.things import thing_names
+from mirror.models.detection import DetectionScan
 from mirror.services.database import SqliteDatabase
 from mirror.services.detector import build_prompt
 
 # (phash, subject_type, fpath, subject names known for the pair)
 type DetectionPair = tuple[str, str, str, tuple[str, ...]]
+
+
+class DetectionStoreError(Exception):
+    """A detection scan could not be stored."""
+
+
+def detect_scan(input: dict) -> DetectionScan:
+    """Detect boxes for one photo and record the detector settings."""
+    # The detector imports torch, which is too slow for CLI start-up.
+    from mirror.services.detector import build_prompt, detect_boxes  # noqa: PLC0415
+
+    prompt = build_prompt(input["subject_type"], tuple(input["names"]))
+    boxes, image_area = detect_boxes(input["fpath"], prompt, DETECTION_CONFIDENCE_THRESHOLD)
+    return {
+        "boxes": boxes,
+        "prompt": prompt,
+        "threshold": DETECTION_CONFIDENCE_THRESHOLD,
+        "image_area": image_area,
+    }
+
+
+def store_detection(pair: dict, scan: DetectionScan) -> None:
+    """Store one photo-subject detection scan."""
+    try:
+        with SqliteDatabase(DATABASE_PATH) as db:
+            db.subject_detections_table().add(pair["phash"], pair["subject_type"], scan)
+    except sqlite3.Error as err:
+        raise DetectionStoreError(str(err)) from err
+
+
+def list_pending_detections() -> list[DetectionPair]:
+    """Return all photo-subject pairs that need a scan."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        return list(list_missing_detections(db, thing_names()))
 
 
 def resolve_fpath(db: SqliteDatabase, phash: str) -> str | None:

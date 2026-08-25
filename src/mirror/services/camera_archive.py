@@ -7,7 +7,7 @@ from collections.abc import Iterator
 from datetime import date
 from pathlib import Path
 
-from mirror.workflows.free.free_types import CameraFile
+from mirror.services.camera_types import CameraFile
 
 # Extension marking an archive still being written. A cancelled run leaves one behind.
 PARTIAL_SUFFIX = ".partial"

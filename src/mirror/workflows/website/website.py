@@ -2,27 +2,13 @@
 
 from __future__ import annotations
 
-import subprocess
 from collections.abc import Generator
 from typing import Any
 
 from zahir import JobContext
 
-from mirror.commons.config import WEBSITE_DIRECTORY
-from mirror.commons.constants import BUILD_OUTPUT_TAIL_LINES
-from mirror.commons.exceptions import WebsiteBuildError
 from mirror.services.github import publish_manifest
-
-
-def run_website_step(command: list[str]) -> None:
-    """Run a website build command. On failure, raise with the output tail."""
-    result = subprocess.run(command, cwd=WEBSITE_DIRECTORY, capture_output=True, text=True)
-    if result.returncode == 0:
-        return
-
-    lines = (result.stdout + result.stderr).splitlines()
-    tail = "\n".join(lines[-BUILD_OUTPUT_TAIL_LINES:])
-    raise WebsiteBuildError(f"`{' '.join(command)}` exited {result.returncode}:\n{tail}")
+from mirror.services.website import run_website_step
 
 
 def build_source(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:

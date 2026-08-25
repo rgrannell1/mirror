@@ -5,8 +5,8 @@ from typing import Any
 from zahir import JobContext, check_file_dependency
 
 from mirror.commons.config import OUTPUT_DIRECTORY
+from mirror.services.media_scan import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.workflows.output import workflow_output
-from mirror.workflows.scan.utils import DEFAULT_ALBUMS_MARKDOWN_PATH, DEFAULT_PHOTOS_MARKDOWN_PATH
 from mirror.workflows.workflow_types import MirrorWorkflowInput
 
 

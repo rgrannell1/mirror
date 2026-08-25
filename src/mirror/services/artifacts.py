@@ -1,4 +1,4 @@
-"""Pure helpers for publish: artifact content and listing. No workflow/job logic."""
+"""Build and manage website publication artifacts."""
 
 from __future__ import annotations
 
@@ -59,6 +59,12 @@ def remove_artifacts(dpath: str) -> None:
     for fname in os.listdir(dpath):
         if any(fname.startswith(prefix) for prefix in ARTIFACT_NAMES_CLEAN):
             os.remove(os.path.join(dpath, fname))
+
+
+def write_artifact(path: str, content: str) -> None:
+    """Write one publication artifact."""
+    with open(path, "w") as file_handle:
+        file_handle.write(content)
 
 
 def env_content(publication_id: str) -> str:

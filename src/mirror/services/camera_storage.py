@@ -17,7 +17,7 @@ from mirror.commons.constants import (
     SUPPORTED_MEDIA_EXTENSIONS,
     SYS_BLOCK_DIRECTORY,
 )
-from mirror.workflows.free.free_types import CameraFile, SpaceReport
+from mirror.services.camera_types import CameraFile, SpaceReport
 
 
 def accepts_deletes(camera_dir: Path) -> bool:
@@ -68,8 +68,7 @@ def detect_camera_dir(partitions: Sequence[Any] | None = None) -> Path:
     candidates = [
         Path(partition.mountpoint) / "DCIM"
         for partition in mounted
-        if is_removable_device(partition.device)
-        and (Path(partition.mountpoint) / "DCIM").is_dir()
+        if is_removable_device(partition.device) and (Path(partition.mountpoint) / "DCIM").is_dir()
     ]
     if not candidates:
         raise FileNotFoundError("No mounted removable card with a DCIM directory found")
@@ -144,6 +143,11 @@ def from_entry(entry: dict) -> CameraFile:
         size=entry["size"],
         modified=datetime.fromtimestamp(entry["modified"]),
     )
+
+
+def delete_camera_file(path: str) -> None:
+    """Delete one camera file."""
+    Path(path).unlink()
 
 
 def list_camera_files(camera_dir: Path) -> list[CameraFile]:

@@ -153,4 +153,3 @@ def group_taxon_candidates(
         for taxon in taxa_of.get(base_urn, []):
             groups.setdefault(taxon, []).append(pool_taxon_candidate(candidate, base_urn))
     return groups
-

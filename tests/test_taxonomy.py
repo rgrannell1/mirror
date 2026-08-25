@@ -1,11 +1,14 @@
 """Tests for Wikidata taxon-chain walking and storage."""
 
+from pytest import MonkeyPatch
+
 from mirror.data.semantic_triples.listings import listed_types, listing_entity_triples
 from mirror.data.semantic_triples.taxa import TaxonRelationsReader, taxon_name_triples
 from mirror.data.wikidata import WikidataModel
 from mirror.services.database import SqliteDatabase
-from mirror.workflows.scan.taxonomy import list_unchained_binomials, walk_taxon_chain
-from mirror.workflows.scan.utils import list_unsaved_binomials
+from mirror.services.media_scan import list_unsaved_binomials
+from mirror.services.taxonomy_store import list_unchained_binomials
+from mirror.workflows.scan import taxonomy
 
 
 def make_claim(target_qid: str) -> dict:
@@ -57,11 +60,12 @@ def make_chain_db() -> SqliteDatabase:
     return db
 
 
-def test_walk_taxon_chain() -> None:
+def test_walk_taxon_chain(monkeypatch: MonkeyPatch) -> None:
     """Proves the walk collects one lower-cased rank row per ancestor, in order."""
     db = make_chain_db()
+    monkeypatch.setattr(taxonomy, "read_entity", db.wikidata_table().get_by_id)
 
-    rows = run_generator(walk_taxon_chain(db, None, "Q1"))
+    rows = run_generator(taxonomy.walk_taxon_chain("Q1"))
 
     assert rows == [
         ("species", "Q1", "Alca torda"),
@@ -71,7 +75,7 @@ def test_walk_taxon_chain() -> None:
     db.close()
 
 
-def test_walk_skips_duplicate_ranks_and_rankless_taxa() -> None:
+def test_walk_skips_duplicate_ranks_and_rankless_taxa(monkeypatch: MonkeyPatch) -> None:
     """Proves only the first taxon of a rank is kept, and rankless taxa are skipped."""
     db = SqliteDatabase(":memory:")
     wikidata = db.wikidata_table()
@@ -81,8 +85,9 @@ def test_walk_skips_duplicate_ranks_and_rankless_taxa() -> None:
     wikidata.add("Q2", make_entity("Pan-Alcidae", parent_qid="Q3"))
     # a second genus-ranked ancestor must not overwrite the first
     wikidata.add("Q3", make_entity("Other", rank_qid="Qr2"))
+    monkeypatch.setattr(taxonomy, "read_entity", wikidata.get_by_id)
 
-    rows = run_generator(walk_taxon_chain(db, None, "Q1"))
+    rows = run_generator(taxonomy.walk_taxon_chain("Q1"))
 
     assert rows == [("genus", "Q1", "Alca")]
     db.close()

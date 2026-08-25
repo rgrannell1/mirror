@@ -19,13 +19,13 @@ from zahir import JobContext, await_all, concurrency_dependency, semaphore_depen
 from zahir.core.commons.constants import DependencyState
 from zahir.core.effects import ESetState
 
-from mirror.workflows.free.archive import (
+from mirror.services.camera_archive import (
     find_unverified,
     partial_path,
     promote_archive,
     write_archive,
 )
-from mirror.workflows.free.storage import format_bytes, from_entry
+from mirror.services.camera_storage import delete_camera_file, format_bytes, from_entry
 from mirror.workflows.output import workflow_output
 
 # Limit concurrent deletes so one run cannot saturate the card's USB bus.
@@ -80,7 +80,7 @@ def free_delete_file(ctx: JobContext, input: dict) -> Generator[Any, Any, dict]:
     yield from concurrency_dependency(FREE_DELETE_LIMIT, limit=FREE_DELETE_CONCURRENCY)
 
     try:
-        Path(input["path"]).unlink()
+        delete_camera_file(input["path"])
     except OSError as err:
         return {"freed": 0, "error": f"{input['relative']}: {err}"}
 

@@ -6,8 +6,8 @@ from mirror.commons.config import DATABASE_PATH
 from mirror.commons.constants import IMAGE_ENCODINGS, THUMBHASH_ROLES, VIDEO_ENCODINGS
 from mirror.services.cdn import CDN
 from mirror.services.database import SqliteDatabase
-from mirror.services.encoder import VideoEncoder
-from mirror.workflows.upload.selective import is_role_skipped
+from mirror.services.encoder import PhotoEncoder, VideoEncoder
+from mirror.services.selective_upload import is_role_skipped
 
 
 class PhotoJobInput(TypedDict):
@@ -22,6 +22,43 @@ class UploadOpts(TypedDict, total=False):
     force_roles: list[str] | None
     upload_images: bool | None
     upload_videos: bool | None
+
+
+def store_contrasting_grey(fpath: str) -> None:
+    """Compute and store one photo's contrasting grey value."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        grey_value = PhotoEncoder.compute_contrasting_grey(fpath)
+        db.photo_icon_table().add(fpath, grey_value)
+
+
+def store_image_mosaic(fpath: str) -> None:
+    """Compute and store one photo's ThumbHash placeholder."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        placeholder = PhotoEncoder.encode_thumbhash(fpath)
+        for role in THUMBHASH_ROLES:
+            db.encoded_photos_table().add(fpath, placeholder, role, "thumbhash")
+
+
+def upload_photo_encoding(fpath: str, role: str, params: dict) -> str:
+    """Encode, upload, and store one photo rendition."""
+    encoded_data = PhotoEncoder.encode(fpath, role, params)
+    uploaded_url = CDN().upload_photo(encoded_data, role, params["format"])
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.encoded_photos_table().add(fpath, uploaded_url, role, params["format"])
+    return uploaded_url
+
+
+def list_published_photo_roles(fpath: str) -> set[str]:
+    """Return photo roles with a stored non-empty URL."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        encodings = db.encoded_photos_table().list_for_file(fpath)
+        return {encoding.role for encoding in encodings if encoding.url and encoding.url.strip()}
+
+
+def list_published_video_roles(fpath: str) -> set[str]:
+    """Return stored video roles for one file."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        return {encoding.role for encoding in db.encoded_videos_table().list_for_file(fpath)}
 
 
 def is_legacy_mosaic(value: str) -> bool:
@@ -107,14 +144,15 @@ def is_silent(fpath: str) -> bool:
     return "+silent" not in fpath
 
 
-def publish_video_encoding(cdn, db, fpath, encoding: tuple[str, dict]):
-    role, params = encoding
+def publish_video_encoding(fpath: str, role: str, params: dict) -> str | None:
+    """Encode, upload, and store one video rendition."""
+    cdn = CDN()
     uploaded_video_name = CDN.video_name(fpath, params, "mp4")
 
     if cdn.has_object(uploaded_video_name):
-        # CDN already has the encoded asset; avoid re-encoding and just update the DB
         uploaded_video_url = cdn.url(uploaded_video_name)
-        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
+        with SqliteDatabase(DATABASE_PATH) as db:
+            db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
         return None
 
     encoded_path = VideoEncoder.encode(
@@ -129,25 +167,27 @@ def publish_video_encoding(cdn, db, fpath, encoding: tuple[str, dict]):
 
     uploaded_video_url = cdn.upload_file_public(name=uploaded_video_name, encoded_path=encoded_path)
 
-    db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
-    db.encoded_videos_table().get_by_fpath_and_role(fpath, role)
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.encoded_videos_table().add(fpath, uploaded_video_url, role, "mp4")
 
     return encoded_path
 
 
-def publish_video_thumbnail(cdn, db, fpath, encoded_path):
+def publish_video_thumbnail(fpath: str, encoded_path: str) -> None:
+    """Encode, upload, and store one video thumbnail."""
     thumbnail_format = "webp"
     thumbnail_role = "video_thumbnail_webp"
     encoded_thumbnail = VideoEncoder.encode_thumbnail(
         encoded_path, {"format": thumbnail_format, "quality": 85, "method": 6}
     )
 
-    thumbnail_url = cdn.upload_photo(
+    thumbnail_url = CDN().upload_photo(
         encoded_data=encoded_thumbnail, role=thumbnail_role, format=thumbnail_format
     )
-    db.encoded_photos_table().add(
-        fpath=fpath, url=thumbnail_url, role=thumbnail_role, format=thumbnail_format
-    )
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.encoded_photos_table().add(
+            fpath=fpath, url=thumbnail_url, role=thumbnail_role, format=thumbnail_format
+        )
 
 
 def roles_needing_upload(

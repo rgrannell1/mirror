@@ -1,21 +1,30 @@
-"""Utility functions and type definitions for the scan workflow"""
+"""Scan the media vault and find data absent from the database."""
 
 from __future__ import annotations
 
 from typing import Iterator, TypedDict
 
+from mirror.commons.config import DATABASE_PATH, GEONAMES_USERNAME
 from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID, KnownRelations
+from mirror.commons.urn import parse_mirror_urn
 from mirror.commons.utils import is_miscellaneous_dpath
 from mirror.data.binomials import list_photo_binomials
-from mirror.data.geoname import GeonameMetadataReader
+from mirror.data.geoname import GeonameClient, GeonameMetadataReader
 from mirror.data.types import SemanticTriple
+from mirror.data.wikidata import WikidataClient
 from mirror.models.exif import ExifReader, PhotoExifData
 from mirror.models.media import IMedia
 from mirror.models.phash import PhashData, PHashReader
 from mirror.models.photo import Photo
 from mirror.models.video import Video
 from mirror.services.database import SqliteDatabase
+from mirror.services.metadata import (
+    MarkdownAlbumMetadataReader,
+    MarkdownTablePhotoMetadataReader,
+    MarkdownTableVideoMetadataReader,
+)
 from mirror.services.vault import MediaVault
+from mirror.services.vault_sync import VaultIndexSync
 
 DEFAULT_ALBUMS_MARKDOWN_PATH = "albums.md"
 DEFAULT_PHOTOS_MARKDOWN_PATH = "photos.md"
@@ -27,6 +36,84 @@ class ScanOpts(TypedDict, total=False):
     photos_markdown_path: str
     videos_markdown_path: str
     force_rescan: bool
+
+
+def index_vault(dpath: str) -> None:
+    """Index vault files, EXIF data, and perceptual hashes."""
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.refresh_dependent_views()
+        current_fpaths = index_media_files(db, dpath)
+        VaultIndexSync(db).remove_deleted_photos(current_fpaths)
+        db.exif_table().add_many(list_unsaved_exifs(db, dpath))
+        db.phashes_table().add_many(list_unsaved_phashes(db, dpath))
+
+
+def store_geonames() -> None:
+    """Fetch and store absent Geonames entries."""
+    if not GEONAMES_USERNAME:
+        raise ValueError("GEONAMES_USERNAME environment variable not set")
+    client = GeonameClient(GEONAMES_USERNAME)
+    with SqliteDatabase(DATABASE_PATH) as db:
+        table = db.geoname_table()
+        for geoname_urn in list_geonames_from_metadata(db):
+            geoname_id = parse_mirror_urn(geoname_urn)["id"]
+            if not table.has(geoname_id):
+                response = client.get_by_id(geoname_id)
+                if response:
+                    table.add(geoname_id, response)
+
+
+def store_geoname_wikidata() -> list[str]:
+    """Store Wikidata entities for Geonames and return absent binomials."""
+    client = WikidataClient()
+    with SqliteDatabase(DATABASE_PATH) as db:
+        scan_geoname_wikidata(db, client)
+        return list(list_unsaved_binomials(db))
+
+
+def load_album_metadata(markdown_path: str) -> tuple[int, list]:
+    """Replace album metadata from one Markdown table."""
+    reader = MarkdownAlbumMetadataReader(markdown_path)
+    with SqliteDatabase(DATABASE_PATH) as db:
+        db.conn.execute("delete from media_metadata_table where src_type = 'album'")
+        query = (
+            "insert or replace into media_metadata_table"
+            " (src, src_type, relation, target) values (?, ?, ?, ?)"
+        )
+        count = 0
+        for item in reader.list_album_metadata(db):
+            db.conn.execute(query, (item.src, "album", item.relation, item.target))
+            count += 1
+        write_miscellaneous_permalinks(db)
+        db.conn.commit()
+    return count, reader.skipped
+
+
+def load_photo_metadata(markdown_path: str) -> int:
+    """Store photo metadata from one Markdown table."""
+    reader = MarkdownTablePhotoMetadataReader(markdown_path)
+    count = 0
+    with SqliteDatabase(DATABASE_PATH) as db:
+        for metadata in reader.read_photo_metadata(db):
+            fpath = db.encoded_photos_table().fpath_from_url(metadata.url)
+            phash = db.phashes_table().phash_from_fpath(fpath) if fpath else None
+            if phash:
+                db.photo_metadata_table().add_summary(phash, metadata)
+                count += 1
+    return count
+
+
+def load_video_metadata(markdown_path: str) -> int:
+    """Store video metadata from one Markdown table."""
+    reader = MarkdownTableVideoMetadataReader(markdown_path)
+    count = 0
+    with SqliteDatabase(DATABASE_PATH) as db:
+        for metadata in reader.read_video_metadata(db):
+            fpath = db.encoded_photos_table().fpath_from_url(metadata.url)
+            if fpath:
+                db.video_metadata_table().add_summary(fpath, metadata)
+                count += 1
+    return count
 
 
 def list_media(dpath: str) -> Iterator[IMedia]:

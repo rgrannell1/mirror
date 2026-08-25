@@ -1,4 +1,4 @@
-"""Types describing camera storage, the files on it, and a removal plan."""
+"""Types describing camera storage, files, and removal plans."""
 
 from __future__ import annotations
 

@@ -6,7 +6,7 @@ from mirror.commons.constants import MISCELLANEOUS_ALBUM_ID
 from mirror.commons.utils import is_miscellaneous_dpath
 from mirror.data.semantic_triples.albums import AlbumTriples
 from mirror.models.album import AlbumDataModel
-from mirror.workflows.scan.utils import write_miscellaneous_permalinks
+from mirror.services.media_scan import write_miscellaneous_permalinks
 
 DPATH_CASES = [
     ("/media/2026/Miscellaneous/Published", True),

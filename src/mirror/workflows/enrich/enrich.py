@@ -5,7 +5,7 @@ from typing import TypedDict, cast
 
 from zahir import JobContext, await_all
 
-from mirror.workflows.enrich.utils import read_things
+from mirror.services.thing_config import read_things
 
 
 class PlaceInput(TypedDict):

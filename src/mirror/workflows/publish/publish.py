@@ -2,67 +2,55 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Generator
 from typing import Any
 
 from zahir import JobContext, await_all
 
-from mirror.commons.config import DATABASE_PATH
-from mirror.services.d1 import D1Builder
-from mirror.services.database import SqliteDatabase
-from mirror.services.metadata import (
-    MarkdownAlbumMetadataWriter,
-    MarkdownTablePhotoMetadataWriter,
-    MarkdownTableVideoMetadataWriter,
-)
-from mirror.workflows.publish.atom import atom_feed, atom_media
-from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
-from mirror.workflows.publish.utils import (
-    env_content,
-    publication_id,
-    remove_artifacts,
-    stats_content,
-    triples_content,
-)
-from mirror.workflows.scan.utils import (
+from mirror.services.artifacts import publication_id
+from mirror.services.media_scan import (
     DEFAULT_ALBUMS_MARKDOWN_PATH,
     DEFAULT_PHOTOS_MARKDOWN_PATH,
     DEFAULT_VIDEOS_MARKDOWN_PATH,
 )
+from mirror.services.publication import (
+    build_d1,
+    prepare_artifacts,
+    refresh_database_views,
+    write_album_metadata,
+    write_photo_metadata,
+    write_video_metadata,
+)
+from mirror.services.publication import (
+    publish_atom as publish_atom_service,
+)
+from mirror.services.publication import (
+    publish_env as publish_env_service,
+)
+from mirror.services.publication import (
+    publish_stats as publish_stats_service,
+)
+from mirror.services.publication import (
+    publish_triples as publish_triples_service,
+)
+from mirror.workflows.publish.types import PublishArtifactBundleInput, PublishArtifactsInput
 
 
 def publish_env(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
-    output_dir = input["output_dir"]
-    pid = input["publication_id"]
-    path = os.path.join(output_dir, "env.json")
-
-    with open(path, "w") as f:
-        f.write(env_content(pid))
+    publish_env_service(input["output_dir"], input["publication_id"])
 
     return {"artifact": "env"}
     yield
 
 
 def publish_atom(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
-    output_dir = input["output_dir"]
-    with SqliteDatabase(DATABASE_PATH) as db:
-        media = atom_media(db)
-    atom_feed(media, output_dir)
+    publish_atom_service(input["output_dir"])
     return {"artifact": "atom"}
     yield
 
 
 def publish_stats(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
-    output_dir = input["output_dir"]
-    pid = input["publication_id"]
-    path = os.path.join(output_dir, f"stats.{pid}.json")
-
-    with SqliteDatabase(DATABASE_PATH) as db:
-        content = stats_content(db)
-
-    with open(path, "w") as f:
-        f.write(content)
+    publish_stats_service(input["output_dir"], input["publication_id"])
 
     return {"artifact": "stats"}
     yield
@@ -71,15 +59,7 @@ def publish_stats(ctx: JobContext, input: PublishArtifactBundleInput) -> Generat
 def publish_triples(
     ctx: JobContext, input: PublishArtifactBundleInput
 ) -> Generator[Any, Any, dict]:
-    output_dir = input["output_dir"]
-    pid = input["publication_id"]
-    path = os.path.join(output_dir, f"triples.{pid}.json")
-
-    with SqliteDatabase(DATABASE_PATH) as db:
-        content = triples_content(db)
-
-    with open(path, "w") as f:
-        f.write(content)
+    publish_triples_service(input["output_dir"], input["publication_id"])
 
     return {"artifact": "triples"}
     yield
@@ -89,8 +69,7 @@ def update_albums_markdown(
     ctx: JobContext, input: PublishArtifactBundleInput
 ) -> Generator[Any, Any, dict]:
     markdown_path = input["albums_markdown_path"]
-    with SqliteDatabase(DATABASE_PATH) as db:
-        MarkdownAlbumMetadataWriter().write_album_metadata(db, output_path=markdown_path)
+    write_album_metadata(markdown_path)
     return {"artifact": "albums_md", "path": markdown_path}
     yield
 
@@ -99,8 +78,7 @@ def update_photos_markdown(
     ctx: JobContext, input: PublishArtifactBundleInput
 ) -> Generator[Any, Any, dict]:
     markdown_path = input["photos_markdown_path"]
-    with SqliteDatabase(DATABASE_PATH) as db:
-        MarkdownTablePhotoMetadataWriter().write_photo_metadata(db, output_path=markdown_path)
+    write_photo_metadata(markdown_path)
     return {"artifact": "photos_md", "path": markdown_path}
     yield
 
@@ -109,15 +87,13 @@ def update_videos_markdown(
     ctx: JobContext, input: PublishArtifactBundleInput
 ) -> Generator[Any, Any, dict]:
     markdown_path = input["videos_markdown_path"]
-    with SqliteDatabase(DATABASE_PATH) as db:
-        MarkdownTableVideoMetadataWriter().write_video_metadata(db, output_path=markdown_path)
+    write_video_metadata(markdown_path)
     return {"artifact": "videos_md", "path": markdown_path}
     yield
 
 
 def publish_d1(ctx: JobContext, input: PublishArtifactBundleInput) -> Generator[Any, Any, dict]:
-    with SqliteDatabase(DATABASE_PATH) as db:
-        summary = D1Builder(db).build()
+    summary = build_d1()
     return {"artifact": "d1", **summary}
     yield
 
@@ -128,8 +104,7 @@ def write_metadata(ctx: JobContext, input: PublishArtifactsInput) -> Generator[A
     Runs before the audit gate: newly-indexed photos must surface in photos.md so they become
     labellable. The audit must never block the step that lets you clear the audit's findings.
     """
-    with SqliteDatabase(DATABASE_PATH) as db:
-        db.refresh_dependent_views()
+    refresh_database_views()
 
     builder_inputs: PublishArtifactBundleInput = {
         "output_dir": input["output_dir"],
@@ -151,11 +126,7 @@ def write_metadata(ctx: JobContext, input: PublishArtifactsInput) -> Generator[A
 def publish_artifacts(ctx: JobContext, input: PublishArtifactsInput) -> Generator[Any, Any, dict]:
     output_dir = input["output_dir"]
 
-    with SqliteDatabase(DATABASE_PATH) as db:
-        db.refresh_dependent_views()
-
-    pid = publication_id()
-    remove_artifacts(output_dir)
+    pid = prepare_artifacts(output_dir)
 
     builder_inputs: PublishArtifactBundleInput = {
         "output_dir": output_dir,

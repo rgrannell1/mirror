@@ -7,7 +7,7 @@ from PIL import Image
 from thumbhash import thumb_hash_to_approximate_aspect_ratio, thumb_hash_to_average_rgba
 
 from mirror.services.encoder import PhotoEncoder
-from mirror.workflows.upload.utils import is_legacy_mosaic
+from mirror.services.media_publish import is_legacy_mosaic
 
 BASE64_CHARSET = set(string.ascii_letters + string.digits + "+/")
 

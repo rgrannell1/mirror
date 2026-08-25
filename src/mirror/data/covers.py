@@ -200,9 +200,7 @@ def cached_cover_selection(
 ) -> CoverSelection:
     """Select covers, reusing the funes-cached result when the inputs are unchanged."""
     inputs = read_cover_inputs(db)
-    store = SqliteStore(
-        db_path=cache_path, key=cover_inputs_key, max_size=COVER_CACHE_MAX_ENTRIES
-    )
+    store = SqliteStore(db_path=cache_path, key=cover_inputs_key, max_size=COVER_CACHE_MAX_ENTRIES)
     with store:
         return store.run(select_covers, inputs)
 

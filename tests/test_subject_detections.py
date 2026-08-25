@@ -7,8 +7,8 @@ from types import SimpleNamespace
 from mirror.cli import build_parser
 from mirror.services.database import SqliteDatabase
 from mirror.services.database.photos import SubjectDetectionsTable
+from mirror.services.detection_scan import list_missing_detections
 from mirror.services.detector import build_prompt, prompt_for_type
-from mirror.workflows.detect.utils import list_missing_detections
 from mirror.workflows.workflow import publish_phase
 
 PROMPT_CASES = [
