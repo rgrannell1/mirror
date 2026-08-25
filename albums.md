@@ -123,6 +123,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/83c5f90064.avif) | Casino Model Rail Museum | casino-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/55ab963be2.avif) | Chester Beatty | chester-beatty-june-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/95e637f164.avif) | Chester Beatty | chester-beatty-26 | urn:ró:place:148 | Still my favourite Irish musuem :) |
+| ![](https://photos-cdn.rgrannell.xyz/4443787af3.avif) | Copenhagen Botanical Garden | copenhagen-botanical-garden-26 | urn:ró:place:191 |  |
 | ![](https://photos-cdn.rgrannell.xyz/492e2111ec.avif) | Copenhagen Museums | copenhagen-museums-26 | urn:ró:place:191 |  |
 | ![](https://photos-cdn.rgrannell.xyz/13b6995afc.avif) | Copenhagen | copenhagen-26 | urn:ró:place:191 |  |
 | ![](https://photos-cdn.rgrannell.xyz/e2c45fab80.avif) | Dublin Zoo | dublin-zoo-26 | urn:ró:place:148 |  |

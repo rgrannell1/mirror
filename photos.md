@@ -315,11 +315,20 @@
 | ![](https://photos-cdn.rgrannell.xyz/46460990c7.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3e4410778c.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c841809114.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/85df8dabd5.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/13b6995afc.avif) | Copenhagen | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/66c9ec7de6.avif) | Copenhagen | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/db6df11605.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/c4546e0260.avif) | Copenhagen | Cityscape | ⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/59ddab48be.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3fdf466d9a.avif) | Copenhagen | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/29b83b1cd0.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/91f634d6f7.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/4443787af3.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/254056b70c.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/9c51d2efe4.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/eb2cbfb518.avif) | Copenhagen Botanical Garden | Wildlife | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/24361151e3.avif) | Copenhagen Botanical Garden | Cityscape | ⭐⭐⭐ | urn:ró:place:192 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/3bd63a1668.avif) | Copenhagen Museums | Museum | ⭐⭐ | urn:ró:place:198 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/29368cb690.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:198 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/86e3debb2a.avif) | Copenhagen Museums | Museum | ⭐⭐⭐ | urn:ró:place:198 |  |  |  |

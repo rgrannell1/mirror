@@ -1,37 +1,43 @@
-from typing import Generator, Iterator, TypedDict
+"""Enrich configured things through Zahir jobs."""
 
-from zahir import Await, Context, DependencyGroup, JobOutputEvent, WorkflowOutputEvent, spec
+from collections.abc import Generator, Iterator
+from typing import TypedDict, cast
+
+from zahir import JobContext, await_all
 
 from mirror.workflows.enrich.utils import read_things
 
 
-def filter_things(type: str, things: list[dict]) -> Iterator[dict]:
+class PlaceInput(TypedDict):
+    """Input for one place enrichment job."""
+
+    place: dict[str, object]
+
+
+class EnrichInput(TypedDict):
+    """Input for the root enrichment job."""
+
+
+def filter_things(
+    subject_type: str, things: list[dict[str, object]]
+) -> Iterator[dict[str, object]]:
+    """Yield configured things of one URN type."""
     for thing in things:
-        if thing["id"].startswith(f"urn:ró:{type}:"):
+        thing_id = thing.get("id")
+        if isinstance(thing_id, str) and thing_id.startswith(f"urn:ró:{subject_type}:"):
             yield thing
 
 
-class PlaceType(TypedDict):
-    place: dict
+def enrich_place(ctx: JobContext, input: PlaceInput) -> Generator[object, object, PlaceInput]:
+    """Return one place after its enrichment step."""
+    return input
+    yield
 
 
-@spec(args=PlaceType, output=PlaceType)
-def enrich_place(
-    context: Context,
-    input: PlaceType,
-    dependencies: DependencyGroup,
-) -> Generator[JobOutputEvent]:
-    place = input["place"]
-
-    yield JobOutputEvent({"place": place})
-
-
-@spec()
-def enrich_data(
-    context: Context,
-    input,
-    dependencies: DependencyGroup,
-) -> Generator[Await | WorkflowOutputEvent]:
+def enrich_data(ctx: JobContext, input: EnrichInput) -> Generator[object, object, list[PlaceInput]]:
+    """Enrich all configured places in parallel."""
     things = list(read_things("things.toml"))
-
-    yield Await([enrich_place({"place": thing}) for thing in filter_things("place", things)])
+    jobs = [ctx.scope.enrich_place({"place": thing}) for thing in filter_things("place", things)]
+    results = yield await_all(jobs)
+    return cast(list[PlaceInput], results)
+    yield

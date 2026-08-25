@@ -4,7 +4,8 @@ from functools import cache
 
 import boto3  # type: ignore
 import boto3.session  # type: ignore
-import botocore  # type: ignore
+from botocore.client import BaseClient
+from botocore.config import Config
 
 from mirror.commons.config import (
     PHOTOS_URL,
@@ -23,9 +24,13 @@ class CDN:
     """Interface to S3-compatible CDNs"""
 
     storage_session: boto3.session.Session
-    storage_client: boto3.client
+    storage_client: BaseClient
 
-    def __init__(self, session: boto3.session.Session = None, client: boto3.client = None):
+    def __init__(
+        self,
+        session: boto3.session.Session | None = None,
+        client: BaseClient | None = None,
+    ) -> None:
         self.storage_session = session if session else shared_session()
         self.storage_client = client if client else shared_client()
 
@@ -40,12 +45,12 @@ class CDN:
         )
 
     @classmethod
-    def client(cls, session: boto3.session.Session) -> boto3.client:
+    def client(cls, session: boto3.session.Session) -> BaseClient:
         """Create a boto3 client for S$-compatible CDNs"""
 
         return session.client(
             "s3",
-            config=botocore.config.Config(
+            config=Config(
                 s3={"addressing_style": "virtual"},
                 tcp_keepalive=True,
             ),
@@ -139,7 +144,7 @@ def shared_session() -> boto3.session.Session:
 
 
 @cache
-def shared_client() -> boto3.client:
+def shared_client() -> BaseClient:
     """One S3 client per process. Reuse keeps the TLS connection alive between uploads."""
 
     return CDN.client(shared_session())

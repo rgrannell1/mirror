@@ -100,7 +100,7 @@ def label_image(
         model=GEMINI_VISION_MODEL,
         contents=[prompt, image_part],
     )
-    raw = result.text.strip()
+    raw = (result.text or "").strip()
     return [tag.strip() for tag in raw.split(",") if tag.strip()]
 
 

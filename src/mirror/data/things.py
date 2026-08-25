@@ -270,8 +270,7 @@ class ThingsReader:
     def __init__(self, things_file: str = "things.toml"):
         self.things_file = things_file
 
-    @staticmethod
-    def to_triples(item: dict) -> Iterator[SemanticTriple]:
+    def to_triples(self, item: dict) -> Iterator[SemanticTriple]:  # noqa: PLR6301
         src = item["id"]
 
         for relation, tgt_vals in item.items():

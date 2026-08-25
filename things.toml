@@ -2868,6 +2868,15 @@ contains_album = [
     "urn:ró:album:maspalomas-26",
 ]
 
+[[trips]]
+id = "urn:ró:trip:8"
+title = "Copenhagen, 2026"
+contains_album = [
+    "urn:ró:album:copenhagen-museums-26",
+    "urn:ró:album:copenhagen-26",
+    "urn:ró:album:copenhagen-botanical-garden-26",
+]
+
 # Ordered edges for drawing travel maps (id, source, destination); order is significant
 [[transfers]]
 id = "urn:ró:transfer:0"

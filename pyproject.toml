@@ -48,6 +48,7 @@ mirror = "mirror.cli:main"
 
 [project.optional-dependencies]
 dev = [
+  "pyright",
   "vulture",
   "pytest",
 ]

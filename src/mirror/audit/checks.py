@@ -6,7 +6,7 @@ uses via ReadAlbums), not against media_metadata_table — that table is only a 
 last pipeline run and lags edits to albums.md. Rendition checks read live encoded_photos state.
 """
 
-from collections.abc import Iterator
+from collections.abc import Collection, Iterable, Iterator
 from enum import StrEnum
 
 from mirror.audit.audit_types import Check, Finding
@@ -159,7 +159,7 @@ def check_photos_missing_main_image(db: SqliteDatabase) -> Iterator[Finding]:
         yield Finding(check=CheckSlug.PHOTO_MISSING_MAIN_IMAGE, subject=photo.fpath, detail=detail)
 
 
-def trip_date_range(albums: list[AlbumDataModel]) -> tuple[str, str] | None:
+def trip_date_range(albums: Iterable[AlbumDataModel]) -> tuple[str, str] | None:
     """Earliest and latest date spanned by a trip's member albums, or None if none are dated."""
     dated = [album for album in albums if album.min_date and album.max_date]
     if not dated:
@@ -168,7 +168,7 @@ def trip_date_range(albums: list[AlbumDataModel]) -> tuple[str, str] | None:
 
 
 def find_albums_omitted_from_trips(
-    trips: dict[str, tuple[str, ...]], albums: list[AlbumDataModel]
+    trips: dict[str, tuple[str, ...]], albums: Iterable[AlbumDataModel]
 ) -> Iterator[Finding]:
     """Albums falling wholly inside a trip's date range but absent from its contains_album list."""
     by_urn = {f"{ALBUM_URN_PREFIX}{album.id}": album for album in albums if album.id}
@@ -217,7 +217,7 @@ def check_trip_albums_exist(db: SqliteDatabase) -> Iterator[Finding]:
     yield from find_trips_with_unknown_albums(trip_to_albums(), album_urns)
 
 
-def find_unnamed_subjects(subjects: Iterator[str], named_ids: set[str]) -> Iterator[Finding]:
+def find_unnamed_subjects(subjects: Iterator[str], named_ids: Collection[str]) -> Iterator[Finding]:
     """Report each subject URN with no named things.toml entry, once, query string stripped."""
     seen: set[str] = set()
     for subject in subjects:

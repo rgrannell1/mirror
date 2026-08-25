@@ -4,7 +4,7 @@ import random
 from collections.abc import Callable, Iterator
 from functools import partial
 from pathlib import Path
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -23,6 +23,9 @@ from .parser import EDITABLE_COLUMNS, PhotoRow, load_photos
 from .state import PhotoState
 from .widgets import PhotoFieldTable
 from .writer import save_photo_row
+
+if TYPE_CHECKING:
+    from labeller.app import LabellerApp
 
 PHOTOS_PATH = Path(__file__).parent.parent.parent / "photos.md"
 
@@ -136,10 +139,11 @@ class PhotoPane(Widget):
             self._refresh_all()
 
     def action_repeat_edit(self) -> None:
-        if self.app.last_edit is None:
+        app = cast("LabellerApp", self.app)
+        if app.last_edit is None:
             self.app.notify("No previous edit to repeat", severity="warning")
             return
-        field, value = self.app.last_edit
+        field, value = app.last_edit
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for photos", severity="warning")
             return
@@ -216,7 +220,7 @@ class PhotoPane(Widget):
         save_photo_row(PHOTOS_PATH, photo)
         if field == "genre" and new_value.strip():
             self._state.known_genres.add(new_value.strip())
-        self.app.last_edit = (field, new_value)
+        cast("LabellerApp", self.app).last_edit = (field, new_value)
         field_table = self.query_one(PhotoFieldTable)
         field_table.exit_edit_mode()
         field_table.update_row(photo)

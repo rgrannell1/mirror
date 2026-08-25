@@ -184,8 +184,7 @@ class ImageFrame(Widget):
         super().__init__(**kwargs)
         self._current_url: str = ""
 
-    @staticmethod
-    def compose() -> ComposeResult:
+    def compose(self) -> ComposeResult:  # noqa: PLR6301
         yield TIImage()
 
     def update_photo(self, thumbnail_url: str) -> None:

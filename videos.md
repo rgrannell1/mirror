@@ -24,6 +24,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/7fd11537cf.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
 | ![](https://photos-cdn.rgrannell.xyz/1022332c5c.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
 | ![](https://photos-cdn.rgrannell.xyz/81f6494533.webp) | Chester Zoo | Wildlife | ⭐⭐⭐⭐⭐ | urn:ró:place:96 |  | urn:ró:mammal:aonyx-cinereus |  |
+| ![](https://photos-cdn.rgrannell.xyz/82b39fad8d.webp) | Copenhagen Botanical Garden |  |  |  |  |  |  |
+| ![](https://photos-cdn.rgrannell.xyz/33c2c2a494.webp) | Copenhagen Botanical Garden |  |  |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/5d77756e59.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 | They were not happy to see me, I moved on quickly after | urn:ró:bird:larus-argentatus |  |
 | ![](https://photos-cdn.rgrannell.xyz/26c9d0bf38.webp) | Dalkey Island | Wildlife | ⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:bird:larus-argentatus |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c2065a6aa.webp) | Dalkey Island | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:53 |  | urn:ró:mammal:phoca-vitulina |  |

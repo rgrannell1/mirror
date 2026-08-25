@@ -14,12 +14,13 @@ from mirror.commons.constants import (
     DETECTION_MEMORY_MAX_PERCENT,
 )
 from mirror.data.things import thing_names
+from mirror.models.detection import DetectionScan
 from mirror.services.database import SqliteDatabase
 from mirror.workflows.detect.utils import list_missing_detections
 from mirror.workflows.output import workflow_output
 
 
-def store_scan(pair: dict, scan: dict) -> Generator[Any, Any, bool]:
+def store_scan(pair: dict, scan: DetectionScan) -> Generator[Any, Any, bool]:
     """Store one scan row; report database failures instead of raising them."""
     try:
         with SqliteDatabase(DATABASE_PATH) as db:
@@ -46,7 +47,12 @@ def detect_and_store(input: dict) -> Generator[Any, Any, bool]:
         yield workflow_output(f"detection failed for {fpath} ({subject_type}): {err}")
         return False
 
-    scan = {"boxes": boxes, "prompt": prompt, "threshold": threshold, "image_area": image_area}
+    scan: DetectionScan = {
+        "boxes": boxes,
+        "prompt": prompt,
+        "threshold": threshold,
+        "image_area": image_area,
+    }
     stored = yield from store_scan(input, scan)
     return stored
 

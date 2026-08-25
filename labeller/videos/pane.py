@@ -5,7 +5,7 @@ import subprocess
 from collections.abc import Callable, Iterator
 from functools import partial
 from pathlib import Path
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -24,6 +24,9 @@ from .parser import EDITABLE_COLUMNS, VideoRow, load_videos
 from .state import VideoState
 from .widgets import VideoFieldTable
 from .writer import save_video_row
+
+if TYPE_CHECKING:
+    from labeller.app import LabellerApp
 
 VIDEOS_PATH = Path(__file__).parent.parent.parent / "videos.md"
 
@@ -152,10 +155,11 @@ class VideoPane(Widget):
             self._refresh_all()
 
     def action_repeat_edit(self) -> None:
-        if self.app.last_edit is None:
+        app = cast("LabellerApp", self.app)
+        if app.last_edit is None:
             self.app.notify("No previous edit to repeat", severity="warning")
             return
-        field, value = self.app.last_edit
+        field, value = app.last_edit
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for videos", severity="warning")
             return
@@ -237,7 +241,7 @@ class VideoPane(Widget):
         save_video_row(VIDEOS_PATH, video)
         if field == "genre" and new_value.strip():
             self._state.known_genres.add(new_value.strip())
-        self.app.last_edit = (field, new_value)
+        cast("LabellerApp", self.app).last_edit = (field, new_value)
         field_table = self.query_one(VideoFieldTable)
         field_table.exit_edit_mode()
         field_table.update_row(video)

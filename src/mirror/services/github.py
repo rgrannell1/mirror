@@ -14,11 +14,13 @@ import json
 import os
 import time
 from datetime import date
+from typing import cast
 
 from dulwich import porcelain
 from dulwich.index import index_entry_from_stat
 from dulwich.object_store import commit_tree_changes, iter_tree_contents
-from dulwich.objects import Blob, Commit
+from dulwich.objects import Blob, Commit, ObjectID, Tree
+from dulwich.refs import Ref
 from dulwich.repo import Repo, get_user_identity
 
 from mirror.commons.config import GITHUB_TOKEN, OUTPUT_DIRECTORY, WEBSITE_DIRECTORY
@@ -39,12 +41,12 @@ ARTIFACT_SPECS = (
 )
 
 # temporary ref the publish commit is pushed from; deleted afterwards
-PUBLISH_REF = b"refs/mirror/publish"
+PUBLISH_REF = Ref(b"refs/mirror/publish")
 
 # regular non-executable file mode for published artifacts
 ARTIFACT_FILE_MODE = 0o100644
 
-MAIN_REF = b"refs/heads/" + WEBSITE_BRANCH.encode()
+MAIN_REF = Ref(b"refs/heads/" + WEBSITE_BRANCH.encode())
 
 
 def read_origin_url() -> str:
@@ -79,17 +81,17 @@ def load_publication_triples(manifest_dir: str) -> list:
         return json.load(triples_handle)
 
 
-def read_tree_blob(repo: Repo, tree_id: bytes, path: str) -> bytes | None:
+def read_tree_blob(repo: Repo, tree_id: ObjectID, path: str) -> bytes | None:
     """Read a file's bytes from a git tree, or None when absent."""
-    tree = repo[tree_id]
+    tree = cast(Tree, repo[tree_id])
     try:
         blob_id = tree.lookup_path(repo.object_store.__getitem__, path.encode())[1]
     except KeyError:
         return None
-    return repo[blob_id].data
+    return cast(Blob, repo[blob_id]).data
 
 
-def load_tip_triples(repo: Repo, tree_id: bytes) -> list:
+def load_tip_triples(repo: Repo, tree_id: ObjectID) -> list:
     """Load the published triples from the tip tree, or an empty list when unreadable.
 
     A missing or broken published manifest must not block publication. The
@@ -230,7 +232,7 @@ def collect_local_artifacts() -> dict[str, str]:
     return collected
 
 
-def find_tree_artifacts(repo: Repo, tree_id: bytes) -> set[str]:
+def find_tree_artifacts(repo: Repo, tree_id: ObjectID) -> set[str]:
     """List the repo paths in a tree that match the artifact patterns."""
     found = set()
     for entry in iter_tree_contents(repo.object_store, tree_id):
@@ -240,7 +242,7 @@ def find_tree_artifacts(repo: Repo, tree_id: bytes) -> set[str]:
     return found
 
 
-def store_file_blob(repo: Repo, file_path: str) -> bytes:
+def store_file_blob(repo: Repo, file_path: str) -> ObjectID:
     """Store a file's content as a blob object. Returns the blob id."""
     with open(file_path, "rb") as handle:
         blob = Blob.from_string(handle.read())
@@ -248,7 +250,7 @@ def store_file_blob(repo: Repo, file_path: str) -> bytes:
     return blob.id
 
 
-def build_artifact_changes(repo: Repo, tree_id: bytes) -> list:
+def build_artifact_changes(repo: Repo, tree_id: ObjectID) -> list:
     """Build the tree changes that replace the tip's artifacts with local ones."""
     local = collect_local_artifacts()
     existing = find_tree_artifacts(repo, tree_id)
@@ -262,18 +264,18 @@ def build_artifact_changes(repo: Repo, tree_id: bytes) -> list:
     return changes
 
 
-def fetch_remote_tip(origin_url: str) -> bytes:
+def fetch_remote_tip(origin_url: str) -> ObjectID:
     """Read origin's main tip commit id without fetching objects."""
     result = porcelain.ls_remote(origin_url)
-    refs = dict(result.refs) if hasattr(result, "refs") else dict(result)
-    if MAIN_REF not in refs:
+    remote_tip = result.refs.get(MAIN_REF)
+    if remote_tip is None:
         raise GithubPublishError(f"origin has no {MAIN_REF.decode()} ref")
-    return refs[MAIN_REF]
+    return remote_tip
 
 
-def read_ready_tip(repo: Repo, origin_url: str) -> bytes:
+def read_ready_tip(repo: Repo, origin_url: str) -> ObjectID:
     """Check the repo is on main and level with origin. Returns the tip id."""
-    if repo.refs.read_ref(b"HEAD") != b"ref: " + MAIN_REF:
+    if repo.refs.read_ref(Ref(b"HEAD")) != b"ref: " + MAIN_REF:
         raise GithubPublishError("website repo is not on main; check it out before publishing")
 
     remote_tip = fetch_remote_tip(origin_url)
@@ -286,7 +288,9 @@ def read_ready_tip(repo: Repo, origin_url: str) -> bytes:
     return local_tip
 
 
-def create_publish_commit(repo: Repo, tree_id: bytes, parent: bytes, message: str) -> bytes:
+def create_publish_commit(
+    repo: Repo, tree_id: ObjectID, parent: ObjectID, message: str
+) -> ObjectID:
     """Create the publish commit object. Moves no refs."""
     commit = Commit()
     commit.tree = tree_id
@@ -345,7 +349,9 @@ def refresh_artifact_index(repo: Repo, changes: list) -> None:
     index.write()
 
 
-def push_publish_commit(repo: Repo, origin_url: str, commit_id: bytes, prior_tip: bytes) -> None:
+def push_publish_commit(
+    repo: Repo, origin_url: str, commit_id: ObjectID, prior_tip: ObjectID
+) -> None:
     """Push the publish commit, then advance local main."""
     repo.refs[PUBLISH_REF] = commit_id
     try:
@@ -367,7 +373,7 @@ def publish_manifest() -> str | None:
     origin_url = read_origin_url()
     with Repo(WEBSITE_DIRECTORY) as repo:
         local_tip = read_ready_tip(repo, origin_url)
-        tip_tree = repo[local_tip].tree
+        tip_tree = cast(Commit, repo[local_tip]).tree
 
         changes = build_artifact_changes(repo, tip_tree)
         new_tree = commit_tree_changes(repo.object_store, tip_tree, changes)

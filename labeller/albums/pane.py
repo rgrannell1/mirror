@@ -4,7 +4,7 @@ import random
 from collections.abc import Callable, Iterator
 from functools import partial
 from pathlib import Path
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -21,6 +21,9 @@ from .parser import EDITABLE_COLUMNS, AlbumRow, load_albums
 from .state import AlbumState
 from .widgets import AlbumFieldTable
 from .writer import save_album_row
+
+if TYPE_CHECKING:
+    from labeller.app import LabellerApp
 
 ALBUMS_PATH = Path(__file__).parent.parent.parent / "albums.md"
 
@@ -120,10 +123,11 @@ class AlbumPane(Widget):
             self._refresh_all()
 
     def action_repeat_edit(self) -> None:
-        if self.app.last_edit is None:
+        app = cast("LabellerApp", self.app)
+        if app.last_edit is None:
             self.app.notify("No previous edit to repeat", severity="warning")
             return
-        field, value = self.app.last_edit
+        field, value = app.last_edit
         if field not in EDITABLE_COLUMNS:
             self.app.notify(f"Field '{field}' not available for albums", severity="warning")
             return
@@ -162,7 +166,7 @@ class AlbumPane(Widget):
         new_value = message.value
         album.set_field(field, new_value)
         save_album_row(ALBUMS_PATH, album)
-        self.app.last_edit = (field, new_value)
+        cast("LabellerApp", self.app).last_edit = (field, new_value)
         field_table = self.query_one(FieldTable)
         field_table.exit_edit_mode()
         field_table.update_row(album)

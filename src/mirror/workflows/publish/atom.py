@@ -92,7 +92,7 @@ def _atom_photo_entry(
 ) -> AtomEntry:
     subjects = _resolve_names(summary.subjects if summary else [], names)
     title = _atom_entry_title(
-        summary.description if summary else "",
+        summary.description or "" if summary else "",
         subjects,
         summary.name if summary else "",
         "Photo",
@@ -111,7 +111,7 @@ def _atom_video_entry(
 ) -> AtomEntry:
     subjects = _resolve_names(summary.subjects if summary else [], names)
     title = _atom_entry_title(
-        video.description,
+        video.description or "",
         subjects,
         summary.name if summary else "",
         "Video",

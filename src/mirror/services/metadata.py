@@ -125,9 +125,8 @@ class IAlbumMetadataReader(Protocol):
 class IAlbumMetadataWriter(Protocol):
     """Interface for storing album metadata"""
 
-    def write_album_metadata(
-        self, db: SqliteDatabase, *, output_path: str | None = None
-    ) -> None: ...
+    @staticmethod
+    def write_album_metadata(db: SqliteDatabase, *, output_path: str | None = None) -> None: ...
 
 
 class IPhotoMetadataReader(Protocol):
@@ -210,7 +209,7 @@ def apply_album_relations(
 
         by_album[data.src]["embedding"] = album_data.thumbnail_url
         if data.relation in {"county", "country"}:
-            by_album[data.src]["country"] = split_cell(data.target)
+            by_album[data.src]["country"] = split_cell(data.target or "")
         else:
             by_album[data.src][data.relation] = data.target
 

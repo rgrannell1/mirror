@@ -4,7 +4,8 @@ import base64
 import contextlib
 import io
 import os
-from typing import Dict, Optional, Tuple
+from collections.abc import Iterable
+from typing import Dict, Optional, Tuple, cast
 
 import cv2
 import ffmpeg
@@ -35,7 +36,7 @@ def sample_corner_lightness(fpath: str) -> float:
     width, height = lightness_band.size
     top_right = lightness_band.crop((7 * width // 8, 0, width, height // 8))
 
-    pixels = list(top_right.getdata())
+    pixels = list(cast(Iterable[float], top_right.get_flattened_data()))
     return sum(pixels) / len(pixels)
 
 
@@ -60,14 +61,14 @@ def neutral_grey_hex(target_lightness: int) -> str:
     b_img = Image.new("L", (1, 1), 128)
 
     merged = Image.merge("LAB", (lightness_img, a_img, b_img)).convert("RGB")
-    rgb_pixel = merged.getpixel((0, 0))
+    rgb_pixel = cast(tuple[int, int, int], merged.getpixel((0, 0)))
 
     # averaging channels to get a grey
     grey = int(round(sum(rgb_pixel) / 3))
     return f"#{grey:02X}{grey:02X}{grey:02X}"
 
 
-def scrub_image_metadata(img) -> None:
+def scrub_image_metadata(img: Image.Image) -> None:
     """Remove EXIF and embedded metadata blocks in-place."""
     img.getexif().clear()
     img.info.pop("exif", None)
@@ -109,7 +110,8 @@ class PhotoEncoder:
             rgb.thumbnail((THUMBHASH_MAX_DIMENSION, THUMBHASH_MAX_DIMENSION))
 
             rgba = []
-            for red, green, blue in rgb.get_flattened_data():
+            pixels = cast(Iterable[tuple[int, int, int]], rgb.get_flattened_data())
+            for red, green, blue in pixels:
                 rgba.extend((red, green, blue, 255))
 
             hash_bytes = bytes(rgba_to_thumb_hash(rgb.width, rgb.height, rgba))
@@ -239,9 +241,8 @@ class VideoEncoder:
         with Image.open(io.BytesIO(img_bytes)) as img:
             thumb = ImageOps.fit(img, (width, height))
 
-            data = list(thumb.getdata())
             no_exif = Image.new(thumb.mode, thumb.size)
-            no_exif.putdata(data)
+            no_exif.paste(thumb)
 
             with io.BytesIO() as output:
                 # return the image hash and contents

@@ -26,5 +26,5 @@ def fit_image(image: Image.Image, max_width: int, max_height: int) -> Image.Imag
     """
     pixel_width = max_width
     pixel_height = max_height * 2
-    image.thumbnail((pixel_width, pixel_height), Image.LANCZOS)
+    image.thumbnail((pixel_width, pixel_height), Image.Resampling.LANCZOS)
     return image
