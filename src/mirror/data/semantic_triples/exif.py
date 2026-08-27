@@ -24,47 +24,32 @@ def exif_camera_triples(source: str, exif, camera_models: set[str]) -> Iterator[
     )
 
 
+def exif_field_triples(
+    source: str, exif, relations: tuple[str, ...]
+) -> Iterator[SemanticTriple]:
+    """Publish selected scalar fields from one EXIF row."""
+    for relation in relations:
+        yield SemanticTriple(source=source, relation=relation, target=getattr(exif, relation))
+
+
+def exif_dimension_triples(source: str, exif) -> Iterator[SemanticTriple]:
+    """Publish image dimensions when both dimensions exist."""
+    if not exif.width or not exif.height:
+        return
+
+    yield SemanticTriple(source=source, relation="width", target=exif.width)
+    yield SemanticTriple(source=source, relation="height", target=exif.height)
+
+
 def exif_row_triples(source: str, exif, camera_models: set[str]) -> Iterator[SemanticTriple]:
     """Publishable triples for one EXIF row."""
-    yield SemanticTriple(
-        source=source,
-        relation="f_stop",
-        target=exif.f_stop,
-    )
-
-    yield SemanticTriple(
-        source=source,
-        relation="focal_length",
-        target=exif.focal_length,
-    )
+    yield from exif_field_triples(source, exif, ("f_stop", "focal_length"))
 
     if exif.model:
         yield from exif_camera_triples(source, exif, camera_models)
 
-    yield SemanticTriple(
-        source=source,
-        relation="exposure_time",
-        target=exif.exposure_time,
-    )
-
-    yield SemanticTriple(
-        source=source,
-        relation="iso",
-        target=exif.iso,
-    )
-
-    if exif.width and exif.height:
-        yield SemanticTriple(
-            source=source,
-            relation="width",
-            target=exif.width,
-        )
-
-        yield SemanticTriple(
-            source=source,
-            relation="height",
-            target=exif.height,
-        )
+    yield from exif_field_triples(source, exif, ("exposure_time", "iso"))
+    yield from exif_dimension_triples(source, exif)
 
 
 class ExifTriplesReader:

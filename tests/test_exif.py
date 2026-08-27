@@ -1,5 +1,6 @@
 """Regression tests for EXIF row construction."""
 
+from mirror.data.semantic_triples.exif import exif_row_triples
 from mirror.models.exif import ExifReader, PhotoExifData
 
 
@@ -42,3 +43,30 @@ def test_photo_exif_data_constructs_with_only_fpath():
 
     assert row.fpath == "/some/photo.jpg"
     assert row.created_at is None
+
+
+def test_exif_row_triples_publishes_measurements_and_dimensions():
+    """Proves EXIF rows produce scalar and complete dimension triples."""
+    row = PhotoExifData(
+        fpath="/some/photo.jpg",
+        f_stop="6.3",
+        focal_length="35",
+        model="Camera",
+        exposure_time="0.0025",
+        iso="800",
+        width="4000",
+        height="3000",
+    )
+
+    triples = list(exif_row_triples("urn:photo", row, set()))
+
+    assert [(triple.relation, triple.target) for triple in triples] == [
+        ("f_stop", "6.3"),
+        ("focal_length", "35"),
+        ("name", "Camera"),
+        ("model", "urn:ró:camera:camera"),
+        ("exposure_time", "0.0025"),
+        ("iso", "800"),
+        ("width", "4000"),
+        ("height", "3000"),
+    ]
