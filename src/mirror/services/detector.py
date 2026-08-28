@@ -12,7 +12,7 @@ from mirror.commons.constants import (
     DETECTION_PROMPT_OVERRIDES,
     DETECTION_TORCH_THREADS,
 )
-from mirror.models.detection import DetectionBox, box_volume
+from mirror.models.detection import DetectionBox, DetectionRequest, box_volume
 
 
 def normalise_phrase(phrase: str) -> str:
@@ -97,6 +97,24 @@ def result_to_boxes(result: dict, width: int, height: int) -> list[DetectionBox]
     return boxes
 
 
+def detect_image(processor: Any, model: Any, image: Image.Image, request: DetectionRequest) -> dict:
+    """Run GroundingDINO inference and return its first processed result."""
+    import torch  # noqa: PLC0415
+
+    inputs = processor(images=image, text=request["prompt"], return_tensors="pt")
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    results = processor.post_process_grounded_object_detection(
+        outputs,
+        inputs.input_ids,
+        threshold=request["threshold"],
+        text_threshold=request["threshold"],
+        target_sizes=[(image.height, image.width)],
+    )
+    return results[0]
+
+
 def detect_boxes(
     image_path: str,
     prompt: str,
@@ -108,23 +126,12 @@ def detect_boxes(
     of the searched file. An empty list means the image was searched and nothing
     passed the threshold.
     """
-    import torch  # noqa: PLC0415
-
     processor, model = load_detection_model()
 
     with Image.open(image_path) as image_fh:
         image = image_fh.convert("RGB")
 
-    inputs = processor(images=image, text=prompt, return_tensors="pt")
-    with torch.no_grad():
-        outputs = model(**inputs)
-
-    results = processor.post_process_grounded_object_detection(
-        outputs,
-        inputs.input_ids,
-        threshold=threshold,
-        text_threshold=threshold,
-        target_sizes=[(image.height, image.width)],
-    )
-    boxes = result_to_boxes(results[0], image.width, image.height)
+    request = DetectionRequest(prompt=prompt, threshold=threshold)
+    result = detect_image(processor, model, image, request)
+    boxes = result_to_boxes(result, image.width, image.height)
     return boxes, image.width * image.height

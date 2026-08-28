@@ -299,36 +299,44 @@ class MarkdownAlbumMetadataReader(IAlbumMetadataReader):
             yield from album_metadata_models(item)
 
 
+def build_media_fields(summary: MediaSummaryModel, name: str) -> dict:
+    """Build the initial merged fields for one media URL."""
+    return {
+        "url": summary.url,
+        "name": name,
+        "genre": set(),
+        "rating": "",
+        "places": set(),
+        "description": "",
+        "subjects": set(),
+        "covers": set(),
+    }
+
+
+def merge_media_sets(fields: dict, summary: MediaSummaryModel) -> None:
+    """Merge the set-valued fields from one media summary."""
+    values_by_field = {
+        "genre": summary.genre,
+        "places": summary.places,
+        "subjects": summary.subjects,
+        "covers": summary.covers,
+    }
+    for field, values in values_by_field.items():
+        fields[field].update(values or [])
+
+
+def set_first_media_value(fields: dict, field: str, value: str | None) -> None:
+    """Set a scalar field only when it has no earlier value."""
+    if value and not fields[field]:
+        fields[field] = value
+
+
 def merge_media_summary(merged: dict[str, dict], summary: MediaSummaryModel, name: str) -> None:
     """Accumulate one summary row into the per-url merged metadata."""
-    fields = merged.setdefault(
-        summary.url,
-        {
-            "url": summary.url,
-            "name": name,
-            "genre": set(),
-            "rating": "",
-            "places": set(),
-            "description": "",
-            "subjects": set(),
-            "covers": set(),
-        },
-    )
-
-    if summary.genre:
-        fields["genre"].update(summary.genre)
-    if summary.places:
-        fields["places"].update(summary.places)
-    if summary.subjects:
-        fields["subjects"].update(summary.subjects)
-    if summary.covers:
-        fields["covers"].update(summary.covers)
-
-    if summary.description and not fields["description"]:
-        fields["description"] = summary.description
-
-    if summary.rating and not fields["rating"]:
-        fields["rating"] = summary.rating
+    fields = merged.setdefault(summary.url, build_media_fields(summary, name))
+    merge_media_sets(fields, summary)
+    set_first_media_value(fields, "description", summary.description)
+    set_first_media_value(fields, "rating", summary.rating)
 
 
 def media_table_rows(merged: dict[str, dict]) -> Iterator[list[str]]:

@@ -12,6 +12,13 @@ class DetectionBox(TypedDict):
     confidence: float
 
 
+class DetectionRequest(TypedDict):
+    """Inputs for one subject detection request."""
+
+    prompt: str
+    threshold: float
+
+
 class DetectionScan(TypedDict):
     """One completed scan of a photo-subject pair: its boxes and provenance."""
 

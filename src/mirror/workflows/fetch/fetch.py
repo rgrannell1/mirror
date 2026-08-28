@@ -128,6 +128,31 @@ def fetch_open_nautilus(ctx: JobContext, input: dict) -> Generator[Any, Any, Non
     yield
 
 
+def build_copy_jobs(ctx: JobContext, found: dict) -> list[Any]:
+    """Build one copy job per filtered camera file."""
+    destination = found["dest"]
+    return [
+        ctx.scope.fetch_copy_file({"src": source, "dest": destination})
+        for source in found["filtered"]
+    ]
+
+
+def build_clustering_jobs(ctx: JobContext, found: dict) -> list[Any]:
+    """Build the badger and per-file clustering jobs."""
+    badger_input = {
+        "dest": found["dest"],
+        "photo_count": found["photo_count"],
+        "video_count": found["video_count"],
+        "raw_count": found["raw_count"],
+    }
+    return [
+        ctx.scope.fetch_run_badger(badger_input),
+        *[ctx.scope.fetch_photo_clustering({"idx": idx}) for idx in range(found["photo_count"])],
+        *[ctx.scope.fetch_media_clustering({"idx": idx}) for idx in range(found["video_count"])],
+        *[ctx.scope.fetch_raw_clustering({"idx": idx}) for idx in range(found["raw_count"])],
+    ]
+
+
 def fetch_workflow(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     """Orchestrate the full camera import flow."""
     date_input = {"from_str": input["from_str"], "to_str": input["to_str"]}
@@ -140,23 +165,6 @@ def fetch_workflow(ctx: JobContext, input: dict) -> Generator[Any, Any, None]:
     })
 
     dest = found["dest"]
-
-    yield await_all([
-        ctx.scope.fetch_copy_file({"src": src, "dest": dest}) for src in found["filtered"]
-    ])
-
-    badger_input = {
-        "dest": dest,
-        "photo_count": found["photo_count"],
-        "video_count": found["video_count"],
-        "raw_count": found["raw_count"],
-    }
-
-    yield await_all([
-        ctx.scope.fetch_run_badger(badger_input),
-        *[ctx.scope.fetch_photo_clustering({"idx": idx}) for idx in range(found["photo_count"])],
-        *[ctx.scope.fetch_media_clustering({"idx": idx}) for idx in range(found["video_count"])],
-        *[ctx.scope.fetch_raw_clustering({"idx": idx}) for idx in range(found["raw_count"])],
-    ])
-
+    yield await_all(build_copy_jobs(ctx, found))
+    yield await_all(build_clustering_jobs(ctx, found))
     yield ctx.scope.fetch_open_nautilus({"dest": dest})

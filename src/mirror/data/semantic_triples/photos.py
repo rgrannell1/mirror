@@ -10,6 +10,7 @@ from mirror.commons.constants import (
 )
 from mirror.commons.urn import parse_mirror_urn
 from mirror.commons.utils import deterministic_hash_str, short_cdn_url
+from mirror.data.semantic_triples.queries import ALBUM_BANNER_QUERY
 from mirror.data.things import genre_cover_priorities, rating_ranks
 from mirror.data.types import SemanticTriple
 
@@ -51,26 +52,10 @@ class AlbumBannerReader:
     def read(db: "SqliteDatabase") -> Iterator[SemanticTriple]:
         genre_order = genre_priority_sql("album", "vps.genre")
         rating_order = rating_rank_sql("vps.rating")
-        query = f"""
-            SELECT fpath, album_id, mosaic_banner_url
-            FROM (
-                SELECT
-                    vps.fpath,
-                    vpd.album_id,
-                    ep.url AS mosaic_banner_url,
-                    ROW_NUMBER() OVER (
-                        PARTITION BY vpd.album_id
-                        ORDER BY
-                            {rating_order} DESC,
-                            {genre_order} ASC
-                    ) AS rank
-                FROM view_photo_metadata_summary vps
-                JOIN view_photo_data vpd ON vps.fpath = vpd.fpath
-                JOIN encoded_photos ep ON vps.fpath = ep.fpath AND ep.role = 'mosaic_banner'
-                WHERE vpd.album_id IS NOT NULL
-            )
-            WHERE rank = 1
-        """
+        query = ALBUM_BANNER_QUERY.format(
+            genre_order=genre_order,
+            rating_order=rating_order,
+        )
         rows = db.conn.execute(query).fetchall()
 
         for fpath, album_id, mosaic_banner_url in rows:

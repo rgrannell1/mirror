@@ -74,27 +74,36 @@ def push_manifest_phase(ctx: JobContext) -> Generator[Any, Any, str]:
     return "manifest matches github, nothing published"
 
 
-def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[Any, Any, str]:
-    artifact_paths = {
+def build_artifact_paths(input: MirrorWorkflowInput) -> dict:
+    """Build the paths used by scan and publication jobs."""
+    return {
         "output_dir": input.get("manifest_output_dir", OUTPUT_DIRECTORY),
         "albums_markdown_path": input.get("albums_markdown_path", DEFAULT_ALBUMS_MARKDOWN_PATH),
         "photos_markdown_path": input.get("photos_markdown_path", DEFAULT_PHOTOS_MARKDOWN_PATH),
     }
 
+
+def report_scan_failure() -> Generator[Any, Any, str]:
+    """Stop publication after a failed scan and explain why."""
+    # scan loads albums.md/photos.md into the DB via read_albums/read_photos. If it failed the
+    # DB is stale, and write_metadata rewrites the whole markdown file from the DB — which would
+    # silently overwrite the human-edited ratings. Bail out before any destructive write or
+    # publish; resume the run once scan is fixed.
+    yield workflow_output(
+        "scan failed: skipping metadata rewrite and publish"
+        " to avoid overwriting albums.md/photos.md from a stale database"
+    )
+    return "scan failed: nothing published"
+
+
+def mirror_workflow(ctx: JobContext, input: MirrorWorkflowInput) -> Generator[Any, Any, str]:
+    artifact_paths = build_artifact_paths(input)
     scan_ok = yield from run_scan(ctx, artifact_paths)
 
     yield ctx.scope.upload_media(upload_media_input(input))
 
     if not scan_ok:
-        # scan loads albums.md/photos.md into the DB via read_albums/read_photos. If it failed the
-        # DB is stale, and write_metadata rewrites the whole markdown file from the DB — which would
-        # silently overwrite the human-edited ratings. Bail out before any destructive write or
-        # publish; resume the run once scan is fixed.
-        yield workflow_output(
-            "scan failed: skipping metadata rewrite and publish"
-            " to avoid overwriting albums.md/photos.md from a stale database"
-        )
-        return "scan failed: nothing published"
+        return (yield from report_scan_failure())
 
     # Phase A (ungated): rewrite albums.md/photos.md so freshly-indexed photos become labellable.
     yield ctx.scope.write_metadata(artifact_paths)

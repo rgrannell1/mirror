@@ -96,8 +96,8 @@ class GeonameMetadataReader:
 
     @staticmethod
     def to_relations(model: GeonameModel) -> Iterator[SemanticTriple]:
-        """Convert a GeonameModel to PhotoMetadataModel relations"""
-
+        """Convert a GeonameModel to PhotoMetadataModel relations."""
+        source = f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}"
         fields = [
             (KnownRelations.NAME, model.toponym_name),
             (KnownRelations.LATITUDE, str(model.lat)),
@@ -106,28 +106,24 @@ class GeonameMetadataReader:
         ]
 
         for relation, target in fields:
-            yield SemanticTriple(
-                source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
-                relation=relation,
-                target=target,
-            )
+            yield SemanticTriple(source=source, relation=relation, target=target)
 
         for alt in model.alternate_name:
-            if isinstance(alt, str):
-                continue
+            relation = GeonameMetadataReader.to_alternate_relation(source, alt)
+            if relation is not None:
+                yield relation
 
-            lang = alt.get("@lang", "unknown")
-            text = alt.get("#text", "")
+    @staticmethod
+    def to_alternate_relation(source: str, alternate_name: Any) -> SemanticTriple | None:
+        """Convert a supported alternate name to a semantic relation."""
+        if isinstance(alternate_name, str):
+            return None
 
-            if lang == "link" and "wikipedia.org" in text:
-                yield SemanticTriple(
-                    source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
-                    relation=KnownRelations.WIKIPEDIA,
-                    target=text,
-                )
-            elif lang == "wkdt":
-                yield SemanticTriple(
-                    source=f"{URN_PREFIX}{KnownTypes.GEONAME}:{model.geoname_id}",
-                    relation=KnownRelations.WIKIDATA,
-                    target=text,
-                )
+        language = alternate_name.get("@lang", "unknown")
+        text = alternate_name.get("#text", "")
+
+        if language == "link" and "wikipedia.org" in text:
+            return SemanticTriple(source, KnownRelations.WIKIPEDIA, text)
+        if language == "wkdt":
+            return SemanticTriple(source, KnownRelations.WIKIDATA, text)
+        return None

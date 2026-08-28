@@ -46,35 +46,24 @@ def full_date_range(min_dt: datetime, max_dt: datetime) -> str:
     return f"{from_str} — {to_str}"
 
 
+def resolve_date_range(
+    min_date: Union[datetime, int, None],
+    max_date: Union[datetime, int, None],
+) -> tuple[datetime | None, datetime | None]:
+    """Resolve missing date endpoints from the available endpoint."""
+    # Either endpoint falls back to the other when missing
+    parsed_min_date = parse_flexible_date(min_date) or parse_flexible_date(max_date)
+    parsed_max_date = parse_flexible_date(max_date) or parsed_min_date
+    return parsed_min_date, parsed_max_date
+
+
 def date_range(
     min_date: Union[datetime, int, None],
     max_date: Union[datetime, int, None],
     short: bool = False,
 ) -> str:
-    """
-    Format a date range for display.
-
-    Args:
-        min_date: Start date as datetime or Unix timestamp in milliseconds
-        max_date: End date as datetime or Unix timestamp in milliseconds
-        short: If True, use abbreviated format (e.g., "22 - 24 Feb 2022")
-               If False, use full format (e.g., "22 Feb 2022 — 24 Feb 2022")
-
-    Returns:
-        Formatted date range string
-
-    Examples:
-        >>> from datetime import datetime
-        >>> d1 = datetime(2022, 2, 22)
-        >>> d2 = datetime(2022, 2, 24)
-        >>> date_range(d1, d2, short=True)
-        '22 - 24 Feb 2022'
-        >>> date_range(d1, d1, short=False)
-        '22 Feb 2022'
-    """
-    # Either endpoint falls back to the other when missing
-    parsed_min_date = parse_flexible_date(min_date) or parse_flexible_date(max_date)
-    parsed_max_date = parse_flexible_date(max_date) or parsed_min_date
+    """Format a full or abbreviated date range for display."""
+    parsed_min_date, parsed_max_date = resolve_date_range(min_date, max_date)
 
     if parsed_min_date is None or parsed_max_date is None:
         return "unknown date"

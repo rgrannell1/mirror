@@ -38,10 +38,8 @@ def add_pipeline_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--no-github", dest="no_github", action="store_true")
 
 
-def add_subcommands(parser: argparse.ArgumentParser) -> None:
-    """Add the copy, audit, and fetch subcommands to the parser."""
-
-    subparsers = parser.add_subparsers(dest="command")
+def add_copy_subcommand(subparsers: Any) -> None:
+    """Add the copy subcommand to the parser."""
 
     copy_parser = subparsers.add_parser(
         "copy", help="Copy a recent raw import into the managed library"
@@ -55,7 +53,9 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
         help="Nth most recent import (default: 1)",
     )
 
-    subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
+
+def add_list_album_subcommand(subparsers: Any) -> None:
+    """Add the album listing subcommand to the parser."""
 
     list_album_parser = subparsers.add_parser(
         "list-album", help="List albums before, on, or after a date"
@@ -67,6 +67,10 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
         metavar="YYYY-MM-DD",
         help="Target date, e.g. 2026-05-09",
     )
+
+
+def add_fetch_subcommand(subparsers: Any) -> None:
+    """Add the camera fetch subcommand to the parser."""
 
     fetch_parser = subparsers.add_parser("fetch", help="Import media from a connected camera")
     fetch_parser.add_argument(
@@ -91,6 +95,15 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
         help="Path to camera DCIM directory; default: detect one removable card",
     )
 
+
+def add_subcommands(parser: argparse.ArgumentParser) -> None:
+    """Add each supported subcommand to the parser."""
+
+    subparsers = parser.add_subparsers(dest="command")
+    add_copy_subcommand(subparsers)
+    subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
+    add_list_album_subcommand(subparsers)
+    add_fetch_subcommand(subparsers)
     add_free_subcommand(subparsers)
 
 
