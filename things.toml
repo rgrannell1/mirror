@@ -3451,6 +3451,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/goldcrest"
 id = "urn:ró:bird:aquila-chrysaetos"
 name = "Golden Eagle"
 birdwatch_url = "https://birdwatchireland.ie/birds/golden-eagle"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:pluvialis-apricaria"
@@ -3766,6 +3767,11 @@ birdwatch_url = "https://birdwatchireland.ie/birds/mute-swan"
 id = "urn:ró:bird:caprimulgus-europaeus"
 name = "Nightjar"
 birdwatch_url = "https://birdwatchireland.ie/birds/nightjar"
+
+[[birds]]
+id = "urn:ró:bird:pandion-haliaetus"
+name = "Osprey"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:haematopus-ostralegus"
@@ -4163,6 +4169,7 @@ birdwatch_url = "https://birdwatchireland.ie/birds/whinchat"
 id = "urn:ró:bird:haliaeetus-albicilla"
 name = "White-tailed Eagle"
 birdwatch_url = "https://birdwatchireland.ie/birds/white-tailed-eagle"
+nemesis = "true"
 
 [[birds]]
 id = "urn:ró:bird:cygnus-cygnus"
