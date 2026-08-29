@@ -129,6 +129,7 @@
 | ![](https://photos-cdn.rgrannell.xyz/e2c45fab80.avif) | Dublin Zoo | dublin-zoo-26 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/2ad712d946.avif) | East Coast Nature Reserve | east-cost-nature-reserve-ii-2026 | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/8724d7ec65.avif) | East Coast Nature Reserve | east-coast-nature-26 | urn:ró:place:148 | I was close to photographing a kingfisher, again... |
+| ![](https://photos-cdn.rgrannell.xyz/a340299b9e.avif) | Kilmore Quay | kilmore-quay | urn:ró:place:148 |  |
 | ![](https://photos-cdn.rgrannell.xyz/68472e0548.avif) | Las Palmas | las-palmas-26 | urn:ró:place:186 |  |
 | ![](https://photos-cdn.rgrannell.xyz/e876ead83e.avif) | Madrid | madrid-city-26 | urn:ró:place:164 | I finally got to see the Temple of Debod, after three attempts |
 | ![](https://photos-cdn.rgrannell.xyz/405e36bd5c.avif) | National Archaeological Museum | man-26 | urn:ró:place:164 | I was recovering from surgery at the time, so it took a few attempts to actually see this museum (and see it briefly) |

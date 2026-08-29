@@ -731,6 +731,8 @@
 | ![](https://photos-cdn.rgrannell.xyz/014e08b792.avif) | Killarney National Park | Wildlife | ⭐⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:ovis-aries?context=captivity |  |
 | ![](https://photos-cdn.rgrannell.xyz/fa7c31ab9a.avif) | Killarney National Park | Wildlife | ⭐⭐⭐ | urn:ró:place:80 |  | urn:ró:mammal:cervus-elaphus?context=wild |  |
 | ![](https://photos-cdn.rgrannell.xyz/4c96257877.avif) | Killarney National Park | Wildlife | ⭐⭐ | urn:ró:place:104 |  | urn:ró:bird:falco-tinnunculus?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/8f9048fe21.avif) | Kilmore Quay | Wildlife | ⭐⭐⭐ |  |  | urn:ró:bird:saxicola-rubicola?context=wild |  |
+| ![](https://photos-cdn.rgrannell.xyz/a340299b9e.avif) | Kilmore Quay |  | ⭐⭐⭐⭐ |  |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/93987c4456.avif) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:place:1 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/6cee50f9a2.avif) | La Lagunas | Cityscape | ⭐⭐⭐⭐ | urn:ró:place:1 |  |  |  |
 | ![](https://photos-cdn.rgrannell.xyz/ddca4e66c0.avif) | La Lagunas | Cityscape | ⭐⭐⭐ | urn:ró:place:1 |  |  |  |
