@@ -14,6 +14,7 @@ from mirror.commons.config import (
     ZAHIR_STDERR_PATH,
 )
 from mirror.commons.constants import MAX_FREE_PERCENT
+from mirror.crop import run_crop_command
 from mirror.list_album import run_list_album_command
 from mirror.services.camera_storage import detect_camera_dir
 from mirror.workflows.free import run_free_command
@@ -101,6 +102,8 @@ def add_subcommands(parser: argparse.ArgumentParser) -> None:
 
     subparsers = parser.add_subparsers(dest="command")
     add_copy_subcommand(subparsers)
+    crop_parser = subparsers.add_parser("crop", help="Crop an image without changing its ratio")
+    crop_parser.add_argument("image", metavar="IMAGE", help="Image file to crop")
     subparsers.add_parser("audit", help="Report reasons publication will fail (read-only)")
     add_list_album_subcommand(subparsers)
     add_fetch_subcommand(subparsers)
@@ -190,14 +193,15 @@ def run_pipeline_command(args: argparse.Namespace) -> None:
         print(summary)
 
 
-def main():
-    """Execute the mirror media pipeline"""
-
-    args = build_parser().parse_args()
+def run_subcommand(args: argparse.Namespace) -> bool:
+    """Run a named subcommand and report whether one matched."""
 
     if args.command == "copy":
         run_copy_command(args)
-        return
+        return True
+
+    if args.command == "crop":
+        raise SystemExit(run_crop_command(args.image))
 
     if args.command == "audit":
         raise SystemExit(run_audit_command())
@@ -207,11 +211,21 @@ def main():
 
     if args.command == "fetch":
         run_fetch_command(args)
-        return
+        return True
 
     if args.command == "free":
         raise SystemExit(
             run_free_command(args.percent, args.no_preserve, args.assume_yes, args.camera)
         )
+
+    return False
+
+
+def main():
+    """Execute the mirror media pipeline"""
+
+    args = build_parser().parse_args()
+    if run_subcommand(args):
+        return
 
     run_pipeline_command(args)
