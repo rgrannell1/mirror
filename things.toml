@@ -2793,6 +2793,21 @@ features = [
     "urn:ró:place_feature:cemetery",
 ]
 
+[[places]]
+id = "urn:ró:place:200"
+longitude = -6.586111
+latitude = 52.171944
+name = "Kilmore Quay"
+short_name = "Kilmore Quay"
+wikipedia = "https://en.wikipedia.org/wiki/Kilmore_Quay"
+in = [
+    "urn:ró:place:148",
+]
+features = [
+    "urn:ró:place_feature:village",
+    "urn:ró:place_feature:harbor",
+]
+
 [[trips]]
 id = "urn:ró:trip:0"
 title = "Spain & Portugal, 2025"
