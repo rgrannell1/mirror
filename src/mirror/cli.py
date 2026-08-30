@@ -3,6 +3,7 @@
 import argparse
 import logging
 import multiprocessing
+from collections.abc import Callable
 from typing import Any
 
 from mirror.audit import run_audit_command
@@ -151,22 +152,22 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def run_copy_command(args: argparse.Namespace) -> None:
+def run_copy_command(nth: int) -> None:
     """Prompt for an album title and run the copy workflow."""
 
     title = input("Album title: ").strip()
     if not title:
         raise SystemExit("Album title is required")
 
-    copy_input = {"title": title, "nth": args.nth}
+    copy_input = {"title": title, "nth": nth}
     run_workflow("copy_workflow", copy_input, 4, (ZAHIR_JSONL_PATH, ZAHIR_STDERR_PATH))
 
 
-def run_fetch_command(args: argparse.Namespace) -> None:
+def run_fetch_command(date_from: str, date_to: str, camera_path: str | None) -> None:
     """Run the camera fetch workflow."""
 
-    camera = args.camera if args.camera is not None else str(detect_camera_dir())
-    fetch_input = {"from_str": args.date_from, "to_str": args.date_to, "camera": camera}
+    camera = camera_path if camera_path is not None else str(detect_camera_dir())
+    fetch_input = {"from_str": date_from, "to_str": date_to, "camera": camera}
     run_workflow("fetch_workflow", fetch_input, 15, (ZAHIR_JSONL_PATH, ZAHIR_STDERR_PATH))
 
 
@@ -193,32 +194,34 @@ def run_pipeline_command(args: argparse.Namespace) -> None:
         print(summary)
 
 
+type Subcommand = tuple[Callable[..., object], tuple[str, ...], bool]
+
+
+SUBCOMMAND_HANDLERS: dict[str, Subcommand] = {
+    "copy": (run_copy_command, ("nth",), False),
+    "crop": (run_crop_command, ("image",), True),
+    "audit": (run_audit_command, (), True),
+    "list-album": (run_list_album_command, ("date",), True),
+    "fetch": (run_fetch_command, ("date_from", "date_to", "camera"), False),
+    "free": (
+        run_free_command,
+        ("percent", "no_preserve", "assume_yes", "camera"),
+        True,
+    ),
+}
+
+
 def run_subcommand(args: argparse.Namespace) -> bool:
     """Run a named subcommand and report whether one matched."""
-
-    if args.command == "copy":
-        run_copy_command(args)
-        return True
-
-    if args.command == "crop":
-        raise SystemExit(run_crop_command(args.image))
-
-    if args.command == "audit":
-        raise SystemExit(run_audit_command())
-
-    if args.command == "list-album":
-        raise SystemExit(run_list_album_command(args.date))
-
-    if args.command == "fetch":
-        run_fetch_command(args)
-        return True
-
-    if args.command == "free":
-        raise SystemExit(
-            run_free_command(args.percent, args.no_preserve, args.assume_yes, args.camera)
-        )
-
-    return False
+    command = SUBCOMMAND_HANDLERS.get(args.command)
+    if command is None:
+        return False
+    handler, field_names, exits = command
+    values = [getattr(args, field_name) for field_name in field_names]
+    result = handler(*values)
+    if exits:
+        raise SystemExit(result)
+    return True
 
 
 def main():
