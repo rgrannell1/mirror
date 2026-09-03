@@ -18,7 +18,7 @@ from mirror.commons.constants import MAX_FREE_PERCENT
 from mirror.crop import run_crop_command
 from mirror.list_album import run_list_album_command
 from mirror.services.camera_storage import detect_camera_dir
-from mirror.workflows.free import run_free_command
+from mirror.workflows.free.command import run_free_command
 from mirror.workflows.runner import run_workflow
 
 logging.basicConfig(level=logging.INFO, force=True)
